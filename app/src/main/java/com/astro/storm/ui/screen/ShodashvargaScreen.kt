@@ -2,6 +2,7 @@ package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -47,6 +48,8 @@ import com.astro.storm.ephemeris.ShodashvargaCalculator.VargaType
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -259,7 +262,7 @@ private fun OverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -374,7 +377,7 @@ private fun OverviewTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -421,7 +424,7 @@ private fun OverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -494,7 +497,7 @@ private fun StrongestWeakestCard(
         colors = CardDefaults.cardColors(
             containerColor = accentColor.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -599,7 +602,7 @@ private fun PlanetStrengthRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                 color = getStrengthColorFromBala(strength.shodashvargaBala),
                 trackColor = AppTheme.ChipBackground
             )
@@ -698,7 +701,7 @@ private fun PlanetDetailCard(
             colors = CardDefaults.cardColors(
                 containerColor = accentColor.copy(alpha = 0.08f)
             ),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
@@ -776,7 +779,7 @@ private fun PlanetDetailCard(
                 // Strength grade chip
                 Surface(
                     color = getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -802,7 +805,7 @@ private fun PlanetDetailCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Surface(
                         color = AppTheme.AccentGold.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -832,7 +835,7 @@ private fun PlanetDetailCard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -864,7 +867,7 @@ private fun PlanetDetailCard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -937,7 +940,7 @@ private fun VargaPositionRow(
             .background(
                 if (position.isVargottama) AppTheme.AccentGold.copy(alpha = 0.05f)
                 else Color.Transparent,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
             )
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -966,7 +969,7 @@ private fun VargaPositionRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 color = getDignityColor(position.dignity).copy(alpha = 0.15f),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
             ) {
                 Text(
                     getLocalizedDignity(position.dignity, language),
@@ -1003,7 +1006,7 @@ private fun VimsopakaTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1058,7 +1061,7 @@ private fun VimsopakaCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1091,7 +1094,7 @@ private fun VimsopakaCard(
 
                 Surface(
                     color = getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 ) {
                     Text(
                         getLocalizedStrengthGrade(strength.strengthGrade, language),
@@ -1166,7 +1169,7 @@ private fun VimsopakaSchemeColumn(
             modifier = Modifier
                 .width(60.dp)
                 .height(4.dp)
-                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
             color = if (isPrimary) AppTheme.AccentPrimary else AppTheme.TextSecondary,
             trackColor = AppTheme.ChipBackground
         )
@@ -1187,7 +1190,7 @@ private fun VargottamaTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1223,7 +1226,7 @@ private fun VargottamaTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
             ) {
                 Box(
                     modifier = Modifier
@@ -1271,7 +1274,7 @@ private fun VargottamaPlanetCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1323,7 +1326,7 @@ private fun VargottamaPlanetCard(
             vargottamas.forEach { vargottama ->
                 Surface(
                     color = AppTheme.CardBackground,
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(

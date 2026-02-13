@@ -77,6 +77,9 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.BadhakaCalculator
 import com.astro.storm.ui.theme.AppTheme
+import androidx.compose.foundation.BorderStroke
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -248,7 +251,9 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = modalityColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier
@@ -283,7 +288,7 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = modalityColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -377,7 +382,9 @@ private fun BadhakaStatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier
@@ -407,7 +414,9 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -516,7 +525,9 @@ private fun BadhakaPlanetCard(
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -562,7 +573,7 @@ private fun BadhakaPlanetCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                         color = severityColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -592,7 +603,7 @@ private fun BadhakaPlanetCard(
 
                     if (isPrimary) {
                         Surface(
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                             color = AppTheme.ErrorColor.copy(alpha = 0.15f),
                             modifier = Modifier.padding(bottom = 8.dp)
                         ) {
@@ -639,7 +650,9 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -680,7 +693,9 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -730,7 +745,7 @@ private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -750,7 +765,7 @@ private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
                     color = AppTheme.TextPrimary
                 )
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = areaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -768,7 +783,7 @@ private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                 color = areaColor,
                 trackColor = areaColor.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
@@ -797,7 +812,9 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(
                     modifier = Modifier
@@ -825,7 +842,9 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -869,7 +888,7 @@ private fun BadhakaDashaPeriodRow(period: BadhakaCalculator.BadhakaDashaPeriod) 
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Row(
@@ -893,7 +912,7 @@ private fun BadhakaDashaPeriodRow(period: BadhakaCalculator.BadhakaDashaPeriod) 
 //                )
             }
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                 color = riskColor.copy(alpha = 0.15f)
             ) {
                 Text(
@@ -920,7 +939,9 @@ private fun BadhakaRemediesSection(analysis: BadhakaCalculator.BadhakaAnalysis) 
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(
                     modifier = Modifier
@@ -970,7 +991,9 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -978,7 +1001,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = categoryColor.copy(alpha = 0.15f)
                 ) {
                     Text(

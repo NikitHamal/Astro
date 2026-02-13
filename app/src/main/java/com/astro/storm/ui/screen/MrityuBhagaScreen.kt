@@ -48,6 +48,9 @@ import com.astro.storm.ephemeris.PushkaraNavamsaResult
 import com.astro.storm.ephemeris.PushkaraBhagaResult
 import com.astro.storm.ephemeris.AssessmentLevel
 import com.astro.storm.ui.theme.AppTheme
+import androidx.compose.foundation.BorderStroke
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -179,7 +182,7 @@ fun MrityuBhagaScreen(
                 }
             },
             containerColor = AppTheme.CardBackground,
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         )
     }
 }
@@ -328,7 +331,9 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                     colors = CardDefaults.cardColors(
                         containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
                     ),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
                 ) {
                     Row(
                         modifier = Modifier.padding(20.dp),
@@ -395,7 +400,9 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -516,7 +523,9 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
             .fillMaxWidth()
             .clickable { expanded = !expanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -557,7 +566,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                 // Severity Badge
                 Surface(
                     color = severityColor.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 ) {
                     Text(
                         result.severity.getLocalizedName(language),
@@ -648,7 +657,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                             items(result.vulnerabilityAreas) { area ->
                                 Surface(
                                     color = AppTheme.ChipBackground,
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                                 ) {
                                     Text(
                                         area,
@@ -689,7 +698,9 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
             .fillMaxWidth()
             .clickable { expanded = !expanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -730,7 +741,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
 
                 Surface(
                     color = severityColor.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 ) {
                     Text(
                         result.severity.getLocalizedName(language),
@@ -796,7 +807,9 @@ private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Languag
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -840,7 +853,9 @@ private fun PushkaraBhagaCard(result: PushkaraBhagaResult, language: Language) {
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -893,7 +908,9 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -968,7 +985,9 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1032,7 +1051,9 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                             Card(
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1100,7 +1121,9 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                             Card(
                                 modifier = Modifier.fillMaxWidth(),
                                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1147,7 +1170,9 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                 colors = CardDefaults.cardColors(
                     containerColor = AppTheme.InfoColor.copy(alpha = 0.08f)
                 ),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {

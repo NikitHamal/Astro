@@ -55,6 +55,9 @@ import com.astro.storm.ephemeris.AshtamangalaPrashnaCalculator.ReadingInterpreta
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import androidx.compose.foundation.BorderStroke
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.delay
 
 /**
@@ -248,7 +251,9 @@ private fun CategoryCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Row(
             modifier = Modifier
@@ -351,7 +356,9 @@ private fun CowrieThrowContent(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
@@ -463,7 +470,7 @@ private fun CowrieThrowContent(
                 containerColor = AppTheme.AccentGold,
                 contentColor = Color.Black
             ),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         ) {
             if (isThrowingShells) {
                 CircularProgressIndicator(
@@ -586,7 +593,9 @@ private fun SummaryCard(reading: AshtamangalaReading) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -651,7 +660,9 @@ private fun ShellResultCard(cowrieThrow: CowrieThrowResult) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -723,7 +734,7 @@ private fun ShellResultCard(cowrieThrow: CowrieThrowResult) {
             // Interpretation
             Surface(
                 color = AppTheme.ChipBackground,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
             ) {
                 Text(
                     text = cowrieThrow.interpretation,
@@ -742,7 +753,9 @@ private fun YesNoProbabilityCard(probability: YesNoProbability) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -760,7 +773,7 @@ private fun YesNoProbabilityCard(probability: YesNoProbability) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
             ) {
                 Box(
                     modifier = Modifier
@@ -815,7 +828,7 @@ private fun YesNoProbabilityCard(probability: YesNoProbability) {
                 }
                 Surface(
                     color = confidenceColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 ) {
                     Text(
                         text = probability.confidence.name,
@@ -841,7 +854,9 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -909,7 +924,9 @@ private fun SpecialReadingsCard(category: QueryCategory, special: SpecialReading
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -999,7 +1016,7 @@ private fun IndicationBadge(indication: IndicationStrength) {
 
     Surface(
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Text(
             text = text,
@@ -1027,7 +1044,9 @@ private fun AnalysisTab(reading: AshtamangalaReading) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -1055,7 +1074,9 @@ private fun AnalysisTab(reading: AshtamangalaReading) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -1095,7 +1116,9 @@ private fun AnalysisTab(reading: AshtamangalaReading) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.1f)),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
@@ -1137,7 +1160,9 @@ private fun ChartValidationCard(validation: ChartValidation) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -1219,7 +1244,7 @@ private fun PositionCard(position: PositionResult, isDominant: Boolean) {
         modifier = Modifier
             .fillMaxWidth()
             .then(
-                if (isDominant) Modifier.border(2.dp, borderColor, RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                if (isDominant) Modifier.border(2.dp, borderColor, RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                 else Modifier
             ),
         colors = CardDefaults.cardColors(
@@ -1228,7 +1253,7 @@ private fun PositionCard(position: PositionResult, isDominant: Boolean) {
             else
                 AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -1279,7 +1304,7 @@ private fun PositionCard(position: PositionResult, isDominant: Boolean) {
                     Surface(
                         color = if (position.isActive) AppTheme.SuccessColor.copy(alpha = 0.1f)
                         else AppTheme.ChipBackground,
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                     ) {
                         Text(
                             text = if (position.isActive) stringResource(StringKeyAshtamangala.ACTIVE) else stringResource(StringKeyAshtamangala.INACTIVE),
@@ -1314,7 +1339,7 @@ private fun PositionCard(position: PositionResult, isDominant: Boolean) {
                     modifier = Modifier
                         .weight(1f)
                         .height(6.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                        .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                     color = if (position.strength >= 60) AppTheme.SuccessColor
                     else if (position.strength >= 40) AppTheme.AccentGold
                     else AppTheme.TextMuted,
@@ -1352,7 +1377,9 @@ private fun TimingTab(reading: AshtamangalaReading) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -1449,7 +1476,9 @@ private fun TimingTab(reading: AshtamangalaReading) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -1496,7 +1525,7 @@ private fun RemedyItem(remedy: Remedy) {
 
     Surface(
         color = AppTheme.ChipBackground,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Row(
             modifier = Modifier

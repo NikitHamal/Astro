@@ -40,6 +40,7 @@ import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
 import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.theme.SpaceGroteskFamily
 
@@ -72,7 +73,8 @@ fun SettingsTab(
         modifier = Modifier
             .fillMaxSize()
             .background(AppTheme.ScreenBackground),
-        contentPadding = PaddingValues(bottom = 100.dp)
+        contentPadding = PaddingValues(bottom = 100.dp),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXXS)
     ) {
         // Profile Section
         item {
@@ -227,9 +229,10 @@ private object SettingsDesignTokens {
 private fun SettingsSectionHeader(titleKey: StringKey) {
     Text(
         text = stringResource(titleKey).uppercase(),
-        style = MaterialTheme.typography.labelLarge,
         fontFamily = SpaceGroteskFamily,
+        fontSize = 11.sp,
         fontWeight = FontWeight.SemiBold,
+        letterSpacing = 2.sp,
         color = AppTheme.TextMuted,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
     )
@@ -1041,7 +1044,8 @@ private fun AboutCard() {
         ) {
             Text(
                 text = "AstroStorm",
-                style = MaterialTheme.typography.titleLarge,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.AccentPrimary
             )

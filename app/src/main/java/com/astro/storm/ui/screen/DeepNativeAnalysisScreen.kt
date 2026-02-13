@@ -12,7 +12,6 @@ import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -39,6 +38,9 @@ import com.astro.storm.ui.viewmodel.DeepAnalysisSection
 import com.astro.storm.ui.viewmodel.DeepAnalysisUiState
 import com.astro.storm.ui.viewmodel.DeepAnalysisViewModel
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import androidx.compose.foundation.BorderStroke
 
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
@@ -357,17 +359,12 @@ private fun CareerSection(
             for (profession in career.suitableProfessions) {
                 val strengthColor = DeepAnalysisColors.forStrength(profession.suitability)
                 
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(
-                            elevation = 2.dp,
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                            ambientColor = strengthColor.copy(alpha = 0.08f),
-                            spotColor = strengthColor.copy(alpha = 0.08f)
-                        ),
-                    color = AppTheme.CardBackground,
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Row(
                         modifier = Modifier
@@ -382,7 +379,7 @@ private fun CareerSection(
                                 .height(32.dp)
                                 .background(
                                     strengthColor,
-                                    RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                    RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                                 )
                         )
                         
@@ -706,17 +703,12 @@ private fun EducationSection(
             for (subject in education.suitableSubjects) {
                 val strengthColor = DeepAnalysisColors.forStrength(subject.affinity)
                 
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .shadow(
-                            elevation = 2.dp,
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                            ambientColor = strengthColor.copy(alpha = 0.08f),
-                            spotColor = strengthColor.copy(alpha = 0.08f)
-                        ),
-                    color = AppTheme.CardBackground,
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Row(
                         modifier = Modifier
@@ -731,7 +723,7 @@ private fun EducationSection(
                                 .height(32.dp)
                                 .background(
                                     strengthColor,
-                                    RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                    RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                                 )
                         )
                         
@@ -893,7 +885,7 @@ private fun LocalizedTraitText(
         text = if (shouldShowNepali) trait.nameNe else trait.name,
         modifier = modifier,
         style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = AppTheme.TextMuted
     )
 }
 

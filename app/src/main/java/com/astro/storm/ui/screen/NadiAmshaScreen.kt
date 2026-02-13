@@ -33,6 +33,9 @@ import com.astro.storm.ephemeris.NadiAmshaCalculator.NadiAmshaResult
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import androidx.compose.foundation.BorderStroke
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.NadiAmshaUiState
 import com.astro.storm.ui.viewmodel.NadiAmshaViewModel
 import kotlinx.coroutines.delay
@@ -178,7 +181,9 @@ private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -225,7 +230,9 @@ private fun NadiSummaryCard(result: NadiAmshaResult) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -254,7 +261,9 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -263,7 +272,7 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(AppTheme.getPlanetColor(position.planet!!).copy(alpha = 0.2f), RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .background(AppTheme.getPlanetColor(position.planet!!).copy(alpha = 0.2f), RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
@@ -322,7 +331,9 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
     Card(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -350,7 +361,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
             }
             Surface(
                 color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
             ) {
                 Text(
                     "${candidate.confidence}%",

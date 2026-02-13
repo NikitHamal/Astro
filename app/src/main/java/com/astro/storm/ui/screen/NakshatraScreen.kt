@@ -2,6 +2,7 @@ package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -45,6 +46,8 @@ import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 
 /**
  * Nakshatra Analysis Screen
@@ -783,7 +786,9 @@ private fun NakshatraOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -792,6 +797,9 @@ private fun NakshatraOverviewTab(
                 Text(
                     stringResource(StringKeyDosha.NAKSHATRA_BIRTH_STAR),
                     style = MaterialTheme.typography.titleSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     color = AppTheme.TextMuted
                 )
 
@@ -845,7 +853,9 @@ private fun NakshatraOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 NakshatraDetailRow(
@@ -876,14 +886,18 @@ private fun NakshatraOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_CHARACTERISTICS),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.NAKSHATRA_CHARACTERISTICS).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -977,10 +991,12 @@ private fun NakshatraDetailsTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text(
-            stringResource(StringKeyDosha.NAKSHATRA_ALL_PLANETS),
-            style = MaterialTheme.typography.titleMedium,
+            stringResource(StringKeyDosha.NAKSHATRA_ALL_PLANETS).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = 11.sp,
+            letterSpacing = 2.sp,
             fontWeight = FontWeight.SemiBold,
-            color = AppTheme.TextPrimary,
+            color = AppTheme.TextMuted,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -1018,7 +1034,9 @@ private fun PlanetaryNakshatraCard(
                 onClick = onToggle
             ),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1101,14 +1119,18 @@ private fun NakshatraCompatibilityTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_TARABALA),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.NAKSHATRA_TARABALA).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -1138,14 +1160,18 @@ private fun NakshatraCompatibilityTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_RAJJU_TYPE),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.NAKSHATRA_RAJJU_TYPE).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -1189,7 +1215,9 @@ private fun NakshatraCompatibilityTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1229,7 +1257,7 @@ private fun TarabalaSummaryChip(
 ) {
     Surface(
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
@@ -1260,14 +1288,18 @@ private fun NakshatraRemediesTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_MANTRA),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.NAKSHATRA_MANTRA).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -1300,7 +1332,9 @@ private fun NakshatraRemediesTab(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -1344,12 +1378,16 @@ private fun NakshatraRemediesTab(
             Card(
                 modifier = Modifier.weight(1f),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
-                        stringResource(StringKeyDosha.NAKSHATRA_LUCKY_NUMBERS),
-                        style = MaterialTheme.typography.labelMedium,
+                        stringResource(StringKeyDosha.NAKSHATRA_LUCKY_NUMBERS).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 11.sp,
+                        letterSpacing = 2.sp,
                         color = AppTheme.TextMuted
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -1367,12 +1405,16 @@ private fun NakshatraRemediesTab(
             Card(
                 modifier = Modifier.weight(1f),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
-                        stringResource(StringKeyDosha.NAKSHATRA_LUCKY_COLORS),
-                        style = MaterialTheme.typography.labelMedium,
+                        stringResource(StringKeyDosha.NAKSHATRA_LUCKY_COLORS).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 11.sp,
+                        letterSpacing = 2.sp,
                         color = AppTheme.TextMuted
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -1392,12 +1434,16 @@ private fun NakshatraRemediesTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(14.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.NAKSHATRA_FAVORABLE_DAYS),
-                    style = MaterialTheme.typography.labelMedium,
+                    stringResource(StringKeyDosha.NAKSHATRA_FAVORABLE_DAYS).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     color = AppTheme.TextMuted
                 )
                 Spacer(modifier = Modifier.height(4.dp))

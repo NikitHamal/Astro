@@ -88,6 +88,8 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
@@ -251,7 +253,7 @@ private fun CurrentPeriodCard(
         modifier = Modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 4.dp,
+                elevation = com.astro.storm.ui.theme.NeoVedicTokens.CardElevation,
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = ChartDetailColors.AccentGold.copy(alpha = 0.1f),
                 spotColor = ChartDetailColors.AccentGold.copy(alpha = 0.1f)
@@ -290,6 +292,7 @@ private fun CurrentPeriodCard(
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_CURRENT_DASHA_PERIOD),
                         fontSize = 18.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.TextPrimary,
                         letterSpacing = (-0.3).sp
@@ -439,6 +442,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
                 Text(
                     text = stringResource(StringKeyMatch.DASHA_BIRTH_NAKSHATRA),
                     fontSize = 11.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = ChartDetailColors.TextMuted,
                     fontWeight = FontWeight.Medium,
                     letterSpacing = 0.5.sp
@@ -456,6 +460,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
                 Text(
                     text = stringResource(StringKeyMatch.DASHA_LORD),
                     fontSize = 11.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = ChartDetailColors.TextMuted,
                     fontWeight = FontWeight.Medium
                 )
@@ -777,6 +782,7 @@ private fun DashaPeriodRow(
                     Text(
                         text = label,
                         fontSize = sizes.subFontSize,
+                        fontFamily = SpaceGroteskFamily,
                         color = ChartDetailColors.TextMuted,
                         fontWeight = FontWeight.Medium
                     )
@@ -796,6 +802,7 @@ private fun DashaPeriodRow(
                 Text(
                     text = "$startDateFormatted – $endDateFormatted",
                     fontSize = (sizes.subFontSize.value - 1).sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = ChartDetailColors.TextMuted,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -826,6 +833,7 @@ private fun DashaPeriodRow(
             Text(
                 text = "$percentComplete%",
                 fontSize = sizes.subFontSize,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Bold,
                 color = planetColor
             )
@@ -971,7 +979,7 @@ private fun DashaTimelineCard(
         modifier = Modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 2.dp,
+                elevation = com.astro.storm.ui.theme.NeoVedicTokens.CardElevation,
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = ChartDetailColors.AccentTeal.copy(alpha = 0.05f)
             ),
@@ -1004,6 +1012,7 @@ private fun DashaTimelineCard(
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_TIMELINE),
                         fontSize = 16.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary,
                         letterSpacing = (-0.2).sp
@@ -1096,6 +1105,7 @@ private fun DashaTimelineCard(
                         Text(
                             text = "${formatDate(dasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)} – ${formatDate(dasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)}",
                             fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = if (isCurrent) ChartDetailColors.TextPrimary else ChartDetailColors.TextMuted,
                             modifier = Modifier.weight(1f)
                         )
@@ -1150,7 +1160,7 @@ private fun MahadashaCard(
         } else {
             ChartDetailColors.CardBackground
         },
-        tonalElevation = if (isCurrentMahadasha) 3.dp else 1.dp
+        tonalElevation = com.astro.storm.ui.theme.NeoVedicTokens.SurfaceElevation
     ) {
         Column(
             modifier = Modifier
@@ -1219,6 +1229,7 @@ private fun MahadashaCard(
                         Text(
                             text = "${formatDurationYearsLocalized(mahadasha.durationYears, language)} • ${formatDate(mahadasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)} – ${formatDate(mahadasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)}",
                             fontSize = 11.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = ChartDetailColors.TextMuted,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -1392,6 +1403,7 @@ private fun AntardashaRow(
             Text(
                 text = "${formatDate(antardasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} – ${formatDate(antardasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
                 fontSize = 11.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = ChartDetailColors.TextMuted
             )
             Spacer(modifier = Modifier.height(2.dp))

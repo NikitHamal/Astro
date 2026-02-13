@@ -52,7 +52,12 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
 import com.astro.storm.ui.theme.LocalAppThemeColors
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +72,7 @@ fun ChartInputScreen(
     val focusManager = LocalFocusManager.current
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
-    val colors = LocalAppThemeColors.current
+    val colors = AppTheme.current
 
     // Determine if we're in edit mode
     val isEditMode = editChartId != null
@@ -178,25 +183,26 @@ fun ChartInputScreen(
     val scrollState = rememberScrollState()
     val isCalculating = uiState is ChartUiState.Calculating
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colors.ScreenBackground)
-            .imePadding()
-    ) {
+    Scaffold(
+        containerColor = colors.ScreenBackground,
+        topBar = {
+            ScreenTopBar(
+                title = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
+                onBack = onNavigateBack
+            )
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .verticalScroll(scrollState)
-                .padding(horizontal = 24.dp)
-                .padding(top = 16.dp, bottom = 32.dp)
+                .padding(horizontal = NeoVedicTokens.ScreenPadding)
+                .padding(bottom = 32.dp)
+                .imePadding()
         ) {
-            ChartInputHeader(
-                onNavigateBack = onNavigateBack,
-                isEditMode = isEditMode
-            )
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SectionSpacing))
 
             IdentitySection(
                 name = name,
@@ -221,7 +227,7 @@ fun ChartInputScreen(
                 placeholder = stringResource(StringKey.INPUT_SEARCH_LOCATION)
             )
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SectionSpacing))
 
             DateTimeSection(
                 selectedDate = selectedDate,
@@ -241,7 +247,7 @@ fun ChartInputScreen(
                 onToggleDateSystem = { useBSPicker = !useBSPicker }
             )
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SectionSpacing))
 
             CoordinatesSection(
                 latitude = latitude,
@@ -375,7 +381,7 @@ fun ChartInputScreen(
                 }
             },
             containerColor = colors.CardBackground,
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         )
     }
 }
@@ -472,41 +478,6 @@ private fun validateBirthDataInput(
 
 
 @Composable
-private fun ChartInputHeader(
-    onNavigateBack: () -> Unit,
-    isEditMode: Boolean = false
-) {
-    val colors = LocalAppThemeColors.current
-    val goBackText = stringResource(StringKey.BTN_BACK)
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .statusBarsPadding(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = onNavigateBack,
-            modifier = Modifier.semantics { contentDescription = goBackText }
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = null,
-                tint = colors.TextSecondary,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-        Spacer(Modifier.width(12.dp))
-        Text(
-            text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
-            fontSize = 22.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = colors.TextPrimary,
-            letterSpacing = 0.3.sp
-        )
-    }
-}
-
-@Composable
 private fun IdentitySection(
     name: String,
     onNameChange: (String) -> Unit,
@@ -514,7 +485,6 @@ private fun IdentitySection(
     onGenderChange: (Gender) -> Unit,
     onFocusNext: () -> Unit
 ) {
-    val colors = LocalAppThemeColors.current
     val language = LocalLanguage.current
     Column {
         SectionTitle(stringResource(StringKey.INPUT_IDENTITY))
@@ -533,7 +503,7 @@ private fun IdentitySection(
         Text(
             text = stringResource(StringKey.INPUT_GENDER),
             fontSize = 14.sp,
-            color = colors.TextSecondary,
+            color = AppTheme.TextSecondary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
@@ -633,15 +603,14 @@ private fun DateSystemToggle(
     language: Language,
     onToggle: () -> Unit
 ) {
-    val colors = LocalAppThemeColors.current
     val adLabel = stringResource(StringKey.LABEL_AD)
     val bsLabel = stringResource(StringKey.LABEL_BS)
 
     Surface(
         onClick = onToggle,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = colors.ChipBackground,
-        border = BorderStroke(1.dp, colors.BorderColor)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        color = AppTheme.ChipBackground,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(2.dp),
@@ -649,30 +618,30 @@ private fun DateSystemToggle(
         ) {
             // AD option
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                color = if (!useBSPicker) colors.AccentPrimary else Color.Transparent,
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                color = if (!useBSPicker) AppTheme.AccentPrimary else Color.Transparent,
                 modifier = Modifier.padding(1.dp)
             ) {
                 Text(
                     text = adLabel,
                     fontSize = 12.sp,
                     fontWeight = if (!useBSPicker) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (!useBSPicker) colors.ButtonText else colors.TextSecondary,
+                    color = if (!useBSPicker) AppTheme.ButtonText else AppTheme.TextSecondary,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                 )
             }
 
             // BS option
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                color = if (useBSPicker) colors.AccentPrimary else Color.Transparent,
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                color = if (useBSPicker) AppTheme.AccentPrimary else Color.Transparent,
                 modifier = Modifier.padding(1.dp)
             ) {
                 Text(
                     text = bsLabel,
                     fontSize = 12.sp,
                     fontWeight = if (useBSPicker) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (useBSPicker) colors.ButtonText else colors.TextSecondary,
+                    color = if (useBSPicker) AppTheme.ButtonText else AppTheme.TextSecondary,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                 )
             }
@@ -739,7 +708,6 @@ private fun GenerateButton(
     isEditMode: Boolean = false,
     onClick: () -> Unit
 ) {
-    val colors = LocalAppThemeColors.current
     val buttonText = if (isEditMode) stringResource(StringKey.BTN_UPDATE_SAVE) else stringResource(StringKey.BTN_GENERATE_SAVE)
     val buttonContentDesc = buttonText
     Button(
@@ -748,12 +716,12 @@ private fun GenerateButton(
             .fillMaxWidth()
             .height(56.dp)
             .semantics { contentDescription = buttonContentDesc },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         colors = ButtonDefaults.buttonColors(
-            containerColor = colors.ButtonBackground,
-            contentColor = colors.ButtonText,
-            disabledContainerColor = colors.ButtonBackground.copy(alpha = 0.5f),
-            disabledContentColor = colors.ButtonText.copy(alpha = 0.5f)
+            containerColor = AppTheme.ButtonBackground,
+            contentColor = AppTheme.ButtonText,
+            disabledContainerColor = AppTheme.ButtonBackground.copy(alpha = 0.5f),
+            disabledContentColor = AppTheme.ButtonText.copy(alpha = 0.5f)
         ),
         enabled = !isCalculating
     ) {
@@ -761,7 +729,7 @@ private fun GenerateButton(
             if (calculating) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(24.dp),
-                    color = colors.ButtonText,
+                    color = AppTheme.ButtonText,
                     strokeWidth = 2.dp
                 )
             } else {
@@ -793,7 +761,7 @@ private fun ChartDatePickerDialog(
     onDismiss: () -> Unit,
     onConfirm: (Long) -> Unit
 ) {
-    val colors = LocalAppThemeColors.current
+    val colors = AppTheme.current
     val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDateMillis)
 
     DatePickerDialog(
@@ -845,7 +813,7 @@ private fun ChartTimePickerDialog(
     onDismiss: () -> Unit,
     onConfirm: (hour: Int, minute: Int) -> Unit
 ) {
-    val colors = LocalAppThemeColors.current
+    val colors = AppTheme.current
     val timePickerState = rememberTimePickerState(
         initialHour = initialHour,
         initialMinute = initialMinute,
@@ -854,7 +822,7 @@ private fun ChartTimePickerDialog(
 
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
             color = colors.CardBackground,
             tonalElevation = 6.dp
         ) {
@@ -914,13 +882,13 @@ private fun ChartTimePickerDialog(
 
 @Composable
 private fun SectionTitle(title: String) {
-    val colors = LocalAppThemeColors.current
     Text(
-        text = title,
-        fontSize = 16.sp,
+        text = title.uppercase(),
+        fontFamily = SpaceGroteskFamily,
+        fontSize = 11.sp,
         fontWeight = FontWeight.SemiBold,
-        color = colors.TextPrimary,
-        letterSpacing = 0.5.sp
+        letterSpacing = 2.sp,
+        color = AppTheme.TextMuted
     )
 }
 
@@ -933,14 +901,13 @@ private fun ChartOutlinedTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
-    val colors = LocalAppThemeColors.current
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = colors.TextSecondary, fontSize = 14.sp) },
+        label = { Text(label, color = AppTheme.TextSecondary, fontSize = 14.sp) },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         colors = chartTextFieldColors(),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
@@ -950,17 +917,16 @@ private fun ChartOutlinedTextField(
 
 @Composable
 private fun chartTextFieldColors(): TextFieldColors {
-    val colors = LocalAppThemeColors.current
     return OutlinedTextFieldDefaults.colors(
-        focusedTextColor = colors.TextPrimary,
-        unfocusedTextColor = colors.TextPrimary,
-        focusedBorderColor = colors.AccentPrimary,
-        unfocusedBorderColor = colors.BorderColor,
-        focusedLabelColor = colors.AccentPrimary,
-        unfocusedLabelColor = colors.TextSecondary,
-        cursorColor = colors.AccentPrimary,
-        focusedTrailingIconColor = colors.TextSecondary,
-        unfocusedTrailingIconColor = colors.TextSecondary
+        focusedTextColor = AppTheme.TextPrimary,
+        unfocusedTextColor = AppTheme.TextPrimary,
+        focusedBorderColor = AppTheme.AccentPrimary,
+        unfocusedBorderColor = AppTheme.BorderColor,
+        focusedLabelColor = AppTheme.AccentPrimary,
+        unfocusedLabelColor = AppTheme.TextSecondary,
+        cursorColor = AppTheme.AccentPrimary,
+        focusedTrailingIconColor = AppTheme.TextSecondary,
+        unfocusedTrailingIconColor = AppTheme.TextSecondary
     )
 }
 
@@ -971,7 +937,6 @@ private fun DateTimeChip(
     modifier: Modifier = Modifier,
     contentDescription: String? = null
 ) {
-    val colors = LocalAppThemeColors.current
     Surface(
         onClick = onClick,
         modifier = modifier
@@ -981,9 +946,9 @@ private fun DateTimeChip(
                     Modifier.semantics { this.contentDescription = contentDescription }
                 } else Modifier
             ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = colors.ChipBackground,
-        border = BorderStroke(1.dp, colors.BorderColor)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        color = AppTheme.ChipBackground,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -991,7 +956,7 @@ private fun DateTimeChip(
         ) {
             Text(
                 text = text,
-                color = colors.TextPrimary,
+                color = AppTheme.TextPrimary,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
@@ -1006,13 +971,12 @@ private fun GenderChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val colors = LocalAppThemeColors.current
     Surface(
         onClick = onClick,
         modifier = modifier.height(40.dp),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = if (isSelected) colors.AccentPrimary else colors.ChipBackground,
-        border = BorderStroke(1.dp, if (isSelected) colors.AccentPrimary else colors.BorderColor)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        color = if (isSelected) AppTheme.AccentPrimary else AppTheme.ChipBackground,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, if (isSelected) AppTheme.AccentPrimary else AppTheme.BorderColor)
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -1020,7 +984,7 @@ private fun GenderChip(
         ) {
             Text(
                 text = text,
-                color = if (isSelected) colors.ButtonText else colors.TextPrimary,
+                color = if (isSelected) AppTheme.ButtonText else AppTheme.TextPrimary,
                 fontSize = 12.sp,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                 maxLines = 1,

@@ -85,6 +85,9 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.NityaYogaCalculator
 import com.astro.storm.ui.theme.AppTheme
+import androidx.compose.foundation.BorderStroke
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -266,7 +269,9 @@ private fun CurrentYogaCard(analysis: NityaYogaCalculator.NityaYogaAnalysis) {
         colors = CardDefaults.cardColors(
             containerColor = auspiciousnessColor.copy(alpha = 0.1f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier
@@ -310,7 +315,7 @@ private fun CurrentYogaCard(analysis: NityaYogaCalculator.NityaYogaAnalysis) {
 
             // Auspiciousness badge
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                 color = auspiciousnessColor.copy(alpha = 0.15f)
             ) {
                 Text(
@@ -391,7 +396,9 @@ private fun NityaStatCard(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier
@@ -420,7 +427,9 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -449,7 +458,7 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                 color = AppTheme.AccentGold,
                 trackColor = AppTheme.AccentGold.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
@@ -483,7 +492,9 @@ private fun NityaInterpretationCard(analysis: NityaYogaCalculator.NityaYogaAnaly
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -569,7 +580,9 @@ private fun EffectCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -615,7 +628,9 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -642,7 +657,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                 ) {
                     effects.suitableActivities.forEach { activity ->
                         Surface(
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                             color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                         ) {
                             Text(
@@ -661,7 +676,9 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -688,7 +705,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                 ) {
                     effects.unsuitableActivities.forEach { activity ->
                         Surface(
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                             color = AppTheme.ErrorColor.copy(alpha = 0.15f)
                         ) {
                             Text(
@@ -707,7 +724,9 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -723,7 +742,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                         color = AppTheme.CardBackgroundElevated
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
@@ -732,7 +751,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Surface(
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                                     color = AppTheme.AccentGold.copy(alpha = 0.15f)
                                 ) {
                                     Text(
@@ -782,7 +801,9 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -816,7 +837,9 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -861,7 +884,9 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -936,7 +961,9 @@ private fun YogaListItem(yoga: NityaYogaCalculator.NityaYogaType) {
             .fillMaxWidth()
             .animateContentSize(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier
@@ -986,7 +1013,7 @@ private fun YogaListItem(yoga: NityaYogaCalculator.NityaYogaType) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                         color = color.copy(alpha = 0.15f)
                     ) {
                         Text(

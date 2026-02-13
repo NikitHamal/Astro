@@ -2,6 +2,7 @@ package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -46,6 +47,8 @@ import com.astro.storm.ephemeris.ShadbalaAnalysis
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ephemeris.StrengthRating
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -263,17 +266,21 @@ private fun ShadbalaOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_OVERALL_STRENGTH),
-                    style = MaterialTheme.typography.titleMedium,
+                    stringResource(StringKeyDosha.SHADBALA_OVERALL_STRENGTH).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -293,7 +300,7 @@ private fun ShadbalaOverviewTab(
                         progress = { overallProgress },
                         modifier = Modifier.fillMaxSize(),
                         strokeWidth = 14.dp,
-                        color = getStrengthColor(analysis.overallStrengthScore),
+                        color = AppTheme.AccentGold,
                         strokeCap = StrokeCap.Round
                     )
 
@@ -362,14 +369,18 @@ private fun ShadbalaOverviewTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_CHART_ANALYSIS),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.SHADBALA_CHART_ANALYSIS).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -393,7 +404,7 @@ private fun StrengthCountChip(
 ) {
     Surface(
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -439,7 +450,9 @@ private fun StrongestWeakestCard(
         colors = CardDefaults.cardColors(
             containerColor = accentColor.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -543,7 +556,7 @@ private fun PlanetStrengthRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                 color = getStrengthColor(shadbala.percentageOfRequired),
                 trackColor = AppTheme.ChipBackground
             )
@@ -638,7 +651,9 @@ private fun PlanetShadbalaDetailCard(
             colors = CardDefaults.cardColors(
                 containerColor = accentColor.copy(alpha = 0.08f)
             ),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
@@ -743,7 +758,7 @@ private fun PlanetShadbalaDetailCard(
                 // Rating chip
                 Surface(
                     color = getStrengthColor(shadbala.percentageOfRequired).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -773,14 +788,18 @@ private fun PlanetShadbalaDetailCard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_BREAKDOWN),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.SHADBALA_BREAKDOWN).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -851,14 +870,18 @@ private fun PlanetShadbalaDetailCard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "${stringResource(StringKeyDosha.SHADBALA_STHANA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}",
-                    style = MaterialTheme.typography.titleSmall,
+                    "${stringResource(StringKeyDosha.SHADBALA_STHANA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}".uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -877,14 +900,18 @@ private fun PlanetShadbalaDetailCard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "${stringResource(StringKeyDosha.SHADBALA_KALA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}",
-                    style = MaterialTheme.typography.titleSmall,
+                    "${stringResource(StringKeyDosha.SHADBALA_KALA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}".uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -983,14 +1010,18 @@ private fun ShadbalaComparisonTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_TOTAL_STRENGTH),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.SHADBALA_TOTAL_STRENGTH).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -1015,14 +1046,18 @@ private fun ShadbalaComparisonTab(
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyUIExtra.SHADBALA_SIXFOLD_COMP_TITLE),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyUIExtra.SHADBALA_SIXFOLD_COMP_TITLE).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = 11.sp,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -1149,14 +1184,14 @@ private fun ComparisonBarRow(
             modifier = Modifier
                 .weight(1f)
                 .height(20.dp)
-                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                 .background(AppTheme.ChipBackground)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(progress)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(

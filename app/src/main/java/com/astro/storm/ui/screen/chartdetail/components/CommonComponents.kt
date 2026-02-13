@@ -43,6 +43,7 @@ import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 
 /**
  * Info row displaying a label-value pair.
@@ -154,6 +155,7 @@ fun ConditionChip(
         Text(
             text = label,
             fontSize = 11.sp,
+            fontFamily = SpaceGroteskFamily,
             color = color,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         )
@@ -229,6 +231,7 @@ fun ExpandableSectionCard(
                     Text(
                         text = title,
                         fontSize = 16.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -297,6 +300,7 @@ fun SectionCard(
                     Text(
                         text = title,
                         fontSize = 18.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.TextPrimary
                     )

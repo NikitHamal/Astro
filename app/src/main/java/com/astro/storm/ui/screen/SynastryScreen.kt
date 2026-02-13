@@ -47,6 +47,9 @@ import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ephemeris.AspectCalculator
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import androidx.compose.foundation.BorderStroke
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import kotlinx.coroutines.Dispatchers

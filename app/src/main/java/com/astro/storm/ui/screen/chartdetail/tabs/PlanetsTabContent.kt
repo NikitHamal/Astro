@@ -69,6 +69,7 @@ import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.screen.chartdetail.components.ConditionChip
 import com.astro.storm.ui.screen.chartdetail.components.StyledDivider
 import java.text.DecimalFormat
@@ -289,6 +290,7 @@ private fun SectionHeader(
         Text(
             text = title,
             fontSize = 16.sp,
+            fontFamily = SpaceGroteskFamily,
             fontWeight = FontWeight.SemiBold,
             color = ChartDetailColors.TextPrimary
         )
@@ -449,6 +451,7 @@ private fun PlanetCardHeader(
             Text(
                 text = ChartDetailUtils.formatDegreeInSign(position.longitude),
                 fontSize = 14.sp,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.AccentTeal
             )
@@ -476,6 +479,7 @@ private fun PlanetSymbolBadge(
         Text(
             text = symbol,
             fontSize = (size * 0.43).sp,
+            fontFamily = SpaceGroteskFamily,
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
@@ -500,6 +504,7 @@ private fun NakshatraChip(
             Text(
                 text = "${nakshatra.localizedName()} ${pada.localized()}",
                 fontSize = 11.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = ChartDetailColors.AccentPurple
             )
             Spacer(modifier = Modifier.width(2.dp))
@@ -538,6 +543,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
             Text(
                 text = stringResource(StringKeyAnalysis.PLANETS_SHADBALA),
                 fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = ChartDetailColors.TextSecondary
             )
             Text(
@@ -570,6 +576,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
                 formattedPercentage
             ),
             fontSize = 10.sp,
+            fontFamily = SpaceGroteskFamily,
             color = ChartDetailColors.TextMuted
         )
     }

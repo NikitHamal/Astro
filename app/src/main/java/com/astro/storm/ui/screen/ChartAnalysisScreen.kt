@@ -53,6 +53,8 @@ import com.astro.storm.ui.screen.DeepPredictionsBody
 import com.astro.storm.ui.screen.main.InsightFeature
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
 import com.astro.storm.ui.viewmodel.ChartViewModel
 
 /**
@@ -240,7 +242,9 @@ private fun AnalysisTabBar(
                     Text(
                         text = tab.localizedTitle(),
                         style = MaterialTheme.typography.labelLarge,
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
+                        fontFamily = SpaceGroteskFamily,
+                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                        letterSpacing = 0.5.sp
                     )
                 },
                 leadingIcon = {

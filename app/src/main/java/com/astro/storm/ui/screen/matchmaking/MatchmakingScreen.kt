@@ -53,6 +53,8 @@ import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.MatchmakingCalculator
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ui.theme.AppTheme
+import NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -153,7 +155,7 @@ fun MatchmakingScreen(
                     snackbarData = data,
                     containerColor = AppTheme.CardBackground,
                     contentColor = AppTheme.TextPrimary,
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 )
             }
         },
@@ -351,8 +353,9 @@ private fun EnhancedProfileSelectionSection(
             .fillMaxWidth()
             .padding(16.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -362,6 +365,7 @@ private fun EnhancedProfileSelectionSection(
             ) {
                 Text(
                     stringResource(StringKeyMatch.MATCH_SELECT_PROFILES),
+                    fontFamily = SpaceGroteskFamily,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -432,7 +436,7 @@ private fun EnhancedProfileSelectionSection(
                 Spacer(modifier = Modifier.height(16.dp))
                 Surface(
                     color = AppTheme.InfoColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -484,7 +488,7 @@ private fun EnhancedProfileCard(
         colors = CardDefaults.cardColors(
             containerColor = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         border = if (chart != null) null else androidx.compose.foundation.BorderStroke(
             1.dp, AppTheme.BorderColor.copy(alpha = 0.5f)
         )
@@ -560,8 +564,9 @@ private fun EnhancedCompatibilityScoreCard(
             .fillMaxWidth()
             .padding(16.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Box(
             modifier = Modifier
@@ -617,7 +622,7 @@ private fun EnhancedCompatibilityScoreCard(
 
                 Surface(
                     color = getRatingColor(result.rating).copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
@@ -736,8 +741,8 @@ private fun TabSelector(
         selectedIndex = selectedTab,
         onTabSelected = onTabSelected,
         modifier = Modifier.padding(
-            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
-            vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXS
+            horizontal = NeoVedicTokens.ScreenPadding,
+            vertical = NeoVedicTokens.SpaceXS
         )
     )
 }
@@ -748,15 +753,17 @@ private fun OverviewSection(
     brideChart: VedicChart?,
     groomChart: VedicChart?
 ) {
-    Column(modifier = Modifier.padding(horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+    Column(modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding)) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
-            Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+            Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         Icons.Outlined.BarChart,
@@ -773,7 +780,7 @@ private fun OverviewSection(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
+                Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
 
                 result.gunaAnalyses.forEachIndexed { index, guna ->
                     EnhancedGunaScoreBar(guna)
@@ -834,7 +841,7 @@ private fun EnhancedGunaScoreBar(guna: GunaAnalysis) {
             Surface(
                 color = if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.1f) 
                        else AppTheme.WarningColor.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     "${guna.obtainedPoints.toInt()}${stringResource(StringKeyUIExtra.SLASH)}${guna.maxPoints.toInt()}",
@@ -850,14 +857,14 @@ private fun EnhancedGunaScoreBar(guna: GunaAnalysis) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                 .background(AppTheme.ChipBackground)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(animatedProgress)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                     .background(
                         Brush.horizontalGradient(
                             colors = if (guna.isPositive) 
@@ -879,9 +886,11 @@ private fun ProfileComparisonCard(
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Outlined.Compare,
@@ -898,7 +907,7 @@ private fun ProfileComparisonCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(
@@ -943,9 +952,11 @@ private fun SpecialConsiderationsCard(considerations: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Outlined.Lightbulb,
@@ -998,11 +1009,11 @@ private fun GunaSummaryHeader(result: MatchmakingResult) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
-                vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXS
+                horizontal = NeoVedicTokens.ScreenPadding,
+                vertical = NeoVedicTokens.SpaceXS
             ),
         colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1067,7 +1078,9 @@ private fun AnimatedGunaCard(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1082,7 +1095,7 @@ private fun AnimatedGunaCard(
                     Box(
                         modifier = Modifier
                             .size(44.dp)
-                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                             .background(
                                 if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.12f)
                                 else AppTheme.WarningColor.copy(alpha = 0.12f)
@@ -1119,7 +1132,7 @@ private fun AnimatedGunaCard(
                 Surface(
                     color = if (guna.isPositive) AppTheme.SuccessColor.copy(alpha = 0.12f)
                     else AppTheme.WarningColor.copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         "${guna.obtainedPoints.toInt()}/${guna.maxPoints.toInt()}",
@@ -1190,7 +1203,7 @@ private fun AnimatedGunaCard(
 
             Surface(
                 color = AppTheme.ChipBackground,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
@@ -1213,7 +1226,9 @@ private fun DoshaSection(result: MatchmakingResult) {
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1243,7 +1258,7 @@ private fun DoshaSection(result: MatchmakingResult) {
 
                 Surface(
                     color = getManglikStatusColor(result.manglikCompatibilityLevel).copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Row(
@@ -1290,7 +1305,9 @@ private fun EnhancedManglikPersonCard(
             .fillMaxWidth()
             .padding(vertical = 6.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1333,7 +1350,7 @@ private fun EnhancedManglikPersonCard(
 
                 Surface(
                     color = getManglikSeverityColor(analysis.effectiveDosha).copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         analysis.effectiveDosha.getLocalizedName(language),
@@ -1349,7 +1366,7 @@ private fun EnhancedManglikPersonCard(
                 Spacer(modifier = Modifier.height(14.dp))
                 Surface(
                     color = AppTheme.WarningColor.copy(alpha = 0.08f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
@@ -1375,7 +1392,7 @@ private fun EnhancedManglikPersonCard(
                 Spacer(modifier = Modifier.height(10.dp))
                 Surface(
                     color = AppTheme.SuccessColor.copy(alpha = 0.08f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
@@ -1413,7 +1430,7 @@ private fun NadiDoshaCard(result: MatchmakingResult) {
             containerColor = if (hasNadiDosha) AppTheme.ErrorColor.copy(alpha = 0.06f) 
                            else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1446,7 +1463,7 @@ private fun NadiDoshaCard(result: MatchmakingResult) {
                 Surface(
                     color = if (hasNadiDosha) AppTheme.ErrorColor.copy(alpha = 0.12f) 
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         if (hasNadiDosha) stringResource(StringKeyMatch.MATCH_PRESENT) else stringResource(StringKeyMatch.MATCH_ABSENT),
@@ -1488,7 +1505,7 @@ private fun NadiDoshaCard(result: MatchmakingResult) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Surface(
                         color = AppTheme.InfoColor.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(
@@ -1517,7 +1534,7 @@ private fun BhakootDoshaCard(result: MatchmakingResult) {
             containerColor = if (hasBhakootDosha) AppTheme.WarningColor.copy(alpha = 0.06f) 
                            else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1550,7 +1567,7 @@ private fun BhakootDoshaCard(result: MatchmakingResult) {
                 Surface(
                     color = if (hasBhakootDosha) AppTheme.WarningColor.copy(alpha = 0.12f) 
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         if (hasBhakootDosha) stringResource(StringKeyMatch.MATCH_PRESENT) else stringResource(StringKeyMatch.MATCH_ABSENT),
@@ -1604,7 +1621,9 @@ private fun NakshatraSection(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1684,7 +1703,7 @@ private fun RajjuAnalysisCard(result: MatchmakingResult) {
             containerColor = if (hasRajjuDosha) AppTheme.ErrorColor.copy(alpha = 0.06f) 
                            else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1717,7 +1736,7 @@ private fun RajjuAnalysisCard(result: MatchmakingResult) {
                 Surface(
                     color = if (hasRajjuDosha) AppTheme.ErrorColor.copy(alpha = 0.12f) 
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         if (hasRajjuDosha) stringResource(StringKeyMatch.MATCH_CONFLICT) else stringResource(StringKeyMatch.MATCH_COMPATIBLE),
@@ -1752,7 +1771,7 @@ private fun VedhaAnalysisCard(result: MatchmakingResult) {
             containerColor = if (hasVedha) AppTheme.WarningColor.copy(alpha = 0.06f) 
                            else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1785,7 +1804,7 @@ private fun VedhaAnalysisCard(result: MatchmakingResult) {
                 Surface(
                     color = if (hasVedha) AppTheme.WarningColor.copy(alpha = 0.12f) 
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         if (hasVedha) stringResource(StringKeyMatch.MATCH_PRESENT) else stringResource(StringKeyMatch.MATCH_NONE),
@@ -1819,7 +1838,9 @@ private fun StreeDeerghCard(
             .fillMaxWidth()
             .padding(vertical = 6.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1912,7 +1933,9 @@ private fun EnhancedRemediesSection(result: MatchmakingResult) {
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1953,7 +1976,7 @@ private fun EnhancedRemediesSection(result: MatchmakingResult) {
 
         Surface(
             color = AppTheme.InfoColor.copy(alpha = 0.08f),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
             modifier = Modifier.fillMaxWidth()
         ) {
             Row(
@@ -2070,7 +2093,7 @@ private fun EnhancedProfileSelectorBottomSheet(
                 Box(
                     modifier = Modifier
                         .size(width = 40.dp, height = 4.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                         .background(AppTheme.TextSubtle.copy(alpha = 0.4f))
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -2150,7 +2173,7 @@ private fun EnhancedProfileSelectorBottomSheet(
                         Surface(
                             onClick = { onSelect(chart.id) },
                             color = if (isSelected) accentColor.copy(alpha = 0.1f) else Color.Transparent,
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                             border = if (isSelected) androidx.compose.foundation.BorderStroke(
                                 1.5.dp, accentColor
                             ) else androidx.compose.foundation.BorderStroke(

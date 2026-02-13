@@ -12,7 +12,6 @@ import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -39,6 +38,9 @@ import java.time.format.DateTimeFormatter
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Deep Predictions Screen
@@ -147,18 +149,14 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
             }
             
             item {
-                Surface(
+                Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp)
-                        .shadow(
-                            elevation = 4.dp,
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                            ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.08f),
-                            spotColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
-                        ),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    color = AppTheme.CardBackground
+                        .padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
@@ -216,9 +214,10 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
@@ -251,7 +250,7 @@ private fun DashaTab(dasha: DashaDeepAnalysis) {
                                     Surface(
                                         modifier = Modifier.fillMaxWidth(),
                                         color = AppTheme.CardBackgroundElevated,
-                                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                                     ) {
                                         Row(
                                             modifier = Modifier
@@ -318,9 +317,10 @@ private fun PredictionsOverviewTab(predictions: DeepPredictions) {
             items(predictions.criticalPeriods) { period ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.ErrorColor.copy(alpha = 0.05f)
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.05f)),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
@@ -363,9 +363,10 @@ private fun PredictionsOverviewTab(predictions: DeepPredictions) {
             items(predictions.opportunityWindows) { window ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.AccentPrimary.copy(alpha = 0.05f)
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.05f)),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
@@ -417,9 +418,10 @@ private fun TransitTab(transit: TransitDeepAnalysis) {
             item {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.ErrorColor.copy(alpha = 0.1f)
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.1f)),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(
@@ -760,9 +762,10 @@ private fun RemediesTab(remedies: RemedialProfile) {
             items(remedies.gemstoneRemedies) { gemstone ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         LocalizedParagraphText(
@@ -774,7 +777,7 @@ private fun RemediesTab(remedies: RemedialProfile) {
                             Text(
                             text = stringResource(StringKeyDeepPrediction.ALTERNATIVE_GEMSTONE) + stringResource(StringKeyUIExtra.COLON_SPACE),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = AppTheme.TextMuted
                             )
                             LocalizedParagraphText(
                                 paragraph = gemstone.alternativeGemstone,
@@ -813,9 +816,10 @@ private fun RemediesTab(remedies: RemedialProfile) {
             items(remedies.mantraRemedies) { mantra ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
@@ -860,9 +864,10 @@ private fun RemediesTab(remedies: RemedialProfile) {
             items(remedies.charitableRemedies) { charity ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
@@ -911,9 +916,10 @@ private fun RemediesTab(remedies: RemedialProfile) {
             items(remedies.fastingRemedies) { fast ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
@@ -952,9 +958,10 @@ private fun RemediesTab(remedies: RemedialProfile) {
             items(remedies.yogicRemedies) { yoga ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.CardBackground
-                    )
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                    elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         LocalizedParagraphText(
@@ -979,9 +986,10 @@ private fun RemediesTab(remedies: RemedialProfile) {
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-                )
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = NeoVedicTokens.CardElevation),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(

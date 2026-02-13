@@ -80,6 +80,7 @@ import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
@@ -316,7 +317,7 @@ private fun ChartTypeSelector(
             FilterChip(
                 selected = selectedType == chip.code,
                 onClick = { onTypeSelected(chip.code) },
-                label = { Text(text = stringResource(chip.stringKey), fontSize = 12.sp) },
+                label = { Text(text = stringResource(chip.stringKey), fontSize = 12.sp, fontFamily = SpaceGroteskFamily) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = ChartDetailColors.AccentGold.copy(alpha = 0.2f),
                     selectedLabelColor = ChartDetailColors.AccentGold,
@@ -558,6 +559,7 @@ private fun BirthDetailsCard(
                     Text(
                         text = stringResource(StringKeyAnalysis.CHART_BIRTH_DETAILS),
                         fontSize = 16.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -775,6 +777,7 @@ private fun ChartDetailsCard(
                 Text(
                     text = stringResource(StringKeyAnalysis.CHART_PLANETARY_POSITIONS),
                     fontSize = 16.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
@@ -915,6 +918,7 @@ private fun ClickablePlanetPositionRow(
             Text(
                 text = "${(position.longitude % 30.0).toInt()}°",
                 fontSize = 13.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = ChartDetailColors.TextSecondary,
                 modifier = Modifier.width(40.dp),
                 textAlign = TextAlign.Center
@@ -923,6 +927,7 @@ private fun ClickablePlanetPositionRow(
             Text(
                 text = "H${position.house}",
                 fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = ChartDetailColors.TextMuted,
                 modifier = Modifier.width(30.dp),
                 textAlign = TextAlign.End
@@ -974,6 +979,7 @@ private fun HouseCuspsCard(
                     Text(
                         text = stringResource(StringKeyAnalysis.CHART_HOUSE_CUSPS),
                         fontSize = 16.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -1044,6 +1050,7 @@ private fun HouseCuspItem(
             Text(
                 text = "H$houseNumber",
                 fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Bold,
                 color = ChartDetailColors.AccentGold
             )
@@ -1051,11 +1058,13 @@ private fun HouseCuspItem(
                 Text(
                     text = sign.abbreviation,
                     fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = ChartDetailColors.AccentTeal
                 )
                 Text(
                     text = "${degreeInSign.toInt()}°",
                     fontSize = 11.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = ChartDetailColors.TextMuted
                 )
             }
@@ -1098,6 +1107,7 @@ private fun AstronomicalDataCard(
                     Text(
                         text = stringResource(StringKeyAnalysis.CHART_ASTRONOMICAL_DATA),
                         fontSize = 16.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
