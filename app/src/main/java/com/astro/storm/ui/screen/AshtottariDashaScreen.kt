@@ -307,7 +307,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                     Text(
                         stringResource(StringKeyDosha.ASHTOTTARI_APPLICABILITY),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         color = AppTheme.TextPrimary
                     )
                     Text(
@@ -479,7 +479,7 @@ private fun CurrentPeriodCard(
                         mahadasha.planet.getLocalizedName(language),
                         color = AppTheme.TextPrimary,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
+                        fontSize = 17.sp
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {

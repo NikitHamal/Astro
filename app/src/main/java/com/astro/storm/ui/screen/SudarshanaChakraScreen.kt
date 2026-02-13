@@ -952,7 +952,7 @@ private fun TimelineYearCard(
                     Text(
                         "$age",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
+                        fontSize = 18.sp,
                         color = if (isCurrent) AppTheme.AccentPrimary else AppTheme.TextPrimary
                     )
                     Text(

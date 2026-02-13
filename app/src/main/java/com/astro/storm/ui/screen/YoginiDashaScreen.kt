@@ -426,7 +426,7 @@ private fun CurrentYoginiPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.YOGINI_DASHA_CURRENT),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -980,7 +980,7 @@ private fun YoginiMahadashaCard(
                                         ) {
                                             Text(
                                                 text = mahadasha.yogini.planet.localizedAbbr(),
-                                                fontSize = 18.sp,
+                                                fontSize = 17.sp,
                                                 fontWeight = FontWeight.Bold,
                                                 color = Color.White
                                             )
@@ -1231,7 +1231,7 @@ private fun YoginiDetailCard(
                     ) {
                         Text(
                             text = yogini.planet.localizedAbbr(),
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = yoginiColor
                         )

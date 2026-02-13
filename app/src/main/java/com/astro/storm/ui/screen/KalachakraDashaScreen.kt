@@ -378,7 +378,7 @@ private fun CurrentPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.KALACHAKRA_CURRENT),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -1067,7 +1067,7 @@ private fun DehaJeevaOverviewCard(
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.KALACHAKRA_DEHA_JEEVA_TITLE),
-                fontSize = 18.sp,
+                fontSize = 17.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )

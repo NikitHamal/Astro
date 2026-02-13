@@ -427,7 +427,7 @@ private fun CurrentCharaDashaPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT),
-                        fontSize = 18.sp,
+                        fontSize = 17.sp,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
