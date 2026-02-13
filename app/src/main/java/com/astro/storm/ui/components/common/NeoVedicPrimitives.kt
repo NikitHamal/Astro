@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,13 +54,16 @@ fun NeoVedicPageHeader(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .statusBarsPadding()
                 .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceSM),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top
         ) {
             Row(
-                modifier = Modifier.weight(1f),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = NeoVedicTokens.SpaceSM),
+                verticalAlignment = Alignment.Top
             ) {
                 if (onBack != null) {
                     IconButton(onClick = onBack) {
@@ -71,7 +75,7 @@ fun NeoVedicPageHeader(
                     }
                     Spacer(modifier = Modifier.size(NeoVedicTokens.SpaceXS))
                 }
-                Column {
+                Column(modifier = Modifier.padding(top = NeoVedicTokens.SpaceXXS)) {
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
@@ -83,7 +87,7 @@ fun NeoVedicPageHeader(
                         Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
                         Text(
                             text = subtitle,
-                            style = MaterialTheme.typography.labelLarge,
+                            style = MaterialTheme.typography.labelMedium,
                             color = AppTheme.AccentGold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis

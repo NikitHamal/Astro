@@ -9,15 +9,15 @@ import androidx.compose.ui.unit.dp
 object NeoVedicTokens {
     val SpaceXXS = 4.dp
     val SpaceXS = 8.dp
-    val SpaceSM = 12.dp
-    val SpaceMD = 16.dp
-    val ScreenPadding = 20.dp
-    val SpaceLG = 24.dp
-    val SectionSpacing = 28.dp
-    val CardSpacing = 12.dp
-    val PillGap = 8.dp
-    val PillHorizontalPadding = 4.dp
-    val PillVerticalPadding = 8.dp
+    val SpaceSM = 10.dp
+    val SpaceMD = 14.dp
+    val ScreenPadding = 16.dp
+    val SpaceLG = 20.dp
+    val SectionSpacing = 24.dp
+    val CardSpacing = 10.dp
+    val PillGap = 6.dp
+    val PillHorizontalPadding = 2.dp
+    val PillVerticalPadding = 6.dp
 
     val CardCornerRadius = 2.dp
     val ElementCornerRadius = 2.dp

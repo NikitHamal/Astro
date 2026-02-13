@@ -40,11 +40,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.TrendingDown
 import androidx.compose.material.icons.filled.TrendingFlat
 import androidx.compose.material.icons.filled.TrendingUp
-import androidx.compose.material.icons.outlined.Analytics
-import androidx.compose.material.icons.outlined.CalendarMonth
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Public
-import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -81,7 +76,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -200,26 +194,11 @@ private fun TransitContent(
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     val tabs = listOf(
-        TabInfo(
-            title = stringResource(StringKeyNative.LABEL_OVERVIEW),
-            icon = Icons.Outlined.Dashboard
-        ),
-        TabInfo(
-            title = stringResource(StringKeyAnalysis.VARSHAPHALA_CURRENT),
-            icon = Icons.Outlined.Schedule
-        ),
-        TabInfo(
-            title = stringResource(StringKeyAnalysis.UI_UPCOMING_TRANSITS),
-            icon = Icons.Outlined.CalendarMonth
-        ),
-        TabInfo(
-            title = stringResource(StringKeyAnalysis.ANALYSIS_TAB_PLANETS),
-            icon = Icons.Outlined.Public
-        ),
-        TabInfo(
-            title = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
-            icon = Icons.Outlined.Analytics
-        )
+        TabInfo(title = stringResource(StringKeyNative.LABEL_OVERVIEW)),
+        TabInfo(title = stringResource(StringKeyAnalysis.VARSHAPHALA_CURRENT)),
+        TabInfo(title = stringResource(StringKeyAnalysis.UI_UPCOMING_TRANSITS)),
+        TabInfo(title = stringResource(StringKeyAnalysis.ANALYSIS_TAB_PLANETS)),
+        TabInfo(title = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS))
     )
 
     Column(modifier = modifier) {
@@ -228,7 +207,6 @@ private fun TransitContent(
             tabs = tabs.mapIndexed { index, tab ->
                 TabItem(
                     title = tab.title,
-                    icon = tab.icon,
                     accentColor = if (selectedTabIndex == index) colors.AccentPrimary else Color.Unspecified
                 )
             },
@@ -1797,6 +1775,6 @@ private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.storm.u
     }
 }
 
-private data class TabInfo(val title: String, val icon: ImageVector)
+private data class TabInfo(val title: String)
 
 
