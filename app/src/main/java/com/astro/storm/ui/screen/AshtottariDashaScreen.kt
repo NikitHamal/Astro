@@ -2,6 +2,7 @@ package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -44,9 +45,11 @@ import com.astro.storm.ephemeris.AshtottariMahadasha
 import com.astro.storm.ephemeris.AshtottariAntardasha
 import com.astro.storm.ephemeris.PlanetRelationship
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -215,42 +218,26 @@ private fun AshtottariDashaTopBar(
 
 @Composable
 private fun LoadingContent(paddingValues: PaddingValues) {
-    Box(
+    NeoVedicEmptyState(
+        title = stringResource(StringKeyDosha.SCREEN_CALCULATING),
+        subtitle = "",
+        icon = Icons.Outlined.HourglassEmpty,
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CircularProgressIndicator(color = AppTheme.AccentPrimary)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                stringResource(StringKeyDosha.SCREEN_CALCULATING),
-                color = AppTheme.TextMuted
-            )
-        }
-    }
+            .padding(paddingValues)
+    )
 }
 
 @Composable
 private fun ErrorContent(paddingValues: PaddingValues, message: String) {
-    Box(
+    NeoVedicEmptyState(
+        title = message,
+        subtitle = "",
+        icon = Icons.Outlined.ErrorOutline,
         modifier = Modifier
             .fillMaxSize()
-            .padding(paddingValues),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                Icons.Outlined.ErrorOutline,
-                contentDescription = null,
-                tint = AppTheme.ErrorColor,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(message, color = AppTheme.TextMuted)
-        }
-    }
+            .padding(paddingValues)
+    )
 }
 
 @Composable
@@ -266,8 +253,8 @@ private fun TabSelector(
         selectedIndex = selectedIndex,
         onTabSelected = onTabSelected,
         modifier = Modifier.padding(
-            horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding,
-            vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXS
+            horizontal = NeoVedicTokens.ScreenPadding,
+            vertical = NeoVedicTokens.SpaceXS
         )
     )
 }
@@ -282,8 +269,8 @@ private fun ApplicabilityContent(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
-        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
+        contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
     ) {
         // Applicability Status Card
         item {
@@ -313,19 +300,16 @@ private fun ApplicabilityContent(
 private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
     val language = LocalLanguage.current
     val isApplicable = result.applicability.isApplicable
+    val statusColor = if (isApplicable) AppTheme.SuccessColor else AppTheme.WarningColor
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isApplicable)
-                AppTheme.SuccessColor.copy(alpha = 0.1f)
-            else
-                AppTheme.WarningColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = statusColor.copy(alpha = 0.06f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, statusColor.copy(alpha = 0.2f))
     ) {
         Column(
-            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
+            modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -333,10 +317,10 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                 Icon(
                     imageVector = if (isApplicable) Icons.Filled.CheckCircle else Icons.Outlined.Info,
                     contentDescription = null,
-                    tint = if (isApplicable) AppTheme.SuccessColor else AppTheme.WarningColor,
+                    tint = statusColor,
                     modifier = Modifier.size(32.dp)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(NeoVedicTokens.CardSpacing))
                 Column {
                     Text(
                         stringResource(StringKeyDosha.ASHTOTTARI_APPLICABILITY),
@@ -355,7 +339,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
 
             Text(
                 result.applicability.reason,
@@ -371,13 +355,14 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
 private fun ConditionDetailsCard(result: AshtottariDashaResult) {
     val language = LocalLanguage.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
-            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
+            modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)
         ) {
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_IDEAL_CONDITION),
@@ -387,7 +372,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 lineHeight = 20.sp
             )
 
-            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
 
             // Birth Nakshatra Info
             Row(
@@ -407,7 +392,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXS))
 
             // Starting Lord
             Row(
@@ -427,7 +412,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXS))
 
             // Balance at Birth
             Row(
@@ -461,15 +446,14 @@ private fun CurrentPeriodCard(
     val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
     val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.06f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Column(
-            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
+            modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -480,7 +464,7 @@ private fun CurrentPeriodCard(
                     tint = AppTheme.AccentPrimary,
                     modifier = Modifier.size(24.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
                 Text(
                     stringResource(StringKeyDosha.ASHTOTTARI_CURRENT_PERIOD),
                     fontWeight = FontWeight.Bold,
@@ -489,7 +473,7 @@ private fun CurrentPeriodCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.ScreenPadding))
 
             // Current Mahadasha
             Row(
@@ -497,9 +481,9 @@ private fun CurrentPeriodCard(
                     .fillMaxWidth()
                     .background(
                         AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                        RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                        RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                     )
-                    .padding(16.dp),
+                    .padding(NeoVedicTokens.ScreenPadding),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -532,16 +516,16 @@ private fun CurrentPeriodCard(
 
             // Current Antardasha
             if (antardasha != null) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
                             AppTheme.AccentSecondary.copy(alpha = 0.1f),
-                            RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                            RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                         )
-                        .padding(16.dp),
+                        .padding(NeoVedicTokens.ScreenPadding),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -563,7 +547,7 @@ private fun CurrentPeriodCard(
             }
 
             // Progress Bar
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.ScreenPadding))
 
             val progress = calculateMahadashaProgress(mahadasha, asOf)
             Column {
@@ -583,13 +567,13 @@ private fun CurrentPeriodCard(
                         fontSize = 12.sp
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
                 LinearProgressIndicator(
                     progress = { progress.toFloat() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                     color = AppTheme.AccentPrimary,
                     trackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                 )
@@ -610,11 +594,11 @@ private fun RelationshipChip(relationship: PlanetRelationship) {
 
     Surface(
         color = color.copy(alpha = 0.2f),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
     ) {
         Text(
             text,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = NeoVedicTokens.SpaceXS, vertical = NeoVedicTokens.SpaceXXS),
             color = color,
             fontSize = 11.sp,
             fontWeight = FontWeight.Medium
@@ -626,13 +610,14 @@ private fun RelationshipChip(relationship: PlanetRelationship) {
 private fun SystemInfoCard() {
     val language = LocalLanguage.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
-            modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
+            modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)
         ) {
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_SUBTITLE),
@@ -641,7 +626,7 @@ private fun SystemInfoCard() {
                 color = AppTheme.TextPrimary
             )
 
-            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
 
             // Planet periods
             val periods = listOf(
@@ -659,7 +644,7 @@ private fun SystemInfoCard() {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp),
+                        .padding(vertical = NeoVedicTokens.SpaceXXS),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     row.forEach { period ->
@@ -676,11 +661,11 @@ private fun SystemInfoCard() {
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
 
             HorizontalDivider(color = AppTheme.DividerColor)
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
 
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_TOTAL_YEARS),
@@ -689,7 +674,7 @@ private fun SystemInfoCard() {
                 fontSize = 14.sp
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
 
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_PLANETS_USED),
@@ -711,8 +696,8 @@ private fun TimelineContent(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
     ) {
         itemsIndexed(result.mahadashas) { index, mahadasha ->
             MahadashaTimelineCard(
@@ -741,140 +726,177 @@ private fun MahadashaTimelineCard(
         AshtottariDashaCalculator.calculateAntardashas(mahadasha, asOf)
     }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onExpandChange() },
-        colors = CardDefaults.cardColors(
-            containerColor = if (isCurrent)
-                AppTheme.AccentPrimary.copy(alpha = 0.15f)
-            else
-                AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+    if (isCurrent) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onExpandChange() },
+            color = AppTheme.AccentPrimary.copy(alpha = 0.06f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Planet indicator
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(
-                                getPlanetColor(mahadasha.planet).copy(alpha = 0.2f),
-                                CircleShape
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
+            MahadashaTimelineCardContent(
+                mahadasha = mahadasha,
+                isExpanded = isExpanded,
+                isCurrent = true,
+                asOf = asOf,
+                dateFormatter = dateFormatter,
+                antardashas = antardashas
+            )
+        }
+    } else {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onExpandChange() },
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        ) {
+            MahadashaTimelineCardContent(
+                mahadasha = mahadasha,
+                isExpanded = isExpanded,
+                isCurrent = false,
+                asOf = asOf,
+                dateFormatter = dateFormatter,
+                antardashas = antardashas
+            )
+        }
+    }
+}
+
+@Composable
+private fun MahadashaTimelineCardContent(
+    mahadasha: AshtottariMahadasha,
+    isExpanded: Boolean,
+    isCurrent: Boolean,
+    asOf: LocalDateTime,
+    dateFormatter: DateTimeFormatter,
+    antardashas: List<AshtottariAntardasha>
+) {
+    val language = LocalLanguage.current
+
+    Column(
+        modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                // Planet indicator
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(
+                            getPlanetColor(mahadasha.planet).copy(alpha = 0.2f),
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        mahadasha.planet.abbreviation,
+                        color = getPlanetColor(mahadasha.planet),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(NeoVedicTokens.CardSpacing))
+
+                Column {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
-                            mahadasha.planet.abbreviation,
-                            color = getPlanetColor(mahadasha.planet),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp
+                            mahadasha.planet.getLocalizedName(language),
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 16.sp,
+                            color = AppTheme.TextPrimary
                         )
-                    }
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    Column {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                mahadasha.planet.getLocalizedName(language),
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 16.sp,
-                                color = AppTheme.TextPrimary
-                            )
-                            if (isCurrent) {
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Surface(
-                                    color = AppTheme.SuccessColor.copy(alpha = 0.2f),
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-                                ) {
-                                    Text(
-                                        stringResource(StringKeyDosha.CURRENT_LABEL),
-                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                        color = AppTheme.SuccessColor,
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Medium
-                                    )
-                                }
+                        if (isCurrent) {
+                            Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
+                            Surface(
+                                color = AppTheme.SuccessColor.copy(alpha = 0.2f),
+                                shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
+                            ) {
+                                Text(
+                                    stringResource(StringKeyDosha.CURRENT_LABEL),
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    color = AppTheme.SuccessColor,
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
                             }
                         }
-                        Text(
-                            "${String.format("%.1f", mahadasha.actualYears)} ${stringResource(StringKey.YEARS)}",
-                            color = AppTheme.TextMuted,
-                            fontSize = 12.sp
-                        )
                     }
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(horizontalAlignment = Alignment.End) {
-                        Text(
-                            mahadasha.startDate.format(dateFormatter),
-                            color = AppTheme.TextMuted,
-                            fontSize = 11.sp
-                        )
-                        Text(
-                            mahadasha.endDate.format(dateFormatter),
-                            color = AppTheme.TextMuted,
-                            fontSize = 11.sp
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Icon(
-                        if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                        contentDescription = null,
-                        tint = AppTheme.TextMuted
+                    Text(
+                        "${String.format("%.1f", mahadasha.actualYears)} ${stringResource(StringKey.YEARS)}",
+                        color = AppTheme.TextMuted,
+                        fontSize = 12.sp
                     )
                 }
             }
 
-            // Progress if current
-            if (isCurrent) {
-                Spacer(modifier = Modifier.height(8.dp))
-                val progress = calculateMahadashaProgress(mahadasha, asOf)
-                LinearProgressIndicator(
-                    progress = { progress.toFloat() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(4.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
-                    color = AppTheme.AccentPrimary,
-                    trackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        mahadasha.startDate.format(dateFormatter),
+                        color = AppTheme.TextMuted,
+                        fontSize = 11.sp
+                    )
+                    Text(
+                        mahadasha.endDate.format(dateFormatter),
+                        color = AppTheme.TextMuted,
+                        fontSize = 11.sp
+                    )
+                }
+                Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
+                Icon(
+                    if (isExpanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
                 )
             }
+        }
 
-            // Expanded content - Antardashas
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically() + fadeIn(),
-                exit = shrinkVertically() + fadeOut()
+        // Progress if current
+        if (isCurrent) {
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXS))
+            val progress = calculateMahadashaProgress(mahadasha, asOf)
+            LinearProgressIndicator(
+                progress = { progress.toFloat() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(4.dp)
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
+                color = AppTheme.AccentPrimary,
+                trackColor = AppTheme.AccentPrimary.copy(alpha = 0.2f)
+            )
+        }
+
+        // Expanded content - Antardashas
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
+            Column(
+                modifier = Modifier.padding(top = NeoVedicTokens.CardSpacing)
             ) {
-                Column(
-                    modifier = Modifier.padding(top = 12.dp)
-                ) {
-                    HorizontalDivider(color = AppTheme.DividerColor)
-                    Spacer(modifier = Modifier.height(12.dp))
+                HorizontalDivider(color = AppTheme.DividerColor)
+                Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
 
-                    Text(
-                        stringResource(StringKey.DASHA_ANTARDASHA),
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 13.sp,
-                        color = AppTheme.TextSecondary
-                    )
+                Text(
+                    stringResource(StringKey.DASHA_ANTARDASHA),
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 13.sp,
+                    color = AppTheme.TextSecondary
+                )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXS))
 
-                    antardashas.forEach { antardasha ->
-                        AntardashaRow(antardasha)
-                    }
+                antardashas.forEach { antardasha ->
+                    AntardashaRow(antardasha)
                 }
             }
         }
@@ -889,15 +911,15 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = NeoVedicTokens.SpaceXXS)
             .background(
                 if (antardasha.isCurrentlyRunning)
                     AppTheme.AccentPrimary.copy(alpha = 0.1f)
                 else
                     Color.Transparent,
-                RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             )
-            .padding(horizontal = 8.dp, vertical = 6.dp),
+            .padding(horizontal = NeoVedicTokens.SpaceXS, vertical = 6.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -932,36 +954,37 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
-        verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
+        contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
     ) {
         // Key Themes
         if (interpretation.keyThemes.isNotEmpty()) {
             item {
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    color = AppTheme.CardBackground,
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
-                    Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+                    Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                         Text(
                             stringResource(StringKeyDosha.KEY_THEMES),
                             fontWeight = FontWeight.SemiBold,
                             fontSize = 16.sp,
                             color = AppTheme.TextPrimary
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
                         LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
                         ) {
                             items(interpretation.keyThemes) { theme ->
                                 Surface(
                                     color = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
                                 ) {
                                     Text(
                                         theme,
-                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                        modifier = Modifier.padding(horizontal = NeoVedicTokens.CardSpacing, vertical = 6.dp),
                                         color = AppTheme.AccentPrimary,
                                         fontSize = 13.sp,
                                         fontWeight = FontWeight.Medium
@@ -976,19 +999,20 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
 
         // Combined Effects
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
-                Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+                Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_COMBINED_ANALYSIS),
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
                         color = AppTheme.TextPrimary
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
                     Text(
                         interpretation.combinedEffects,
                         color = AppTheme.TextSecondary,
@@ -1036,12 +1060,13 @@ private fun EffectsCard(
     effects: List<String>,
     icon: ImageVector
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     icon,
@@ -1049,7 +1074,7 @@ private fun EffectsCard(
                     tint = AppTheme.AccentPrimary,
                     modifier = Modifier.size(20.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
                 Text(
                     title,
                     fontWeight = FontWeight.SemiBold,
@@ -1057,12 +1082,12 @@ private fun EffectsCard(
                     color = AppTheme.TextPrimary
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
             effects.forEach { effect ->
                 Row(
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = NeoVedicTokens.SpaceXXS)
                 ) {
-                    Text("•", color = AppTheme.AccentPrimary, modifier = Modifier.padding(end = 8.dp))
+                    Text("•", color = AppTheme.AccentPrimary, modifier = Modifier.padding(end = NeoVedicTokens.SpaceXS))
                     Text(
                         effect,
                         color = AppTheme.TextSecondary,
@@ -1079,14 +1104,13 @@ private fun EffectsCard(
 private fun RecommendationsCard(recommendations: List<String>) {
     val language = LocalLanguage.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.SuccessColor.copy(alpha = 0.06f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
     ) {
-        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     Icons.Filled.Lightbulb,
@@ -1094,7 +1118,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     tint = AppTheme.SuccessColor,
                     modifier = Modifier.size(20.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
                 Text(
                     stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
                     fontWeight = FontWeight.SemiBold,
@@ -1102,16 +1126,16 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     color = AppTheme.TextPrimary
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.CardSpacing))
             recommendations.forEachIndexed { index, rec ->
                 Row(
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = NeoVedicTokens.SpaceXXS)
                 ) {
                     Text(
                         "${index + 1}.",
                         color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(end = 8.dp)
+                        modifier = Modifier.padding(end = NeoVedicTokens.SpaceXS)
                     )
                     Text(
                         rec,
@@ -1199,6 +1223,3 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
-
-
-

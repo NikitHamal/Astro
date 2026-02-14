@@ -49,9 +49,12 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ephemeris.HoroscopeCalculator
+import androidx.compose.foundation.BorderStroke
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -147,15 +150,23 @@ fun PredictionsScreen(
                         .padding(paddingValues)
                 ) {
                     // Tab Row
-                    val tabItems = PredictionsTab.entries.map { tab ->
-                        TabItem(title = tab.getLocalizedTitle(language), accentColor = AppTheme.AccentPrimary)
+                    val tabItems = PredictionsTab.entries.mapIndexed { index, tab ->
+                        TabItem(
+                            title = tab.getLocalizedTitle(language),
+                            accentColor = when (index) {
+                                0 -> AppTheme.AccentGold
+                                1 -> AppTheme.AccentTeal
+                                2 -> AppTheme.AccentPrimary
+                                else -> AppTheme.AccentPrimary
+                            }
+                        )
                     }
-                    
+
                     ModernPillTabRow(
                         tabs = tabItems,
                         selectedIndex = selectedTab.ordinal,
                         onTabSelected = { selectedTab = PredictionsTab.entries[it] },
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
                     )
                     
                     HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f))
