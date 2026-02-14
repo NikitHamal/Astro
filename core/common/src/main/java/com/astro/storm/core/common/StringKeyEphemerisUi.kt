@@ -8,6 +8,8 @@ enum class StringKeyEphemerisUi(override val en: String, override val ne: String
     TRANSIT_PERIOD_FALLBACK("Transit period", "गोचर अवधि"),
     INTENSITY_LABEL("Intensity %d/5", "तीव्रता %d/5"),
     MOTION_REVERSED("Motion Reversed", "उल्टो गति"),
+    MOTION_DIRECT("Direct", "सिधा गति"),
+    DEGREE_MINUTE_LABEL("%1\$ddeg %2\$dm", "%1\$d° %2\$d मि"),
 
     ASPECTING_TEMPLATE("%1\$s aspecting %2\$s", "%1\$s को %2\$s मा दृष्टि"),
     ORB_LABEL("Orb %d°", "अंश दूरी %d°"),

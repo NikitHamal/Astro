@@ -376,14 +376,15 @@ private fun TransitPositionsMode(
                         )
                         // Sign and degree
                         Text(
-                            text = "${position.sign.getLocalizedName(language)} ${formatDegree(position.longitude)}",
+                            text = "${position.sign.getLocalizedName(language)} ${formatDegree(position.longitude, language)}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
                         // Nakshatra if available
                         position.nakshatra?.let { nakshatra ->
+                            val padaText = StringResources.get(StringKeyMatch.MATCH_PADA_NUMBER, language, position.nakshatraPada)
                             Text(
-                                text = "${nakshatra.getLocalizedName(language)} (Pada ${position.nakshatraPada})",
+                                text = "${nakshatra.getLocalizedName(language)} ($padaText)",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted.copy(alpha = 0.7f)
                             )
@@ -392,7 +393,11 @@ private fun TransitPositionsMode(
 
                     // Motion status pill
                     NeoVedicStatusPill(
-                        text = if (position.isRetrograde) "RETROGRADE" else "DIRECT",
+                        text = if (position.isRetrograde) {
+                            StringResources.get(StringKey.PLANET_RETROGRADE, language).uppercase()
+                        } else {
+                            StringResources.get(StringKeyEphemerisUi.MOTION_DIRECT, language).uppercase()
+                        },
                         textColor = if (position.isRetrograde) AppTheme.ErrorColor else AppTheme.SuccessColor,
                         containerColor = if (position.isRetrograde) AppTheme.ErrorColor.copy(alpha = 0.12f) else AppTheme.SuccessColor.copy(alpha = 0.12f)
                     )
@@ -404,7 +409,7 @@ private fun TransitPositionsMode(
 
 /**
  * Aspects mode showing transit aspects with glyphs and strength indicators.
- * Enhanced with aspect type glyphs (â˜Œ, â˜, â–³, â–¡, âš¹).
+ * Enhanced with aspect type glyphs (conjunction/opposition/trine/square/sextile).
  */
 @Composable
 private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
@@ -431,12 +436,11 @@ private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
             items(topAspects) { aspect ->
                 val strengthPercent = (aspect.strength * 100).roundToInt()
                 val aspectName = StringResources.get(aspect.aspectKey, language)
+                val aspectKeyName = aspect.aspectKey.en.lowercase(Locale.ROOT)
 
                 // Determine aspect type and color based on aspect nature
-                val isChallenging = aspectName.contains("square", ignoreCase = true) ||
-                        aspectName.contains("opposition", ignoreCase = true)
-                val isHarmonious = aspectName.contains("trine", ignoreCase = true) ||
-                        aspectName.contains("sextile", ignoreCase = true)
+                val isChallenging = aspectKeyName.contains("square") || aspectKeyName.contains("opposition")
+                val isHarmonious = aspectKeyName.contains("trine") || aspectKeyName.contains("sextile")
 
                 val aspectColor = when {
                     isChallenging -> AppTheme.WarningColor
@@ -448,12 +452,12 @@ private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
 
                 // Get aspect glyph
                 val aspectGlyph = when {
-                    aspectName.contains("conjunction", ignoreCase = true) -> AspectGlyphs.CONJUNCTION
-                    aspectName.contains("opposition", ignoreCase = true) -> AspectGlyphs.OPPOSITION
-                    aspectName.contains("trine", ignoreCase = true) -> AspectGlyphs.TRINE
-                    aspectName.contains("square", ignoreCase = true) -> AspectGlyphs.SQUARE
-                    aspectName.contains("sextile", ignoreCase = true) -> AspectGlyphs.SEXTILE
-                    else -> "â†’"
+                    aspectKeyName.contains("conjunction") -> AspectGlyphs.CONJUNCTION
+                    aspectKeyName.contains("opposition") -> AspectGlyphs.OPPOSITION
+                    aspectKeyName.contains("trine") -> AspectGlyphs.TRINE
+                    aspectKeyName.contains("square") -> AspectGlyphs.SQUARE
+                    aspectKeyName.contains("sextile") -> AspectGlyphs.SEXTILE
+                    else -> "\u2192"
                 }
 
                 val transitPlanetGlyph = PlanetGlyphs.fromPlanetName(aspect.transitingPlanet.getLocalizedName(language))
@@ -520,7 +524,7 @@ private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = "Orb: ${aspect.orb.roundToInt()}Â°",
+                                text = StringResources.get(StringKeyEphemerisUi.ORB_LABEL, language, aspect.orb.roundToInt()),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -540,11 +544,11 @@ private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
     }
 }
 
-private fun formatDegree(longitude: Double): String {
+private fun formatDegree(longitude: Double, language: Language): String {
     val degInSign = ((longitude % 30.0) + 30.0) % 30.0
     val deg = degInSign.toInt()
     val min = ((degInSign - deg) * 60).toInt()
-    return "${deg}deg ${min}m"
+    return StringResources.get(StringKeyEphemerisUi.DEGREE_MINUTE_LABEL, language, deg, min)
 }
 
 private fun resolveZoneId(timezone: String?): ZoneId {

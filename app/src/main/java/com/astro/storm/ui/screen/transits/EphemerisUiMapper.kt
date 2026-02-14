@@ -9,6 +9,7 @@ import com.astro.storm.ephemeris.TransitAnalyzer
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlin.math.roundToInt
 
 enum class EventSeverity {
@@ -164,15 +165,16 @@ fun mapToEphemerisEvents(
         .forEachIndexed { index, aspect ->
             val eventDateTime = deterministicOffset(anchor, index, 73)
             val aspectName = StringResources.get(aspect.aspectKey, language)
+            val aspectKeyName = aspect.aspectKey.en.lowercase(Locale.ROOT)
 
             // Determine aspect glyph based on aspect type
             val aspectGlyph = when {
-                aspectName.contains("conjunction", ignoreCase = true) -> AspectGlyphs.CONJUNCTION
-                aspectName.contains("opposition", ignoreCase = true) -> AspectGlyphs.OPPOSITION
-                aspectName.contains("trine", ignoreCase = true) -> AspectGlyphs.TRINE
-                aspectName.contains("square", ignoreCase = true) -> AspectGlyphs.SQUARE
-                aspectName.contains("sextile", ignoreCase = true) -> AspectGlyphs.SEXTILE
-                aspectName.contains("quincunx", ignoreCase = true) -> AspectGlyphs.QUINCUNX
+                aspectKeyName.contains("conjunction") -> AspectGlyphs.CONJUNCTION
+                aspectKeyName.contains("opposition") -> AspectGlyphs.OPPOSITION
+                aspectKeyName.contains("trine") -> AspectGlyphs.TRINE
+                aspectKeyName.contains("square") -> AspectGlyphs.SQUARE
+                aspectKeyName.contains("sextile") -> AspectGlyphs.SEXTILE
+                aspectKeyName.contains("quincunx") -> AspectGlyphs.QUINCUNX
                 else -> "→"
             }
 
@@ -186,8 +188,8 @@ fun mapToEphemerisEvents(
                 aspect.natalPlanet.getLocalizedName(language)
             )
             val severity = when {
-                aspectName.contains("square", ignoreCase = true) || aspectName.contains("opposition", ignoreCase = true) -> EventSeverity.CHALLENGING
-                aspectName.contains("trine", ignoreCase = true) || aspectName.contains("sextile", ignoreCase = true) -> EventSeverity.FAVORABLE
+                aspectKeyName.contains("square") || aspectKeyName.contains("opposition") -> EventSeverity.CHALLENGING
+                aspectKeyName.contains("trine") || aspectKeyName.contains("sextile") -> EventSeverity.FAVORABLE
                 aspect.strength >= 0.7 -> EventSeverity.FAVORABLE
                 else -> EventSeverity.NEUTRAL
             }
