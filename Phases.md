@@ -158,6 +158,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 ## Known Gaps
 - Screen-level typography literal cleanup is complete; remaining literal sizes are outside `ui/screen` and will be handled in shared/component cleanup.
 - Full localization enforcement for all revamped strings is still pending.
+  - Ephemeris flow localization is now migrated to centralized keys (`StringKeyEphemerisUi`).
 - Legacy `ScreenTopBar` has been removed; `NeoVedicPageHeader` is now the only active screen header path.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
 
@@ -179,3 +180,6 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - v2.3 (2026-02-14)
   - Removed legacy `ScreenTopBar` from `CommonComponents.kt`.
   - Completed header-system consolidation on `NeoVedicPageHeader`.
+- v2.4 (2026-02-14)
+  - Added `StringKeyEphemerisUi` and migrated hardcoded Ephemeris labels/status text to localized keys.
+  - Localized day-offset badges and date-header locale behavior in `TransitsScreenRedesigned.kt`.

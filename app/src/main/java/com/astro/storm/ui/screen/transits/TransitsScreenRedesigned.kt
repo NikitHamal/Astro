@@ -43,7 +43,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyEphemerisUi
 import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.Planet
@@ -66,6 +68,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -117,6 +120,7 @@ fun TransitsScreenRedesigned(
         containerColor = colors.ScreenBackground,
         topBar = {
             EphemerisTopBar(
+                language = language,
                 onBack = onBack
             )
         }
@@ -191,11 +195,11 @@ private fun EphemerisTimelineMode(
             // Date header with TODAY/TOMORROW badge
             item(key = "header_$date") {
                 NeoVedicEphemerisDateHeader(
-                    dateLabel = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")).uppercase(),
+                    dateLabel = date.format(dateHeaderFormatter(language)).uppercase(),
                     badgeText = when (dayOffset) {
                         0 -> StringResources.get(StringKey.PERIOD_TODAY, language).uppercase()
                         1 -> StringResources.get(StringKey.PERIOD_TOMORROW, language).uppercase()
-                        else -> "+${dayOffset}D"
+                        else -> StringResources.get(StringKeyEphemerisUi.DAY_OFFSET_LABEL, language, dayOffset)
                     },
                     badgeColor = AppTheme.AccentGold
                 )
@@ -255,6 +259,7 @@ private fun EphemerisTimelineMode(
 
 @Composable
 private fun EphemerisTopBar(
+    language: Language,
     onBack: () -> Unit
 ) {
     Surface(
@@ -272,7 +277,7 @@ private fun EphemerisTopBar(
             IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = null,
+                    contentDescription = StringResources.get(StringKeyUICommon.BACK, language),
                     tint = AppTheme.TextPrimary
                 )
             }
@@ -283,7 +288,7 @@ private fun EphemerisTopBar(
                     .padding(horizontal = NeoVedicTokens.SpaceSM)
             ) {
                 Text(
-                    text = "EPHEMERIS",
+                    text = StringResources.get(StringKeyEphemerisUi.HEADER_TITLE, language).uppercase(),
                     style = MaterialTheme.typography.displaySmall.copy(
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S26,
                         letterSpacing = 0.4.sp
@@ -293,7 +298,7 @@ private fun EphemerisTopBar(
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
-                    text = "LIVE CELESTIAL MOVEMENTS",
+                    text = StringResources.get(StringKeyEphemerisUi.HEADER_SUBTITLE, language).uppercase(),
                     style = MaterialTheme.typography.labelLarge.copy(
                         fontWeight = FontWeight.Medium,
                         letterSpacing = 2.sp
@@ -305,6 +310,11 @@ private fun EphemerisTopBar(
             }
         }
     }
+}
+
+private fun dateHeaderFormatter(language: Language): DateTimeFormatter {
+    val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+    return DateTimeFormatter.ofPattern("MMMM d, yyyy", locale)
 }
 
 

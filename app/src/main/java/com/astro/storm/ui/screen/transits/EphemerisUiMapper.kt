@@ -1,6 +1,8 @@
 package com.astro.storm.ui.screen.transits
 
 import com.astro.storm.core.common.Language
+import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyEphemerisUi
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.ephemeris.TransitAnalyzer
@@ -128,9 +130,9 @@ fun mapToEphemerisEvents(
 
         val planetNames = period.planets.map { it.getLocalizedName(language) }
         val title = if (isRetrograde && planetNames.isNotEmpty()) {
-            "${planetNames.first()} Retrograde"
+            "${planetNames.first()} ${StringResources.get(StringKey.PLANET_RETROGRADE, language)}"
         } else {
-            desc.ifBlank { "Transit period" }
+            desc.ifBlank { StringResources.get(StringKeyEphemerisUi.TRANSIT_PERIOD_FALLBACK, language) }
         }
 
         val glyphs = period.planets.take(2).map {
@@ -140,13 +142,15 @@ fun mapToEphemerisEvents(
         events += EphemerisEventUi(
             date = period.startDate.toLocalDate(),
             timeLabel = period.startDate.format(timeFormat),
-            primaryGlyphs = glyphs.ifEmpty { listOf(GlyphToken("TR")) },
+            primaryGlyphs = glyphs.ifEmpty {
+                listOf(GlyphToken(StringResources.get(StringKeyEphemerisUi.FALLBACK_TRANSIT_TOKEN, language)))
+            },
             aspectGlyph = null,
             title = title,
-            subtitle = "Intensity ${period.intensity}/5",
+            subtitle = StringResources.get(StringKeyEphemerisUi.INTENSITY_LABEL, language, period.intensity),
             positionText = null,
             statusType = if (isRetrograde) TransitStatusType.RETROGRADE else TransitStatusType.NONE,
-            statusText = if (isRetrograde) "MOTION REVERSED" else null,
+            statusText = if (isRetrograde) StringResources.get(StringKeyEphemerisUi.MOTION_REVERSED, language) else null,
             severity = severity,
             eventKind = if (isRetrograde) EventKind.RETROGRADE else EventKind.PERIOD,
             isHighlighted = severity == EventSeverity.ALERT
@@ -175,7 +179,12 @@ fun mapToEphemerisEvents(
             val transitPlanetGlyph = PlanetGlyphs.fromPlanetName(aspect.transitingPlanet.getLocalizedName(language))
             val natalPlanetGlyph = PlanetGlyphs.fromPlanetName(aspect.natalPlanet.getLocalizedName(language))
 
-            val title = "${aspect.transitingPlanet.getLocalizedName(language)} aspecting ${aspect.natalPlanet.getLocalizedName(language)}"
+            val title = StringResources.get(
+                StringKeyEphemerisUi.ASPECTING_TEMPLATE,
+                language,
+                aspect.transitingPlanet.getLocalizedName(language),
+                aspect.natalPlanet.getLocalizedName(language)
+            )
             val severity = when {
                 aspectName.contains("square", ignoreCase = true) || aspectName.contains("opposition", ignoreCase = true) -> EventSeverity.CHALLENGING
                 aspectName.contains("trine", ignoreCase = true) || aspectName.contains("sextile", ignoreCase = true) -> EventSeverity.FAVORABLE
@@ -193,7 +202,7 @@ fun mapToEphemerisEvents(
                 aspectGlyph = aspectGlyph,
                 title = title,
                 subtitle = aspectName.uppercase(),
-                positionText = "ORB ${aspect.orb.roundToInt()}°",
+                positionText = StringResources.get(StringKeyEphemerisUi.ORB_LABEL, language, aspect.orb.roundToInt()),
                 statusType = TransitStatusType.NONE,
                 statusText = "${(aspect.strength * 100).roundToInt()}%",
                 severity = severity,
@@ -212,7 +221,7 @@ fun mapToEphemerisEvents(
             val signName = gochara.transitSign.getLocalizedName(language)
             val planetGlyph = PlanetGlyphs.fromPlanetName(planetName)
 
-            val title = "$planetName in $signName"
+            val title = StringResources.get(StringKeyEphemerisUi.IN_TEMPLATE, language, planetName, signName)
             val effectLabel = StringResources.get(gochara.effect.key, language)
 
             // Determine dignity status
@@ -224,9 +233,9 @@ fun mapToEphemerisEvents(
             }
 
             val statusText = when (statusType) {
-                TransitStatusType.EXALTED -> "EXALTED"
-                TransitStatusType.DEBILITATED -> "DEBILITATED"
-                TransitStatusType.OWN_SIGN -> "SVAKSHETRA"
+                TransitStatusType.EXALTED -> StringResources.get(StringKeyEphemerisUi.STATUS_EXALTED, language)
+                TransitStatusType.DEBILITATED -> StringResources.get(StringKeyEphemerisUi.STATUS_DEBILITATED, language)
+                TransitStatusType.OWN_SIGN -> StringResources.get(StringKeyEphemerisUi.STATUS_OWN_SIGN, language)
                 else -> null
             }
 
