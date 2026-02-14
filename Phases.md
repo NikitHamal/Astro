@@ -163,6 +163,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
   - Wave A localization cleanup is partially advanced (Muhurta day/night labels now localized; several visible mojibake glyphs normalized in Native/Varshaphala screens).
   - Predictions screen period/date cards now use locale-aware date formatters; remaining Wave A string hardening in `PrashnaScreen.kt` is pending.
   - Prashna defaults are now localization-safe; remaining Wave A work is broader string/UI harmonization across other complex screens.
+  - Remedies screen visible bullet separators are now normalized to shared localized bullet tokens.
 - Legacy `ScreenTopBar` has been removed; `NeoVedicPageHeader` is now the only active screen header path.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
 
@@ -208,3 +209,6 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - Timezone fallback now uses `ZoneId.systemDefault().id`.
     - Location fallback now uses localized key `PRASHNA_CURRENT_LOCATION`.
   - Added `PRASHNA_CURRENT_LOCATION` to `StringKeyAnalysis` for localized fallback location labeling.
+- v2.9 (2026-02-14)
+  - Replaced remaining mojibake bullet/separator literals in `RemediesScreen.kt` with shared localized bullet token (`StringKeyUICommon.BULLET`).
+  - Kept screen-level typography/nav gates intact while improving visible text consistency in remedies UI.

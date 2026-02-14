@@ -45,6 +45,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyRemedy
+import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.localization.stringResource
@@ -868,7 +869,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
 
             recommendations.forEach { rec ->
                 Row(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text("â€¢", color = AppTheme.InfoColor)
+                    Text(stringResource(StringKeyUICommon.BULLET), color = AppTheme.InfoColor)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         rec,
@@ -1114,7 +1115,7 @@ private fun RemedyCard(
                                 color = AppTheme.TextMuted
                             )
                             remedy.planet?.let { planet ->
-                                Text(" â€¢ ", color = AppTheme.TextMuted)
+                                Text(" ${stringResource(StringKeyUICommon.BULLET)} ", color = AppTheme.TextMuted)
                                 Text(
                                     planet.displayName,
                                     style = MaterialTheme.typography.labelSmall,
@@ -1447,7 +1448,7 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
-                            Text(" â€¢ ", color = AppTheme.TextMuted)
+                            Text(" ${stringResource(StringKeyUICommon.BULLET)} ", color = AppTheme.TextMuted)
                             Text(
                                 stringResource(StringKeyAnalysis.DIALOG_HOUSE) + " ${analysis.housePosition}",
                                 style = MaterialTheme.typography.bodySmall,
