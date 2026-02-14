@@ -137,7 +137,9 @@ private fun getDashaSizes(level: DashaLevel): DashaSizes = when (level) {
 @Composable
 fun DashasTabContent(
     timeline: DashaCalculator.DashaTimeline,
-    scrollToTodayEvent: SharedFlow<Unit>? = null
+    scrollToTodayEvent: SharedFlow<Unit>? = null,
+    includeMicroLevels: Boolean = true,
+    showInfoFooter: Boolean = true
 ) {
     val listState = rememberLazyListState()
     val asOf = remember(timeline) { timeline.nowInTimelineZone() }
@@ -174,7 +176,11 @@ fun DashasTabContent(
         verticalArrangement = Arrangement.spacedBy(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "current_period_header") {
-            CurrentPeriodCard(timeline = timeline, asOf = asOf)
+            CurrentPeriodCard(
+                timeline = timeline,
+                asOf = asOf,
+                includeMicroLevels = includeMicroLevels
+            )
         }
 
         if (upcomingSandhis.isNotEmpty()) {
@@ -218,11 +224,14 @@ fun DashasTabContent(
             )
         }
 
-        item(key = "dasha_info_footer") {
-            DashaInfoCard(
-                isExpanded = isDashaInfoExpanded,
-                onToggleExpand = { isDashaInfoExpanded = it }
-            )
+        if (showInfoFooter) {
+            item(key = "dasha_info_footer") {
+                DashaInfoCard(
+                    isExpanded = isDashaInfoExpanded,
+                    onToggleExpand = { isDashaInfoExpanded = it },
+                    includeMicroLevels = includeMicroLevels
+                )
+            }
         }
 
         item(key = "bottom_spacer") {
@@ -234,7 +243,8 @@ fun DashasTabContent(
 @Composable
 private fun CurrentPeriodCard(
     timeline: DashaCalculator.DashaTimeline,
-    asOf: LocalDateTime
+    asOf: LocalDateTime,
+    includeMicroLevels: Boolean
 ) {
     val currentMahadasha = timeline.currentMahadasha
     val currentAntardasha = timeline.currentAntardasha
@@ -344,40 +354,42 @@ private fun CurrentPeriodCard(
                         )
                     }
 
-                    currentSookshmadasha?.let { sd ->
-                        DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_SOOKSHMADASHA),
-                            planet = sd.planet,
-                            startDate = sd.startDate.toLocalDate(),
-                            endDate = sd.endDate.toLocalDate(),
-                            progress = calculateProgress(sd.startDate.toLocalDate(), sd.endDate.toLocalDate(), asOfDate),
-                            remainingText = "",
-                            level = DashaLevel.SOOKSHMADASHA
-                        )
-                    }
+                    if (includeMicroLevels) {
+                        currentSookshmadasha?.let { sd ->
+                            DashaPeriodRow(
+                                label = stringResource(StringKeyMatch.DASHA_LEVEL_SOOKSHMADASHA),
+                                planet = sd.planet,
+                                startDate = sd.startDate.toLocalDate(),
+                                endDate = sd.endDate.toLocalDate(),
+                                progress = calculateProgress(sd.startDate.toLocalDate(), sd.endDate.toLocalDate(), asOfDate),
+                                remainingText = "",
+                                level = DashaLevel.SOOKSHMADASHA
+                            )
+                        }
 
-                    currentPranadasha?.let { prd ->
-                        DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_PRANADASHA),
-                            planet = prd.planet,
-                            startDate = prd.startDate.toLocalDate(),
-                            endDate = prd.endDate.toLocalDate(),
-                            progress = calculateProgress(prd.startDate.toLocalDate(), prd.endDate.toLocalDate(), asOfDate),
-                            remainingText = formatPranadashaDuration(prd.durationSeconds / 60),
-                            level = DashaLevel.PRANADASHA
-                        )
-                    }
+                        currentPranadasha?.let { prd ->
+                            DashaPeriodRow(
+                                label = stringResource(StringKeyMatch.DASHA_LEVEL_PRANADASHA),
+                                planet = prd.planet,
+                                startDate = prd.startDate.toLocalDate(),
+                                endDate = prd.endDate.toLocalDate(),
+                                progress = calculateProgress(prd.startDate.toLocalDate(), prd.endDate.toLocalDate(), asOfDate),
+                                remainingText = formatPranadashaDuration(prd.durationSeconds / 60),
+                                level = DashaLevel.PRANADASHA
+                            )
+                        }
 
-                    currentDehadasha?.let { dd ->
-                        DashaPeriodRow(
-                            label = stringResource(StringKeyMatch.DASHA_LEVEL_DEHADASHA),
-                            planet = dd.planet,
-                            startDate = dd.startDate.toLocalDate(),
-                            endDate = dd.endDate.toLocalDate(),
-                            progress = calculateProgress(dd.startDate.toLocalDate(), dd.endDate.toLocalDate(), asOfDate),
-                            remainingText = formatDehadashaDuration(dd.durationSeconds / 60),
-                            level = DashaLevel.DEHADASHA
-                        )
+                        currentDehadasha?.let { dd ->
+                            DashaPeriodRow(
+                                label = stringResource(StringKeyMatch.DASHA_LEVEL_DEHADASHA),
+                                planet = dd.planet,
+                                startDate = dd.startDate.toLocalDate(),
+                                endDate = dd.endDate.toLocalDate(),
+                                progress = calculateProgress(dd.startDate.toLocalDate(), dd.endDate.toLocalDate(), asOfDate),
+                                remainingText = formatDehadashaDuration(dd.durationSeconds / 60),
+                                level = DashaLevel.DEHADASHA
+                            )
+                        }
                     }
                 }
 
@@ -1407,7 +1419,8 @@ private fun AntardashaRow(
 @Composable
 private fun DashaInfoCard(
     isExpanded: Boolean,
-    onToggleExpand: (Boolean) -> Unit
+    onToggleExpand: (Boolean) -> Unit,
+    includeMicroLevels: Boolean
 ) {
     val rotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
@@ -1544,7 +1557,7 @@ private fun DashaInfoCard(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    DashaLevelsInfo()
+                    DashaLevelsInfo(includeMicroLevels = includeMicroLevels)
 
                     Spacer(modifier = Modifier.height(14.dp))
 
@@ -1561,7 +1574,7 @@ private fun DashaInfoCard(
 }
 
 @Composable
-private fun DashaLevelsInfo() {
+private fun DashaLevelsInfo(includeMicroLevels: Boolean) {
     val language = LocalLanguage.current
 
     Surface(
@@ -1577,14 +1590,16 @@ private fun DashaLevelsInfo() {
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
-            val levels = listOf(
-                stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA) to stringResource(StringKeyMatch.DASHA_MAJOR_PERIOD_YEARS),
-                "${stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA)} (${stringResource(StringKey.DASHA_BHUKTI)})" to stringResource(StringKeyMatch.DASHA_SUB_PERIOD_MONTHS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_PRATYANTARDASHA) to stringResource(StringKeyMatch.DASHA_SUB_SUB_PERIOD_WEEKS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_SOOKSHMADASHA) to stringResource(StringKeyMatch.DASHA_SUBTLE_PERIOD_DAYS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_PRANADASHA) to stringResource(StringKeyMatch.DASHA_BREATH_PERIOD_HOURS),
-                stringResource(StringKeyMatch.DASHA_LEVEL_DEHADASHA) to stringResource(StringKeyMatch.DASHA_BODY_PERIOD_MINUTES)
-            )
+            val levels = buildList {
+                add(stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA) to stringResource(StringKeyMatch.DASHA_MAJOR_PERIOD_YEARS))
+                add("${stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA)} (${stringResource(StringKey.DASHA_BHUKTI)})" to stringResource(StringKeyMatch.DASHA_SUB_PERIOD_MONTHS))
+                add(stringResource(StringKeyMatch.DASHA_LEVEL_PRATYANTARDASHA) to stringResource(StringKeyMatch.DASHA_SUB_SUB_PERIOD_WEEKS))
+                if (includeMicroLevels) {
+                    add(stringResource(StringKeyMatch.DASHA_LEVEL_SOOKSHMADASHA) to stringResource(StringKeyMatch.DASHA_SUBTLE_PERIOD_DAYS))
+                    add(stringResource(StringKeyMatch.DASHA_LEVEL_PRANADASHA) to stringResource(StringKeyMatch.DASHA_BREATH_PERIOD_HOURS))
+                    add(stringResource(StringKeyMatch.DASHA_LEVEL_DEHADASHA) to stringResource(StringKeyMatch.DASHA_BODY_PERIOD_MINUTES))
+                }
+            }
 
             levels.forEachIndexed { index, (name, description) ->
                 Row(

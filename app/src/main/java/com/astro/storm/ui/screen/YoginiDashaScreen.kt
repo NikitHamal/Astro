@@ -240,8 +240,12 @@ private fun YoginiDashaTopBar(
         currentPeriodInfo.hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
         currentPeriodInfo.mahadasha != null -> buildString {
             append(currentPeriodInfo.mahadasha)
-            currentPeriodInfo.antardasha?.let { append(StringResources.get(StringKeyUIExtra.ARROW, language) + it) }
-            append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language) + chartName)
+            currentPeriodInfo.antardasha?.let {
+                append(" -> ")
+                append(it)
+            }
+            append(" | ")
+            append(chartName)
         }
         else -> chartName
     }
@@ -1768,6 +1772,7 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
 
 
 

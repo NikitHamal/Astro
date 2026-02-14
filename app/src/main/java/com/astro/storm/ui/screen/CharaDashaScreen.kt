@@ -93,8 +93,6 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.StringResources
-import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
@@ -252,8 +250,12 @@ private fun CharaDashaTopBar(
         hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
         currentMahadasha != null -> buildString {
             append(currentMahadasha.sign.getLocalizedName(language))
-            currentAntardasha?.let { append(StringResources.get(StringKeyUIExtra.ARROW, language) + it.sign.getLocalizedName(language)) }
-            append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language) + chartName)
+            currentAntardasha?.let {
+                append(" -> ")
+                append(it.sign.getLocalizedName(language))
+            }
+            append(" | ")
+            append(chartName)
         }
         else -> chartName
     }
@@ -1434,6 +1436,7 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
         }
     }
 }
+
 
 
 

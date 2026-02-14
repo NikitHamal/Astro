@@ -81,8 +81,6 @@ import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyAdvanced
-import com.astro.storm.core.common.StringResources
-import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -192,7 +190,7 @@ private fun ShoolaDashaTopBar(
         result != null -> buildString {
             result.currentMahadasha?.let { md ->
                 append(md.sign.getLocalizedName(language))
-                append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language))
+                append(" | ")
             }
             append(chartName)
         }
@@ -1443,6 +1441,7 @@ private fun getSeverityColor(severity: HealthSeverity): Color {
         HealthSeverity.NONE -> AppTheme.TextMuted
     }
 }
+
 
 
 

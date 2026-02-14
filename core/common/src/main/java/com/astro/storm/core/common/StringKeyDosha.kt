@@ -2138,8 +2138,10 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     // ============================================
     DASHA_VIMSOTTARI("Vimsottari", "विंशोत्तरी"),
     DASHA_VIMSOTTARI_NAME("Vimsottari", "विंशोत्तरी"),
+    DASHA_TITLE_VIMSOTTARI("Vimsottari Dasha", "विंशोत्तरी दशा"),
     DASHA_VIMSOTTARI_DESC("Most widely used Nakshatra-based planetary period system", "सबैभन्दा बढी प्रयोग हुने नक्षत्र-आधारित ग्रह अवधि प्रणाली"),
     DASHA_VIMSOTTARI_DURATION("120 years", "१२० वर्ष"),
+    VIMSOTTARI_ABOUT("About Vimsottari Dasha", "विंशोत्तरी दशाको बारेमा"),
 
     DASHA_YOGINI("Yogini", "योगिनी"),
     DASHA_YOGINI_DESC("Feminine energy-based system, especially for female charts", "स्त्री ऊर्जा-आधारित प्रणाली, विशेष गरी महिला कुण्डलीको लागि"),

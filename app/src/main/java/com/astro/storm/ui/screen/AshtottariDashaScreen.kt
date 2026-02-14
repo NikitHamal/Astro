@@ -32,8 +32,6 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
-import com.astro.storm.core.common.StringResources
-import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.Planet
@@ -196,9 +194,10 @@ private fun AshtottariDashaTopBar(
             result.currentMahadasha?.let { md ->
                 append(md.planet.getLocalizedName(language))
                 result.currentAntardasha?.let { ad ->
-                    append(StringResources.get(StringKeyUIExtra.ARROW, language) + ad.antardashaLord.getLocalizedName(language))
+                    append(" -> ")
+                    append(ad.antardashaLord.getLocalizedName(language))
                 }
-                append(StringResources.get(StringKeyUIExtra.BULLET_SPACE, language))
+                append(" | ")
             }
             append(chartName)
         }
@@ -1199,6 +1198,7 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
 
 
 
