@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -15,7 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -103,7 +103,7 @@ fun MrityuBhagaScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_SUBTITLE),
                 onBack = onBack,
@@ -237,7 +237,7 @@ private fun TabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedIndex == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -547,7 +547,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.actualDegree)}°",
+                            "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.actualDegree)}Â°",
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -581,7 +581,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    "${String.format("%.1f", result.mrityuBhagaDegree)}°",
+                    "${String.format("%.1f", result.mrityuBhagaDegree)}Â°",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
@@ -597,7 +597,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    "${String.format("%.2f", result.distanceFromMrityuBhaga)}°",
+                    "${String.format("%.2f", result.distanceFromMrityuBhaga)}Â°",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
                     color = severityColor
@@ -623,7 +623,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("•", color = AppTheme.TextMuted, fontSize = 12.sp)
+                                Text("â€¢", color = AppTheme.TextMuted, fontSize = 12.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -749,7 +749,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                 color = AppTheme.TextMuted
             )
             Text(
-                stringResource(StringKeyDosha.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "°"),
+                stringResource(StringKeyDosha.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "Â°"),
                 fontSize = 12.sp,
                 color = severityColor
             )
@@ -772,7 +772,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("•", color = AppTheme.TextMuted, fontSize = 12.sp)
+                                Text("â€¢", color = AppTheme.TextMuted, fontSize = 12.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -816,7 +816,7 @@ private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Languag
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.degree)}°",
+                    "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.degree)}Â°",
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -1065,7 +1065,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                                             modifier = Modifier.padding(vertical = 3.dp),
                                             verticalAlignment = Alignment.Top
                                         ) {
-                                            Text("•", color = AppTheme.AccentPrimary, fontSize = 14.sp)
+                                            Text("â€¢", color = AppTheme.AccentPrimary, fontSize = 14.sp)
                                             Spacer(modifier = Modifier.width(8.dp))
                                             Text(
                                                 remedy,
@@ -1124,7 +1124,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                                     modifier = Modifier.padding(vertical = 3.dp),
                                     verticalAlignment = Alignment.Top
                                 ) {
-                                    Text("•", color = AppTheme.AccentTeal, fontSize = 14.sp)
+                                    Text("â€¢", color = AppTheme.AccentTeal, fontSize = 14.sp)
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         remedy,
@@ -1200,6 +1200,8 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         }
     }
 }
+
+
 
 
 

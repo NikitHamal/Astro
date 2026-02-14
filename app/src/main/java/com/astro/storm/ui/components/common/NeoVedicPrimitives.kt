@@ -31,6 +31,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.ColumnScope
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
 
@@ -41,6 +43,8 @@ fun NeoVedicPageHeader(
     onBack: (() -> Unit)? = null,
     actionIcon: ImageVector? = null,
     onAction: (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+    subtitleContent: @Composable (ColumnScope.() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -83,7 +87,9 @@ fun NeoVedicPageHeader(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    if (!subtitle.isNullOrBlank()) {
+                    if (subtitleContent != null) {
+                        subtitleContent()
+                    } else if (!subtitle.isNullOrBlank()) {
                         Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
                         Text(
                             text = subtitle,
@@ -111,6 +117,8 @@ fun NeoVedicPageHeader(
                     }
                 }
             }
+
+            actions()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -49,7 +49,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -131,7 +131,7 @@ fun SahamScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyShadbala.SAHAM_TITLE),
                 subtitle = stringResource(StringKeyShadbala.SAHAM_SUBTITLE),
                 onBack = onBack,
@@ -193,7 +193,7 @@ private fun SahamTabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -480,7 +480,7 @@ private fun SahamInsightsCard(insights: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("•", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                    Text("â€¢", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
                         style = MaterialTheme.typography.bodySmall,
@@ -524,7 +524,7 @@ private fun SahamRecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("→", color = AppTheme.AccentTeal, fontWeight = FontWeight.Bold)
+                    Text("â†’", color = AppTheme.AccentTeal, fontWeight = FontWeight.Bold)
                     Text(
                         text = recommendation,
                         style = MaterialTheme.typography.bodySmall,
@@ -739,7 +739,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            text = "${String.format("%.2f", saham.degreeInSign)}°",
+                            text = "${String.format("%.2f", saham.degreeInSign)}Â°",
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextSecondary
@@ -758,7 +758,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("✓", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
+                                Text("âœ“", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                                 Text(
                                     text = stringResource(StringKeySaham.ACTIVATED),
                                     style = MaterialTheme.typography.labelSmall,
@@ -932,6 +932,8 @@ private fun SahamInfoDialog(onDismiss: () -> Unit) {
         }
     }
 }
+
+
 
 
 

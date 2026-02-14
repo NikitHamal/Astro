@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -34,7 +34,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -182,7 +182,7 @@ private fun BirthChartTopBar(
     chartName: String,
     onBack: () -> Unit
 ) {
-    ScreenTopBar(
+    NeoVedicPageHeader(
                 title = stringResource(StringKey.FEATURE_BIRTH_CHART),
                 subtitle = chartName,
                 onBack = onBack
@@ -201,7 +201,7 @@ fun EmptyChartScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = title,
                 onBack = {
                             hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -260,6 +260,7 @@ fun EmptyChartScreen(
         }
     }
 }
+
 
 
 

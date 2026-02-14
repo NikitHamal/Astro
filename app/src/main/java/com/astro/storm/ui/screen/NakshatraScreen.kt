@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -16,7 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,7 +95,7 @@ fun NakshatraScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.NAKSHATRA_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
@@ -752,7 +752,7 @@ private fun NakshatraTabSelector(
     ) {
         items(tabs.size) { index ->
             val isSelected = selectedTab == index
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = isSelected,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -1083,7 +1083,7 @@ private fun PlanetaryNakshatraCard(
                     Spacer(modifier = Modifier.height(6.dp))
                     NakshatraDetailRow(
                         label = stringResource(StringKeyDosha.NAKSHATRA_DEGREE_IN),
-                        value = String.format("%.2f°", planetary.details.degreeInNakshatra)
+                        value = String.format("%.2fÂ°", planetary.details.degreeInNakshatra)
                     )
                 }
             }
@@ -1440,6 +1440,8 @@ private fun NakshatraInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 
 
 

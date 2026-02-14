@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.tabs
+﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -313,7 +313,7 @@ private fun ChartTypeSelector(
 ) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items(chartTypeChips) { chip ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedType == chip.code,
                 onClick = { onTypeSelected(chip.code) },
                 label = { Text(text = stringResource(chip.stringKey), fontSize = 12.sp) },
@@ -838,7 +838,7 @@ private fun AscendantRow(chart: VedicChart) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "${ascDegree.toInt()}°",
+                    text = "${ascDegree.toInt()}Â°",
                     fontSize = 13.sp,
                     color = ChartDetailColors.TextSecondary
                 )
@@ -913,7 +913,7 @@ private fun ClickablePlanetPositionRow(
             )
 
             Text(
-                text = "${(position.longitude % 30.0).toInt()}°",
+                text = "${(position.longitude % 30.0).toInt()}Â°",
                 fontSize = 13.sp,
                 color = ChartDetailColors.TextSecondary,
                 modifier = Modifier.width(40.dp),
@@ -1054,7 +1054,7 @@ private fun HouseCuspItem(
                     color = ChartDetailColors.AccentTeal
                 )
                 Text(
-                    text = "${degreeInSign.toInt()}°",
+                    text = "${degreeInSign.toInt()}Â°",
                     fontSize = 11.sp,
                     color = ChartDetailColors.TextMuted
                 )
@@ -1147,6 +1147,7 @@ private fun InfoRow(label: String, value: String) {
         )
     }
 }
+
 
 
 

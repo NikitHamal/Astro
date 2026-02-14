@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -55,7 +55,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -133,7 +133,7 @@ fun PanchMahapurushaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.PANCHA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.PANCHA_SUBTITLE),
                 onBack = onBack,
@@ -204,7 +204,7 @@ private fun TabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -441,7 +441,7 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "•",
+                            text = "â€¢",
                             color = AppTheme.AccentGold,
                             fontWeight = FontWeight.Bold
                         )
@@ -515,7 +515,7 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("✨", fontSize = 12.sp)
+                        Text("âœ¨", fontSize = 12.sp)
                         Text(
                             text = synergy,
                             style = MaterialTheme.typography.bodySmall,
@@ -1119,6 +1119,8 @@ private fun getYogaColor(type: PanchMahapurushaYogaCalculator.MahapurushaYogaTyp
         PanchMahapurushaYogaCalculator.MahapurushaYogaType.SASHA -> AppTheme.PlanetSaturn
     }
 }
+
+
 
 
 

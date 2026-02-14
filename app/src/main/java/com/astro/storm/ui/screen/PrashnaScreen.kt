@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -88,7 +88,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -213,7 +213,7 @@ fun PrashnaScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
                 onBack = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -515,7 +515,7 @@ private fun CategorySelectorCard(
             ) {
                 items(categories, key = { it.name }) { category ->
                     val icon = getCategoryIcon(category)
-                    FilterChip(
+                    com.astro.storm.ui.components.common.NeoVedicChoicePill(
                         selected = category == selectedCategory,
                         onClick = { onCategoryChange(category) },
                         label = {
@@ -1887,6 +1887,8 @@ private fun getMoonStrengthColor(strength: MoonStrength): Color {
         MoonStrength.AFFLICTED -> com.astro.storm.ui.theme.MarsRed
     }
 }
+
+
 
 
 

@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -16,7 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -96,7 +96,7 @@ fun AshtamangalaPrashnaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyAshtamangala.SCREEN_TITLE),
                 subtitle = stringResource(StringKeyAshtamangala.SCREEN_SUBTITLE),
                 onBack = onBack,
@@ -871,7 +871,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
                 )
                 reading.interpretation.positiveFactors.forEach { factor ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("✓", color = AppTheme.SuccessColor, fontSize = 12.sp)
+                        Text("âœ“", color = AppTheme.SuccessColor, fontSize = 12.sp)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -891,7 +891,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
                 )
                 reading.interpretation.negativeFactors.forEach { factor ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("⚠", color = AppTheme.WarningColor, fontSize = 12.sp)
+                        Text("âš ", color = AppTheme.WarningColor, fontSize = 12.sp)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -1120,7 +1120,7 @@ private fun AnalysisTab(reading: AshtamangalaReading) {
                         }
                         reading.interpretation.cautions.forEach { caution ->
                             Text(
-                                text = "• $caution",
+                                text = "â€¢ $caution",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -1175,7 +1175,7 @@ private fun ChartValidationCard(validation: ChartValidation) {
             if (validation.conflictAreas.isNotEmpty()) {
                 validation.conflictAreas.forEach { conflict ->
                     Text(
-                        text = "⚠ $conflict",
+                        text = "âš  $conflict",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.WarningColor
                     )
@@ -1609,6 +1609,7 @@ private val Icons.Outlined.Temple: ImageVector
 
 private val Icons.Outlined.TempleHindu: ImageVector
     get() = Icons.Outlined.Church // Fallback
+
 
 
 

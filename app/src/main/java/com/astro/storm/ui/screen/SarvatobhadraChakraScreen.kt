@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -53,7 +53,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -131,7 +131,7 @@ fun SarvatobhadraChakraScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyShadbala.SARVATOBHADRA_TITLE),
                 subtitle = stringResource(StringKeyShadbala.SARVATOBHADRA_SUBTITLE),
                 onBack = onBack,
@@ -195,7 +195,7 @@ private fun SarvatobhadraTabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -282,7 +282,7 @@ private fun BirthNakshatraCard(analysis: SarvatobhadraChakraCalculator.Sarvatobh
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "Pada ${analysis.birthPada} • ${analysis.birthNakshatra.ruler.displayName}",
+                    text = "Pada ${analysis.birthPada} â€¢ ${analysis.birthNakshatra.ruler.displayName}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -438,7 +438,7 @@ private fun KeyInsightsCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhadr
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "•",
+                        text = "â€¢",
                         color = AppTheme.AccentGold,
                         fontWeight = FontWeight.Bold
                     )
@@ -478,7 +478,7 @@ private fun SarvatobhadraChakraGridSection(analysis: SarvatobhadraChakraCalculat
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = "9×9 Chakra Grid",
+                        text = "9Ã—9 Chakra Grid",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -800,7 +800,7 @@ private fun VedhaCard(vedha: SarvatobhadraChakraCalculator.NakshatraVedha) {
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${vedha.vedhaType.displayName} • ${vedha.effect.displayName}",
+                            text = "${vedha.vedhaType.displayName} â€¢ ${vedha.effect.displayName}",
                             style = MaterialTheme.typography.labelSmall,
                             color = effectColor
                         )
@@ -881,7 +881,7 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
                     val letters = listOf('A', 'E', 'I', 'O', 'U', 'K', 'R', 'S', 'M', 'N')
                     items(letters.size) { index ->
                         val letter = letters[index]
-                        FilterChip(
+                        com.astro.storm.ui.components.common.NeoVedicChoicePill(
                             selected = inputLetter == letter.toString(),
                             onClick = {
                                 inputLetter = letter.toString()
@@ -1043,6 +1043,8 @@ private fun SarvatobhadraInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 
 
 

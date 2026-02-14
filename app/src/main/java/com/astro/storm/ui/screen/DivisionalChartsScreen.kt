@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -14,7 +14,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,7 +108,7 @@ fun DivisionalChartsScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.DIVISIONAL_CHARTS_TITLE),
                 subtitle = vargaTypes[selectedTab].getLocalizedDisplayName(language),
                 onBack = onBack,
@@ -351,7 +351,7 @@ private fun TabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedIndex == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -585,7 +585,7 @@ private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) 
             if (indicator.sources.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 indicator.sources.forEach { source ->
-                    Text("• $source", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $source", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -642,7 +642,7 @@ private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: Language) {
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         analysis.shortJourneyIndicators.forEach { indicator ->
-                            Text("• $indicator", fontSize = 13.sp, color = AppTheme.TextSecondary)
+                            Text("â€¢ $indicator", fontSize = 13.sp, color = AppTheme.TextSecondary)
                         }
                     }
                 }
@@ -785,7 +785,7 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
                 HorizontalDivider(color = AppTheme.DividerColor)
                 Spacer(modifier = Modifier.height(12.dp))
                 indicators.siblingWelfareIndicators.forEach { welfare ->
-                    Text("• $welfare", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $welfare", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1076,7 +1076,7 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("${stringResource(StringKeyDosha.NAVAMSA_AREAS_ATTENTION)}:", fontSize = 12.sp, color = AppTheme.WarningColor)
                 indicators.riskFactors.forEach { factor ->
-                    Text("• $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
             }
 
@@ -1084,7 +1084,7 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("${stringResource(StringKeyDosha.NAVAMSA_PROTECTIVE_FACTORS)}:", fontSize = 12.sp, color = AppTheme.SuccessColor)
                 indicators.mitigatingFactors.forEach { factor ->
-                    Text("• $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1276,7 +1276,7 @@ private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
             if (analysis.favorableFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 analysis.favorableFactors.forEach { factor ->
-                    Text("• $factor", fontSize = 12.sp, color = AppTheme.SuccessColor)
+                    Text("â€¢ $factor", fontSize = 12.sp, color = AppTheme.SuccessColor)
                 }
             }
 
@@ -1346,7 +1346,7 @@ private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         analysis.ancestralPropertyIndicators.forEach { indicator ->
-                            Text("• $indicator", fontSize = 13.sp, color = AppTheme.TextSecondary)
+                            Text("â€¢ $indicator", fontSize = 13.sp, color = AppTheme.TextSecondary)
                         }
                     }
                 }
@@ -1430,7 +1430,7 @@ private fun InheritanceCard(analysis: InheritanceAnalysis) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("${stringResource(StringKeyDosha.DWADASAMSA_SOURCES)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
                 analysis.sources.forEach { source ->
-                    Text("• $source", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $source", fontSize = 12.sp, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1525,6 +1525,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
         }
     }
 }
+
+
 
 
 

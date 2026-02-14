@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -488,7 +488,7 @@ private fun SummaryStatisticsCard(
                                 color = colors.TextMuted
                             )
                             Text(
-                                text = "${next.planet.getLocalizedName(language)} → ${next.toSign.getLocalizedName(language)}",
+                                text = "${next.planet.getLocalizedName(language)} â†’ ${next.toSign.getLocalizedName(language)}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = colors.TextPrimary
@@ -712,7 +712,7 @@ private fun SortOptionsRowSS(
             )
 
             options.forEach { (criteria, label) ->
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = currentSort == criteria,
                     onClick = { onSortSelected(criteria) },
                     label = { Text(label, fontSize = 12.sp) },
@@ -993,7 +993,7 @@ private fun UpcomingTransitsTab(
                     color = colors.TextPrimary
                 )
 
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = showOnlySignificant,
                     onClick = { showOnlySignificant = !showOnlySignificant },
                     label = {
@@ -1093,7 +1093,7 @@ private fun UpcomingTransitCard(
                         }
                     }
                     Text(
-                        text = "${transit.fromSign.getLocalizedName(language)} → ${transit.toSign.getLocalizedName(language)}",
+                        text = "${transit.fromSign.getLocalizedName(language)} â†’ ${transit.toSign.getLocalizedName(language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.TextMuted
                     )
@@ -1156,7 +1156,7 @@ private fun PlanetsTab(
                     val isSelected = selectedPlanet == planet
                     val details = planetDetails[planet]
 
-                    FilterChip(
+                    com.astro.storm.ui.components.common.NeoVedicChoicePill(
                         selected = isSelected,
                         onClick = {
                             selectedPlanet = if (isSelected) null else planet
@@ -1400,7 +1400,7 @@ private fun PlanetDetailCardSS(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "→ ${transit.toSign.getLocalizedName(language)}",
+                                    text = "â†’ ${transit.toSign.getLocalizedName(language)}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = colors.TextPrimary
                                 )
@@ -1780,5 +1780,6 @@ private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.storm.u
 }
 
 private data class TabInfo(val title: String)
+
 
 

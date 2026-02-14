@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -17,7 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -128,7 +128,7 @@ fun BhriguBinduScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.BHRIGU_BINDU_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
@@ -215,7 +215,7 @@ private fun BhriguBinduTabSelector(
     ) {
         items(tabs.size) { index ->
             val isSelected = selectedTab == index
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = isSelected,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -279,7 +279,7 @@ private fun BhriguBinduOverviewTab(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            String.format("%.2f°", analysis.bhriguBindu),
+                            String.format("%.2fÂ°", analysis.bhriguBindu),
                             style = MaterialTheme.typography.headlineLarge,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.AccentGold
@@ -311,7 +311,7 @@ private fun BhriguBinduOverviewTab(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "(${String.format("%.2f°", analysis.rahuLongitude)} + ${String.format("%.2f°", analysis.moonLongitude)}) / 2",
+                            "(${String.format("%.2fÂ°", analysis.rahuLongitude)} + ${String.format("%.2fÂ°", analysis.moonLongitude)}) / 2",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -1246,7 +1246,7 @@ private fun TransitCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            String.format("%.2f° from BB", transit.distanceFromBB),
+                            String.format("%.2fÂ° from BB", transit.distanceFromBB),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1635,6 +1635,8 @@ private fun getRemedyPriorityColor(priority: RemedyPriority): Color = when (prio
     RemedyPriority.RECOMMENDED -> AppTheme.AccentGold
     RemedyPriority.OPTIONAL -> AppTheme.AccentTeal
 }
+
+
 
 
 

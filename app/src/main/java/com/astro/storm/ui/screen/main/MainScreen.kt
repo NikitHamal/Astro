@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.main
+﻿package com.astro.storm.ui.screen.main
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -490,6 +489,7 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
+
 
 
 

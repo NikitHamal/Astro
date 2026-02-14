@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -57,7 +57,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -136,7 +136,7 @@ fun NityaYogaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.NITYA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.NITYA_SUBTITLE),
                 onBack = onBack,
@@ -207,7 +207,7 @@ private fun NityaTabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -468,7 +468,7 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
                         color = AppTheme.TextSecondary
                     )
                     Text(
-                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}° ${stringResource(StringKeyDosha.NITYA_REMAINING)}",
+                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}Â° ${stringResource(StringKeyDosha.NITYA_REMAINING)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -843,7 +843,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "•",
+                            text = "â€¢",
                             color = AppTheme.SuccessColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -888,7 +888,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "•",
+                            text = "â€¢",
                             color = AppTheme.ErrorColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -1132,6 +1132,8 @@ private fun getAuspiciousnessColor(auspiciousness: NityaYogaCalculator.Auspiciou
         NityaYogaCalculator.Auspiciousness.HIGHLY_INAUSPICIOUS -> AppTheme.ErrorColor
     }
 }
+
+
 
 
 

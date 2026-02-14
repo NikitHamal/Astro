@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -17,7 +17,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -140,7 +140,7 @@ fun SynastryScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.SYNASTRY_TITLE),
                 subtitle = stringResource(StringKeyDosha.SYNASTRY_SUBTITLE),
                 onBack = onBack,
@@ -298,13 +298,13 @@ enum class SynastryAspectType(
     val symbol: String,
     val maxOrb: Double
 ) {
-    CONJUNCTION("Conjunction", 0.0, AspectNature.MAJOR, "☌", 10.0),
-    OPPOSITION("Opposition", 180.0, AspectNature.CHALLENGING, "☍", 10.0),
-    TRINE("Trine", 120.0, AspectNature.HARMONIOUS, "△", 8.0),
-    SQUARE("Square", 90.0, AspectNature.CHALLENGING, "□", 8.0),
-    SEXTILE("Sextile", 60.0, AspectNature.HARMONIOUS, "⚹", 6.0),
-    QUINCUNX("Quincunx", 150.0, AspectNature.MINOR, "⚻", 3.0),
-    SEMI_SEXTILE("Semi-Sextile", 30.0, AspectNature.MINOR, "⚺", 3.0);
+    CONJUNCTION("Conjunction", 0.0, AspectNature.MAJOR, "â˜Œ", 10.0),
+    OPPOSITION("Opposition", 180.0, AspectNature.CHALLENGING, "â˜", 10.0),
+    TRINE("Trine", 120.0, AspectNature.HARMONIOUS, "â–³", 8.0),
+    SQUARE("Square", 90.0, AspectNature.CHALLENGING, "â–¡", 8.0),
+    SEXTILE("Sextile", 60.0, AspectNature.HARMONIOUS, "âš¹", 6.0),
+    QUINCUNX("Quincunx", 150.0, AspectNature.MINOR, "âš»", 3.0),
+    SEMI_SEXTILE("Semi-Sextile", 30.0, AspectNature.MINOR, "âšº", 3.0);
 
     fun getLocalizedName(language: Language): String = when (this) {
         CONJUNCTION -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CONJUNCTION, language)
@@ -969,7 +969,7 @@ private fun SynastryTabSelector(
     ) {
         items(tabs.size) { index ->
             val isSelected = selectedTab == index
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = isSelected,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -1354,7 +1354,7 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    String.format("%.1f°", aspect.orb),
+                    String.format("%.1fÂ°", aspect.orb),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextSecondary
@@ -1757,6 +1757,8 @@ private fun getCompatibilityColor(score: Double): Color {
         else -> AppTheme.ErrorColor
     }
 }
+
+
 
 
 

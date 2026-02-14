@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,7 +13,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -112,12 +112,13 @@ private fun PlanetsTopBar(
     chartName: String,
     onBack: () -> Unit
 ) {
-    ScreenTopBar(
+    NeoVedicPageHeader(
                 title = stringResource(StringKey.FEATURE_PLANETS),
                 subtitle = chartName,
                 onBack = onBack
             )
 }
+
 
 
 

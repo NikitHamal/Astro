@@ -171,3 +171,21 @@ val Typography = Typography(
         letterSpacing = 0.1.sp
     )
 )
+
+/**
+ * Semantic typography aliases used by revamped screens.
+ * New UI code should use these aliases (or Material semantic styles)
+ * instead of hardcoded `fontSize = *.sp`.
+ */
+object NeoVedicTypeScale {
+    val PageTitle: TextStyle = Typography.displaySmall
+    val PageSubtitle: TextStyle = Typography.labelLarge
+    val SectionTitle: TextStyle = Typography.titleMedium
+    val CardTitle: TextStyle = Typography.titleSmall
+    val Body: TextStyle = Typography.bodyMedium
+    val BodyCompact: TextStyle = Typography.bodySmall
+    val DataValue: TextStyle = Typography.titleSmall.copy(fontFamily = SpaceGroteskFamily)
+    val DataLabel: TextStyle = Typography.labelMedium.copy(fontFamily = SpaceGroteskFamily)
+    val ChipLabel: TextStyle = Typography.labelMedium
+    val TimelineTime: TextStyle = Typography.titleSmall.copy(fontFamily = SpaceGroteskFamily)
+}

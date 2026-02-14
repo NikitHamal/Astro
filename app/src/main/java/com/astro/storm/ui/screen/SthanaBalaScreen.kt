@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -44,7 +44,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -128,7 +128,7 @@ fun SthanaBalaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyShadbala.STHANA_TITLE),
                 subtitle = stringResource(StringKeyShadbala.STHANA_SUBTITLE),
                 onBack = onBack,
@@ -633,7 +633,7 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${planetBala.strengthRating} • ${planetBala.ucchaBala.dignityType.displayName}",
+                            text = "${planetBala.strengthRating} â€¢ ${planetBala.ucchaBala.dignityType.displayName}",
                             style = MaterialTheme.typography.labelSmall,
                             color = scoreColor
                         )
@@ -789,6 +789,7 @@ private fun SthanaBalaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

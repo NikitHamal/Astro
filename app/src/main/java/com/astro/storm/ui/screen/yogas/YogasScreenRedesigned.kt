@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.yogas
+﻿package com.astro.storm.ui.screen.yogas
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -64,7 +64,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -233,7 +233,7 @@ private fun YogasTopBar(
         color = AppTheme.ScreenBackground,
         shadowElevation = 2.dp
     ) {
-        ScreenTopBar(
+        NeoVedicPageHeader(
                 title = stringResource(StringKey.FEATURE_YOGAS),
                 subtitle = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_YOGAS_FOUND_FMT), totalYogas, chartName),
                 onBack = onBack
@@ -870,7 +870,7 @@ private fun YogaCard(
                                 verticalAlignment = Alignment.Top
                             ) {
                                 Text(
-                                    text = "•",
+                                    text = "â€¢",
                                     fontSize = 11.sp,
                                     color = AppTheme.WarningColor
                                 )
@@ -1065,6 +1065,7 @@ private fun getStrengthColor(strength: Double): Color {
         else -> theme.ErrorColor
     }
 }
+
 
 
 

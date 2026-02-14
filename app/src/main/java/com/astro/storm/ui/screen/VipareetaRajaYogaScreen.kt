@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -49,7 +49,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -135,7 +135,7 @@ fun VipareetaRajaYogaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.VIPAREETA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.VIPAREETA_SUBTITLE),
                 onBack = onBack,
@@ -199,7 +199,7 @@ private fun VipareetaTabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -645,7 +645,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                         )
                         yoga.benefitsAreas.take(3).forEach { benefit ->
                             Text(
-                                text = "• $benefit",
+                                text = "â€¢ $benefit",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -670,7 +670,7 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "${exchange.planet1.localizedAbbr()} ↔ ${exchange.planet2.localizedAbbr()}",
+                    text = "${exchange.planet1.localizedAbbr()} â†” ${exchange.planet2.localizedAbbr()}",
                     style = MaterialTheme.typography.titleMedium,
                     color = AppTheme.AccentGold
                 )
@@ -971,7 +971,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                             modifier = Modifier.padding(vertical = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text("✓", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
+                            Text("âœ“", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                             Text(
                                 text = factor,
                                 style = MaterialTheme.typography.bodySmall,
@@ -1003,7 +1003,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                             modifier = Modifier.padding(vertical = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text("⚠", color = AppTheme.WarningColor)
+                            Text("âš ", color = AppTheme.WarningColor)
                             Text(
                                 text = factor,
                                 style = MaterialTheme.typography.bodySmall,
@@ -1121,6 +1121,8 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 
 
 

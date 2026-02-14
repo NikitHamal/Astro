@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.matchmaking
+﻿package com.astro.storm.ui.screen.matchmaking
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -18,7 +18,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -138,7 +138,7 @@ fun MatchmakingScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyMatch.MATCH_TITLE),
                 subtitle = stringResource(StringKeyMatch.MATCH_ASHTAKOOTA),
                 onBack = {
@@ -2267,6 +2267,7 @@ private fun getYoni(chart: VedicChart): String {
     // Use centralized VedicAstrologyUtils for consistent Yoni lookup
     return VedicAstrologyUtils.getYoniDisplayName(moonPosition.nakshatra, language)
 }
+
 
 
 

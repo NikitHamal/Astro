@@ -22,6 +22,7 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.theme.SpaceGroteskFamily
@@ -41,6 +42,13 @@ import com.astro.storm.ui.theme.SpaceGroteskFamily
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Deprecated(
+    message = "Use NeoVedicPageHeader from ui/components/common instead.",
+    replaceWith = ReplaceWith(
+        expression = "NeoVedicPageHeader(title = title, subtitle = subtitle, onBack = onBack, actions = actions, subtitleContent = subtitleContent)",
+        imports = ["com.astro.storm.ui.components.common.NeoVedicPageHeader"]
+    )
+)
 fun ScreenTopBar(
     title: String,
     onBack: (() -> Unit)? = null,
@@ -48,49 +56,12 @@ fun ScreenTopBar(
     actions: @Composable RowScope.() -> Unit = {},
     subtitleContent: @Composable (ColumnScope.() -> Unit)? = null
 ) {
-    TopAppBar(
-        title = {
-            Column {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 18.sp),
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (subtitleContent != null) {
-                    subtitleContent()
-                } else if (subtitle != null) {
-                    Text(
-                        text = subtitle,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 16.sp),
-                        color = AppTheme.TextMuted,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
-        },
-        navigationIcon = {
-            if (onBack != null) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(StringKeyUICommon.BACK),
-                        tint = AppTheme.TextPrimary
-                    )
-                }
-            }
-        },
+    NeoVedicPageHeader(
+        title = title,
+        subtitle = subtitle,
+        onBack = onBack,
         actions = actions,
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = AppTheme.ScreenBackground,
-            scrolledContainerColor = AppTheme.ScreenBackground,
-            navigationIconContentColor = AppTheme.TextPrimary,
-            titleContentColor = AppTheme.TextPrimary,
-            actionIconContentColor = AppTheme.TextSecondary
-        )
+        subtitleContent = subtitleContent
     )
 }
 

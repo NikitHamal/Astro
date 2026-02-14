@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -15,7 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,7 +46,10 @@ import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakaAssignmen
 import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakamshaAnalysis
 import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.SwamshaAnalysis
 import com.astro.storm.ephemeris.jaimini.JaiminiKarakaCalculator.KarakenshiYoga
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
@@ -91,7 +94,7 @@ fun JaiminiKarakaScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = StringResources.get(StringKeyJaimini.TITLE, language),
                 subtitle = StringResources.get(StringKeyJaimini.SUBTITLE, language),
                 onBack = onBack
@@ -124,28 +127,27 @@ private fun JaiminiKarakaContent(
         StringResources.get(StringKeyJaimini.TAB_YOGAS, language),
         StringResources.get(StringKeyJaimini.TAB_INTERPRETATION, language)
     )
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
+    }
 
     Column(modifier = modifier.fillMaxSize()) {
-        // Tabs
-        TabRow(
-            selectedTabIndex = selectedTab,
-            containerColor = AppTheme.CardBackground,
-            contentColor = AppTheme.AccentPrimary
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTab == index,
-                    onClick = { selectedTab = index },
-                    text = {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
-                        )
-                    }
-                )
-            }
-        }
+        ModernPillTabRow(
+            tabs = tabItems,
+            selectedIndex = selectedTab,
+            onTabSelected = { selectedTab = it },
+            modifier = Modifier.padding(
+                horizontal = NeoVedicTokens.ScreenPadding,
+                vertical = NeoVedicTokens.SpaceXS
+            )
+        )
 
         // Tab Content
         when (selectedTab) {
@@ -710,7 +712,7 @@ private fun KarakenshiYogaCard(
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    text = "• ${yoga.effects}",
+                    text = "â€¢ ${yoga.effects}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -835,7 +837,7 @@ private fun AtmakarakaAnalysisCard(
                         color = planetColor
                     )
                     Text(
-                        text = "in ${ak.sign.getLocalizedName(language)} at ${String.format("%.2f", ak.degreeInSign)}°",
+                        text = "in ${ak.sign.getLocalizedName(language)} at ${String.format("%.2f", ak.degreeInSign)}Â°",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
@@ -1059,6 +1061,7 @@ private fun getPlanetColorSS(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
+
 
 
 

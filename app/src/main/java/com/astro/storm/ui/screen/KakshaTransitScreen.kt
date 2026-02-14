@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -52,7 +52,7 @@ import java.time.format.DateTimeFormatter
 /**
  * Kakshya Transit Analysis Screen
  *
- * Displays micro-transit analysis where each sign is divided into 8 parts (3°45' each).
+ * Displays micro-transit analysis where each sign is divided into 8 parts (3Â°45' each).
  * This system provides high-precision timing for planetary results based on Ashtakavarga.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -430,7 +430,7 @@ private fun PlanetsKakshaTab(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(result.currentPositions) { pos ->
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = selectedPlanet == pos.planet,
                     onClick = { viewModel.selectPlanet(if (selectedPlanet == pos.planet) null else pos.planet) },
                     label = { Text(pos.planet.getLocalizedName(language)) },
@@ -817,6 +817,7 @@ private fun getQualityColor(quality: KakshaQuality): Color {
         KakshaQuality.POOR -> com.astro.storm.ui.theme.MarsRed
     }
 }
+
 
 
 

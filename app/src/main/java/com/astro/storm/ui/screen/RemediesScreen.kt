@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -20,7 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -109,7 +109,7 @@ fun RemediesScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyMatch.REMEDY_TITLE),
                 onBack = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -171,7 +171,7 @@ fun RemediesScreen(
                         divider = { HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f)) }
                     ) {
                         tabs.forEachIndexed { index, title ->
-                            Tab(
+                            com.astro.storm.ui.components.common.NeoVedicNavItem(
                                 selected = selectedTab == index,
                                 onClick = {
                                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -868,7 +868,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
 
             recommendations.forEach { rec ->
                 Row(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Text("•", color = AppTheme.InfoColor)
+                    Text("â€¢", color = AppTheme.InfoColor)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         rec,
@@ -983,7 +983,7 @@ private fun CategoryFilter(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item(key = "all") {
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedCategory == null,
                 onClick = { onCategoryChange(null) },
                 label = { Text(stringResource(StringKeyMatch.REMEDIES_FILTER_ALL)) },
@@ -1001,7 +1001,7 @@ private fun CategoryFilter(
             key = { it.name }
         ) { category ->
             val count = categoryCounts[category] ?: 0
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedCategory == category,
                 onClick = { onCategoryChange(category) },
                 label = {
@@ -1114,7 +1114,7 @@ private fun RemedyCard(
                                 color = AppTheme.TextMuted
                             )
                             remedy.planet?.let { planet ->
-                                Text(" • ", color = AppTheme.TextMuted)
+                                Text(" â€¢ ", color = AppTheme.TextMuted)
                                 Text(
                                     planet.displayName,
                                     style = MaterialTheme.typography.labelSmall,
@@ -1447,7 +1447,7 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
-                            Text(" • ", color = AppTheme.TextMuted)
+                            Text(" â€¢ ", color = AppTheme.TextMuted)
                             Text(
                                 stringResource(StringKeyAnalysis.DIALOG_HOUSE) + " ${analysis.housePosition}",
                                 style = MaterialTheme.typography.bodySmall,
@@ -1865,6 +1865,8 @@ private fun getWeekdayForPlanet(planet: Planet): String {
         else -> ""
     }
 }
+
+
 
 
 

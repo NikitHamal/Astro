@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -56,7 +56,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -136,7 +136,7 @@ fun KemadrumaYogaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.KEMA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.KEMA_SUBTITLE),
                 onBack = onBack,
@@ -208,7 +208,7 @@ private fun KemadrumaTabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -487,7 +487,7 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "•",
+                            text = "â€¢",
                             color = AppTheme.WarningColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -558,7 +558,7 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Moon details
-                MoonDetailRow(label = stringResource(StringKeyAnalysis.DIALOG_DEGREE), value = String.format("%.2f°", moonAnalysis.degree))
+                MoonDetailRow(label = stringResource(StringKeyAnalysis.DIALOG_DEGREE), value = String.format("%.2fÂ°", moonAnalysis.degree))
                 MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_NAKSHATRA), value = moonAnalysis.nakshatra)
                 MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_PAKSHA), value = stringResource(if (moonAnalysis.paksha == KemadrumaYogaCalculator.LunarPaksha.SHUKLA) StringKeyAnalysis.PAKSHA_SHUKLA else StringKeyAnalysis.PAKSHA_KRISHNA))
                 MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_BRIGHTNESS), value = moonAnalysis.brightness.getLocalizedName(language))
@@ -1108,7 +1108,7 @@ private fun ImpactCard(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "•",
+                                    text = "â€¢",
                                     color = color,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -1570,6 +1570,8 @@ private fun getPriorityColorFromInt(priority: Int): Color {
         else -> AppTheme.TextMuted
     }
 }
+
+
 
 
 

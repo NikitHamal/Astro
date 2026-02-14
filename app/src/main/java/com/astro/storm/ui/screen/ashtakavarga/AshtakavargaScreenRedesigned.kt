@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.ashtakavarga
+﻿package com.astro.storm.ui.screen.ashtakavarga
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -50,7 +50,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -229,7 +229,7 @@ private fun AshtakavargaTopBar(
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
-    ScreenTopBar(
+    NeoVedicPageHeader(
         title = stringResource(StringKey.FEATURE_ASHTAKAVARGA),
         subtitle = stringResource(StringKeyDosha.ASHTAKAVARGA_DESC_FMT, chartName),
         onBack = onBack,
@@ -1369,6 +1369,7 @@ private fun getHouseSignification(house: Int, language: Language): String {
     }
     return key?.let { StringResources.get(it, language) } ?: ""
 }
+
 
 
 

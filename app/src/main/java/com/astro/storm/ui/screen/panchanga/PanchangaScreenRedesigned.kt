@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.panchanga
+﻿package com.astro.storm.ui.screen.panchanga
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
@@ -47,7 +47,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -252,7 +252,7 @@ private fun PanchangaTopBar(
         color = AppTheme.ScreenBackground,
         shadowElevation = 2.dp
     ) {
-        ScreenTopBar(
+        NeoVedicPageHeader(
                 title = stringResource(StringKey.FEATURE_PANCHANGA),
                 subtitle = stringResource(StringKeyDosha.PANCHANGA_LIMBS_TITLE),
                 onBack = onBack,
@@ -1430,6 +1430,7 @@ private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
         delay(60_000)
     }
 }
+
 
 
 

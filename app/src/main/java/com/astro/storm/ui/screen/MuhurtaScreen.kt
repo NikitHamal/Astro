@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -88,7 +88,7 @@ import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -264,7 +264,7 @@ fun MuhurtaScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyMatch.MUHURTA_TITLE),
                 onBack = {
                             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
@@ -1496,7 +1496,7 @@ private fun ActivitySelectorCard(
                 contentPadding = PaddingValues(horizontal = 2.dp)
             ) {
                 items(activities, key = { it.name }) { activity ->
-                    FilterChip(
+                    com.astro.storm.ui.components.common.NeoVedicChoicePill(
                         selected = activity == selectedActivity,
                         onClick = { onActivityChange(activity) },
                         label = {
@@ -2125,6 +2125,8 @@ private fun getActivityIcon(activity: ActivityType): ImageVector {
         ActivityType.NAMING_CEREMONY -> Icons.Outlined.ChildCare
     }
 }
+
+
 
 
 

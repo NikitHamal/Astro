@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -16,7 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -120,7 +120,7 @@ fun ShadbalaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.SHADBALA_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
@@ -589,7 +589,7 @@ private fun ShadbalaDetailsTab(
                 val isSelected = selectedPlanet == planet
                 val shadbala = analysis.planetaryStrengths[planet]
 
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = isSelected,
                     onClick = { onSelectPlanet(planet) },
                                     label = {
@@ -1271,6 +1271,8 @@ private fun getStrengthColor(percentage: Double): Color {
 private fun getLocalizedStrengthRating(rating: StrengthRating, language: Language): String {
     return rating.getLocalizedName(language)
 }
+
+
 
 
 

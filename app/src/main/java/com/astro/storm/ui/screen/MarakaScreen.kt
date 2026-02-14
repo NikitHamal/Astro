@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -51,7 +51,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -130,7 +130,7 @@ fun MarakaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.MARAKA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.MARAKA_SUBTITLE),
                 onBack = onBack,
@@ -194,7 +194,7 @@ private fun MarakaTabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -419,7 +419,7 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("✓", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
+                        Text("âœ“", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -553,7 +553,7 @@ private fun MarakaPlanetCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${maraka.position.sign.getLocalizedName(language)} • H${maraka.position.house}",
+                            text = "${maraka.position.sign.getLocalizedName(language)} â€¢ H${maraka.position.house}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -624,7 +624,7 @@ private fun MarakaPlanetCard(
 //                        )
 //                        maraka.afflictions.take(3).forEach { affliction ->
 //                            Text(
-//                                text = "• $affliction",
+//                                text = "â€¢ $affliction",
 //                                style = MaterialTheme.typography.labelSmall,
 //                                color = AppTheme.TextMuted
 //                            )
@@ -715,7 +715,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("✓", color = AppTheme.SuccessColor, fontSize = 12.sp)
+                                Text("âœ“", color = AppTheme.SuccessColor, fontSize = 12.sp)
                                 Text(
                                     text = factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -737,7 +737,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("⚠", color = AppTheme.WarningColor, fontSize = 12.sp)
+                                Text("âš ", color = AppTheme.WarningColor, fontSize = 12.sp)
                                 Text(
                                     text = factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -1136,6 +1136,8 @@ private fun MarakaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 
 
 

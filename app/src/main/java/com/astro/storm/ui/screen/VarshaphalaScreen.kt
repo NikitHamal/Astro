@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.Canvas
@@ -20,7 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -128,7 +128,7 @@ fun VarshaphalaScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyMatch.VARSHAPHALA_TITLE),
                 subtitle = varshaphalaResult?.let { stringResource(StringKey.VARSHAPHALA_AGE, it.age) },
                 onBack = onBack,
@@ -202,9 +202,9 @@ fun VarshaphalaScreen(
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // COMMON UI COMPONENTS
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @Composable
 private fun YearRatingBadge(rating: Float) {
@@ -321,7 +321,7 @@ private fun YearSelector(
                     val isSelected = year == currentYear
                     val isFuture = year > referenceYear
 
-                    FilterChip(
+                    com.astro.storm.ui.components.common.NeoVedicChoicePill(
                         selected = isSelected,
                         onClick = { onYearChange(year) },
                         label = {
@@ -468,9 +468,9 @@ private fun ErrorState(message: String, onRetry: () -> Unit) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // OVERVIEW TAB
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @Composable
 private fun OverviewTab(result: VarshaphalaResult) {
@@ -1634,9 +1634,9 @@ private fun OverallPredictionCard(result: VarshaphalaResult) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TAJIKA ASPECTS TAB
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @Composable
 private fun TajikaAspectsTab(result: VarshaphalaResult) {
@@ -1761,7 +1761,7 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
                         color = getPlanetColor(aspect.planet1)
                     )
                     Text(
-                        " ↔ ",
+                        " â†” ",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -1825,9 +1825,9 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SAHAMS TAB
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @Composable
 private fun SahamsTab(result: VarshaphalaResult) {
@@ -1964,9 +1964,9 @@ private fun SahamCard(saham: SahamResult) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DASHA TAB
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @Composable
 private fun DashaTab(result: VarshaphalaResult) {
@@ -2164,9 +2164,9 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HOUSES TAB
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @Composable
 private fun HousesTab(result: VarshaphalaResult) {
@@ -2310,7 +2310,7 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                                 verticalAlignment = Alignment.Top
                             ) {
                                 Text(
-                                    "• ",
+                                    "â€¢ ",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.AccentPrimary
                                 )
@@ -2328,9 +2328,9 @@ private fun HousePredictionCard(prediction: HousePrediction) {
     }
 }
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HELPER FUNCTIONS
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 @Composable
 private fun getPlanetColor(planet: Planet): Color {
@@ -2387,18 +2387,18 @@ private fun getAspectStrengthColor(strength: AspectStrength): Color {
 
 private fun getZodiacSymbol(sign: ZodiacSign): String {
     return when (sign) {
-        ZodiacSign.ARIES -> "♈"
-        ZodiacSign.TAURUS -> "♉"
-        ZodiacSign.GEMINI -> "♊"
-        ZodiacSign.CANCER -> "♋"
-        ZodiacSign.LEO -> "♌"
-        ZodiacSign.VIRGO -> "♍"
-        ZodiacSign.LIBRA -> "♎"
-        ZodiacSign.SCORPIO -> "♏"
-        ZodiacSign.SAGITTARIUS -> "♐"
-        ZodiacSign.CAPRICORN -> "♑"
-        ZodiacSign.AQUARIUS -> "♒"
-        ZodiacSign.PISCES -> "♓"
+        ZodiacSign.ARIES -> "â™ˆ"
+        ZodiacSign.TAURUS -> "â™‰"
+        ZodiacSign.GEMINI -> "â™Š"
+        ZodiacSign.CANCER -> "â™‹"
+        ZodiacSign.LEO -> "â™Œ"
+        ZodiacSign.VIRGO -> "â™"
+        ZodiacSign.LIBRA -> "â™Ž"
+        ZodiacSign.SCORPIO -> "â™"
+        ZodiacSign.SAGITTARIUS -> "â™"
+        ZodiacSign.CAPRICORN -> "â™‘"
+        ZodiacSign.AQUARIUS -> "â™’"
+        ZodiacSign.PISCES -> "â™“"
     }
 }
 
@@ -2551,6 +2551,8 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
         )
     }
 }
+
+
 
 
 

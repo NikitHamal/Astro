@@ -28,4 +28,22 @@ object NeoVedicTokens {
 
     val CardElevation = 0.dp
     val SurfaceElevation = 0.dp
+
+    // Header and top-level layout defaults
+    val TopBarHorizontalPadding = 16.dp
+    val TopBarVerticalPadding = 10.dp
+    val TopBarIconSize = 40.dp
+
+    // Common content block paddings
+    val SectionHorizontalPadding = 16.dp
+    val SectionVerticalPadding = 10.dp
+    val ContentInset = 16.dp
+
+    // Dense data/table-like UI
+    val DataRowVerticalPadding = 8.dp
+    val DataRowHorizontalPadding = 12.dp
+
+    // Timeline and list rhythm
+    val TimelineConnectorHeight = 56.dp
+    val ListItemMinHeight = 48.dp
 }

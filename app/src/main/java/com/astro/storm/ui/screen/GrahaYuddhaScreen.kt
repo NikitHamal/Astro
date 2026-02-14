@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -16,7 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -124,7 +124,7 @@ fun GrahaYuddhaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.GRAHA_SCREEN_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
@@ -596,7 +596,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "•",
+                        text = "â€¢",
                         color = AppTheme.AccentPrimary
                     )
                     Text(
@@ -783,7 +783,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
             ) {
                 DetailChip(
                     label = stringResource(StringKeyDosha.GRAHA_SEPARATION),
-                    value = "${String.format("%.2f", war.separation)}°"
+                    value = "${String.format("%.2f", war.separation)}Â°"
                 )
                 DetailChip(
                     label = stringResource(StringKeyDosha.GRAHA_ADVANTAGE),
@@ -1266,6 +1266,7 @@ private fun GrahaYuddhaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

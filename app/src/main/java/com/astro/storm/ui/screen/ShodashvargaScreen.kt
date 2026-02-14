@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -15,7 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -117,7 +117,7 @@ fun ShodashvargaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.SHODASHVARGA_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
@@ -398,7 +398,7 @@ private fun OverviewTab(
                     analysis.overallAssessment.keyInsights.forEach { insight ->
                         Row(modifier = Modifier.padding(vertical = 4.dp)) {
                             Text(
-                                "•",
+                                "â€¢",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = AppTheme.AccentPrimary,
                                 modifier = Modifier.padding(end = 8.dp)
@@ -637,7 +637,7 @@ private fun PlanetStrengthsTab(
                 val isSelected = selectedPlanet == planet
                 val strength = analysis.planetStrengths[planet]
 
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = isSelected,
                     onClick = { onSelectPlanet(planet) },
                                     label = {
@@ -1503,6 +1503,8 @@ private fun getLocalizedDignity(dignity: VargaDignity, language: Language): Stri
         VargaDignity.DEBILITATED -> StringResources.get(StringKeyDosha.DIGNITY_DEBILITATED, language)
     }
 }
+
+
 
 
 

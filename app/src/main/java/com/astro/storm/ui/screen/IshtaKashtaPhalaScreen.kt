@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -52,7 +52,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -133,7 +133,7 @@ fun IshtaKashtaPhalaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.ISHTA_KASHTA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.ISHTA_KASHTA_SUBTITLE),
                 onBack = onBack,
@@ -197,7 +197,7 @@ private fun IshtaKashtaTabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedTab == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -558,7 +558,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                     color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
-                                        text = "↑",
+                                        text = "â†‘",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = AppTheme.SuccessColor,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
@@ -571,7 +571,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                     color = AppTheme.ErrorColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
-                                        text = "↓",
+                                        text = "â†“",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = AppTheme.ErrorColor,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
@@ -593,7 +593,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                             }
                         }
                         Text(
-                            text = "${phala.sign.getLocalizedName(language)} • H${phala.house}",
+                            text = "${phala.sign.getLocalizedName(language)} â€¢ H${phala.house}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1020,7 +1020,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                         )
                         period.expectedBenefits.forEach { benefit ->
                             Text(
-                                text = "• $benefit",
+                                text = "â€¢ $benefit",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -1037,7 +1037,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                         )
                         period.expectedChallenges.forEach { challenge ->
                             Text(
-                                text = "• $challenge",
+                                text = "â€¢ $challenge",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -1216,6 +1216,8 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
+
 
 
 

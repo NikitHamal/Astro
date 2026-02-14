@@ -1,296 +1,175 @@
-# AstroStorm Neo-Vedic UI/UX Revamp Plan
+﻿# AstroStorm Neo-Vedic UI Revamp Master Plan
 
-## Overview
+Last updated: 2026-02-14
 
-This document outlines the comprehensive plan to revamp all 60+ screens in AstroStorm to the new "Neo-Vedic" (Ethereal Vedic Grid) design system. The Home and Insights tabs have already been redesigned and serve as the reference implementation.
+## Purpose
+This is the single source of truth for the Neo-Vedic redesign rollout.
+It defines inventory, standards, wave sequencing, quality gates, and live progress.
 
-## Current State
+## Current State (Measured)
+Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 
-### Already Redesigned (10+ screens/components):
-1. **HomeTab.kt** - Celestial dashboard with hero card, quick actions, snapshot cards
-2. **InsightsTab.kt** - Horoscope predictions with life area cards
-3. **TransitsScreenRedesigned.kt** - Enhanced Ephemeris UI with planet glyphs (☉, ☽, ♂, etc.), aspect symbols (☌, ☍, △, □, ⚹), and status indicators
-4. **YogasScreenRedesigned.kt** - Category filtering, expandable yoga cards
-5. **PanchangaScreenRedesigned.kt** - Five limbs with tab navigation
-6. **AshtakavargaScreenRedesigned.kt** - Grid-based visualization
-7. **MatchmakingScreen.kt** - Modern cards with Guna visualization
-8. **ShadbalaScreen.kt** - ModernPillTabRow, Neo-Vedic cards with borders
-9. **SthanaBalaScreen.kt** - ModernPillTabRow, Neo-Vedic cards with borders
-10. **KalaBalaScreen.kt** - ModernPillTabRow, Neo-Vedic cards with borders
+- Total screen files: `76`
+- `ScreenTopBar(` usages: `0` (target met)
+- `NeoVedicPageHeader(` usages: `57`
+- Shared tab row usages (`ModernPillTabRow`/`NeoVedicFeatureTabs`): `30`
+- Direct tab API usages (`FilterChip`/`TabRow`/`ScrollableTabRow`/`Tab`): `0` (target met)
+- Hardcoded font sizes (`fontSize = *.sp`): `969`
+- Hardcoded hex colors in screen files: `0` (target met)
 
-### Design System Components:
-- `NeoVedicPrimitives.kt` - Enhanced with:
-  - NeoVedicPageHeader - Screen headers with back button
-  - NeoVedicTimelineItem - Timeline display items
-  - NeoVedicStatusPill - Status indicator pills
-  - NeoVedicEmptyState - Empty state component
-  - **NEW**: NeoVedicEphemerisDateHeader - Date headers with TODAY/TOMORROW badges
-  - **NEW**: NeoVedicEphemerisTransitItem - Enhanced transit items with planet/aspect glyphs
-  - **NEW**: NeoVedicStrengthIndicator - Progress bars with strength coloring
-  - **NEW**: NeoVedicPlanetCard - Planet display cards with metrics
-  - **NEW**: NeoVedicSummaryStatCard - Summary statistics display
-  - **NEW**: NeoVedicSectionDivider - Section dividers with optional titles
-- `ModernCards.kt` - ModernCard, ExpandableCard, InfoCard, ProgressCard, StatCard, HighlightCard
-- `ModernTabRow.kt` - ModernPillTabRow, CompactChipTabs, SegmentedControlTabs
-- `EphemerisUiMapper.kt` - Enhanced with:
-  - Planet Unicode glyphs (☉, ☽, ♂, ☿, ♃, ♀, ♄, ☊, ☋)
-  - Aspect glyphs (☌ conjunction, ☍ opposition, △ trine, □ square, ⚹ sextile)
-  - Transit status types (RETROGRADE, DIRECT, EXALTED, DEBILITATED, OWN_SIGN)
+## Completed In This Iteration
 
-## Neo-Vedic Design Language
+### Phase 0 - Documentation and Audit Foundation (Completed)
+- Replaced this file with a canonical master plan.
+- Added Windows-native audit scripts:
+  - `scripts/ui_style_report.ps1`
+  - `scripts/ui_consistency_check.ps1`
+  - `scripts/ui_typography_nav_report.ps1`
 
-### Core Principles:
-1. **Sharp, Minimal Corners** - 2dp corner radius (parchment-flat aesthetic)
-2. **No Elevation/Shadow** - Flat design with hairline borders (1dp)
-3. **Vellum Background** - Parchment paper tones (#F2EFE9 light / #1A1E2E dark)
-4. **Vedic Gold Accent** - #C5A059 for primary accents and active indicators
-5. **Mars Red Secondary** - #B85C5C for alerts and malefic indicators
-6. **Scripture-like Typography** - Cinzel Decorative for headings, Poppins for body, Space Grotesk for data
+### Phase 1 - Shared System Hardening (In Progress)
+- Expanded `NeoVedicPageHeader` in `app/src/main/java/com/astro/storm/ui/components/common/NeoVedicPrimitives.kt` to support:
+  - `actions: RowScope.() -> Unit`
+  - `subtitleContent: ColumnScope.() -> Unit`
+- Deprecated `ScreenTopBar` and internally routed it to `NeoVedicPageHeader` in `app/src/main/java/com/astro/storm/ui/components/CommonComponents.kt`.
+- Added additional Neo-Vedic layout tokens in `app/src/main/java/com/astro/storm/ui/theme/DesignTokens.kt`.
+- Added semantic type aliases in `app/src/main/java/com/astro/storm/ui/theme/Type.kt` via `NeoVedicTypeScale`.
+- Added standardized feature tab wrapper `NeoVedicFeatureTabs` in `app/src/main/java/com/astro/storm/ui/components/common/ModernTabRow.kt`.
 
-### Design Tokens (NeoVedicTokens):
-- ScreenPadding: 16dp
-- SectionSpacing: 24dp
-- CardSpacing: 10dp
-- CardCornerRadius: 2dp
-- BorderWidth: 1dp
-- ThinBorderWidth: 0.5dp
+### Phase 2 - Header Standardization (Completed)
+- Migrated screen calls from `ScreenTopBar(` to `NeoVedicPageHeader(` across `ui/screen`.
+- Result: `ScreenTopBar(` usage in screen files is now `0`.
 
-### Color Palette:
-- **Backgrounds**: Vellum (#F2EFE9), DarkVellum (#1A1E2E)
-- **Cards**: CardBackground (#F6F3EC), DarkPaper (#232840)
-- **Text**: CosmicIndigo (#1A233A), Slate variants
-- **Accents**: VedicGold (#C5A059), AccentTeal (#5AA3A3), MarsRed (#B85C5C)
-- **Status**: Success (green), Warning (gold), Error (red), Info (blue)
+## Target End State
+- Feature screens use Neo-Vedic primitives and tokens only.
+- No direct tab APIs in screen files.
+- No uncontrolled hardcoded `fontSize = *.sp` in screen files.
+- No hardcoded visible strings in revamped UI paths.
+- English + Nepali localization intact for all updated UI copy.
 
----
+## Public API and Type Changes
 
-## PHASE 1: Foundation & Core Screens (COMPLETED)
+### Components
+- `app/src/main/java/com/astro/storm/ui/components/common/NeoVedicPrimitives.kt`
+  - `NeoVedicPageHeader` is the standard header primitive.
+- `app/src/main/java/com/astro/storm/ui/components/CommonComponents.kt`
+  - `ScreenTopBar` is deprecated and scheduled for removal in Phase 5.
+- `app/src/main/java/com/astro/storm/ui/components/common/ModernTabRow.kt`
+  - `NeoVedicFeatureTabs` added as standard feature-tab entrypoint.
 
-### Objectives:
-1. ✅ Enhance shared component library with missing Neo-Vedic primitives
-2. ✅ Revamp core analysis screens (Bala screens)
-3. ✅ Enhance Transits screen with the reference Ephemeris UI design
-4. Partially complete - Additional Bala screens need revamp
+### Theme
+- `app/src/main/java/com/astro/storm/ui/theme/Type.kt`
+  - `NeoVedicTypeScale` added for semantic typography use.
+- `app/src/main/java/com/astro/storm/ui/theme/DesignTokens.kt`
+  - Additional layout tokens added for standardized spacing/padding rhythms.
 
-### Completed Deliverables:
+## Wave Execution Plan
 
-#### 1.1 Shared Components Enhancement
-- [x] NeoVedicPrimitives.kt - Added 6 new components
-- [x] EphemerisUiMapper.kt - Added planet glyphs, aspect symbols, status types
-- [x] Existing ModernCards.kt
-- [x] Existing ModernTabRow.kt
+### Wave A - Highest Complexity
+- `VarshaphalaScreen.kt`
+- `MuhurtaScreen.kt`
+- `NativeAnalysisScreen.kt`
+- `PredictionsScreen.kt`
+- `PrashnaScreen.kt`
+- `RemediesScreen.kt`
+- `matchmaking/MatchmakingScreen.kt`
 
-#### 1.2 Strength Analysis Screens (Bala)
-- [x] ShadbalaScreen.kt - Full Neo-Vedic revamp with ModernPillTabRow
-- [x] SthanaBalaScreen.kt - Full Neo-Vedic revamp with ModernPillTabRow
-- [x] KalaBalaScreen.kt - Full Neo-Vedic revamp with ModernPillTabRow
-- [ ] DrigBalaScreen.kt - Pending (Phase 2)
-- [ ] AvasthaScreen.kt - Pending (Phase 2)
-- [ ] IshtaKashtaPhalaScreen.kt - Pending (Phase 2)
+### Wave B - Timing and Transit Systems
+- `KalachakraDashaScreen.kt`
+- `YoginiDashaScreen.kt`
+- `AshtottariDashaScreen.kt`
+- `CharaDashaScreen.kt`
+- `DrigDashaScreen.kt`
+- `ShoolaDashaScreen.kt`
+- `DashaSandhiScreen.kt`
+- `AshtavargaTransitScreen.kt`
+- `KakshaTransitScreen.kt`
+- `UpachayaTransitScreen.kt`
+- `GocharaVedhaScreen.kt`
+- `transits/TransitsScreenRedesigned.kt`
 
-#### 1.3 Transits Enhancement
-- [x] TransitsScreenRedesigned.kt - Enhanced with reference Ephemeris UI
-  - ✅ Date grouping with "TODAY", "TOMORROW" labels using NeoVedicEphemerisDateHeader
-  - ✅ Timeline dots with connector lines using NeoVedicEphemerisTransitItem
-  - ✅ Event type indicators (MOTION REVERSED, DEBILITATED, EXALTED, etc.)
-  - ✅ Aspect glyphs (☌, ☍, △, □, ⚹)
-  - ✅ Planet symbols with proper Vedic glyphs (☉, ☽, ♂, ☿, ♃, ♀, ♄, ☊, ☋)
-  - ✅ Enhanced Positions mode with planet glyph circles
-  - ✅ Enhanced Aspects mode with aspect glyph display
+### Wave C - Yoga, Jaimini, Strength, Divisional
+- `ArgalaScreen.kt`
+- `ArudhaPadaScreen.kt`
+- `BhriguBinduScreen.kt`
+- `GrahaYuddhaScreen.kt`
+- `JaiminiKarakaScreen.kt`
+- `KemadrumaYogaScreen.kt`
+- `NityaYogaScreen.kt`
+- `PanchMahapurushaScreen.kt`
+- `VipareetaRajaYogaScreen.kt`
+- `ShadbalaScreen.kt`
+- `SthanaBalaScreen.kt`
+- `KalaBalaScreen.kt`
+- `DrigBalaScreen.kt`
+- `AvasthaScreen.kt`
+- `IshtaKashtaPhalaScreen.kt`
+- `ShodashvargaScreen.kt`
+- `DivisionalChartsScreen.kt`
+- `SaptamsaScreen.kt`
+- `SahamScreen.kt`
+- `SarvatobhadraChakraScreen.kt`
 
----
+### Wave D - Core, Entry, Support
+- `BirthChartScreen.kt`
+- `PlanetsScreen.kt`
+- `ChartAnalysisScreen.kt`
+- `ChartInputScreen.kt`
+- `OnboardingScreen.kt`
+- `main/MainScreen.kt`
+- `main/HomeTab.kt`
+- `main/InsightsTab.kt`
+- `main/SettingsTab.kt`
+- `ashtakavarga/AshtakavargaScreenRedesigned.kt`
+- `panchanga/PanchangaScreenRedesigned.kt`
+- `yogas/YogasScreenRedesigned.kt`
 
-## PHASE 2: Advanced Analysis & Dashas (Future)
+## Acceptance Gates
 
-### Objectives:
-1. Revamp remaining Bala screens (DrigBala, Avastha, IshtaKashta)
-2. Revamp all Dasha system screens
-3. Revamp Chakra visualization screens
-4. Revamp Yoga analysis screens
-5. Revamp Varga/Divisional chart screens
-6. Revamp all other screens
+### Static/UI Gates
+- `ScreenTopBar(` usage in `ui/screen`: target `0`.
+- Direct tab API usage (`FilterChip`, `TabRow`, `ScrollableTabRow`, `Tab`) in `ui/screen`: target `0`.
+- Hardcoded `fontSize = *.sp` in `ui/screen`: target `0` except explicit whitelist.
+- Hardcoded `Color(0x` in `ui/screen`: target `0`.
 
-### Screens to Revamp:
+### Build Gates
+- `gradlew.bat :app:assembleDebug`
+- `gradlew.bat :app:lintDebug`
 
-#### 2.1 Remaining Bala Screens
-- DrigBalaScreen.kt
-- AvasthaScreen.kt
-- IshtaKashtaPhalaScreen.kt
+### Manual UX Gates
+- Flow: onboarding -> chart input -> main tabs -> representative screens from each wave.
+- Header consistency (back nav, subtitle handling, action slots).
+- Tab switching behavior, long-list scroll behavior, loading/error/empty states.
+- Language pass in English and Nepali.
+- Visual pass on phone + tablet, light + dark.
 
-#### 2.2 Dasha Screens
-- DashasScreen.kt (wrapper)
-- DashaSystemsScreen.kt
-- AshtottariDashaScreen.kt
-- CharaDashaScreen.kt
-- YoginiDashaScreen.kt
-- KalachakraDashaScreen.kt
-- DrigDashaScreen.kt
-- ShoolaDashaScreen.kt
-- DashaSandhiScreen.kt
+## Audit Commands (Windows)
 
-#### 2.3 Chakra Screens
-- SudarshanaChakraScreen.kt
-- SarvatobhadraChakraScreen.kt
+### Scripted
+- `powershell -ExecutionPolicy Bypass -File scripts/ui_style_report.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/ui_consistency_check.ps1`
+- `powershell -ExecutionPolicy Bypass -File scripts/ui_typography_nav_report.ps1`
 
-#### 2.4 Yoga Screens
-- BhriguBinduScreen.kt
-- PanchMahapurushaScreen.kt
-- KemadrumaYogaScreen.kt
-- NityaYogaScreen.kt
-- VipareetaRajaYogaScreen.kt
+### One-off quick checks
+- `rg -n "ScreenTopBar\(" app/src/main/java/com/astro/storm/ui/screen`
+- `rg -n "FilterChip\(|ScrollableTabRow\(|\bTabRow\(|\bTab\(" app/src/main/java/com/astro/storm/ui/screen`
+- `rg -n "fontSize\s*=\s*[0-9]+\.?[0-9]*\.sp" app/src/main/java/com/astro/storm/ui/screen`
+- `rg -n "Color\(0x" app/src/main/java/com/astro/storm/ui/screen`
 
-#### 2.5 Varga Screens
-- ShodashvargaScreen.kt
-- DivisionalChartsScreen.kt
-- SaptamsaScreen.kt
-- SahamScreen.kt
+## Known Gaps
+- Typography cleanup is still outstanding (`969`).
+- Full localization enforcement for all revamped strings is still pending.
+- Legacy `ScreenTopBar` removal is pending final migration phase.
+- Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
 
-#### 2.6 Transit Variants
-- AshtavargaTransitScreen.kt
-- KakshaTransitScreen.kt
-- UpachayaTransitScreen.kt
-- GocharaVedhaScreen.kt
-
-#### 2.7 Jaimini & Special
-- JaiminiKarakaScreen.kt
-- ArudhaPadaScreen.kt
-- ArgalaScreen.kt
-- GrahaYuddhaScreen.kt
-
-#### 2.8 Prediction Screens
-- PredictionsScreen.kt
-- DeepPredictionsScreen.kt
-- DeepNativeAnalysisScreen.kt
-- NativeAnalysisScreen.kt
-- VarshaphalaScreen.kt
-
-#### 2.9 Other Screens
-- MuhurtaScreen.kt
-- PrashnaScreen.kt
-- SynastryScreen.kt
-- NadiAmshaScreen.kt
-- NakshatraScreen.kt
-- MrityuBhagaScreen.kt
-- AshtamangalaPrashnaScreen.kt
-- TarabalaScreen.kt
-- MarakaScreen.kt
-- BadhakaScreen.kt
-- RemediesScreen.kt
-- LalKitabRemediesScreen.kt
-- ChartInputScreen.kt
-- OnboardingScreen.kt
-- SettingsTab.kt
-- BirthChartScreen.kt
-- PlanetsScreen.kt
-
----
-
-## Reference Image: Ephemeris UI (Implemented)
-
-The reference image showing an elegant transit/ephemeris display has been fully implemented:
-
-1. **Header**: ✅ "EPHEMERIS" title with "LIVE CELESTIAL MOVEMENTS" subtitle and calendar icon
-2. **Date Sections**: ✅ Date headers with "TODAY"/"TOMORROW" labels using NeoVedicEphemerisDateHeader
-3. **Timeline Items**: ✅ Using NeoVedicEphemerisTransitItem with:
-   - Time label (e.g., "09:42 AM", "11:15 AM")
-   - Planet glyphs (☉, ☽, ♂, ☿, ♃, ♀, ♄, ☊, ☋)
-   - Aspect glyphs (☌, ☍, △, □, ⚹)
-   - Event title (e.g., "Moon aspecting Mars", "Mercury Retrograde")
-   - Position text (e.g., "SCORPIO", "ORB 2°")
-   - Status indicators (MOTION REVERSED, DEBILITATED, EXALTED, etc.)
-4. **Visual Elements**: ✅
-   - Timeline dots with connector lines
-   - Highlighted items with colored accent
-   - Status pills for special conditions
-
----
-
-## Technical Guidelines
-
-### Screen Template (Neo-Vedic):
-```kotlin
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ScreenName(
-    chart: VedicChart?,
-    onBack: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val language = LocalLanguage.current
-    val colors = AppTheme.current
-
-    Scaffold(
-        containerColor = colors.ScreenBackground,
-        topBar = {
-            ScreenTopBar(
-                title = "SCREEN TITLE",
-                subtitle = "SUBTITLE",
-                onBack = onBack
-            )
-        }
-    ) { padding ->
-        LazyColumn(
-            modifier = Modifier.padding(padding),
-            contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
-            verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SectionSpacing)
-        ) {
-            // Content using design tokens and theme colors
-        }
-    }
-}
-```
-
-### Component Usage:
-- Use `AppTheme.current` for theme-aware colors
-- Use `NeoVedicTokens` for spacing and sizing
-- Use `ModernPillTabRow` for tab navigation (replaces FilterChip rows)
-- Use `Surface` with `BorderStroke` instead of `Card` for Neo-Vedic flat design
-- Use `NeoVedicStatusPill` for status indicators
-- Use `NeoVedicEmptyState` for empty states
-- Use `NeoVedicEphemerisTransitItem` for timeline displays
-- Use `NeoVedicStrengthIndicator` for progress bars
-
-### Tab Selector Pattern:
-```kotlin
-val tabItems = tabs.mapIndexed { index, title ->
-    TabItem(
-        title = title,
-        accentColor = when (index) {
-            0 -> AppTheme.AccentGold
-            1 -> AppTheme.AccentTeal
-            else -> AppTheme.AccentPrimary
-        }
-    )
-}
-
-ModernPillTabRow(
-    tabs = tabItems,
-    selectedIndex = selectedTab,
-    onTabSelected = onTabSelected,
-    modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
-)
-```
-
-### Card Pattern:
-```kotlin
-Surface(
-    modifier = Modifier.fillMaxWidth(),
-    color = AppTheme.CardBackground,
-    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
-) {
-    // Card content
-}
-```
-
----
-
-## Version History
-
-- **v1.0** (2026-02-13): Initial plan created, Phase 1 started
-- **v1.1** (2026-02-13): Phase 1 completed
-  - Enhanced NeoVedicPrimitives.kt with 6 new components
-  - Enhanced EphemerisUiMapper.kt with planet/aspect glyphs and status types
-  - Fully implemented reference Ephemeris UI in TransitsScreenRedesigned.kt
-  - Revamped ShadbalaScreen, SthanaBalaScreen, KalaBalaScreen to Neo-Vedic design
-  - All screens now use ModernPillTabRow, Surface with BorderStroke, and NeoVedicTokens
+## Version Ledger
+- v2.0 (2026-02-14)
+  - Canonical master-plan rewrite of `Phases.md`.
+  - Added PowerShell audit scripts.
+  - Completed screen-level header migration to `NeoVedicPageHeader`.
+  - Deprecated `ScreenTopBar` and routed it through Neo-Vedic primitive.
+  - Added type/token/tab standardization primitives.
+- v2.1 (2026-02-14)
+  - Removed direct tab API usage from `ui/screen` by migrating:
+    - `TabRow`/`Tab` screens to shared Neo-Vedic tab rows.
+    - `FilterChip` calls to shared `NeoVedicChoicePill` primitive.
+  - Static nav-bypass gate reached `0`.

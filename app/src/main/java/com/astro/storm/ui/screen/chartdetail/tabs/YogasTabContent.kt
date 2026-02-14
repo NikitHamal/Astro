@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.tabs
+﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -330,7 +330,7 @@ private fun YogaCategoryFilter(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedCategory == null,
                 onClick = { onCategorySelected(null) },
                 label = { Text(stringResource(StringKey.YOGA_ALL), fontSize = 12.sp) },
@@ -352,7 +352,7 @@ private fun YogaCategoryFilter(
         items(categories) { category ->
             val count = yogaCounts[category] ?: 0
             if (count > 0) {
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = selectedCategory == category,
                     onClick = { onCategorySelected(category) },
                     label = { Text("${getCategoryDisplayName(category, language)} (${formatNumber(count, language)})", fontSize = 12.sp) },
@@ -569,7 +569,7 @@ private fun YogaCard(
                         )
                         yoga.cancellationFactors.forEach { factor ->
                             Text(
-                                text = "• $factor",
+                                text = "â€¢ $factor",
                                 fontSize = 12.sp,
                                 color = ChartDetailColors.TextSecondary
                             )
@@ -685,7 +685,7 @@ private fun formatNumber(number: Int, language: Language): String {
     return when (language) {
         Language.ENGLISH -> number.toString()
         Language.NEPALI -> {
-            val nepaliDigits = charArrayOf('०', '१', '२', '३', '४', '५', '६', '७', '८', '९')
+            val nepaliDigits = charArrayOf('à¥¦', 'à¥§', 'à¥¨', 'à¥©', 'à¥ª', 'à¥«', 'à¥¬', 'à¥­', 'à¥®', 'à¥¯')
             number.toString().map { char ->
                 if (char.isDigit()) nepaliDigits[char.digitToInt()] else char
             }.joinToString("")
@@ -698,7 +698,7 @@ private fun formatPercentage(value: Double, language: Language): String {
     return when (language) {
         Language.ENGLISH -> "$formatted%"
         Language.NEPALI -> {
-            val nepaliDigits = charArrayOf('०', '१', '२', '३', '४', '५', '६', '७', '८', '९')
+            val nepaliDigits = charArrayOf('à¥¦', 'à¥§', 'à¥¨', 'à¥©', 'à¥ª', 'à¥«', 'à¥¬', 'à¥­', 'à¥®', 'à¥¯')
             val nepaliNumber = formatted.map { char ->
                 when {
                     char.isDigit() -> nepaliDigits[char.digitToInt()]
@@ -810,6 +810,7 @@ private fun getLocalizedStrength(strength: YogaStrength, language: Language): St
     }
     return stringResource(key)
 }
+
 
 
 

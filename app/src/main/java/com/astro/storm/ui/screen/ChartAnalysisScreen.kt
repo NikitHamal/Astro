@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import android.content.Context
 import androidx.compose.animation.*
@@ -14,7 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -206,7 +206,7 @@ private fun ChartAnalysisTopBar(
     chartName: String,
     onBack: () -> Unit
 ) {
-    ScreenTopBar(
+    NeoVedicPageHeader(
                 title = stringResource(StringKeyAnalysis.ANALYSIS_CHART_ANALYSIS),
                 subtitle = chartName,
                 onBack = onBack
@@ -231,7 +231,7 @@ private fun AnalysisTabBar(
         AnalysisTab.entries.forEach { tab ->
             val isSelected = tab == selectedTab
 
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = isSelected,
                 onClick = { onTabSelected(tab) },
                 label = {
@@ -441,6 +441,8 @@ private fun DeepPredictionsTabContentWrapper(chart: VedicChart) {
         )
     }
 }
+
+
 
 
 

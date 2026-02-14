@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -19,7 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -105,7 +105,7 @@ fun PredictionsScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = StringResources.get(StringKey.FEATURE_PREDICTIONS, language),
                 onBack = onBack
             )
@@ -1071,7 +1071,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("• ", color = areaColor)
+                                Text("â€¢ ", color = areaColor)
                                 Text(
                                     factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -2028,6 +2028,7 @@ private fun getEnergyColor(energy: Int): Color = when {
 
 @Composable
 private fun getPlanetColor(planet: Planet): Color = AppTheme.getPlanetColor(planet)
+
 
 
 

@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -15,7 +15,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -115,7 +115,7 @@ fun LalKitabRemediesScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.LAL_KITAB_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.LAL_KITAB_SCREEN_SUBTITLE),
                 onBack = onBack,
@@ -276,7 +276,7 @@ private fun TabSelector(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(tabs.size) { index ->
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedIndex == index,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -452,7 +452,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "House ${affliction.house} • $afflictionTypeName",
+                            "House ${affliction.house} â€¢ $afflictionTypeName",
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -491,7 +491,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("•", color = AppTheme.TextMuted, fontSize = 12.sp)
+                                Text("â€¢", color = AppTheme.TextMuted, fontSize = 12.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -647,7 +647,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     verticalAlignment = Alignment.Top
                 ) {
-                    Text("•", color = AppTheme.AccentGold, fontSize = 14.sp)
+                    Text("â€¢", color = AppTheme.AccentGold, fontSize = 14.sp)
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         rec,
@@ -853,7 +853,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("•", color = AppTheme.WarningColor, fontSize = 12.sp)
+                                Text("â€¢", color = AppTheme.WarningColor, fontSize = 12.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -1278,6 +1278,8 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
         }
     }
 }
+
+
 
 
 

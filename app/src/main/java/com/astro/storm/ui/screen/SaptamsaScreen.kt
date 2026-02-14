@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -14,7 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -43,7 +43,10 @@ import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.SanthanaYoga
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.D7LagnaAnalysis
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.FifthHouseAnalysis
 import com.astro.storm.ephemeris.varga.SaptamsaAnalyzer.JupiterAnalysis
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import com.astro.storm.core.common.StringKey
@@ -92,7 +95,7 @@ fun SaptamsaScreen(
 
     Scaffold(
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = StringResources.get(StringKeySaptamsa.TITLE, language),
                 subtitle = StringResources.get(StringKeySaptamsa.SUBTITLE, language),
                 onBack = onBack
@@ -125,28 +128,27 @@ private fun SaptamsaContent(
         StringResources.get(StringKeySaptamsa.TAB_FERTILITY, language),
         StringResources.get(StringKeySaptamsa.TAB_YOGAS, language)
     )
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
+    }
 
     Column(modifier = modifier.fillMaxSize()) {
-        // Tabs
-        TabRow(
-            selectedTabIndex = selectedTab,
-            containerColor = AppTheme.CardBackground,
-            contentColor = AppTheme.AccentPrimary
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(
-                    selected = selectedTab == index,
-                    onClick = { selectedTab = index },
-                    text = {
-                        Text(
-                            text = title,
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
-                        )
-                    }
-                )
-            }
-        }
+        ModernPillTabRow(
+            tabs = tabItems,
+            selectedIndex = selectedTab,
+            onTabSelected = { selectedTab = it },
+            modifier = Modifier.padding(
+                horizontal = NeoVedicTokens.ScreenPadding,
+                vertical = NeoVedicTokens.SpaceXS
+            )
+        )
 
         // Tab Content
         when (selectedTab) {
@@ -783,7 +785,7 @@ private fun ChildIndicationCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.timingIndicators.forEach { timing ->
                     Text(
-                        text = "• $timing",
+                        text = "â€¢ $timing",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -801,7 +803,7 @@ private fun ChildIndicationCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.careerIndications.forEach { career ->
                     Text(
-                        text = "• ${StringResources.get(career, language)}",
+                        text = "â€¢ ${StringResources.get(career, language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -819,7 +821,7 @@ private fun ChildIndicationCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.healthIndications.forEach { health ->
                     Text(
-                        text = "• ${StringResources.get(health, language)}",
+                        text = "â€¢ ${StringResources.get(health, language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -1384,6 +1386,7 @@ private fun getStrengthColor(strength: Double): Color {
         else -> AppTheme.WarningColor
     }
 }
+
 
 
 

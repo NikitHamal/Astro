@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -700,7 +700,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                     }
                 }
                 Text(
-                    "${transit.transitSign.getLocalizedName(language)} • ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
+                    "${transit.transitSign.getLocalizedName(language)} â€¢ ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
                     fontSize = 12.sp,
                     color = AppTheme.TextMuted
                 )
@@ -914,7 +914,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                         modifier = Modifier.padding(vertical = 2.dp),
                         verticalAlignment = Alignment.Top
                     ) {
-                        Text("•", color = strengthColor, fontSize = 12.sp)
+                        Text("â€¢", color = strengthColor, fontSize = 12.sp)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             effect,
@@ -956,7 +956,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = selectedReference == TransitReference.MOON,
                     onClick = { selectedReference = TransitReference.MOON },
                     label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_MOON)) },
@@ -966,7 +966,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                     )
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = selectedReference == TransitReference.LAGNA,
                     onClick = { selectedReference = TransitReference.LAGNA },
                     label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_LAGNA)) },
@@ -1034,7 +1034,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "${transit.transitSign.getLocalizedName(language)} ${String.format("%.1f", transit.transitDegree)}°",
+                            "${transit.transitSign.getLocalizedName(language)} ${String.format("%.1f", transit.transitDegree)}Â°",
                             fontSize = 12.sp,
                             color = AppTheme.TextMuted
                         )
@@ -1095,7 +1095,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("•", color = AppTheme.TextMuted, fontSize = 12.sp)
+                                Text("â€¢", color = AppTheme.TextMuted, fontSize = 12.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -1221,7 +1221,7 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    "${transit.planet.getLocalizedName(language)} → ${transit.targetSign.getLocalizedName(language)}",
+                    "${transit.planet.getLocalizedName(language)} â†’ ${transit.targetSign.getLocalizedName(language)}",
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1267,6 +1267,7 @@ private fun getHouseName(house: Int, language: Language): String {
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: "House $house"
 }
+
 
 
 

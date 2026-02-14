@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -15,7 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -111,7 +111,7 @@ fun ArgalaScreen(
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
         topBar = {
-            ScreenTopBar(
+            NeoVedicPageHeader(
                 title = stringResource(StringKeyDosha.ARGALA_TITLE),
                 subtitle = chart.birthData.name,
                 onBack = onBack,
@@ -227,7 +227,7 @@ private fun ArgalaTabSelector(
     ) {
         items(tabs.size) { index ->
             val isSelected = selectedTab == index
-            FilterChip(
+            com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = isSelected,
                 onClick = { onTabSelected(index) },
                 label = {
@@ -1329,7 +1329,7 @@ private fun ArgalaPlanetsTab(
                 val isSelected = selectedPlanet == planet
                 val result = analysis.planetArgalas[planet]
 
-                FilterChip(
+                com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = isSelected,
                     onClick = { onSelectPlanet(planet) },
                     label = {
@@ -1634,6 +1634,8 @@ private fun getHouseName(house: Int, language: Language): String {
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: ""
 }
+
+
 
 
 
