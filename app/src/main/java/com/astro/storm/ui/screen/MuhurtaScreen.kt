@@ -163,9 +163,25 @@ private sealed interface SearchUiState {
 
 @Stable
 private object MuhurtaFormatters {
-    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d, yyyy", Locale.getDefault())
-    val shortDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d", Locale.getDefault())
-    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.getDefault())
+    private fun locale(language: com.astro.storm.core.common.Language): Locale {
+        return if (language == com.astro.storm.core.common.Language.NEPALI) {
+            Locale.forLanguageTag("ne-NP")
+        } else {
+            Locale.ENGLISH
+        }
+    }
+
+    fun dateFormatter(language: com.astro.storm.core.common.Language): DateTimeFormatter {
+        return DateTimeFormatter.ofPattern("EEE, MMM d, yyyy", locale(language))
+    }
+
+    fun shortDateFormatter(language: com.astro.storm.core.common.Language): DateTimeFormatter {
+        return DateTimeFormatter.ofPattern("EEE, MMM d", locale(language))
+    }
+
+    fun timeFormatter(language: com.astro.storm.core.common.Language): DateTimeFormatter {
+        return DateTimeFormatter.ofPattern("h:mm a", locale(language))
+    }
 }
 
 private enum class InauspiciousSeverity { HIGH, MEDIUM, LOW }
@@ -487,7 +503,7 @@ private fun DateSelectorBar(
                 Spacer(modifier = Modifier.width(8.dp))
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = selectedDate.format(MuhurtaFormatters.dateFormatter),
+                        text = selectedDate.format(MuhurtaFormatters.dateFormatter(currentLanguage())),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -777,7 +793,7 @@ private fun PanchangaCard(muhurta: MuhurtaDetails) {
                     )
                     PanchangaItem(
                         label = stringResource(StringKeyMatch.MUHURTA_SUNRISE_SUNSET),
-                        value = "${muhurta.sunrise.format(MuhurtaFormatters.timeFormatter)} - ${muhurta.sunset.format(MuhurtaFormatters.timeFormatter)}",
+                        value = "${muhurta.sunrise.format(MuhurtaFormatters.timeFormatter(currentLanguage()))} - ${muhurta.sunset.format(MuhurtaFormatters.timeFormatter(currentLanguage()))}",
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -1057,7 +1073,7 @@ private fun InauspiciousPeriodRow(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        "${startTime.format(MuhurtaFormatters.timeFormatter)} - ${endTime.format(MuhurtaFormatters.timeFormatter)}",
+                        "${startTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))} - ${endTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))}",
                         style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextSecondary
@@ -1222,7 +1238,7 @@ private fun ChoghadiyaRow(
             }
 
             Text(
-                "${choghadiya.startTime.format(MuhurtaFormatters.timeFormatter)} - ${choghadiya.endTime.format(MuhurtaFormatters.timeFormatter)}",
+                "${choghadiya.startTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))} - ${choghadiya.endTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))}",
                 style = MaterialTheme.typography.labelMedium,
                 color = AppTheme.TextMuted
             )
@@ -1696,7 +1712,7 @@ private fun DatePickerButton(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                date.format(MuhurtaFormatters.shortDateFormatter),
+                date.format(MuhurtaFormatters.shortDateFormatter(currentLanguage())),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
@@ -1933,7 +1949,7 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        result.dateTime.format(MuhurtaFormatters.shortDateFormatter),
+                        result.dateTime.format(MuhurtaFormatters.shortDateFormatter(currentLanguage())),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
@@ -1948,7 +1964,7 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            result.dateTime.format(MuhurtaFormatters.timeFormatter),
+                            result.dateTime.format(MuhurtaFormatters.timeFormatter(currentLanguage())),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.AccentPrimary

@@ -250,3 +250,8 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `DrigDashaScreen.kt`: replaced inline pattern allocation sites with shared locale-aware formatter helpers (`long`, `month-year`, `short` variants).
     - `ShoolaDashaScreen.kt`: replaced inline month-year formatters in current/period/vulnerability cards with shared language-aware formatter helper.
   - Confirmed no regression in style/nav static checks after the batch.
+- v3.7 (2026-02-14)
+  - Continued Wave A/B formatter-localization hardening:
+    - `MuhurtaScreen.kt`: replaced static `Locale.getDefault()` formatter constants with language-aware formatter functions keyed to app language (`en`/`ne`).
+    - `VarshaphalaScreen.kt`: made full/short date and time formatters explicitly locale-aware in solar return, key dates, and mudda dasha period cards.
+  - Static consistency/typography gates remained green after this batch.

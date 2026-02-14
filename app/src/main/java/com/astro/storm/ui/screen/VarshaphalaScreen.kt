@@ -65,6 +65,7 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.min
@@ -492,8 +493,9 @@ private fun OverviewTab(result: VarshaphalaResult) {
 
 @Composable
 private fun SolarReturnCard(result: VarshaphalaResult) {
-    val dateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_FULL))
-    val timeFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_TIME_FULL))
+    val locale = varshaphalaLocale()
+    val dateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_FULL), locale)
+    val timeFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_TIME_FULL), locale)
 
     Card(
         modifier = Modifier
@@ -1498,8 +1500,9 @@ private fun MonthsCard(result: VarshaphalaResult) {
 @Composable
 private fun KeyDatesCard(result: VarshaphalaResult) {
     var isExpanded by remember { mutableStateOf(false) }
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
-    val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT))
+    val locale = varshaphalaLocale()
+    val dateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_FULL), locale)
+    val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT), locale)
 
     Card(
         modifier = Modifier
@@ -2023,7 +2026,8 @@ private fun DashaHeader() {
 
 @Composable
 private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
-    val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT))
+    val locale = varshaphalaLocale()
+    val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT), locale)
     var isExpanded by remember { mutableStateOf(period.isCurrent) }
 
     Card(
@@ -2399,6 +2403,18 @@ private fun getZodiacSymbol(sign: ZodiacSign): String {
         ZodiacSign.CAPRICORN -> "\u2651"
         ZodiacSign.AQUARIUS -> "\u2652"
         ZodiacSign.PISCES -> "\u2653"
+    }
+}
+
+@Composable
+private fun varshaphalaLocale(): Locale {
+    val language = currentLanguage()
+    return remember(language) {
+        if (language == com.astro.storm.core.common.Language.NEPALI) {
+            Locale.forLanguageTag("ne-NP")
+        } else {
+            Locale.ENGLISH
+        }
     }
 }
 
