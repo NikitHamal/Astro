@@ -883,7 +883,8 @@ private fun MahadashaTimelineCard(
 @Composable
 private fun AntardashaRow(antardasha: AshtottariAntardasha) {
     val language = LocalLanguage.current
-    val dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yy")
+    val locale = if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+    val dateFormatter = remember(language) { DateTimeFormatter.ofPattern("dd/MM/yy", locale) }
 
     Row(
         modifier = Modifier

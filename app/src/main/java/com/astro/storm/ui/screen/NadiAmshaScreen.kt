@@ -39,6 +39,8 @@ import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.text.style.TextOverflow
 
+private val nadiTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NadiAmshaScreen(
@@ -309,7 +311,7 @@ private fun RectificationHeader(chart: VedicChart) {
             color = AppTheme.TextPrimary
         )
         Text(
-            "${stringResource(StringKeyAdvanced.NADI_CURRENT_TIME)}: ${chart.birthData.dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}",
+            "${stringResource(StringKeyAdvanced.NADI_CURRENT_TIME)}: ${chart.birthData.dateTime.format(nadiTimeFormatter)}",
             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextMuted
         )
@@ -338,7 +340,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
             Column(modifier = Modifier.weight(1f)) {
                 val sign = if(candidate.timeAdjustmentMinutes > 0) "+" else ""
                 Text(
-                    "${sign}${candidate.timeAdjustmentMinutes} ${stringResource(StringKeyAdvanced.MIN_LABEL)}  (${candidate.adjustedTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))})",
+                    "${sign}${candidate.timeAdjustmentMinutes} ${stringResource(StringKeyAdvanced.MIN_LABEL)}  (${candidate.adjustedTime.format(nadiTimeFormatter)})",
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )

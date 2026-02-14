@@ -76,6 +76,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
@@ -93,6 +94,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+private fun gocharaLocale(language: Language): Locale =
+    if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+
+private fun gocharaFullDateFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMMM d, yyyy", gocharaLocale(language))
 
 /**
  * Gochara Vedha Screen - Displays transit obstruction analysis
@@ -922,6 +930,7 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
 
 @Composable
 private fun ForecastSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalysis) {
+    val language = LocalLanguage.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -955,7 +964,7 @@ private fun ForecastSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalys
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "${stringResource(StringKeyAnalysis.EXPORT_GENERATED)} ${analysis.analysisDate.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))}",
+                    text = "${stringResource(StringKeyAnalysis.EXPORT_GENERATED)} ${analysis.analysisDate.format(gocharaFullDateFormatter(language))}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextMuted,
                     textAlign = TextAlign.Center

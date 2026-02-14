@@ -89,6 +89,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlinx.coroutines.delay
 
 /**
@@ -108,6 +109,23 @@ enum class PanchangaViewType(val titleKey: StringKey) {
     BIRTH(StringKey.TAB_BIRTH_DAY),
     ELEMENTS(StringKey.TAB_ELEMENTS)
 }
+
+private fun panchangaLocale(language: Language): Locale {
+    return if (language == Language.NEPALI) {
+        Locale.forLanguageTag("ne-NP")
+    } else {
+        Locale.ENGLISH
+    }
+}
+
+private fun panchangaFullDateFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMMM dd, yyyy", panchangaLocale(language))
+
+private fun panchangaBirthDateFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM dd, yyyy", panchangaLocale(language))
+
+private fun panchangaTimeFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("h:mm a", panchangaLocale(language))
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -313,6 +331,7 @@ private fun TodaySummaryCard(
     panchanga: PanchangaData,
     todayDate: LocalDate
 ) {
+    val language = LocalLanguage.current
     val dayOfWeek = todayDate.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() }
 
     Surface(
@@ -336,7 +355,7 @@ private fun TodaySummaryCard(
             ) {
                 Column {
                     Text(
-                        text = todayDate.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")),
+                        text = todayDate.format(panchangaFullDateFormatter(language)),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -604,6 +623,8 @@ private fun PanchangaLimbRow(
 private fun AuspiciousTimingCard(
     panchanga: PanchangaData
 ) {
+    val language = LocalLanguage.current
+    val timeFormatter = panchangaTimeFormatter(language)
     val inauspicious = remember(panchanga.vara, panchanga.sunriseTime, panchanga.sunsetTime) {
         MuhurtaTimeSegmentCalculator.calculateInauspiciousPeriods(
             vara = panchanga.vara.toMuhurtaVara(),
@@ -636,7 +657,7 @@ private fun AuspiciousTimingCard(
             // Rahu Kaal - calculated from sunrise/sunset
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_RAHU),
-                value = "${inauspicious.rahukala.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${inauspicious.rahukala.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
+                value = "${inauspicious.rahukala.startTime.format(timeFormatter)} - ${inauspicious.rahukala.endTime.format(timeFormatter)}",
                 isInauspicious = true
             )
 
@@ -645,7 +666,7 @@ private fun AuspiciousTimingCard(
             // Yamagandam
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_YAMAGANDAM),
-                value = "${inauspicious.yamaghanta.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${inauspicious.yamaghanta.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
+                value = "${inauspicious.yamaghanta.startTime.format(timeFormatter)} - ${inauspicious.yamaghanta.endTime.format(timeFormatter)}",
                 isInauspicious = true
             )
 
@@ -654,7 +675,7 @@ private fun AuspiciousTimingCard(
             // Gulika Kaal
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_GULIKA),
-                value = "${inauspicious.gulikaKala.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${inauspicious.gulikaKala.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
+                value = "${inauspicious.gulikaKala.startTime.format(timeFormatter)} - ${inauspicious.gulikaKala.endTime.format(timeFormatter)}",
                 isInauspicious = true
             )
 
@@ -663,7 +684,7 @@ private fun AuspiciousTimingCard(
             // Abhijit Muhurta
             TimingRow(
                 label = stringResource(StringKeyDosha.PANCHANGA_ABHIJIT),
-                value = "${abhijit.startTime.format(DateTimeFormatter.ofPattern("h:mm a"))} - ${abhijit.endTime.format(DateTimeFormatter.ofPattern("h:mm a"))}",
+                value = "${abhijit.startTime.format(timeFormatter)} - ${abhijit.endTime.format(timeFormatter)}",
                 isInauspicious = false
             )
         }
@@ -871,6 +892,7 @@ private fun BirthSummaryCard(
     panchanga: PanchangaData,
     chart: VedicChart
 ) {
+    val language = LocalLanguage.current
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -950,7 +972,7 @@ private fun BirthSummaryCard(
                             )
                             Text(
                                 text = chart.birthData.dateTime.format(
-                                    DateTimeFormatter.ofPattern("MMM dd, yyyy")
+                                    panchangaBirthDateFormatter(language)
                                 ),
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.SemiBold,
@@ -967,7 +989,7 @@ private fun BirthSummaryCard(
                             )
                             Text(
                                 text = chart.birthData.dateTime.format(
-                                    DateTimeFormatter.ofPattern("hh:mm a")
+                                    panchangaTimeFormatter(language)
                                 ),
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.SemiBold,

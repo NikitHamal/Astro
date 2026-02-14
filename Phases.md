@@ -255,3 +255,10 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `MuhurtaScreen.kt`: replaced static `Locale.getDefault()` formatter constants with language-aware formatter functions keyed to app language (`en`/`ne`).
     - `VarshaphalaScreen.kt`: made full/short date and time formatters explicitly locale-aware in solar return, key dates, and mudda dasha period cards.
   - Static consistency/typography gates remained green after this batch.
+- v3.8 (2026-02-14)
+  - Extended locale-safe formatter cleanup across additional wave screens:
+    - `panchanga/PanchangaScreenRedesigned.kt`: centralized full-date, birth-date, and time formatting helpers with explicit `en`/`ne` locale mapping; replaced inline timing/date formatter calls in summary and timing sections.
+    - `GocharaVedhaScreen.kt`: made forecast generation date locale-aware via shared formatter helper.
+    - `AshtottariDashaScreen.kt`: localized antardasha compact date formatter with language-aware locale.
+    - `NadiAmshaScreen.kt`: consolidated repeated `HH:mm:ss` pattern into shared formatter constant for consistency.
+  - Static style/nav gates remained unchanged after the batch.
