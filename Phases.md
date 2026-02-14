@@ -224,3 +224,9 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
   - Completed targeted follow-up fixes in:
     - `ChartInputScreen.kt` (`prime`/`double-prime` parsing symbols)
     - `SynastryScreen.kt` (aspect glyph symbol map)
+- v3.2 (2026-02-14)
+  - Localized remaining Arudha mixed-language UI fragments in `ArudhaPadaScreen.kt`:
+    - Added localized connector and lord/sign template usage.
+    - Replaced hardcoded key-Arudha description list with string-key backed descriptions.
+  - Removed residual hardcoded English weekday literals in `RemediesScreen.kt` weekly schedule wiring by switching from `Triple` literals to localized `(Planet, label)` pairs.
+  - Added supporting string keys in `StringKeyDosha` for new Arudha description/template text.

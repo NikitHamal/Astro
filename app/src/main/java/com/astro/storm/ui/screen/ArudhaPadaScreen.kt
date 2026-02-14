@@ -762,7 +762,11 @@ private fun ArudhaPadaCard(
                 }
 
                 Text(
-                    text = "\u2022 Lord: ${arudha.houseLord.displayName} in ${arudha.houseLordSign.displayName}",
+                    text = "\u2022 " + stringResource(
+                        StringKeyDosha.ARUDHA_LORD_IN_SIGN,
+                        arudha.houseLord.displayName,
+                        arudha.houseLordSign.displayName
+                    ),
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -989,7 +993,7 @@ private fun YogaCard(yoga: ArudhaYoga) {
                     }
                 }
                 Text(
-                    text = "in",
+                    text = stringResource(StringKeyDosha.ARUDHA_IN_CONNECTOR),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.align(Alignment.CenterVertically)
@@ -1202,11 +1206,11 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                     )
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         listOf(
-                            "AL (A1)" to "Arudha Lagna - Your public image and status",
-                            "A7" to "Darapada - Business and partnerships",
-                            "A10" to "Rajya Pada - Career manifestation",
-                            "A11" to "Labha Pada - Gains and desires",
-                            "UL (A12)" to "Upapada - Spouse characteristics"
+                            "AL (A1)" to stringResource(StringKeyDosha.ARUDHA_KEY_AL_DESC),
+                            "A7" to stringResource(StringKeyDosha.ARUDHA_KEY_A7_DESC),
+                            "A10" to stringResource(StringKeyDosha.ARUDHA_KEY_A10_DESC),
+                            "A11" to stringResource(StringKeyDosha.ARUDHA_KEY_A11_DESC),
+                            "UL (A12)" to stringResource(StringKeyDosha.ARUDHA_KEY_UL_DESC)
                         ).forEach { (name, desc) ->
                             Row {
                                 Text(

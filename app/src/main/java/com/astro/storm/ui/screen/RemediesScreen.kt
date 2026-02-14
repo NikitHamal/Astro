@@ -658,17 +658,17 @@ private fun EssentialRemedyRow(remedy: Remedy) {
 @Composable
 private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
     val weekDays = listOf(
-        Triple(Planet.SUN, "Sunday", stringResource(StringKeyMatch.DAY_SUNDAY)),
-        Triple(Planet.MOON, "Monday", stringResource(StringKeyMatch.DAY_MONDAY)),
-        Triple(Planet.MARS, "Tuesday", stringResource(StringKeyMatch.DAY_TUESDAY)),
-        Triple(Planet.MERCURY, "Wednesday", stringResource(StringKeyMatch.DAY_WEDNESDAY)),
-        Triple(Planet.JUPITER, "Thursday", stringResource(StringKeyMatch.DAY_THURSDAY)),
-        Triple(Planet.VENUS, "Friday", stringResource(StringKeyMatch.DAY_FRIDAY)),
-        Triple(Planet.SATURN, "Saturday", stringResource(StringKeyMatch.DAY_SATURDAY))
+        Planet.SUN to stringResource(StringKeyMatch.DAY_SUNDAY),
+        Planet.MOON to stringResource(StringKeyMatch.DAY_MONDAY),
+        Planet.MARS to stringResource(StringKeyMatch.DAY_TUESDAY),
+        Planet.MERCURY to stringResource(StringKeyMatch.DAY_WEDNESDAY),
+        Planet.JUPITER to stringResource(StringKeyMatch.DAY_THURSDAY),
+        Planet.VENUS to stringResource(StringKeyMatch.DAY_FRIDAY),
+        Planet.SATURN to stringResource(StringKeyMatch.DAY_SATURDAY)
     )
 
     val remediesByPlanet = remember(result) {
-        weekDays.associate { (planet, _, _) ->
+        weekDays.associate { (planet, _) ->
             planet to result.remedies.filter { it.planet == planet }
         }
     }
@@ -710,7 +710,7 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(weekDays, key = { it.first }) { (planet, _, localizedDay) ->
+                items(weekDays, key = { it.first }) { (planet, localizedDay) ->
                     val remedyCount = remediesByPlanet[planet]?.size ?: 0
                     WeekDayChip(
                         day = localizedDay.take(3),
