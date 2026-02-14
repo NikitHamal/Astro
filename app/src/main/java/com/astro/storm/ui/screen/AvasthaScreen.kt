@@ -678,7 +678,7 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${avastha.sign.displayName} at ${String.format("%.1f", avastha.degree)}Â°",
+                            text = "${avastha.sign.displayName} at ${String.format("%.1f", avastha.degree)}\u00B0",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1398,6 +1398,7 @@ private fun getLajjitadiColor(avastha: AvasthaCalculator.LajjitadiAvastha): Colo
         AvasthaCalculator.LajjitadiAvastha.KSHOBHITA -> AppTheme.ErrorColor
     }
 }
+
 
 
 

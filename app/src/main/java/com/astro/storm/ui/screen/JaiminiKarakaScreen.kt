@@ -712,7 +712,7 @@ private fun KarakenshiYogaCard(
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    text = "â€¢ ${yoga.effects}",
+                    text = "\u2022 ${yoga.effects}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -837,7 +837,7 @@ private fun AtmakarakaAnalysisCard(
                         color = planetColor
                     )
                     Text(
-                        text = "in ${ak.sign.getLocalizedName(language)} at ${String.format("%.2f", ak.degreeInSign)}Â°",
+                        text = "in ${ak.sign.getLocalizedName(language)} at ${String.format("%.2f", ak.degreeInSign)}\u00B0",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary
                     )
@@ -1061,6 +1061,7 @@ private fun getPlanetColorSS(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
+
 
 
 

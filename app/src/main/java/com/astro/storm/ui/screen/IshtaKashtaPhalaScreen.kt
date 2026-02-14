@@ -558,7 +558,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                     color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
-                                        text = "â†‘",
+                                        text = "\u2191",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = AppTheme.SuccessColor,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
@@ -571,7 +571,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                     color = AppTheme.ErrorColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
-                                        text = "â†“",
+                                        text = "\u2193",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = AppTheme.ErrorColor,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
@@ -593,7 +593,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                             }
                         }
                         Text(
-                            text = "${phala.sign.getLocalizedName(language)} â€¢ H${phala.house}",
+                            text = "${phala.sign.getLocalizedName(language)} \u2022 H${phala.house}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1020,7 +1020,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                         )
                         period.expectedBenefits.forEach { benefit ->
                             Text(
-                                text = "â€¢ $benefit",
+                                text = "\u2022 $benefit",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -1037,7 +1037,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                         )
                         period.expectedChallenges.forEach { challenge ->
                             Text(
-                                text = "â€¢ $challenge",
+                                text = "\u2022 $challenge",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -1216,6 +1216,7 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

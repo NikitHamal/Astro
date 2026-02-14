@@ -448,7 +448,7 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("âœ“", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
+                        Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -1099,6 +1099,7 @@ private fun BadhakaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

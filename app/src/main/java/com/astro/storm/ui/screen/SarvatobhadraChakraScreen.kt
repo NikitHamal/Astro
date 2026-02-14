@@ -282,7 +282,7 @@ private fun BirthNakshatraCard(analysis: SarvatobhadraChakraCalculator.Sarvatobh
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "Pada ${analysis.birthPada} â€¢ ${analysis.birthNakshatra.ruler.displayName}",
+                    text = "Pada ${analysis.birthPada} \u2022 ${analysis.birthNakshatra.ruler.displayName}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -438,7 +438,7 @@ private fun KeyInsightsCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhadr
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "â€¢",
+                        text = "\u2022",
                         color = AppTheme.AccentGold,
                         fontWeight = FontWeight.Bold
                     )
@@ -800,7 +800,7 @@ private fun VedhaCard(vedha: SarvatobhadraChakraCalculator.NakshatraVedha) {
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${vedha.vedhaType.displayName} â€¢ ${vedha.effect.displayName}",
+                            text = "${vedha.vedhaType.displayName} \u2022 ${vedha.effect.displayName}",
                             style = MaterialTheme.typography.labelSmall,
                             color = effectColor
                         )
@@ -1043,6 +1043,7 @@ private fun SarvatobhadraInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

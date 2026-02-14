@@ -469,7 +469,7 @@ private fun GocharaResultRow(result: TransitAnalyzer.GocharaResult) {
                         color = ChartDetailColors.TextPrimary
                     )
                     Text(
-                        text = " â€¢ ${stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, result.houseFromMoon)}",
+                        text = " \u2022 ${stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, result.houseFromMoon)}",
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         color = ChartDetailColors.TextMuted
                     )
@@ -726,6 +726,7 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
         }
     }
 }
+
 
 
 

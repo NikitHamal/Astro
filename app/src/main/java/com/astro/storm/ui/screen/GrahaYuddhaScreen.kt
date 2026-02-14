@@ -596,7 +596,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "â€¢",
+                        text = "\u2022",
                         color = AppTheme.AccentPrimary
                     )
                     Text(
@@ -783,7 +783,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
             ) {
                 DetailChip(
                     label = stringResource(StringKeyDosha.GRAHA_SEPARATION),
-                    value = "${String.format("%.2f", war.separation)}Â°"
+                    value = "${String.format("%.2f", war.separation)}\u00B0"
                 )
                 DetailChip(
                     label = stringResource(StringKeyDosha.GRAHA_ADVANTAGE),
@@ -1266,6 +1266,7 @@ private fun GrahaYuddhaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

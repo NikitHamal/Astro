@@ -1061,7 +1061,7 @@ private fun EffectsCard(
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp)
                 ) {
-                    Text("â€¢", color = AppTheme.AccentPrimary, modifier = Modifier.padding(end = 8.dp))
+                    Text("\u2022", color = AppTheme.AccentPrimary, modifier = Modifier.padding(end = 8.dp))
                     Text(
                         effect,
                         color = AppTheme.TextSecondary,
@@ -1198,6 +1198,7 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
 
 
 

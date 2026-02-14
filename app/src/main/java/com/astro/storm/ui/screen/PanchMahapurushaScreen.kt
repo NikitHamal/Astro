@@ -441,7 +441,7 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "â€¢",
+                            text = "\u2022",
                             color = AppTheme.AccentGold,
                             fontWeight = FontWeight.Bold
                         )
@@ -515,7 +515,7 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("âœ¨", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                        Text("\u2728", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = synergy,
                             style = MaterialTheme.typography.bodySmall,
@@ -1119,6 +1119,7 @@ private fun getYogaColor(type: PanchMahapurushaYogaCalculator.MahapurushaYogaTyp
         PanchMahapurushaYogaCalculator.MahapurushaYogaType.SASHA -> AppTheme.PlanetSaturn
     }
 }
+
 
 
 

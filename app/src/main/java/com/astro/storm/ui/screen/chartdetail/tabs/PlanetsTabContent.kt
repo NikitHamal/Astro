@@ -438,7 +438,7 @@ private fun PlanetCardHeader(
                     color = ChartDetailColors.TextPrimary
                 )
                 Text(
-                    text = "${position.sign.localizedName()} â€¢ ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}",
+                    text = "${position.sign.localizedName()} \u2022 ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = ChartDetailColors.TextSecondary
                 )
@@ -649,6 +649,7 @@ private fun TapForDetailsHint() {
         )
     }
 }
+
 
 
 

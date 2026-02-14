@@ -661,7 +661,7 @@ private fun SandhiAlertRow(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${sandhi.fromPlanet.getLocalizedName(language)} â†’ ${sandhi.toPlanet.getLocalizedName(language)}",
+                    text = "${sandhi.fromPlanet.getLocalizedName(language)} \u2192 ${sandhi.toPlanet.getLocalizedName(language)}",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
@@ -694,7 +694,7 @@ private fun SandhiAlertRow(
                 if (!isWithinSandhi && daysUntil > 0) {
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "${formatDate(sandhi.sandhiStartDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} â€“ ${formatDate(sandhi.sandhiEndDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
+                        text = "${formatDate(sandhi.sandhiStartDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} \u2013 ${formatDate(sandhi.sandhiEndDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = ChartDetailColors.TextMuted.copy(alpha = 0.8f)
                     )
@@ -806,7 +806,7 @@ private fun DashaPeriodRow(
                 }
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = "$startDateFormatted â€“ $endDateFormatted",
+                    text = "$startDateFormatted \u2013 $endDateFormatted",
                     fontSize = (sizes.subFontSize.value - 1).sp,
                     color = ChartDetailColors.TextMuted,
                     maxLines = 1,
@@ -1106,7 +1106,7 @@ private fun DashaTimelineCard(
                         )
 
                         Text(
-                            text = "${formatDate(dasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)} â€“ ${formatDate(dasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)}",
+                            text = "${formatDate(dasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)} \u2013 ${formatDate(dasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)}",
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = if (isCurrent) ChartDetailColors.TextPrimary else ChartDetailColors.TextMuted,
                             modifier = Modifier.weight(1f)
@@ -1229,7 +1229,7 @@ private fun MahadashaCard(
                         }
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
-                            text = "${formatDurationYearsLocalized(mahadasha.durationYears, language)} â€¢ ${formatDate(mahadasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)} â€“ ${formatDate(mahadasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)}",
+                            text = "${formatDurationYearsLocalized(mahadasha.durationYears, language)} \u2022 ${formatDate(mahadasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)} \u2013 ${formatDate(mahadasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)}",
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.TextMuted,
                             maxLines = 1,
@@ -1239,7 +1239,7 @@ private fun MahadashaCard(
                             Spacer(modifier = Modifier.height(3.dp))
                             val percentComplete = String.format(java.util.Locale.ENGLISH, "%.1f", mahadasha.getProgressPercent(asOf))
                             Text(
-                                text = "${stringResource(StringKeyMatch.DASHA_PERCENT_COMPLETE, percentComplete)} â€¢ ${formatRemainingYearsLocalized(mahadasha.getRemainingYears(asOf), language)}",
+                                text = "${stringResource(StringKeyMatch.DASHA_PERCENT_COMPLETE, percentComplete)} \u2022 ${formatRemainingYearsLocalized(mahadasha.getRemainingYears(asOf), language)}",
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = ChartDetailColors.AccentTeal,
                                 fontWeight = FontWeight.Medium
@@ -1366,7 +1366,7 @@ private fun AntardashaRow(
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "${mahadashaPlanet.symbol}â€“${antardasha.planet.getLocalizedName(language)}",
+                        text = "${mahadashaPlanet.symbol}\u2013${antardasha.planet.getLocalizedName(language)}",
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
                         color = when {
@@ -1402,7 +1402,7 @@ private fun AntardashaRow(
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "${formatDate(antardasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} â€“ ${formatDate(antardasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
+                text = "${formatDate(antardasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} \u2013 ${formatDate(antardasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = ChartDetailColors.TextMuted
             )
@@ -1948,6 +1948,7 @@ private fun formatDehadashaDurationLocalized(durationMinutes: Long, language: La
         }
     }
 }
+
 
 
 

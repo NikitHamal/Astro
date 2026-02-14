@@ -488,7 +488,7 @@ private fun SummaryStatisticsCard(
                                 color = colors.TextMuted
                             )
                             Text(
-                                text = "${next.planet.getLocalizedName(language)} â†’ ${next.toSign.getLocalizedName(language)}",
+                                text = "${next.planet.getLocalizedName(language)} \u2192 ${next.toSign.getLocalizedName(language)}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Medium,
                                 color = colors.TextPrimary
@@ -1093,7 +1093,7 @@ private fun UpcomingTransitCard(
                         }
                     }
                     Text(
-                        text = "${transit.fromSign.getLocalizedName(language)} â†’ ${transit.toSign.getLocalizedName(language)}",
+                        text = "${transit.fromSign.getLocalizedName(language)} \u2192 ${transit.toSign.getLocalizedName(language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = colors.TextMuted
                     )
@@ -1400,7 +1400,7 @@ private fun PlanetDetailCardSS(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "â†’ ${transit.toSign.getLocalizedName(language)}",
+                                    text = "\u2192 ${transit.toSign.getLocalizedName(language)}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = colors.TextPrimary
                                 )
@@ -1780,6 +1780,7 @@ private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.storm.u
 }
 
 private data class TabInfo(val title: String)
+
 
 
 

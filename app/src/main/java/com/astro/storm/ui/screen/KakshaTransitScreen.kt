@@ -52,7 +52,7 @@ import java.time.format.DateTimeFormatter
 /**
  * Kakshya Transit Analysis Screen
  *
- * Displays micro-transit analysis where each sign is divided into 8 parts (3Â°45' each).
+ * Displays micro-transit analysis where each sign is divided into 8 parts (3\u00B045' each).
  * This system provides high-precision timing for planetary results based on Ashtakavarga.
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -817,6 +817,7 @@ private fun getQualityColor(quality: KakshaQuality): Color {
         KakshaQuality.POOR -> com.astro.storm.ui.theme.MarsRed
     }
 }
+
 
 
 

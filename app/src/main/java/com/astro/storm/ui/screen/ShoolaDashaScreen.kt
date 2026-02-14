@@ -597,7 +597,7 @@ private fun ShoolaQuickStats(result: ShoolaDashaResult) {
     ) {
         ShoolaStatCard(
             title = stringResource(StringKeyAdvanced.SHOOLA_DIRECTION),
-            value = if (result.dashaDirection == DashaDirection.DIRECT) "â†»" else "â†º",
+            value = if (result.dashaDirection == DashaDirection.DIRECT) "\u21BB" else "\u21BA",
             color = AppTheme.AccentPrimary,
             modifier = Modifier.weight(1f)
         )
@@ -973,7 +973,7 @@ private fun HealthConcernsCard(
                     modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("â€¢", color = getSeverityColor(period.healthSeverity))
+                    Text("\u2022", color = getSeverityColor(period.healthSeverity))
                     Text(
                         text = concern,
                         style = MaterialTheme.typography.bodySmall,
@@ -996,7 +996,7 @@ private fun HealthConcernsCard(
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("âœ“", color = AppTheme.AccentTeal)
+                        Text("\u2713", color = AppTheme.AccentTeal)
                         Text(
                             text = precaution,
                             style = MaterialTheme.typography.bodySmall,
@@ -1114,7 +1114,7 @@ private fun LongevityFactorsCard(
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        Text("âœ“", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                        Text("\u2713", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -1137,7 +1137,7 @@ private fun LongevityFactorsCard(
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
-                        Text("âš ", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                        Text("\u26A0", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -1441,6 +1441,7 @@ private fun getSeverityColor(severity: HealthSeverity): Color {
         HealthSeverity.NONE -> AppTheme.TextMuted
     }
 }
+
 
 
 

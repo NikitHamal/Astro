@@ -785,7 +785,7 @@ private fun ChildIndicationCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.timingIndicators.forEach { timing ->
                     Text(
-                        text = "â€¢ $timing",
+                        text = "\u2022 $timing",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -803,7 +803,7 @@ private fun ChildIndicationCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.careerIndications.forEach { career ->
                     Text(
-                        text = "â€¢ ${StringResources.get(career, language)}",
+                        text = "\u2022 ${StringResources.get(career, language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -821,7 +821,7 @@ private fun ChildIndicationCard(
                 Spacer(modifier = Modifier.height(8.dp))
                 indication.healthIndications.forEach { health ->
                     Text(
-                        text = "â€¢ ${StringResources.get(health, language)}",
+                        text = "\u2022 ${StringResources.get(health, language)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
@@ -1386,6 +1386,7 @@ private fun getStrengthColor(strength: Double): Color {
         else -> AppTheme.WarningColor
     }
 }
+
 
 
 

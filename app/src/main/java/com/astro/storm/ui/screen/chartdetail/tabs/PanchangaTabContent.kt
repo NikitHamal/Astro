@@ -973,7 +973,7 @@ private fun PanchangaInfoCard(
                             verticalAlignment = Alignment.Top
                         ) {
                             Text(
-                                text = "â€¢",
+                                text = "\u2022",
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 color = ChartDetailColors.AccentGold,
                                 modifier = Modifier.padding(end = 8.dp, top = 2.dp)
@@ -1045,6 +1045,7 @@ private fun getGanaColor(gana: String): Color {
         else -> ChartDetailColors.TextSecondary
     }
 }
+
 
 
 

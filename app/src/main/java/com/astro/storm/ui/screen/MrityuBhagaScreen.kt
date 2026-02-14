@@ -547,7 +547,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.actualDegree)}Â°",
+                            "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.actualDegree)}\u00B0",
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -581,7 +581,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    "${String.format("%.1f", result.mrityuBhagaDegree)}Â°",
+                    "${String.format("%.1f", result.mrityuBhagaDegree)}\u00B0",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
@@ -597,7 +597,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     color = AppTheme.TextMuted
                 )
                 Text(
-                    "${String.format("%.2f", result.distanceFromMrityuBhaga)}Â°",
+                    "${String.format("%.2f", result.distanceFromMrityuBhaga)}\u00B0",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = severityColor
@@ -623,7 +623,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u2022", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -749,7 +749,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                 color = AppTheme.TextMuted
             )
             Text(
-                stringResource(StringKeyDosha.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "Â°"),
+                stringResource(StringKeyDosha.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "\u00B0"),
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = severityColor
             )
@@ -772,7 +772,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u2022", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -816,7 +816,7 @@ private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Languag
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.degree)}Â°",
+                    "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.degree)}\u00B0",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
@@ -1065,7 +1065,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                                             modifier = Modifier.padding(vertical = 3.dp),
                                             verticalAlignment = Alignment.Top
                                         ) {
-                                            Text("â€¢", color = AppTheme.AccentPrimary, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14)
+                                            Text("\u2022", color = AppTheme.AccentPrimary, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14)
                                             Spacer(modifier = Modifier.width(8.dp))
                                             Text(
                                                 remedy,
@@ -1124,7 +1124,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                                     modifier = Modifier.padding(vertical = 3.dp),
                                     verticalAlignment = Alignment.Top
                                 ) {
-                                    Text("â€¢", color = AppTheme.AccentTeal, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14)
+                                    Text("\u2022", color = AppTheme.AccentTeal, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14)
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         remedy,
@@ -1200,6 +1200,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         }
     }
 }
+
 
 
 

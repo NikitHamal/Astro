@@ -298,13 +298,13 @@ enum class SynastryAspectType(
     val symbol: String,
     val maxOrb: Double
 ) {
-    CONJUNCTION("Conjunction", 0.0, AspectNature.MAJOR, "â˜Œ", 10.0),
-    OPPOSITION("Opposition", 180.0, AspectNature.CHALLENGING, "â˜", 10.0),
-    TRINE("Trine", 120.0, AspectNature.HARMONIOUS, "â–³", 8.0),
-    SQUARE("Square", 90.0, AspectNature.CHALLENGING, "â–¡", 8.0),
-    SEXTILE("Sextile", 60.0, AspectNature.HARMONIOUS, "âš¹", 6.0),
-    QUINCUNX("Quincunx", 150.0, AspectNature.MINOR, "âš»", 3.0),
-    SEMI_SEXTILE("Semi-Sextile", 30.0, AspectNature.MINOR, "âšº", 3.0);
+    CONJUNCTION("Conjunction", 0.0, AspectNature.MAJOR, "\u260C", 10.0),
+    OPPOSITION("Opposition", 180.0, AspectNature.CHALLENGING, "\u260D", 10.0),
+    TRINE("Trine", 120.0, AspectNature.HARMONIOUS, "\u25B3", 8.0),
+    SQUARE("Square", 90.0, AspectNature.CHALLENGING, "\u25A1", 8.0),
+    SEXTILE("Sextile", 60.0, AspectNature.HARMONIOUS, "\u26B9", 6.0),
+    QUINCUNX("Quincunx", 150.0, AspectNature.MINOR, "\u26BB", 3.0),
+    SEMI_SEXTILE("Semi-Sextile", 30.0, AspectNature.MINOR, "\u26BA", 3.0);
 
     fun getLocalizedName(language: Language): String = when (this) {
         CONJUNCTION -> com.astro.storm.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CONJUNCTION, language)
@@ -1354,7 +1354,7 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
 
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    String.format("%.1fÂ°", aspect.orb),
+                    String.format("%.1f\u00B0", aspect.orb),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextSecondary
@@ -1757,6 +1757,7 @@ private fun getCompatibilityColor(score: Double): Color {
         else -> AppTheme.ErrorColor
     }
 }
+
 
 
 

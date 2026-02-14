@@ -561,7 +561,7 @@ private fun YoginiPeriodRow(
                 }
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = "$startDateFormatted â€“ $endDateFormatted",
+                    text = "$startDateFormatted \u2013 $endDateFormatted",
                     fontSize = (subFontSize.value - 1).sp,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
@@ -1184,7 +1184,7 @@ private fun YoginiAntardashaRow(
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} â€“ ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
+                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} \u2013 ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = AppTheme.TextMuted
             )
@@ -1772,6 +1772,7 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
 
 
 

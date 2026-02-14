@@ -279,7 +279,7 @@ private fun BhriguBinduOverviewTab(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            String.format("%.2fÂ°", analysis.bhriguBindu),
+                            String.format("%.2f\u00B0", analysis.bhriguBindu),
                             style = MaterialTheme.typography.headlineLarge,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.AccentGold
@@ -311,7 +311,7 @@ private fun BhriguBinduOverviewTab(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            "(${String.format("%.2fÂ°", analysis.rahuLongitude)} + ${String.format("%.2fÂ°", analysis.moonLongitude)}) / 2",
+                            "(${String.format("%.2f\u00B0", analysis.rahuLongitude)} + ${String.format("%.2f\u00B0", analysis.moonLongitude)}) / 2",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
@@ -1246,7 +1246,7 @@ private fun TransitCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            String.format("%.2fÂ° from BB", transit.distanceFromBB),
+                            String.format("%.2f\u00B0 from BB", transit.distanceFromBB),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -1635,6 +1635,7 @@ private fun getRemedyPriorityColor(priority: RemedyPriority): Color = when (prio
     RemedyPriority.RECOMMENDED -> AppTheme.AccentGold
     RemedyPriority.OPTIONAL -> AppTheme.AccentTeal
 }
+
 
 
 

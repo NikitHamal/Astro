@@ -398,7 +398,7 @@ private fun OverviewTab(
                     analysis.overallAssessment.keyInsights.forEach { insight ->
                         Row(modifier = Modifier.padding(vertical = 4.dp)) {
                             Text(
-                                "â€¢",
+                                "\u2022",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = AppTheme.AccentPrimary,
                                 modifier = Modifier.padding(end = 8.dp)
@@ -1503,6 +1503,7 @@ private fun getLocalizedDignity(dignity: VargaDignity, language: Language): Stri
         VargaDignity.DEBILITATED -> StringResources.get(StringKeyDosha.DIGNITY_DEBILITATED, language)
     }
 }
+
 
 
 

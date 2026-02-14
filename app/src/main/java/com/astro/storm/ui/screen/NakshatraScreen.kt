@@ -1083,7 +1083,7 @@ private fun PlanetaryNakshatraCard(
                     Spacer(modifier = Modifier.height(6.dp))
                     NakshatraDetailRow(
                         label = stringResource(StringKeyDosha.NAKSHATRA_DEGREE_IN),
-                        value = String.format("%.2fÂ°", planetary.details.degreeInNakshatra)
+                        value = String.format("%.2f\u00B0", planetary.details.degreeInNakshatra)
                     )
                 }
             }
@@ -1440,6 +1440,7 @@ private fun NakshatraInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

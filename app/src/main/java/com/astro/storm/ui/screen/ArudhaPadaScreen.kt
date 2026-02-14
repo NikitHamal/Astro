@@ -606,7 +606,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "â€¢",
+                        text = "\u2022",
                         color = AppTheme.AccentPrimary
                     )
                     Text(
@@ -762,7 +762,7 @@ private fun ArudhaPadaCard(
                 }
 
                 Text(
-                    text = "â€¢ Lord: ${arudha.houseLord.displayName} in ${arudha.houseLordSign.displayName}",
+                    text = "\u2022 Lord: ${arudha.houseLord.displayName} in ${arudha.houseLordSign.displayName}",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1036,7 +1036,7 @@ private fun YogaCard(yoga: ArudhaYoga) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     yoga.recommendations.forEach { rec ->
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Text("â€¢", color = AppTheme.AccentPrimary, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                            Text("\u2022", color = AppTheme.AccentPrimary, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                             Text(
                                 text = rec,
                                 style = MaterialTheme.typography.labelSmall,
@@ -1262,6 +1262,7 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

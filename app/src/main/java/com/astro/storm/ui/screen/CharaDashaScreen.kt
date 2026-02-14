@@ -771,7 +771,7 @@ private fun InterpretationSection(
         items?.forEach { item ->
             Row(modifier = Modifier.padding(vertical = 2.dp)) {
                 Text(
-                    text = "â€¢ ",
+                    text = "\u2022 ",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.AccentGold
                 )
@@ -946,7 +946,7 @@ private fun KarakaCard(
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = String.format("%.2fÂ°", karaka.degreeInSign),
+                        text = String.format("%.2f\u00B0", karaka.degreeInSign),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.AccentGold
@@ -1120,7 +1120,7 @@ private fun CharaMahadashaCard(
                             }
                         }
                         Text(
-                            text = "${mahadasha.signLord.getLocalizedName(language)} â€¢ ${mahadasha.durationYears} ${stringResource(StringKeyMatch.MISC_YEARS)}",
+                            text = "${mahadasha.signLord.getLocalizedName(language)} \u2022 ${mahadasha.durationYears} ${stringResource(StringKeyMatch.MISC_YEARS)}",
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -1436,6 +1436,7 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
         }
     }
 }
+
 
 
 

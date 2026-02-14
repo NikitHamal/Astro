@@ -838,7 +838,7 @@ private fun AscendantRow(chart: VedicChart) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "${ascDegree.toInt()}Â°",
+                    text = "${ascDegree.toInt()}\u00B0",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = ChartDetailColors.TextSecondary
                 )
@@ -913,7 +913,7 @@ private fun ClickablePlanetPositionRow(
             )
 
             Text(
-                text = "${(position.longitude % 30.0).toInt()}Â°",
+                text = "${(position.longitude % 30.0).toInt()}\u00B0",
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = ChartDetailColors.TextSecondary,
                 modifier = Modifier.width(40.dp),
@@ -1054,7 +1054,7 @@ private fun HouseCuspItem(
                     color = ChartDetailColors.AccentTeal
                 )
                 Text(
-                    text = "${degreeInSign.toInt()}Â°",
+                    text = "${degreeInSign.toInt()}\u00B0",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = ChartDetailColors.TextMuted
                 )
@@ -1147,6 +1147,7 @@ private fun InfoRow(label: String, value: String) {
         )
     }
 }
+
 
 
 

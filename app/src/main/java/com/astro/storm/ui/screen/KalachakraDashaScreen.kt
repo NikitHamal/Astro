@@ -553,7 +553,7 @@ private fun SignPeriodRow(
 
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = "$startDateFormatted â€“ $endDateFormatted",
+                    text = "$startDateFormatted \u2013 $endDateFormatted",
                     fontSize = (subFontSize.value - 1).sp,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
@@ -916,7 +916,7 @@ private fun InterpretationCard(
 
                     result.interpretation.generalGuidance.forEach { guidance ->
                         Row(modifier = Modifier.padding(vertical = 4.dp)) {
-                            Text("â€¢ ", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
+                            Text("\u2022 ", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                             Text(
                                 text = guidance,
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
@@ -1394,7 +1394,7 @@ private fun RecommendationsCard(
                     verticalAlignment = Alignment.Top
                 ) {
                     Text(
-                        text = "â€¢",
+                        text = "\u2022",
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.AccentGold,
                         modifier = Modifier.padding(end = 10.dp, top = 2.dp)
@@ -1596,7 +1596,7 @@ private fun MahadashaCard(
                         }
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
-                            text = "${formatYearsLocalized(mahadasha.durationYears, language)} â€¢ ${mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY)} â€“ ${mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY)}",
+                            text = "${formatYearsLocalized(mahadasha.durationYears, language)} \u2022 ${mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY)} \u2013 ${mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY)}",
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
@@ -1605,7 +1605,7 @@ private fun MahadashaCard(
                         if (isCurrent) {
                             Spacer(modifier = Modifier.height(3.dp))
                             Text(
-                                text = "${String.format("%.1f", mahadasha.getProgressPercent(asOfDate))}% â€¢ ${formatRemainingYearsLocalized(mahadasha.getRemainingDays(asOfDate) / 365.25, language)}",
+                                text = "${String.format("%.1f", mahadasha.getProgressPercent(asOfDate))}% \u2022 ${formatRemainingYearsLocalized(mahadasha.getRemainingDays(asOfDate) / 365.25, language)}",
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.AccentTeal,
                                 fontWeight = FontWeight.Medium
@@ -1808,7 +1808,7 @@ private fun AntardashaRow(
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} â€“ ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
+                text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} \u2013 ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = AppTheme.TextMuted
             )
@@ -2159,6 +2159,7 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
 
 
 

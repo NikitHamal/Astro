@@ -381,17 +381,17 @@ fun ChartInputScreen(
 }
 
 /**
- * Parse coordinate string, removing common symbols like degree (Â°), apostrophe ('), etc.
- * Supports formats: "27.7", "27.7Â°", "27Â°42'", "-27.7", etc.
+ * Parse coordinate string, removing common symbols like degree (\u00B0), apostrophe ('), etc.
+ * Supports formats: "27.7", "27.7\u00B0", "27\u00B042'", "-27.7", etc.
  */
 private fun parseCoordinate(value: String): Double? {
     // Remove common coordinate symbols and whitespace
     val cleaned = value.trim()
-        .replace("Â°", "")
+        .replace("\u00B0", "")
         .replace("'", "")
         .replace("\"", "")
-        .replace("â€²", "")  // Unicode prime
-        .replace("â€³", "")  // Unicode double prime
+        .replace("\u2032", "")  // Unicode prime
+        .replace("\u2033", "")  // Unicode double prime
         .replace(",", ".")  // Handle comma as decimal separator
         .trim()
 
@@ -1029,6 +1029,7 @@ private fun GenderChip(
         }
     }
 }
+
 
 
 

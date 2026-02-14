@@ -633,7 +633,7 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${planetBala.strengthRating} â€¢ ${planetBala.ucchaBala.dignityType.displayName}",
+                            text = "${planetBala.strengthRating} \u2022 ${planetBala.ucchaBala.dignityType.displayName}",
                             style = MaterialTheme.typography.labelSmall,
                             color = scoreColor
                         )
@@ -789,6 +789,7 @@ private fun SthanaBalaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

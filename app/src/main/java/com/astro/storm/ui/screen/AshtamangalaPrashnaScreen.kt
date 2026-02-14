@@ -871,7 +871,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
                 )
                 reading.interpretation.positiveFactors.forEach { factor ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("âœ“", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                        Text("\u2713", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -891,7 +891,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
                 )
                 reading.interpretation.negativeFactors.forEach { factor ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("âš ", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                        Text("\u26A0", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -1120,7 +1120,7 @@ private fun AnalysisTab(reading: AshtamangalaReading) {
                         }
                         reading.interpretation.cautions.forEach { caution ->
                             Text(
-                                text = "â€¢ $caution",
+                                text = "\u2022 $caution",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary
                             )
@@ -1175,7 +1175,7 @@ private fun ChartValidationCard(validation: ChartValidation) {
             if (validation.conflictAreas.isNotEmpty()) {
                 validation.conflictAreas.forEach { conflict ->
                     Text(
-                        text = "âš  $conflict",
+                        text = "\u26A0 $conflict",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.WarningColor
                     )
@@ -1609,6 +1609,7 @@ private val Icons.Outlined.Temple: ImageVector
 
 private val Icons.Outlined.TempleHindu: ImageVector
     get() = Icons.Outlined.Church // Fallback
+
 
 
 

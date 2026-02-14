@@ -452,7 +452,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "House ${affliction.house} â€¢ $afflictionTypeName",
+                            "House ${affliction.house} \u2022 $afflictionTypeName",
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -491,7 +491,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u2022", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -647,7 +647,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     verticalAlignment = Alignment.Top
                 ) {
-                    Text("â€¢", color = AppTheme.AccentGold, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14)
+                    Text("\u2022", color = AppTheme.AccentGold, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14)
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         rec,
@@ -853,7 +853,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u2022", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -1278,6 +1278,7 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
         }
     }
 }
+
 
 
 

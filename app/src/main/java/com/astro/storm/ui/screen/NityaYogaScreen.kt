@@ -468,7 +468,7 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
                         color = AppTheme.TextSecondary
                     )
                     Text(
-                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}Â° ${stringResource(StringKeyDosha.NITYA_REMAINING)}",
+                        text = "${String.format("%.1f", analysis.degreesToNextYoga)}\u00B0 ${stringResource(StringKeyDosha.NITYA_REMAINING)}",
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextMuted
                     )
@@ -843,7 +843,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "â€¢",
+                            text = "\u2022",
                             color = AppTheme.SuccessColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -888,7 +888,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "â€¢",
+                            text = "\u2022",
                             color = AppTheme.ErrorColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -1132,6 +1132,7 @@ private fun getAuspiciousnessColor(auspiciousness: NityaYogaCalculator.Auspiciou
         NityaYogaCalculator.Auspiciousness.HIGHLY_INAUSPICIOUS -> AppTheme.ErrorColor
     }
 }
+
 
 
 

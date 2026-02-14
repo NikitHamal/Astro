@@ -480,7 +480,7 @@ private fun SahamInsightsCard(insights: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("â€¢", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                    Text("\u2022", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
                         style = MaterialTheme.typography.bodySmall,
@@ -524,7 +524,7 @@ private fun SahamRecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("â†’", color = AppTheme.AccentTeal, fontWeight = FontWeight.Bold)
+                    Text("\u2192", color = AppTheme.AccentTeal, fontWeight = FontWeight.Bold)
                     Text(
                         text = recommendation,
                         style = MaterialTheme.typography.bodySmall,
@@ -739,7 +739,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            text = "${String.format("%.2f", saham.degreeInSign)}Â°",
+                            text = "${String.format("%.2f", saham.degreeInSign)}\u00B0",
                             style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextSecondary
@@ -758,7 +758,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("âœ“", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
+                                Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                                 Text(
                                     text = stringResource(StringKeySaham.ACTIVATED),
                                     style = MaterialTheme.typography.labelSmall,
@@ -932,6 +932,7 @@ private fun SahamInfoDialog(onDismiss: () -> Unit) {
         }
     }
 }
+
 
 
 

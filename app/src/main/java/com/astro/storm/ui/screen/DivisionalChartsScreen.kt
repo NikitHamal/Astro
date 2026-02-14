@@ -585,7 +585,7 @@ private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) 
             if (indicator.sources.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 indicator.sources.forEach { source ->
-                    Text("â€¢ $source", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
+                    Text("\u2022 $source", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -642,7 +642,7 @@ private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: Language) {
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         analysis.shortJourneyIndicators.forEach { indicator ->
-                            Text("â€¢ $indicator", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
+                            Text("\u2022 $indicator", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
                         }
                     }
                 }
@@ -785,7 +785,7 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
                 HorizontalDivider(color = AppTheme.DividerColor)
                 Spacer(modifier = Modifier.height(12.dp))
                 indicators.siblingWelfareIndicators.forEach { welfare ->
-                    Text("â€¢ $welfare", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
+                    Text("\u2022 $welfare", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1076,7 +1076,7 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("${stringResource(StringKeyDosha.NAVAMSA_AREAS_ATTENTION)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.WarningColor)
                 indicators.riskFactors.forEach { factor ->
-                    Text("â€¢ $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
+                    Text("\u2022 $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
 
@@ -1084,7 +1084,7 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("${stringResource(StringKeyDosha.NAVAMSA_PROTECTIVE_FACTORS)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.SuccessColor)
                 indicators.mitigatingFactors.forEach { factor ->
-                    Text("â€¢ $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
+                    Text("\u2022 $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1276,7 +1276,7 @@ private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
             if (analysis.favorableFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 analysis.favorableFactors.forEach { factor ->
-                    Text("â€¢ $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.SuccessColor)
+                    Text("\u2022 $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.SuccessColor)
                 }
             }
 
@@ -1346,7 +1346,7 @@ private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         analysis.ancestralPropertyIndicators.forEach { indicator ->
-                            Text("â€¢ $indicator", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
+                            Text("\u2022 $indicator", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
                         }
                     }
                 }
@@ -1430,7 +1430,7 @@ private fun InheritanceCard(analysis: InheritanceAnalysis) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text("${stringResource(StringKeyDosha.DWADASAMSA_SOURCES)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                 analysis.sources.forEach { source ->
-                    Text("â€¢ $source", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
+                    Text("\u2022 $source", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1525,6 +1525,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
         }
     }
 }
+
 
 
 

@@ -504,7 +504,7 @@ private fun KeyInsightsCard(insights: List<String>) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "â€¢",
+                        text = "\u2022",
                         color = AppTheme.AccentGold,
                         fontWeight = FontWeight.Bold
                     )
@@ -552,7 +552,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "â†’",
+                        text = "\u2192",
                         color = AppTheme.AccentPrimary,
                         fontWeight = FontWeight.Bold
                     )
@@ -690,7 +690,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     color = AppTheme.TextMuted
                 )
                 if (transit.hasVedha) {
-                    Text(text = "â€¢", color = AppTheme.TextMuted)
+                    Text(text = "\u2022", color = AppTheme.TextMuted)
                     Surface(
                         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.ErrorColor.copy(alpha = 0.15f)
@@ -726,7 +726,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     Spacer(modifier = Modifier.height(8.dp))
                     transit.significations.forEach { effect ->
                         Text(
-                            text = "â€¢ $effect",
+                            text = "\u2022 $effect",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.padding(vertical = 2.dp)
@@ -1057,7 +1057,7 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "${transit.transitSign.getLocalizedName(language)} â€¢ ${transit.houseFromMoon}H",
+                    text = "${transit.transitSign.getLocalizedName(language)} \u2022 ${transit.houseFromMoon}H",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1207,6 +1207,7 @@ private fun getEffectivenessColor(effectiveness: GocharaVedhaCalculator.TransitE
         GocharaVedhaCalculator.TransitEffectiveness.UNFAVORABLE -> AppTheme.ErrorColor
     }
 }
+
 
 
 

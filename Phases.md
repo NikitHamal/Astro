@@ -164,6 +164,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
   - Predictions screen period/date cards now use locale-aware date formatters; remaining Wave A string hardening in `PrashnaScreen.kt` is pending.
   - Prashna defaults are now localization-safe; remaining Wave A work is broader string/UI harmonization across other complex screens.
   - Remedies screen visible bullet separators are now normalized to shared localized bullet tokens.
+  - Multi-wave glyph/encoding cleanup is now applied broadly; residual mojibake in non-comment UI lines under `ui/screen` is reduced to `0` by audit.
 - Legacy `ScreenTopBar` has been removed; `NeoVedicPageHeader` is now the only active screen header path.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
 - CI compile stability fixes are now tracked in this plan and shipped incrementally when errors surface.
@@ -217,3 +218,9 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
   - Fixed CI `compileReleaseKotlin` blockers:
     - `ModernTabRow.kt`: corrected `LocalContentColor` import to Material3 and aligned `interactionSource` parameters with non-null API expectations.
     - `YogasTabContent.kt`: replaced malformed Nepali digit char literals with Unicode escapes (`\u0966`..`\u096F`).
+- v3.1 (2026-02-14)
+  - Executed a broad multi-wave normalization pass across `41` screen files in `ui/screen` and `ui/screen/chartdetail/tabs`.
+  - Standardized broken glyph encodings in visible UI strings to Unicode escapes (bullets/arrows/check/warning/sparkles/degree/dash and related separators).
+  - Completed targeted follow-up fixes in:
+    - `ChartInputScreen.kt` (`prime`/`double-prime` parsing symbols)
+    - `SynastryScreen.kt` (aspect glyph symbol map)

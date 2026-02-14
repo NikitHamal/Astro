@@ -645,7 +645,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                         )
                         yoga.benefitsAreas.take(3).forEach { benefit ->
                             Text(
-                                text = "â€¢ $benefit",
+                                text = "\u2022 $benefit",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -670,7 +670,7 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "${exchange.planet1.localizedAbbr()} â†” ${exchange.planet2.localizedAbbr()}",
+                    text = "${exchange.planet1.localizedAbbr()} \u2194 ${exchange.planet2.localizedAbbr()}",
                     style = MaterialTheme.typography.titleMedium,
                     color = AppTheme.AccentGold
                 )
@@ -971,7 +971,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                             modifier = Modifier.padding(vertical = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text("âœ“", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
+                            Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                             Text(
                                 text = factor,
                                 style = MaterialTheme.typography.bodySmall,
@@ -1003,7 +1003,7 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                             modifier = Modifier.padding(vertical = 4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text("âš ", color = AppTheme.WarningColor)
+                            Text("\u26A0", color = AppTheme.WarningColor)
                             Text(
                                 text = factor,
                                 style = MaterialTheme.typography.bodySmall,
@@ -1121,6 +1121,7 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

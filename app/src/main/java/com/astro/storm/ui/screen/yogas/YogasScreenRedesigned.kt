@@ -870,7 +870,7 @@ private fun YogaCard(
                                 verticalAlignment = Alignment.Top
                             ) {
                                 Text(
-                                    text = "â€¢",
+                                    text = "\u2022",
                                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                     color = AppTheme.WarningColor
                                 )
@@ -1065,6 +1065,7 @@ private fun getStrengthColor(strength: Double): Color {
         else -> theme.ErrorColor
     }
 }
+
 
 
 

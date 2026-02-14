@@ -700,7 +700,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                     }
                 }
                 Text(
-                    "${transit.transitSign.getLocalizedName(language)} â€¢ ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
+                    "${transit.transitSign.getLocalizedName(language)} \u2022 ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
@@ -914,7 +914,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                         modifier = Modifier.padding(vertical = 2.dp),
                         verticalAlignment = Alignment.Top
                     ) {
-                        Text("â€¢", color = strengthColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                        Text("\u2022", color = strengthColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             effect,
@@ -1034,7 +1034,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            "${transit.transitSign.getLocalizedName(language)} ${String.format("%.1f", transit.transitDegree)}Â°",
+                            "${transit.transitSign.getLocalizedName(language)} ${String.format("%.1f", transit.transitDegree)}\u00B0",
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -1095,7 +1095,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u2022", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
@@ -1221,7 +1221,7 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    "${transit.planet.getLocalizedName(language)} â†’ ${transit.targetSign.getLocalizedName(language)}",
+                    "${transit.planet.getLocalizedName(language)} \u2192 ${transit.targetSign.getLocalizedName(language)}",
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1267,6 +1267,7 @@ private fun getHouseName(house: Int, language: Language): String {
     }
     return key?.let { com.astro.storm.core.common.StringResources.get(it, language) } ?: "House $house"
 }
+
 
 
 

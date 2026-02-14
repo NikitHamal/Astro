@@ -487,7 +487,7 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "â€¢",
+                            text = "\u2022",
                             color = AppTheme.WarningColor,
                             fontWeight = FontWeight.Bold
                         )
@@ -558,7 +558,7 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                 Spacer(modifier = Modifier.height(16.dp))
 
                 // Moon details
-                MoonDetailRow(label = stringResource(StringKeyAnalysis.DIALOG_DEGREE), value = String.format("%.2fÂ°", moonAnalysis.degree))
+                MoonDetailRow(label = stringResource(StringKeyAnalysis.DIALOG_DEGREE), value = String.format("%.2f\u00B0", moonAnalysis.degree))
                 MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_NAKSHATRA), value = moonAnalysis.nakshatra)
                 MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_PAKSHA), value = stringResource(if (moonAnalysis.paksha == KemadrumaYogaCalculator.LunarPaksha.SHUKLA) StringKeyAnalysis.PAKSHA_SHUKLA else StringKeyAnalysis.PAKSHA_KRISHNA))
                 MoonDetailRow(label = stringResource(StringKeyDosha.KEMA_BRIGHTNESS), value = moonAnalysis.brightness.getLocalizedName(language))
@@ -1108,7 +1108,7 @@ private fun ImpactCard(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 Text(
-                                    text = "â€¢",
+                                    text = "\u2022",
                                     color = color,
                                     fontWeight = FontWeight.Bold
                                 )
@@ -1570,6 +1570,7 @@ private fun getPriorityColorFromInt(priority: Int): Color {
         else -> AppTheme.TextMuted
     }
 }
+
 
 
 

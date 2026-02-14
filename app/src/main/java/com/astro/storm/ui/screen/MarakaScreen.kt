@@ -419,7 +419,7 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("âœ“", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
+                        Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -553,7 +553,7 @@ private fun MarakaPlanetCard(
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = "${maraka.position.sign.getLocalizedName(language)} â€¢ H${maraka.position.house}",
+                            text = "${maraka.position.sign.getLocalizedName(language)} \u2022 H${maraka.position.house}",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -624,7 +624,7 @@ private fun MarakaPlanetCard(
 //                        )
 //                        maraka.afflictions.take(3).forEach { affliction ->
 //                            Text(
-//                                text = "â€¢ $affliction",
+//                                text = "\u2022 $affliction",
 //                                style = MaterialTheme.typography.labelSmall,
 //                                color = AppTheme.TextMuted
 //                            )
@@ -715,7 +715,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("âœ“", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u2713", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Text(
                                     text = factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -737,7 +737,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("âš ", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u26A0", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Text(
                                     text = factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -1136,6 +1136,7 @@ private fun MarakaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

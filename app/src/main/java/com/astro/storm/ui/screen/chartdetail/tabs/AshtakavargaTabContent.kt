@@ -751,7 +751,7 @@ private fun GuideSection(
                 verticalAlignment = Alignment.Top
             ) {
                 Text(
-                    text = "â€¢",
+                    text = "\u2022",
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = ChartDetailColors.TextMuted,
                     modifier = Modifier.padding(end = 8.dp)
@@ -766,6 +766,7 @@ private fun GuideSection(
         }
     }
 }
+
 
 
 

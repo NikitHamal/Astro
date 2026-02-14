@@ -569,7 +569,7 @@ private fun YogaCard(
                         )
                         yoga.cancellationFactors.forEach { factor ->
                             Text(
-                                text = "â€¢ $factor",
+                                text = "\u2022 $factor",
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = ChartDetailColors.TextSecondary
                             )
@@ -810,6 +810,7 @@ private fun getLocalizedStrength(strength: YogaStrength, language: Language): St
     }
     return stringResource(key)
 }
+
 
 
 
