@@ -137,6 +137,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.Locale
 import com.astro.storm.data.localization.DateFormat
 import com.astro.storm.data.localization.formatLocalized
@@ -174,8 +175,13 @@ fun PrashnaScreen(
     // Location from chart or defaults
     val latitude = remember(chart) { chart?.birthData?.latitude ?: 28.6139 }
     val longitude = remember(chart) { chart?.birthData?.longitude ?: 77.2090 }
-    val timezone = remember(chart) { chart?.birthData?.timezone ?: "Asia/Kolkata" }
-    val locationName = remember(chart) { chart?.birthData?.location ?: "New Delhi, India" }
+    val fallbackLocationName = stringResource(StringKeyAnalysis.PRASHNA_CURRENT_LOCATION)
+    val timezone = remember(chart) {
+        chart?.birthData?.timezone?.takeIf { it.isNotBlank() } ?: ZoneId.systemDefault().id
+    }
+    val locationName = remember(chart, fallbackLocationName) {
+        chart?.birthData?.location?.takeIf { it.isNotBlank() } ?: fallbackLocationName
+    }
 
     val calculator = remember(context) { PrashnaCalculator(context) }
     val analyzeErrorMessage = stringResource(StringKeyAnalysis.PRASHNA_ANALYZE_ERROR)

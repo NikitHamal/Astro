@@ -2056,6 +2056,7 @@ enum class StringKeyAnalysis(override val en: String, override val ne: String) :
     PRASHNA_QUESTION_HELP("Be specific and clear. Frame your question with a sincere intent.", "स्पष्ट र विशिष्ट हुनुहोस्। ईमानदार इरादाले आफ्नो प्रश्न बनाउनुहोस्।"),
     PRASHNA_CATEGORY("Question Category", "प्रश्न वर्ग"),
     PRASHNA_LOCATION("Question Location", "प्रश्न स्थान"),
+    PRASHNA_CURRENT_LOCATION("Current Location", "वर्तमान स्थान"),
     PRASHNA_TIME_NOW("Now", "अहिले"),
     PRASHNA_ANALYZE("Analyze Question", "प्रश्न विश्लेषण गर्नुहोस्"),
     PRASHNA_ABOUT("About Prashna", "प्रश्न बारेमा"),

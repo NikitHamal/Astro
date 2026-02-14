@@ -162,6 +162,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
   - Aspect classification now uses stable key metadata (language-agnostic), avoiding Nepali-mode regressions.
   - Wave A localization cleanup is partially advanced (Muhurta day/night labels now localized; several visible mojibake glyphs normalized in Native/Varshaphala screens).
   - Predictions screen period/date cards now use locale-aware date formatters; remaining Wave A string hardening in `PrashnaScreen.kt` is pending.
+  - Prashna defaults are now localization-safe; remaining Wave A work is broader string/UI harmonization across other complex screens.
 - Legacy `ScreenTopBar` has been removed; `NeoVedicPageHeader` is now the only active screen header path.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
 
@@ -202,3 +203,8 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - v2.7 (2026-02-14)
   - Replaced remaining mojibake bullet literal in `PredictionsScreen.kt` with shared localized bullet token.
   - Switched key date/period formatters in `PredictionsScreen.kt` to locale-aware formatters (`en`/`ne`) for favorable, caution, and key-date cards.
+- v2.8 (2026-02-14)
+  - Removed India-specific hardcoded defaults from `PrashnaScreen.kt`:
+    - Timezone fallback now uses `ZoneId.systemDefault().id`.
+    - Location fallback now uses localized key `PRASHNA_CURRENT_LOCATION`.
+  - Added `PRASHNA_CURRENT_LOCATION` to `StringKeyAnalysis` for localized fallback location labeling.
