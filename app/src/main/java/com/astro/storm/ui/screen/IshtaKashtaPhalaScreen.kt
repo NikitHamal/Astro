@@ -6,6 +6,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -38,12 +38,8 @@ import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.TrendingDown
 import androidx.compose.material.icons.outlined.TrendingUp
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -53,6 +49,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import com.astro.storm.ui.components.ScreenTopBar
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
+import com.astro.storm.ui.components.common.TabItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -77,6 +76,7 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.IshtaKashtaPhalaCalculator
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -190,38 +190,25 @@ private fun IshtaKashtaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            FilterChip(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = 13.sp,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentPrimary.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                2 -> AppTheme.AccentPrimary
+                3 -> AppTheme.AccentGold
+                else -> AppTheme.AccentSecondary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
@@ -229,8 +216,8 @@ private fun IshtaKashtaOverviewSection(analysis: IshtaKashtaPhalaCalculator.Isht
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SectionSpacing)
     ) {
         OverallDispositionCard(analysis)
         IshtaKashtaQuickStats(analysis)
@@ -243,10 +230,11 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
     val categoryColor = getPhalaColor(analysis.overallCategory)
     val isBenefic = analysis.overallNetScore > 0
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = categoryColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = categoryColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, categoryColor.copy(alpha = 0.2f))
     ) {
         Column(
             modifier = Modifier
@@ -309,14 +297,14 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(12.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                     .background(AppTheme.ErrorColor.copy(alpha = 0.3f))
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(ishtaRatio)
                         .height(12.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                         .background(AppTheme.SuccessColor)
                 )
             }
@@ -344,7 +332,7 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
 private fun IshtaKashtaQuickStats(analysis: IshtaKashtaPhalaCalculator.IshtaKashtaAnalysis) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         IshtaKashtaStatCard(
             title = stringResource(StringKeyDosha.ISHTA_KASHTA_BENEFIC),
@@ -374,15 +362,16 @@ private fun IshtaKashtaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(NeoVedicTokens.ScreenPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -404,12 +393,13 @@ private fun IshtaKashtaStatCard(
 
 @Composable
 private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKashtaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -438,10 +428,10 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
             ) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = AppTheme.SuccessColor.copy(alpha = 0.1f),
                     modifier = Modifier.weight(1f)
                 ) {
@@ -463,7 +453,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                     }
                 }
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = AppTheme.ErrorColor.copy(alpha = 0.1f),
                     modifier = Modifier.weight(1f)
                 ) {
@@ -494,8 +484,8 @@ private fun PlanetaryPhalaSection(analysis: IshtaKashtaPhalaCalculator.IshtaKash
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         analysis.getPlanetsByBenefit().forEach { phala ->
             PlanetPhalaCard(phala)
@@ -509,14 +499,15 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
     var expanded by remember { mutableStateOf(false) }
     val categoryColor = getPhalaColor(phala.category)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -554,7 +545,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                             )
                             if (phala.isExalted) {
                                 Surface(
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                                     color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
@@ -567,7 +558,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                             }
                             if (phala.isDebilitated) {
                                 Surface(
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                                     color = AppTheme.ErrorColor.copy(alpha = 0.15f)
                                 ) {
                                     Text(
@@ -580,7 +571,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                             }
                             if (phala.isRetrograde) {
                                 Surface(
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                                     color = AppTheme.AccentPrimary.copy(alpha = 0.15f)
                                 ) {
                                     Text(
@@ -604,7 +595,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                         color = categoryColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -639,14 +630,14 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     modifier = Modifier
                         .weight(1f)
                         .height(6.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                         .background(AppTheme.ErrorColor.copy(alpha = 0.2f))
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth((phala.ishtaPercentage / 100.0).toFloat())
                             .height(6.dp)
-                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                            .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
                             .background(AppTheme.SuccessColor)
                     )
                 }
@@ -672,7 +663,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Surface(
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                             color = AppTheme.ChipBackground,
                             modifier = Modifier.weight(1f)
                         ) {
@@ -694,7 +685,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                             }
                         }
                         Surface(
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                             color = AppTheme.ChipBackground,
                             modifier = Modifier.weight(1f)
                         ) {
@@ -739,7 +730,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                         ) {
                             phala.affectedAreas.take(3).forEach { area ->
                                 Surface(
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                                     color = categoryColor.copy(alpha = 0.1f)
                                 ) {
                                     Text(
@@ -763,15 +754,16 @@ private fun LifeAreaImpactSection(analysis: IshtaKashtaPhalaCalculator.IshtaKash
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -816,7 +808,7 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { expanded = !expanded },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -842,7 +834,7 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                         color = scoreColor.copy(alpha = 0.15f)
                     ) {
                         Text(
@@ -868,7 +860,7 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                 color = scoreColor,
                 trackColor = scoreColor.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
@@ -909,15 +901,16 @@ private fun PeriodPredictionSection(analysis: IshtaKashtaPhalaCalculator.IshtaKa
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -962,7 +955,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { expanded = !expanded },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -1054,15 +1047,16 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
-            Column(modifier = Modifier.padding(16.dp)) {
+            Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -1087,7 +1081,7 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                         color = AppTheme.AccentGold.copy(alpha = 0.08f)
                     ) {
                         Row(
@@ -1155,36 +1149,12 @@ private fun IshtaKashtaLoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 private fun IshtaKashtaEmptyContent(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Analytics,
-                contentDescription = null,
-                tint = AppTheme.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKeyDosha.ISHTA_KASHTA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
+    NeoVedicEmptyState(
+        title = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+        subtitle = stringResource(StringKeyDosha.ISHTA_KASHTA_NO_CHART_DESC),
+        icon = Icons.Outlined.Analytics,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -1216,6 +1186,3 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-

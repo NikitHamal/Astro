@@ -6,6 +6,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +22,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,12 +40,8 @@ import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.TrendingDown
 import androidx.compose.material.icons.outlined.TrendingUp
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -81,7 +76,11 @@ import com.astro.storm.data.localization.localizedAbbr
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.AvasthaCalculator
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
+import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -201,38 +200,26 @@ private fun AvasthaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            FilterChip(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = 13.sp,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentGold.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentGold,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentGold.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                2 -> AppTheme.AccentPrimary
+                3 -> AppTheme.AccentGold
+                4 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentSecondary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
@@ -240,8 +227,8 @@ private fun AvasthaOverviewSection(analysis: AvasthaCalculator.AvasthaAnalysis) 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SectionSpacing)
     ) {
         // Overall Strength Card
         OverallStrengthCard(analysis = analysis)
@@ -266,12 +253,11 @@ private fun AvasthaOverviewSection(analysis: AvasthaCalculator.AvasthaAnalysis) 
 private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
     val strengthColor = getStrengthColor(analysis.overallStrength)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = strengthColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = strengthColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, strengthColor.copy(alpha = 0.2f))
     ) {
         Column(
             modifier = Modifier
@@ -320,7 +306,7 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius)),
                 color = strengthColor,
                 trackColor = strengthColor.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
@@ -346,14 +332,15 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
 private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         // Strongest Planet
         analysis.strongestPlanet?.let { strongest ->
-            Card(
+            Surface(
                 modifier = Modifier.weight(1f),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.SuccessColor.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -394,10 +381,11 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
         // Weakest Planet
         analysis.weakestPlanet?.let { weakest ->
-            Card(
+            Surface(
                 modifier = Modifier.weight(1f),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.WarningColor.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.WarningColor.copy(alpha = 0.2f))
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -446,7 +434,7 @@ private fun AvasthaQuickStatsRow(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         AvasthaStatCard(
             title = stringResource(StringKeyAnalysis.STRENGTH_STRONG),
@@ -476,10 +464,11 @@ private fun AvasthaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -505,10 +494,11 @@ private fun AvasthaStatCard(
 
 @Composable
 private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -541,10 +531,11 @@ private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysi
 
 @Composable
 private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.AvasthaRecommendation>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -567,7 +558,7 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = AppTheme.CardBackgroundElevated
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
@@ -587,7 +578,7 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                                 color = AppTheme.TextPrimary
                             )
                             Surface(
-                               shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                               shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                                color = priorityColor.copy(alpha = 0.15f)
                             ) {
                                Text(
@@ -621,8 +612,8 @@ private fun AvasthaPlanetsSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         analysis.planetaryAvasthas.forEach { avastha ->
             PlanetAvasthaCard(avastha = avastha)
@@ -635,12 +626,13 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     var expanded by remember { mutableStateOf(false) }
     val strengthColor = getStrengthColor(avastha.effectiveStrength)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -763,7 +755,7 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
 @Composable
 private fun AvasthaBadge(label: String, color: Color) {
     Surface(
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = color.copy(alpha = 0.15f)
     ) {
         Text(
@@ -819,14 +811,15 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.AccentPrimary.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -866,10 +859,11 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
 private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val color = getBaladiColor(avastha.baladiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -902,7 +896,7 @@ private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 }
             }
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                 color = color.copy(alpha = 0.15f)
             ) {
                 val language = LocalLanguage.current
@@ -923,14 +917,15 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.AccentGold.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentGold.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -970,10 +965,11 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
 private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val color = getJagradadiColor(avastha.jagradadiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1006,7 +1002,7 @@ private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 }
             }
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                 color = color.copy(alpha = 0.15f)
             ) {
                 val language = LocalLanguage.current
@@ -1027,14 +1023,15 @@ private fun DeeptadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.AccentTeal.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentTeal.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -1075,10 +1072,11 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val language = LocalLanguage.current
     val color = getDeeptadiColor(avastha.deeptadiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1107,7 +1105,7 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = color.copy(alpha = 0.15f)
                 ) {
                     val language = LocalLanguage.current
@@ -1136,14 +1134,15 @@ private fun LajjitadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.PlanetVenus.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.PlanetVenus.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.PlanetVenus.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -1184,10 +1183,11 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val language = LocalLanguage.current
     val color = getLajjitadiColor(avastha.lajjitadiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1216,7 +1216,7 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
                     color = color.copy(alpha = 0.15f)
                 ) {
                     val language = LocalLanguage.current
@@ -1260,36 +1260,12 @@ private fun AvasthaLoadingContent(modifier: Modifier = Modifier) {
 
 @Composable
 private fun AvasthaEmptyContent(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Psychology,
-                contentDescription = null,
-                tint = AppTheme.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKeyDosha.AVASTHA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
+    NeoVedicEmptyState(
+        title = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+        subtitle = stringResource(StringKeyDosha.AVASTHA_NO_CHART_DESC),
+        icon = Icons.Outlined.Psychology,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -1398,6 +1374,3 @@ private fun getLajjitadiColor(avastha: AvasthaCalculator.LajjitadiAvastha): Colo
         AvasthaCalculator.LajjitadiAvastha.KSHOBHITA -> AppTheme.ErrorColor
     }
 }
-
-
-
