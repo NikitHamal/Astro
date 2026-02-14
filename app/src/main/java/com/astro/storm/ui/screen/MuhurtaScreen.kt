@@ -1091,7 +1091,7 @@ private fun ChoghadiyaCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(StringKeyMatch.MUHURTA_DAY_CHOGHADIYA) + " / Night",
+                    stringResource(StringKeyMuhurta.CHOGHADIYA_TITLE),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -1107,7 +1107,7 @@ private fun ChoghadiyaCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Day",
+                text = stringResource(StringKeyMuhurta.CHOGHADIYA_DAY_LABEL),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextMuted
@@ -1122,7 +1122,7 @@ private fun ChoghadiyaCard(
 
             Spacer(modifier = Modifier.height(14.dp))
             Text(
-                text = "Night",
+                text = stringResource(StringKeyMuhurta.CHOGHADIYA_NIGHT_LABEL),
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextMuted

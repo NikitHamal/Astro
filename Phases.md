@@ -160,6 +160,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - Full localization enforcement for all revamped strings is still pending.
   - Ephemeris flow localization is migrated to centralized keys (`StringKeyEphemerisUi`) including motion status, orb labels, and degree/minute formatting in the redesigned transits UI.
   - Aspect classification now uses stable key metadata (language-agnostic), avoiding Nepali-mode regressions.
+  - Wave A localization cleanup is partially advanced (Muhurta day/night labels now localized; several visible mojibake glyphs normalized in Native/Varshaphala screens).
 - Legacy `ScreenTopBar` has been removed; `NeoVedicPageHeader` is now the only active screen header path.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
 
@@ -190,3 +191,10 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - Nakshatra pada label now localized via shared string keys.
     - Orb and degree-minute labels now localized via `StringKeyEphemerisUi`.
   - Hardened aspect-type detection in both transits mapper and UI to be language-agnostic (key-based), preventing Nepali localization breakage.
+- v2.6 (2026-02-14)
+  - Localized Choghadiya day/night section labels in `MuhurtaScreen.kt` via new `StringKeyMuhurta` entries.
+  - Replaced visible mojibake glyph literals in `NativeAnalysisScreen.kt` with stable Unicode escapes (checkmark, warning, bullets, Jupiter glyph, folded-hands icon).
+  - Replaced visible mojibake glyph literals in `VarshaphalaScreen.kt`:
+    - Aspect separator arrow.
+    - Specific-event bullet prefix.
+    - Full zodiac symbol map in `getZodiacSymbol`.

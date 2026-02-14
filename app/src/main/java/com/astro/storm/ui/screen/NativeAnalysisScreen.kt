@@ -496,7 +496,7 @@ private fun KeyStrengthsCard(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("âœ“", color = AppTheme.SuccessColor)
+                        Text("\u2713", color = AppTheme.SuccessColor)
                         Text(
                             text = if (language == Language.NEPALI) trait.trait.ne else trait.trait.en,
                             style = MaterialTheme.typography.bodyMedium,
@@ -566,7 +566,7 @@ private fun KeyChallengesCard(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("âš ", color = AppTheme.WarningColor)
+                        Text("\u26A0", color = AppTheme.WarningColor)
                         Text(
                             text = if (language == Language.NEPALI) trait.trait.ne else trait.trait.en,
                             style = MaterialTheme.typography.bodyMedium,
@@ -826,7 +826,7 @@ private fun FavorableFieldsCard(fields: List<String>, color: Color) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("â€¢", color = color)
+                    Text("\u2022", color = color)
                     Text(
                         text = field,
                         style = MaterialTheme.typography.bodyMedium,
@@ -1214,7 +1214,7 @@ private fun HealthConcernsCard(concerns: List<String>) {
                     modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("â€¢", color = AppTheme.WarningColor)
+                    Text("\u2022", color = AppTheme.WarningColor)
                     Text(
                         text = concern,
                         style = MaterialTheme.typography.bodySmall,
@@ -1372,7 +1372,7 @@ private fun WealthLordsCard(wealth: WealthAnalysis, language: Language) {
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = "â™ƒ",
+                        text = "\u2643",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -1408,7 +1408,7 @@ private fun WealthSourcesCard(sources: List<String>) {
                     modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("â€¢", color = AppTheme.LifeAreaFinance)
+                    Text("\u2022", color = AppTheme.LifeAreaFinance)
                     Text(
                         text = source,
                         style = MaterialTheme.typography.bodySmall,
@@ -1565,7 +1565,7 @@ private fun FavorableSubjectsCard(subjects: List<String>) {
                     modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("â€¢", color = AppTheme.AccentTeal)
+                    Text("\u2022", color = AppTheme.AccentTeal)
                     Text(
                         text = subject,
                         style = MaterialTheme.typography.bodySmall,
@@ -1721,7 +1721,7 @@ private fun RecommendedPracticesCard(practices: List<String>) {
                     modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("ðŸ™", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
+                    Text("\uD83D\uDE4F", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                     Text(
                         text = practice,
                         style = MaterialTheme.typography.bodySmall,
@@ -2132,8 +2132,6 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
-
-
 
 
 

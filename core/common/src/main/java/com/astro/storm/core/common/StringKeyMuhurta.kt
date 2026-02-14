@@ -44,4 +44,7 @@ enum class StringKeyMuhurta(override val en: String, override val ne: String) : 
     SEARCH_EMPTY_DESC("Select an activity and date range to find auspicious times.", "शुभ समय फेला पार्न एक गतिविधि र मिति दायरा चयन गर्नुहोस्।"),
     NO_RESULTS_TITLE("No Results Found", "कुनै नतिजा फेला परेन"),
     NO_RESULTS_DESC("Try a wider date range or different activity.", "फराकिलो मिति दायरा वा फरक गतिविधि प्रयास गर्नुहोस्।"),
+    CHOGHADIYA_TITLE("Choghadiya (Day / Night)", "चोघड़िया (दिन / रात)"),
+    CHOGHADIYA_DAY_LABEL("Day", "दिन"),
+    CHOGHADIYA_NIGHT_LABEL("Night", "रात"),
 }

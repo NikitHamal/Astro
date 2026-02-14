@@ -1761,7 +1761,7 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
                         color = getPlanetColor(aspect.planet1)
                     )
                     Text(
-                        " â†” ",
+                        " \u2194 ",
                         style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextMuted
                     )
@@ -2310,7 +2310,7 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                                 verticalAlignment = Alignment.Top
                             ) {
                                 Text(
-                                    "â€¢ ",
+                                    "\u2022 ",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.AccentPrimary
                                 )
@@ -2387,18 +2387,18 @@ private fun getAspectStrengthColor(strength: AspectStrength): Color {
 
 private fun getZodiacSymbol(sign: ZodiacSign): String {
     return when (sign) {
-        ZodiacSign.ARIES -> "â™ˆ"
-        ZodiacSign.TAURUS -> "â™‰"
-        ZodiacSign.GEMINI -> "â™Š"
-        ZodiacSign.CANCER -> "â™‹"
-        ZodiacSign.LEO -> "â™Œ"
-        ZodiacSign.VIRGO -> "â™"
-        ZodiacSign.LIBRA -> "â™Ž"
-        ZodiacSign.SCORPIO -> "â™"
-        ZodiacSign.SAGITTARIUS -> "â™"
-        ZodiacSign.CAPRICORN -> "â™‘"
-        ZodiacSign.AQUARIUS -> "â™’"
-        ZodiacSign.PISCES -> "â™“"
+        ZodiacSign.ARIES -> "\u2648"
+        ZodiacSign.TAURUS -> "\u2649"
+        ZodiacSign.GEMINI -> "\u264A"
+        ZodiacSign.CANCER -> "\u264B"
+        ZodiacSign.LEO -> "\u264C"
+        ZodiacSign.VIRGO -> "\u264D"
+        ZodiacSign.LIBRA -> "\u264E"
+        ZodiacSign.SCORPIO -> "\u264F"
+        ZodiacSign.SAGITTARIUS -> "\u2650"
+        ZodiacSign.CAPRICORN -> "\u2651"
+        ZodiacSign.AQUARIUS -> "\u2652"
+        ZodiacSign.PISCES -> "\u2653"
     }
 }
 
