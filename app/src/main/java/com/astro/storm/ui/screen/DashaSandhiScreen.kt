@@ -90,6 +90,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * Dasha Sandhi Screen - Displays planetary period transition analysis
@@ -468,6 +469,7 @@ private fun GuidanceCard(guidance: String) {
 @Composable
 private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
     val language = LocalLanguage.current
+    val monthDayYearFormatter = sandhiMonthDayYearFormatter()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -520,7 +522,7 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "${stringResource(StringKeyDosha.SANDHI_ENDS)} ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "${stringResource(StringKeyDosha.SANDHI_ENDS)} ${sandhi.sandhi.sandhiEndDate.format(monthDayYearFormatter)}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -588,6 +590,7 @@ private fun SandhiDetailCard(
     isExpanded: Boolean = false
 ) {
     val language = LocalLanguage.current
+    val monthDayYearFormatter = sandhiMonthDayYearFormatter()
     var expanded by remember { mutableStateOf(isExpanded) }
 
     Card(
@@ -662,12 +665,12 @@ private fun SandhiDetailCard(
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_START)} ${sandhi.sandhi.sandhiStartDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "${stringResource(StringKeyDosha.UI_START)} ${sandhi.sandhi.sandhiStartDate.format(monthDayYearFormatter)}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = "${stringResource(StringKeyDosha.UI_END)} ${sandhi.sandhi.sandhiEndDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy"))}",
+                    text = "${stringResource(StringKeyDosha.UI_END)} ${sandhi.sandhi.sandhiEndDate.format(monthDayYearFormatter)}",
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -739,6 +742,7 @@ private fun SandhiDetailCard(
 
 @Composable
 private fun KeyDateItem(keyDate: DashaSandhiAnalyzer.KeyDatePrediction) {
+    val monthDayFormatter = sandhiMonthDayFormatter()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -747,7 +751,7 @@ private fun KeyDateItem(keyDate: DashaSandhiAnalyzer.KeyDatePrediction) {
         verticalAlignment = Alignment.Top
     ) {
         Text(
-            text = keyDate.date.format(DateTimeFormatter.ofPattern("MMM d")),
+            text = keyDate.date.format(monthDayFormatter),
             style = MaterialTheme.typography.bodySmall,
             fontWeight = FontWeight.Medium,
             color = AppTheme.AccentPrimary,
@@ -864,6 +868,7 @@ private fun UpcomingSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAn
 
 @Composable
 private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis) {
+    val monthYearFormatter = sandhiMonthYearFormatter()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -900,7 +905,7 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
         } else {
             // Group by month
             val groupedByMonth = analysis.sandhiCalendar.groupBy { entry ->
-                entry.date.format(DateTimeFormatter.ofPattern("MMMM yyyy"))
+                entry.date.format(monthYearFormatter)
             }
 
             groupedByMonth.forEach { (month, entries) ->
@@ -922,6 +927,8 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
 
 @Composable
 private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
+    val dayFormatter = sandhiDayFormatter()
+    val weekdayFormatter = sandhiWeekdayFormatter()
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -946,7 +953,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val dayStr = entry.date.format(DateTimeFormatter.ofPattern("d"))
+                    val dayStr = entry.date.format(dayFormatter)
                     Text(
                         text = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(dayStr.toInt()) else dayStr,
                         style = MaterialTheme.typography.titleMedium,
@@ -954,7 +961,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = entry.date.format(DateTimeFormatter.ofPattern("EEE")),
+                        text = entry.date.format(weekdayFormatter),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
@@ -1123,6 +1130,61 @@ private fun getImpactColor(level: Int): Color {
         level >= 3 -> AppTheme.WarningColor
         level >= 2 -> AppTheme.AccentGold
         else -> AppTheme.SuccessColor
+    }
+}
+
+@Composable
+private fun sandhiMonthDayYearFormatter(): DateTimeFormatter {
+    val language = LocalLanguage.current
+    return remember(language) {
+        DateTimeFormatter.ofPattern(
+            "MMM d, yyyy",
+            if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+        )
+    }
+}
+
+@Composable
+private fun sandhiMonthDayFormatter(): DateTimeFormatter {
+    val language = LocalLanguage.current
+    return remember(language) {
+        DateTimeFormatter.ofPattern(
+            "MMM d",
+            if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+        )
+    }
+}
+
+@Composable
+private fun sandhiMonthYearFormatter(): DateTimeFormatter {
+    val language = LocalLanguage.current
+    return remember(language) {
+        DateTimeFormatter.ofPattern(
+            "MMMM yyyy",
+            if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+        )
+    }
+}
+
+@Composable
+private fun sandhiDayFormatter(): DateTimeFormatter {
+    val language = LocalLanguage.current
+    return remember(language) {
+        DateTimeFormatter.ofPattern(
+            "d",
+            if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+        )
+    }
+}
+
+@Composable
+private fun sandhiWeekdayFormatter(): DateTimeFormatter {
+    val language = LocalLanguage.current
+    return remember(language) {
+        DateTimeFormatter.ofPattern(
+            "EEE",
+            if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+        )
     }
 }
 

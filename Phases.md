@@ -240,3 +240,8 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `main/HomeTab.kt`: dasha timeline and snapshot date labels now use language-aware formatter helpers (removed hardcoded English weekday/date rendering).
     - `main/InsightsTab.kt`: consolidated formatter locale selection (`Locale.forLanguageTag("ne-NP")` / `Locale.ENGLISH`) and replaced inline weekday abbreviation formatter with shared helper.
   - Preserved all style/navigation gates after the batch.
+- v3.5 (2026-02-14)
+  - Continued transit/timing formatter hardening in Wave B:
+    - `DashaSandhiScreen.kt`: replaced inline date pattern calls in current/upcoming/calendar sections with centralized language-aware formatter helpers.
+    - `KakshaTransitScreen.kt`: replaced repeated inline timeline/favorable period date formatters with shared language-aware helper formatters.
+  - Static audit gates remained stable post-change.

@@ -48,6 +48,7 @@ import com.astro.storm.ui.viewmodel.KakshaTab
 import com.astro.storm.ui.viewmodel.KakshaTransitUiState
 import com.astro.storm.ui.viewmodel.KakshaTransitViewModel
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 /**
  * Kakshya Transit Analysis Screen
@@ -150,6 +151,15 @@ private fun getTabTitle(tab: KakshaTab, language: Language): String {
     }
     return com.astro.storm.core.common.StringResources.get(key, language)
 }
+
+private fun kakshaLocale(language: Language): Locale =
+    if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+
+private fun kakshaDateTimeFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM d, HH:mm", kakshaLocale(language))
+
+private fun kakshaMonthDayFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM d", kakshaLocale(language))
 
 @Composable
 private fun CurrentKakshaTab(
@@ -511,7 +521,7 @@ private fun PlanetsKakshaTab(
 @Composable
 private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaPeriod, language: Language) {
     val colors = AppTheme.current
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM d, HH:mm")
+    val dateFormatter = kakshaDateTimeFormatter(language)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -584,7 +594,7 @@ private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaP
 @Composable
 private fun KakshaChangeItem(change: KakshaTransitCalculator.KakshaChange, language: Language) {
     val colors = AppTheme.current
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM d, HH:mm")
+    val dateFormatter = kakshaDateTimeFormatter(language)
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -701,7 +711,7 @@ private fun TimelineKakshaTab(
                             color = colors.TextPrimary
                         )
                         Text(
-                            text = change.expectedTime.format(DateTimeFormatter.ofPattern("MMM d, HH:mm")),
+                            text = change.expectedTime.format(kakshaDateTimeFormatter(language)),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextMuted
                         )
@@ -775,7 +785,7 @@ private fun FavorableKakshaTab(
                         Icon(Icons.Default.Schedule, null, tint = colors.TextMuted, modifier = Modifier.size(14.dp))
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "${period.startTime.format(DateTimeFormatter.ofPattern("MMM d"))} - ${period.endTime.format(DateTimeFormatter.ofPattern("MMM d"))} (${period.duration/24} days)",
+                            text = "${period.startTime.format(kakshaMonthDayFormatter(language))} - ${period.endTime.format(kakshaMonthDayFormatter(language))} (${period.duration/24} days)",
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.TextMuted
                         )
