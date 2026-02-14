@@ -5,7 +5,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,12 +16,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.data.localization.stringResource
-import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.theme.SpaceGroteskFamily
@@ -31,39 +28,6 @@ import com.astro.storm.ui.theme.SpaceGroteskFamily
  * Common reusable UI components used across multiple screens.
  * These components help maintain consistency and reduce code duplication.
  */
-
-/**
- * Standard screen top app bar with back navigation
- *
- * @param title The main title of the screen
- * @param subtitle Optional subtitle (e.g., chart name, date)
- * @param onBack Callback when back button is pressed
- * @param actions Optional composable for action buttons
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-@Deprecated(
-    message = "Use NeoVedicPageHeader from ui/components/common instead.",
-    replaceWith = ReplaceWith(
-        expression = "NeoVedicPageHeader(title = title, subtitle = subtitle, onBack = onBack, actions = actions, subtitleContent = subtitleContent)",
-        imports = ["com.astro.storm.ui.components.common.NeoVedicPageHeader"]
-    )
-)
-fun ScreenTopBar(
-    title: String,
-    onBack: (() -> Unit)? = null,
-    subtitle: String? = null,
-    actions: @Composable RowScope.() -> Unit = {},
-    subtitleContent: @Composable (ColumnScope.() -> Unit)? = null
-) {
-    NeoVedicPageHeader(
-        title = title,
-        subtitle = subtitle,
-        onBack = onBack,
-        actions = actions,
-        subtitleContent = subtitleContent
-    )
-}
 
 /**
  * Standard section header used throughout the app

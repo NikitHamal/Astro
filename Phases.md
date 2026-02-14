@@ -158,7 +158,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 ## Known Gaps
 - Screen-level typography literal cleanup is complete; remaining literal sizes are outside `ui/screen` and will be handled in shared/component cleanup.
 - Full localization enforcement for all revamped strings is still pending.
-- Legacy `ScreenTopBar` removal is pending final migration phase.
+- Legacy `ScreenTopBar` has been removed; `NeoVedicPageHeader` is now the only active screen header path.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
 
 ## Version Ledger
@@ -176,3 +176,6 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - v2.2 (2026-02-14)
   - Eliminated literal `fontSize = *.sp` in `ui/screen` by centralizing screen font sizes through `NeoVedicFontSizes`.
   - Static screen-level typography gate reached `0`.
+- v2.3 (2026-02-14)
+  - Removed legacy `ScreenTopBar` from `CommonComponents.kt`.
+  - Completed header-system consolidation on `NeoVedicPageHeader`.
