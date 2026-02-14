@@ -80,24 +80,23 @@ enum class HoroscopePeriod(val titleKey: StringKey) {
 }
 
 private object InsightsFormatters {
-    // Static formatters for default locale (English)
-    val monthDay: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d", Locale.ENGLISH)
-    val monthYear: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM yyyy", Locale.ENGLISH)
-    val fullDate: DateTimeFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH)
+    private fun localeForLanguage(language: Language): Locale =
+        if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
 
     fun getDayMonth(language: Language): DateTimeFormatter {
-        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
-        return DateTimeFormatter.ofPattern("EEEE, MMMM d", locale)
+        return DateTimeFormatter.ofPattern("EEEE, MMMM d", localeForLanguage(language))
     }
 
     fun getMonthYear(language: Language): DateTimeFormatter {
-        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
-        return DateTimeFormatter.ofPattern("MMM yyyy", locale)
+        return DateTimeFormatter.ofPattern("MMM yyyy", localeForLanguage(language))
     }
 
     fun getMonthDay(language: Language): DateTimeFormatter {
-        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
-        return DateTimeFormatter.ofPattern("MMM d", locale)
+        return DateTimeFormatter.ofPattern("MMM d", localeForLanguage(language))
+    }
+
+    fun getWeekdayShort(language: Language): DateTimeFormatter {
+        return DateTimeFormatter.ofPattern("EEE", localeForLanguage(language))
     }
 }
 
@@ -1528,8 +1527,7 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
 
     val barColor = getEnergyColor(highlight.energy)
     val dayAbbrev = remember(highlight.dayOfWeek, language) {
-        val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
-        highlight.date.format(DateTimeFormatter.ofPattern("EEE", locale))
+        highlight.date.format(InsightsFormatters.getWeekdayShort(language))
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

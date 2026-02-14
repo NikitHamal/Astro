@@ -235,3 +235,8 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `ChartInputScreen.kt`: replaced inline date/time formatter literals with shared screen-level formatter constants.
     - `AshtavargaTransitScreen.kt`: replaced repeated inline date patterns with centralized language-aware formatter helpers (`en`/`ne` locale selection).
   - Kept static gates stable (`ScreenTopBar=0`, direct tab APIs=0, hardcoded `fontSize = *.sp` in `ui/screen`=0).
+- v3.4 (2026-02-14)
+  - Extended locale-aware formatter cleanup across core main tabs:
+    - `main/HomeTab.kt`: dasha timeline and snapshot date labels now use language-aware formatter helpers (removed hardcoded English weekday/date rendering).
+    - `main/InsightsTab.kt`: consolidated formatter locale selection (`Locale.forLanguageTag("ne-NP")` / `Locale.ENGLISH`) and replaced inline weekday abbreviation formatter with shared helper.
+  - Preserved all style/navigation gates after the batch.

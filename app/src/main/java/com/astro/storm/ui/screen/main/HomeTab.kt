@@ -87,6 +87,18 @@ private object HomeDesignTokens {
     val BorderWidth = NeoVedicTokens.BorderWidth
 }
 
+private fun homeLocale(language: Language): Locale =
+    if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+
+private fun homeMonthYearFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM yyyy", homeLocale(language))
+
+private fun homeWeekdayFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("EEEE", homeLocale(language))
+
+private fun homeFullDateFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMMM d, yyyy", homeLocale(language))
+
 // ============================================================================
 // MAIN HOME TAB COMPOSABLE - CELESTIAL DASHBOARD
 // ============================================================================
@@ -413,14 +425,14 @@ private fun HeroDashaCard(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = currentDasha.startDate.format(DateTimeFormatter.ofPattern("MMM yyyy")),
+                                text = currentDasha.startDate.format(homeMonthYearFormatter(language)),
                                 fontFamily = SpaceGroteskFamily,
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 letterSpacing = 0.5.sp,
                                 color = colors.TextMuted
                             )
                             Text(
-                                text = currentDasha.endDate.format(DateTimeFormatter.ofPattern("MMM yyyy")),
+                                text = currentDasha.endDate.format(homeMonthYearFormatter(language)),
                                 fontFamily = SpaceGroteskFamily,
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 letterSpacing = 0.5.sp,
@@ -615,7 +627,7 @@ private fun TodaySnapshotSection(
                 onClick = onPanchangaClick
             ) {
                 Text(
-                    text = today.format(DateTimeFormatter.ofPattern("EEEE", Locale.ENGLISH)),
+                    text = today.format(homeWeekdayFormatter(language)),
                     fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
@@ -623,7 +635,7 @@ private fun TodaySnapshotSection(
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = today.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")),
+                    text = today.format(homeFullDateFormatter(language)),
                     fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     letterSpacing = 0.5.sp,
