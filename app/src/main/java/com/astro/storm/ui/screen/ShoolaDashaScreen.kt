@@ -93,6 +93,13 @@ import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.viewmodel.ShoolaDashaUiState
 import com.astro.storm.ui.viewmodel.ShoolaDashaViewModel
 import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+private fun shoolaLocale(language: Language): Locale =
+    if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+
+private fun shoolaMonthYearFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM yyyy", shoolaLocale(language))
 
 /**
  * Shoola Dasha Screen
@@ -472,7 +479,7 @@ private fun CurrentPeriodCard(
         PeriodNature.VERY_CHALLENGING -> AppTheme.ErrorColor
     }
 
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
+    val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -682,7 +689,7 @@ private fun ShoolaPeriodCard(
     language: Language
 ) {
     var expanded by remember { mutableStateOf(period.isCurrent) }
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
+    val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
     val natureColor = when (period.nature) {
         PeriodNature.FAVORABLE -> AppTheme.SuccessColor
@@ -1014,7 +1021,7 @@ private fun VulnerabilityCard(
     vulnerability: HealthVulnerabilityPeriod,
     language: Language
 ) {
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM yyyy")
+    val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),

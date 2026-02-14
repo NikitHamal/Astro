@@ -56,6 +56,19 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import androidx.compose.ui.text.style.TextOverflow
+import java.util.Locale
+
+private fun drigLocale(language: Language): Locale =
+    if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+
+private fun drigLongDateFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM dd, yyyy", drigLocale(language))
+
+private fun drigMonthYearFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM yyyy", drigLocale(language))
+
+private fun drigShortDateFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM yy", drigLocale(language))
 
 /**
  * DrigDashaScreen - Jaimini Drig (Sthira) Dasha System Screen
@@ -199,7 +212,7 @@ private fun OverviewTab(
     language: Language,
     asOf: LocalDateTime
 ) {
-    val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM dd, yyyy") }
+    val dateFormatter = remember(language) { drigLongDateFormatter(language) }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -647,7 +660,7 @@ private fun DashaPeriodTab(
     analysis: DrigDashaAnalysis,
     language: Language
 ) {
-    val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM yyyy") }
+    val dateFormatter = remember(language) { drigMonthYearFormatter(language) }
     var expandedIndex by remember { mutableStateOf<Int?>(null) }
 
     LazyColumn(
@@ -847,7 +860,7 @@ private fun AntardashaRow(
     antardasha: DrigAntardasha,
     language: Language
 ) {
-    val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM yy") }
+    val dateFormatter = remember(language) { drigShortDateFormatter(language) }
     val signColor = getSignColor(antardasha.sign)
 
     Row(
@@ -1026,7 +1039,7 @@ private fun MarakaPeriodCard(
     period: DrigDashaPeriod,
     language: Language
 ) {
-    val dateFormatter = remember { DateTimeFormatter.ofPattern("MMM yyyy") }
+    val dateFormatter = remember(language) { drigMonthYearFormatter(language) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),

@@ -245,3 +245,8 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `DashaSandhiScreen.kt`: replaced inline date pattern calls in current/upcoming/calendar sections with centralized language-aware formatter helpers.
     - `KakshaTransitScreen.kt`: replaced repeated inline timeline/favorable period date formatters with shared language-aware helper formatters.
   - Static audit gates remained stable post-change.
+- v3.6 (2026-02-14)
+  - Completed next timing-system formatter wave:
+    - `DrigDashaScreen.kt`: replaced inline pattern allocation sites with shared locale-aware formatter helpers (`long`, `month-year`, `short` variants).
+    - `ShoolaDashaScreen.kt`: replaced inline month-year formatters in current/period/vulnerability cards with shared language-aware formatter helper.
+  - Confirmed no regression in style/nav static checks after the batch.
