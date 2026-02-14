@@ -988,7 +988,7 @@ private fun SouthIndianChart(
             val textLayout = textMeasurer.measure(
                 text = getZodiacSymbol(sign),
                 style = TextStyle(
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = textMuted
                 )
             )
@@ -1038,7 +1038,7 @@ private fun SouthIndianChart(
                 val textLayout = textMeasurer.measure(
                     text = planet.symbol,
                     style = TextStyle(
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
                         color = planetColors[planet] ?: textPrimary
                     )
@@ -1072,7 +1072,7 @@ private fun SouthIndianChart(
         val titleLayout = textMeasurer.measure(
             text = title,
             style = TextStyle(
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Bold,
                 color = textPrimary
             )
@@ -2551,6 +2551,7 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
         )
     }
 }
+
 
 
 

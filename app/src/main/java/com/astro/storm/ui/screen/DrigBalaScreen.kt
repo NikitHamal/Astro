@@ -198,7 +198,7 @@ private fun DrigBalaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -316,7 +316,7 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.strongestPlanet.localizedAbbr(),
-                    fontSize = 24.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.SuccessColor
                 )
                 Text(
@@ -356,7 +356,7 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.weakestPlanet.localizedAbbr(),
-                    fontSize = 24.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.ErrorColor
                 )
                 Text(
@@ -523,7 +523,7 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
                     ) {
                         Text(
                             text = planet.localizedAbbr(),
-                            fontSize = 18.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                             color = AppTheme.AccentPrimary
                         )
                     }
@@ -587,7 +587,7 @@ private fun AspectDetailRow(aspect: DrigBalaCalculator.AspectInfo) {
         ) {
             Text(
                 text = aspect.aspectedPlanet.localizedAbbr(),
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary
             )
             Column {
@@ -676,7 +676,7 @@ private fun PlanetDrigBalaCard(planetBala: DrigBalaCalculator.PlanetDrigBala) {
                     ) {
                         Text(
                             text = planetBala.planet.symbol,
-                            fontSize = 22.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
                             color = netColor
                         )
                     }
@@ -981,6 +981,7 @@ private fun DrigBalaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

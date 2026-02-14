@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.components
+﻿package com.astro.storm.ui.screen.chartdetail.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -62,12 +62,12 @@ fun InfoRow(
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = ChartDetailColors.TextMuted
         )
         Text(
             text = value,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = valueColor
         )
     }
@@ -95,7 +95,7 @@ fun StatusBadge(
         ) {
             Text(
                 text = count.toString(),
-                fontSize = 18.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -103,7 +103,7 @@ fun StatusBadge(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -125,13 +125,13 @@ fun SummaryBadge(
     ) {
         Text(
             text = value,
-            fontSize = 18.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -153,7 +153,7 @@ fun ConditionChip(
     ) {
         Text(
             text = label,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = color,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         )
@@ -181,7 +181,7 @@ fun LegendChip(
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = label,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -228,7 +228,7 @@ fun ExpandableSectionCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = title,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -237,7 +237,7 @@ fun ExpandableSectionCard(
                     hint?.let {
                         Text(
                             text = it,
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.TextMuted
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -296,14 +296,14 @@ fun SectionCard(
                 Column {
                     Text(
                         text = title,
-                        fontSize = 18.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.TextPrimary
                     )
                     subtitle?.let {
                         Text(
                             text = it,
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = ChartDetailColors.TextMuted
                         )
                     }
@@ -338,7 +338,7 @@ fun LabeledProgressIndicator(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -362,7 +362,7 @@ fun StrengthProgressRow(
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = ChartDetailColors.TextSecondary,
             modifier = Modifier.weight(1f)
         )
@@ -379,7 +379,7 @@ fun StrengthProgressRow(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = String.format("%.1f", value),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.TextPrimary,
                 modifier = Modifier.width(40.dp),
@@ -402,6 +402,7 @@ fun StyledDivider(
         modifier = modifier.padding(vertical = verticalPadding)
     )
 }
+
 
 
 

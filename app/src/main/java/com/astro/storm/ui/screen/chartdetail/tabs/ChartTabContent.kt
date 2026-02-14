@@ -316,7 +316,7 @@ private fun ChartTypeSelector(
             com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedType == chip.code,
                 onClick = { onTypeSelected(chip.code) },
-                label = { Text(text = stringResource(chip.stringKey), fontSize = 12.sp) },
+                label = { Text(text = stringResource(chip.stringKey), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = ChartDetailColors.AccentGold.copy(alpha = 0.2f),
                     selectedLabelColor = ChartDetailColors.AccentGold,
@@ -360,14 +360,14 @@ private fun MainChartCard(
                 Column {
                     Text(
                         text = chartInfo.first,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.AccentGold
                     )
                     if (chartInfo.second.isNotEmpty()) {
                         Text(
                             text = chartInfo.second,
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = ChartDetailColors.TextMuted
                         )
                     }
@@ -386,7 +386,7 @@ private fun MainChartCard(
                     ) {
                         Text(
                             text = chartInfo.third,
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Bold,
                             color = ChartDetailColors.AccentGold,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
@@ -433,7 +433,7 @@ private fun MainChartCard(
 
             Text(
                 text = stringResource(StringKeyAnalysis.CHART_TAP_FULLSCREEN),
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = ChartDetailColors.TextMuted,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -488,13 +488,13 @@ private fun TextLegendItem(
     ) {
         Text(
             text = symbol,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -557,7 +557,7 @@ private fun BirthDetailsCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.CHART_BIRTH_DETAILS),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -639,13 +639,13 @@ private fun BirthDataItem(
         Column {
             Text(
                 text = label,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = ChartDetailColors.TextMuted,
                 lineHeight = 12.sp
             )
             Text(
                 text = value,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.TextPrimary,
                 lineHeight = 14.sp
@@ -694,7 +694,7 @@ private fun ArrowLegendItem(
         }
         Text(
             text = label,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -736,7 +736,7 @@ private fun ShapeLegendItem(
         }
         Text(
             text = label,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -774,14 +774,14 @@ private fun ChartDetailsCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.CHART_PLANETARY_POSITIONS),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = stringResource(StringKeyAnalysis.CHART_TAP_FOR_DETAILS),
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = ChartDetailColors.TextMuted
                 )
             }
@@ -826,20 +826,20 @@ private fun AscendantRow(chart: VedicChart) {
         ) {
             Text(
                 text = stringResource(StringKeyAnalysis.CHART_ASCENDANT_LAGNA),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.AccentGold
             )
             Row {
                 Text(
                     text = ascSign.getLocalizedName(language),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = ChartDetailColors.AccentTeal
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "${ascDegree.toInt()}Â°",
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = ChartDetailColors.TextSecondary
                 )
             }
@@ -882,7 +882,7 @@ private fun ClickablePlanetPositionRow(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = position.planet.getLocalizedName(language),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.Medium,
                     color = color,
                     modifier = Modifier.width(70.dp)
@@ -895,7 +895,7 @@ private fun ClickablePlanetPositionRow(
                     ) {
                         Text(
                             text = "R",
-                            fontSize = 10.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.Bold,
                             color = ChartDetailColors.WarningColor,
                             modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
@@ -906,7 +906,7 @@ private fun ClickablePlanetPositionRow(
 
             Text(
                 text = position.sign.getLocalizedName(language),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = ChartDetailColors.AccentTeal,
                 modifier = Modifier.width(80.dp),
                 textAlign = TextAlign.Center
@@ -914,7 +914,7 @@ private fun ClickablePlanetPositionRow(
 
             Text(
                 text = "${(position.longitude % 30.0).toInt()}Â°",
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = ChartDetailColors.TextSecondary,
                 modifier = Modifier.width(40.dp),
                 textAlign = TextAlign.Center
@@ -922,7 +922,7 @@ private fun ClickablePlanetPositionRow(
 
             Text(
                 text = "H${position.house}",
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = ChartDetailColors.TextMuted,
                 modifier = Modifier.width(30.dp),
                 textAlign = TextAlign.End
@@ -973,7 +973,7 @@ private fun HouseCuspsCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.CHART_HOUSE_CUSPS),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -1043,19 +1043,19 @@ private fun HouseCuspItem(
         ) {
             Text(
                 text = "H$houseNumber",
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Bold,
                 color = ChartDetailColors.AccentGold
             )
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = sign.abbreviation,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = ChartDetailColors.AccentTeal
                 )
                 Text(
                     text = "${degreeInSign.toInt()}Â°",
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = ChartDetailColors.TextMuted
                 )
             }
@@ -1097,7 +1097,7 @@ private fun AstronomicalDataCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.CHART_ASTRONOMICAL_DATA),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -1137,16 +1137,17 @@ private fun InfoRow(label: String, value: String) {
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = ChartDetailColors.TextMuted
         )
         Text(
             text = value,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = ChartDetailColors.TextPrimary
         )
     }
 }
+
 
 
 

@@ -205,7 +205,7 @@ private fun VipareetaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -509,7 +509,7 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                     ) {
                         Text(
                             text = yoga.dusthanaLord.localizedAbbr(),
-                            fontSize = 24.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                             color = if (yoga.isFormed) yogaColor else AppTheme.TextMuted
                         )
                     }
@@ -889,7 +889,7 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                 ) {
                     Text(
                         text = period.planet.localizedAbbr(),
-                        fontSize = 18.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                         color = yogaColor
                     )
                     Text(
@@ -1121,6 +1121,7 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

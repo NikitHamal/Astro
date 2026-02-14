@@ -715,7 +715,7 @@ private fun SortOptionsRowSS(
                 com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = currentSort == criteria,
                     onClick = { onSortSelected(criteria) },
-                    label = { Text(label, fontSize = 12.sp) },
+                    label = { Text(label, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = colors.AccentPrimary,
                         selectedLabelColor = colors.ButtonText
@@ -999,7 +999,7 @@ private fun UpcomingTransitsTab(
                     label = {
                         Text(
                             text = StringResources.get(StringKeyAshtavarga.SIGNIFICANT_ONLY, language),
-                            fontSize = 12.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                         )
                     },
                     leadingIcon = if (showOnlySignificant) {
@@ -1780,6 +1780,7 @@ private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.storm.u
 }
 
 private data class TabInfo(val title: String)
+
 
 
 

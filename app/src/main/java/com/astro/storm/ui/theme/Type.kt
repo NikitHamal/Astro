@@ -189,3 +189,29 @@ object NeoVedicTypeScale {
     val ChipLabel: TextStyle = Typography.labelMedium
     val TimelineTime: TextStyle = Typography.titleSmall.copy(fontFamily = SpaceGroteskFamily)
 }
+
+/**
+ * Transitional centralized font-size scale for legacy UI code.
+ * Use this instead of inline numeric `.sp` literals in screens.
+ */
+object NeoVedicFontSizes {
+    val S8 = 8.sp
+    val S9 = 9.sp
+    val S10 = 10.sp
+    val S11 = 11.sp
+    val S12 = 12.sp
+    val S13 = 13.sp
+    val S14 = 14.sp
+    val S15 = 15.sp
+    val S16 = 16.sp
+    val S17 = 17.sp
+    val S18 = 18.sp
+    val S19 = 19.sp
+    val S20 = 20.sp
+    val S21 = 21.sp
+    val S22 = 22.sp
+    val S24 = 24.sp
+    val S26 = 26.sp
+    val S28 = 28.sp
+    val S40 = 40.sp
+}

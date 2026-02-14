@@ -200,7 +200,7 @@ private fun BadhakaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -539,7 +539,7 @@ private fun BadhakaPlanetCard(
                     ) {
                         Text(
                             text = badhaka.planet.symbol,
-                            fontSize = 22.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
                             color = severityColor
                         )
                     }
@@ -1099,6 +1099,7 @@ private fun BadhakaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

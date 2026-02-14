@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -389,7 +389,7 @@ private fun MoonSignCard(moonSign: String) {
             ) {
                 Text(
                     text = "\u263D",
-                    fontSize = 20.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                     color = AppTheme.PlanetMoon
                 )
             }
@@ -504,7 +504,7 @@ private fun KeyInsightsCard(insights: List<String>) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "•",
+                        text = "â€¢",
                         color = AppTheme.AccentGold,
                         fontWeight = FontWeight.Bold
                     )
@@ -552,7 +552,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "→",
+                        text = "â†’",
                         color = AppTheme.AccentPrimary,
                         fontWeight = FontWeight.Bold
                     )
@@ -628,7 +628,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     ) {
                         Text(
                             text = transit.planet.symbol,
-                            fontSize = 18.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
                             color = planetColor
                         )
@@ -690,7 +690,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     color = AppTheme.TextMuted
                 )
                 if (transit.hasVedha) {
-                    Text(text = "•", color = AppTheme.TextMuted)
+                    Text(text = "â€¢", color = AppTheme.TextMuted)
                     Surface(
                         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.ErrorColor.copy(alpha = 0.15f)
@@ -726,7 +726,7 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     Spacer(modifier = Modifier.height(8.dp))
                     transit.significations.forEach { effect ->
                         Text(
-                            text = "• $effect",
+                            text = "â€¢ $effect",
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.padding(vertical = 2.dp)
@@ -1043,7 +1043,7 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
             ) {
                 Text(
                     text = transit.planet.symbol,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.Bold,
                     color = planetColor
                 )
@@ -1057,7 +1057,7 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
                     color = AppTheme.TextPrimary
                 )
                 Text(
-                    text = "${transit.transitSign.getLocalizedName(language)} • ${transit.houseFromMoon}H",
+                    text = "${transit.transitSign.getLocalizedName(language)} â€¢ ${transit.houseFromMoon}H",
                     style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
@@ -1207,6 +1207,7 @@ private fun getEffectivenessColor(effectiveness: GocharaVedhaCalculator.TransitE
         GocharaVedhaCalculator.TransitEffectiveness.UNFAVORABLE -> AppTheme.ErrorColor
     }
 }
+
 
 
 

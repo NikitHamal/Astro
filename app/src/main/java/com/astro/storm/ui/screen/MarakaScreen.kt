@@ -200,7 +200,7 @@ private fun MarakaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -541,7 +541,7 @@ private fun MarakaPlanetCard(
                     ) {
                         Text(
                             text = maraka.planet.symbol,
-                            fontSize = 22.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
                             color = severityColor
                         )
                     }
@@ -715,7 +715,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("âœ“", color = AppTheme.SuccessColor, fontSize = 12.sp)
+                                Text("âœ“", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Text(
                                     text = factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -737,7 +737,7 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("âš ", color = AppTheme.WarningColor, fontSize = 12.sp)
+                                Text("âš ", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Text(
                                     text = factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -1136,6 +1136,7 @@ private fun MarakaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

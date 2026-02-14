@@ -203,7 +203,7 @@ private fun IshtaKashtaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -451,7 +451,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                     ) {
                         Text(
                             text = analysis.mostBeneficPlanet.symbol,
-                            fontSize = 24.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                             color = AppTheme.SuccessColor
                         )
                         Text(
@@ -473,7 +473,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                     ) {
                         Text(
                             text = analysis.mostMaleficPlanet.symbol,
-                            fontSize = 24.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                             color = AppTheme.ErrorColor
                         )
                         Text(
@@ -537,7 +537,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     ) {
                         Text(
                             text = phala.planet.symbol,
-                            fontSize = 24.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                             color = categoryColor
                         )
                     }
@@ -892,7 +892,7 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
                             impact.dominantPlanets.take(3).forEach { planet ->
                                 Text(
                                     text = planet.symbol,
-                                    fontSize = 14.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                     color = scoreColor
                                 )
                             }
@@ -982,7 +982,7 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                 ) {
                     Text(
                         text = period.planet.symbol,
-                        fontSize = 20.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                         color = trendColor
                     )
                     Column {
@@ -1216,6 +1216,7 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

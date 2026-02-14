@@ -333,7 +333,7 @@ private fun AshtakavargaSummaryCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.ASHTAKAVARGA_SUMMARY_TITLE),
-                        fontSize = 17.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
@@ -341,7 +341,7 @@ private fun AshtakavargaSummaryCard(
                     val language = LocalLanguage.current
                     Text(
                         text = stringResource(StringKeyDosha.ASHTAKAVARGA_DISTRIBUTION_DESC),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
                     )
@@ -389,13 +389,13 @@ private fun AshtakavargaSummaryCard(
                     ) {
                         Text(
                             text = stringResource(StringKeyDosha.ASHTAKAVARGA_CHART_STRENGTH),
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             text = getStrengthLabel(strengthPercent, language),
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = getBinduStrengthColor(strengthPercent)
                         )
@@ -434,14 +434,14 @@ private fun AshtakavargaStatItem(
         ) {
             Text(
                 text = value,
-                fontSize = 19.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = label,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted
             )
@@ -472,7 +472,7 @@ private fun HouseStrengthDistribution(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.ASHTAKAVARGA_DISTRIBUTION_TITLE),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -498,7 +498,7 @@ private fun HouseStrengthDistribution(
                         // Bindu count
                         Text(
                             text = bindus.toString(),
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.Bold,
                             color = getBinduColor(bindus)
                         )
@@ -531,13 +531,13 @@ private fun HouseStrengthDistribution(
                         // Sign
                         Text(
                             text = sign.symbol,
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "${house}H",
-                            fontSize = 10.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -570,7 +570,7 @@ private fun LegendItem(color: Color, label: String) {
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = label,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
     }
@@ -599,7 +599,7 @@ private fun AshtakavargaInsightsCard(
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.ASHTAKAVARGA_KEY_INSIGHTS),
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 14.dp)
@@ -608,7 +608,7 @@ private fun AshtakavargaInsightsCard(
             // Strongest houses
             Text(
                 text = stringResource(StringKeyDosha.ASHTAKAVARGA_STRONGEST),
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.SuccessColor,
                 letterSpacing = 0.5.sp,
@@ -635,7 +635,7 @@ private fun AshtakavargaInsightsCard(
             // Weakest houses
             Text(
                 text = stringResource(StringKeyDosha.ASHTAKAVARGA_WEAKEST),
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.WarningColor,
                 letterSpacing = 0.5.sp,
@@ -681,19 +681,19 @@ private fun InsightHouseChip(
         ) {
             Text(
                 text = sign.symbol,
-                fontSize = 17.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Text(
                 text = "${house}H",
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = "$bindus " + stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX),
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
         }
@@ -714,7 +714,7 @@ private fun PlanetQuickView(
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.ASHTAKAVARGA_PLANET_TOTALS),
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 14.dp)
@@ -745,7 +745,7 @@ private fun PlanetQuickView(
                         ) {
                             Text(
                                 text = planet.localizedAbbr(),
-                                fontSize = 14.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
                             )
@@ -753,7 +753,7 @@ private fun PlanetQuickView(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = totalBindus.toString(),
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             fontWeight = FontWeight.Bold,
                             color = planetColor
                         )
@@ -777,7 +777,7 @@ private fun SarvashtakavargaContent(
         item(key = "sarva_header") {
             Text(
                 text = stringResource(StringKeyDosha.ASHTAKAVARGA_SARVA_DESC),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextMuted,
                 lineHeight = 19.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -836,14 +836,14 @@ private fun SarvashtakavargaHouseCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = "${house}H",
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextSecondary
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = sign.symbol,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -854,7 +854,7 @@ private fun SarvashtakavargaHouseCard(
             // Bindu count
             Text(
                 text = bindus.toString(),
-                fontSize = 24.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -876,7 +876,7 @@ private fun SarvashtakavargaHouseCard(
 
             Text(
                 text = getBinduLabel(bindus, language),
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = color,
                 fontWeight = FontWeight.Medium
             )
@@ -971,7 +971,7 @@ private fun PlanetAshtakavargaCard(
                     ) {
                         Text(
                             text = planet.localizedAbbr(),
-                            fontSize = 16.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -982,13 +982,13 @@ private fun PlanetAshtakavargaCard(
                     Column {
                         Text(
                             text = planet.getLocalizedName(language),
-                            fontSize = 15.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = StringResources.get(StringKeyDosha.ASHTAKAVARGA_TOTAL_BINDUS, language) + ": $totalBindus " + stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX),
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = planetColor
                         )
                     }
@@ -1001,7 +1001,7 @@ private fun PlanetAshtakavargaCard(
                 ) {
                     Text(
                         text = "${(totalBindus.toFloat() / 48 * 100).toInt()}%",
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Bold,
                         color = getBinduColor(totalBindus / 12),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
@@ -1043,7 +1043,7 @@ private fun PlanetAshtakavargaCard(
                             ) {
                                 Text(
                                     text = sign.symbol,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextMuted
                                 )
                                 Box(
@@ -1057,14 +1057,14 @@ private fun PlanetAshtakavargaCard(
                                 ) {
                                     Text(
                                         text = bindus.toString(),
-                                        fontSize = 12.sp,
+                                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                         fontWeight = FontWeight.Bold,
                                         color = getBinduColor(bindus)
                                     )
                                 }
                                 Text(
                                     text = "${house}H",
-                                    fontSize = 9.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                                     color = AppTheme.TextMuted
                                 )
                             }
@@ -1141,14 +1141,14 @@ private fun HouseDetailCard(
                         ) {
                             Text(
                                 text = "${house}H",
-                                fontSize = 14.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.Bold,
                                 color = getBinduColor(totalBindus)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = sign.symbol,
-                                fontSize = 16.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                                 fontWeight = FontWeight.Bold,
                                 color = getBinduColor(totalBindus)
                             )
@@ -1160,13 +1160,13 @@ private fun HouseDetailCard(
                     Column {
                         Text(
                             text = sign.displayName,
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = getHouseSignification(house, language),
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -1177,13 +1177,13 @@ private fun HouseDetailCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = totalBindus.toString(),
-                        fontSize = 19.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                         fontWeight = FontWeight.Bold,
                         color = getBinduColor(totalBindus)
                     )
                     Text(
                         text = stringResource(StringKeyDosha.ASHTAKAVARGA_BINDUS_SUFFIX),
-                        fontSize = 10.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1208,7 +1208,7 @@ private fun HouseDetailCard(
                         ) {
                             Text(
                                 text = planet.localizedAbbr(),
-                                fontSize = 10.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.Bold,
                                 color = planetColor
                             )
@@ -1216,7 +1216,7 @@ private fun HouseDetailCard(
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = bindus.toString(),
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -1279,21 +1279,21 @@ private fun AshtakavargaInfoDialog(onDismiss: () -> Unit) {
             Column {
                 Text(
                     text = stringResource(StringKeyDosha.ASHTAKAVARGA_ABOUT_DESC),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextSecondary,
                     lineHeight = 19.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyDosha.ASHTAKAVARGA_INTERPRETATION),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextSecondary
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
                     text = stringResource(StringKeyDosha.ASHTAKAVARGA_GUIDE_TEXT),
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     lineHeight = 18.sp
                 )
@@ -1369,6 +1369,7 @@ private fun getHouseSignification(house: Int, language: Language): String {
     }
     return key?.let { StringResources.get(it, language) } ?: ""
 }
+
 
 
 

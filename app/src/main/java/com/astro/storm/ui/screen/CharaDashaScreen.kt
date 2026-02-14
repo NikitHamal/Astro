@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -442,7 +442,7 @@ private fun CurrentCharaDashaPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT),
-                        fontSize = 17.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
@@ -450,7 +450,7 @@ private fun CurrentCharaDashaPeriodCard(
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(StringKeyDosha.CHARA_DASHA_SUBTITLE),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
                     )
@@ -491,7 +491,7 @@ private fun CurrentCharaDashaPeriodCard(
                 Text(
                     text = stringResource(StringKeyMatch.DASHA_NO_CURRENT_PERIOD),
                     color = AppTheme.TextMuted,
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
@@ -550,7 +550,7 @@ private fun SignDashaRow(
                 )
                 Text(
                     text = formatDateRange(startDate, endDate),
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = AppTheme.TextMuted
                 )
             }
@@ -590,7 +590,7 @@ private fun CharaDashaSystemInfoCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.CHARA_DASHA_ABOUT),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -632,12 +632,12 @@ private fun InfoRow(label: String, value: String) {
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = AppTheme.TextMuted
         )
         Text(
             text = value,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary
         )
@@ -685,7 +685,7 @@ private fun CharaDashaInterpretationCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyMatch.INTERPRETATION_TITLE),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -753,7 +753,7 @@ private fun InterpretationSection(
     Column(modifier = Modifier.padding(bottom = 12.dp)) {
         Text(
             text = title,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.AccentSecondary
         )
@@ -762,7 +762,7 @@ private fun InterpretationSection(
         content?.let {
             Text(
                 text = it,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -771,13 +771,13 @@ private fun InterpretationSection(
         items?.forEach { item ->
             Row(modifier = Modifier.padding(vertical = 2.dp)) {
                 Text(
-                    text = "• ",
-                    fontSize = 13.sp,
+                    text = "â€¢ ",
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.AccentGold
                 )
                 Text(
                     text = item,
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextSecondary,
                     modifier = Modifier.weight(1f),
                     lineHeight = 18.sp
@@ -810,7 +810,7 @@ private fun KarakamshaCard(
                 ) {
                     Text(
                         text = result.karakamsha.symbol,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentGold
                     )
@@ -819,13 +819,13 @@ private fun KarakamshaCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.KARAKAMSHA_TITLE),
-                        fontSize = 15.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = result.karakamsha.getLocalizedName(language),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -834,7 +834,7 @@ private fun KarakamshaCard(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(StringKeyDosha.KARAKAMSHA_DESC),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 16.sp
             )
@@ -842,7 +842,7 @@ private fun KarakamshaCard(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = result.interpretation.karakamshaAnalysis,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextPrimary,
                 lineHeight = 18.sp
             )
@@ -868,7 +868,7 @@ private fun AboutKarakasCard(language: Language) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.KARAKA_ABOUT),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -876,7 +876,7 @@ private fun AboutKarakasCard(language: Language) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(StringKeyDosha.KARAKA_ABOUT_DESC),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -923,7 +923,7 @@ private fun KarakaCard(
                     ) {
                         Text(
                             text = karaka.planet.symbol,
-                            fontSize = 18.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.getPlanetColor(karaka.planet)
                         )
@@ -932,13 +932,13 @@ private fun KarakaCard(
                     Column {
                         Text(
                             text = stringResource(karakaKey),
-                            fontSize = 15.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = karaka.planet.getLocalizedName(language),
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -946,14 +946,14 @@ private fun KarakaCard(
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = String.format("%.2f°", karaka.degreeInSign),
-                        fontSize = 13.sp,
+                        text = String.format("%.2fÂ°", karaka.degreeInSign),
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.AccentGold
                     )
                     Text(
                         text = karaka.sign.getLocalizedName(language),
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -962,7 +962,7 @@ private fun KarakaCard(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = stringResource(descKey),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -980,12 +980,12 @@ private fun KarakaCard(
             ) {
                 Text(
                     text = "Navamsa:",
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     text = karaka.navamsaSign.getLocalizedName(language),
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -1015,7 +1015,7 @@ private fun CharaDashaTimelineOverviewCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1024,7 +1024,7 @@ private fun CharaDashaTimelineOverviewCard(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = result.interpretation.systemOverview,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -1086,7 +1086,7 @@ private fun CharaMahadashaCard(
                     ) {
                         Text(
                             text = mahadasha.sign.symbol,
-                            fontSize = 18.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
                             color = if (isCurrent) AppTheme.AccentGold else AppTheme.TextPrimary
                         )
@@ -1096,7 +1096,7 @@ private fun CharaMahadashaCard(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = mahadasha.sign.getLocalizedName(language),
-                                fontSize = 16.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
                             )
@@ -1112,7 +1112,7 @@ private fun CharaMahadashaCard(
                                 ) {
                                     Text(
                                         text = stringResource(StringKeyMatch.MISC_CURRENT),
-                                        fontSize = 9.sp,
+                                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                                         fontWeight = FontWeight.Bold,
                                         color = AppTheme.ScreenBackground
                                     )
@@ -1120,8 +1120,8 @@ private fun CharaMahadashaCard(
                             }
                         }
                         Text(
-                            text = "${mahadasha.signLord.getLocalizedName(language)} • ${mahadasha.durationYears} ${stringResource(StringKeyMatch.MISC_YEARS)}",
-                            fontSize = 12.sp,
+                            text = "${mahadasha.signLord.getLocalizedName(language)} â€¢ ${mahadasha.durationYears} ${stringResource(StringKeyMatch.MISC_YEARS)}",
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1140,7 +1140,7 @@ private fun CharaMahadashaCard(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = formatDateRange(mahadasha.startDate, mahadasha.endDate),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
 
@@ -1168,7 +1168,7 @@ private fun CharaMahadashaCard(
                     if (mahadasha.specialSignificance.isNotEmpty()) {
                         Text(
                             text = mahadasha.specialSignificance,
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted,
                             modifier = Modifier.padding(bottom = 8.dp)
                         )
@@ -1177,7 +1177,7 @@ private fun CharaMahadashaCard(
                     // General effects
                     Text(
                         text = mahadasha.interpretation.generalEffects,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp,
                         modifier = Modifier.padding(bottom = 8.dp)
@@ -1187,7 +1187,7 @@ private fun CharaMahadashaCard(
                     if (mahadasha.antardashas.isNotEmpty()) {
                         Text(
                             text = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHAS),
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.AccentSecondary,
                             modifier = Modifier.padding(vertical = 8.dp)
@@ -1236,7 +1236,7 @@ private fun AntardashaRow(
             ) {
                 Text(
                     text = antardasha.sign.symbol,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentPrimary
                 )
@@ -1245,13 +1245,13 @@ private fun AntardashaRow(
             Column {
                 Text(
                     text = antardasha.sign.getLocalizedName(language),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = formatDateRange(antardasha.startDate, antardasha.endDate),
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1259,7 +1259,7 @@ private fun AntardashaRow(
 
         Text(
             text = "${antardasha.durationMonths.toInt()}m",
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextSecondary
         )
@@ -1436,6 +1436,7 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
         }
     }
 }
+
 
 
 

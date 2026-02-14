@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.tabs
+﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -143,7 +143,7 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.ASHTAK_SUMMARY),
-                    fontSize = 18.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.TextPrimary
                 )
@@ -177,7 +177,7 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
 
             Text(
                 text = stringResource(StringKeyAnalysis.ASHTAK_QUICK_ANALYSIS),
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.TextSecondary,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -196,12 +196,12 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
             ) {
                 Text(
                     text = stringResource(StringKeyAnalysis.ASHTAK_FAVORABLE_SIGNS),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = ChartDetailColors.TextMuted
                 )
                 Text(
                     text = stringResource(StringKeyAnalysis.ASHTAK_SIGNS_COUNT, strongSignCount),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = ChartDetailColors.SuccessColor
                 )
             }
@@ -212,12 +212,12 @@ private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.Ashtaka
             ) {
                 Text(
                     text = stringResource(StringKeyAnalysis.ASHTAK_CHALLENGING_SIGNS),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = ChartDetailColors.TextMuted
                 )
                 Text(
                     text = stringResource(StringKeyAnalysis.ASHTAK_SIGNS_COUNT, weakSignCount),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = ChartDetailColors.WarningColor
                 )
             }
@@ -234,13 +234,13 @@ private fun SummaryItem(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            fontSize = 22.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -284,7 +284,7 @@ private fun SarvashtakavargaCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.ASHTAK_SAV_TITLE),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -305,7 +305,7 @@ private fun SarvashtakavargaCard(
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     Text(
                         text = stringResource(StringKeyAnalysis.ASHTAK_SAV_COMBINED_DESC),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextMuted,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
@@ -360,14 +360,14 @@ private fun SAVSignBox(
     ) {
         Text(
             text = sign.abbreviation,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.Medium,
             color = ChartDetailColors.TextSecondary
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = bindus.toString(),
-            fontSize = 18.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
             fontWeight = FontWeight.Bold,
             color = textColor
         )
@@ -410,7 +410,7 @@ private fun LegendItem(color: Color, label: String) {
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = label,
-            fontSize = 9.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -454,7 +454,7 @@ private fun BhinnashtakavargaCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.ASHTAK_BAV_TITLE),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -475,7 +475,7 @@ private fun BhinnashtakavargaCard(
                 Column(modifier = Modifier.padding(top = 12.dp)) {
                     Text(
                         text = stringResource(StringKeyAnalysis.ASHTAK_BAV_INDIVIDUAL_DESC),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextMuted,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
@@ -508,7 +508,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
             ) {
                 Text(
                     text = "",
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = ChartDetailColors.TextMuted
                 )
             }
@@ -521,7 +521,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
                 ) {
                     Text(
                         text = sign.abbreviation,
-                        fontSize = 10.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.AccentTeal
                     )
@@ -536,7 +536,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
             ) {
                 Text(
                     text = stringResource(StringKeyAnalysis.ASHTAK_TOTAL),
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.AccentGold
                 )
@@ -554,7 +554,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
                 ) {
                     Text(
                         text = planet.symbol,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.getPlanetColor(planet)
                     )
@@ -573,7 +573,7 @@ private fun BAVTable(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) 
                 ) {
                     Text(
                         text = bav.totalBindus.toString(),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.AccentGold
                     )
@@ -608,7 +608,7 @@ private fun BAVCell(bindus: Int) {
     ) {
         Text(
             text = bindus.toString(),
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium,
             color = textColor
         )
@@ -674,7 +674,7 @@ private fun InterpretationGuideCard(isExpanded: Boolean, onToggleExpand: (Boolea
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.ASHTAK_GUIDE_TITLE),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -740,7 +740,7 @@ private fun GuideSection(
     Column {
         Text(
             text = title,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.SemiBold,
             color = ChartDetailColors.AccentTeal,
             modifier = Modifier.padding(bottom = 6.dp)
@@ -751,14 +751,14 @@ private fun GuideSection(
                 verticalAlignment = Alignment.Top
             ) {
                 Text(
-                    text = "•",
-                    fontSize = 12.sp,
+                    text = "â€¢",
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = ChartDetailColors.TextMuted,
                     modifier = Modifier.padding(end = 8.dp)
                 )
                 Text(
                     text = point,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = ChartDetailColors.TextSecondary,
                     lineHeight = 18.sp
                 )
@@ -766,6 +766,7 @@ private fun GuideSection(
         }
     }
 }
+
 
 
 

@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -242,12 +242,12 @@ private fun AgeSelector(
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_AGE),
                         color = AppTheme.TextMuted,
-                        fontSize = 12.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                     )
                     Text(
                         "${stringResource(StringKeyDosha.CURRENT_LABEL)}: $currentAge ${stringResource(StringKey.YEARS)}",
                         color = AppTheme.AccentPrimary,
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -255,7 +255,7 @@ private fun AgeSelector(
                     String.format(stringResource(StringKeyDosha.SUDARSHANA_YEAR_ANALYSIS), selectedAge),
                     color = AppTheme.TextPrimary,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 15.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15
                 )
             }
 
@@ -311,7 +311,7 @@ private fun AgeSelector(
                 ) {
                     Text(
                         stringResource(StringKeyDosha.CURRENT_LABEL),
-                        fontSize = 12.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                     )
                 }
                 
@@ -323,7 +323,7 @@ private fun AgeSelector(
                 ) {
                     Text(
                         stringResource(StringKeyUIExtra.BIRTH_1ST_YR),
-                        fontSize = 12.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                     )
                 }
             }
@@ -431,7 +431,7 @@ private fun CurrentSignsCard(result: SudarshanaChakraResult) {
                 Text(
                     stringResource(StringKeyDosha.SUDARSHANA_CURRENT_SIGNS),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -486,25 +486,25 @@ private fun SignIndicator(
         ) {
             Text(
                 sign.symbol,
-                fontSize = 24.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                 color = color
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             label,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = AppTheme.TextMuted
         )
         Text(
             sign.getLocalizedName(language),
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary
         )
         Text(
             stringResource(StringKeyUIExtra.HOUSE_PREFIX_SHORT) + house,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = color
         )
     }
@@ -547,12 +547,12 @@ private fun ChakraCard(
                         Text(
                             title,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             subtitle,
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -592,13 +592,13 @@ private fun ChakraCard(
                 Text(
                     stringResource(StringKeyDosha.STRENGTH_LABEL),
                     color = AppTheme.TextMuted,
-                    fontSize = 12.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                 )
                 Text(
                     "${chakra.strength.score.toInt()}%",
                     color = color,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 12.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
@@ -626,13 +626,13 @@ private fun ChakraCard(
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_HOUSE_SIGNIFICATIONS),
                         fontWeight = FontWeight.Medium,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         chakra.houseSignificance.description,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextMuted,
                         lineHeight = 20.sp
                     )
@@ -643,7 +643,7 @@ private fun ChakraCard(
                         Text(
                             stringResource(StringKeyDosha.SUDARSHANA_PLANETS_IN_SIGN),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextSecondary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -662,7 +662,7 @@ private fun ChakraCard(
                         Text(
                             stringResource(StringKeyDosha.SUDARSHANA_ASPECTS_RECEIVED),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextSecondary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -673,12 +673,12 @@ private fun ChakraCard(
                                 Text(
                                     stringResource(StringKeyUIExtra.BULLET_SPACE) + aspect.planet.getLocalizedName(language),
                                     color = AppTheme.TextMuted,
-                                    fontSize = 12.sp
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                                 )
                                 Text(
                                     stringResource(StringKeyUIExtra.LABEL_FROM_COLON) + aspect.fromSign.getLocalizedName(language),
                                     color = AppTheme.TextMuted,
-                                    fontSize = 12.sp
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                                 )
                             }
                         }
@@ -690,7 +690,7 @@ private fun ChakraCard(
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextSecondary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -702,7 +702,7 @@ private fun ChakraCard(
                                 Text(
                                     effect,
                                     color = AppTheme.TextMuted,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     lineHeight = 18.sp
                                 )
                             }
@@ -734,12 +734,12 @@ private fun InfoColumn(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             label,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = AppTheme.TextMuted
         )
         Text(
             value,
-            fontSize = 14.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary
         )
@@ -764,7 +764,7 @@ private fun StrengthBadge(level: StrengthLevel, color: Color) {
             text,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             color = badgeColor,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.Medium
         )
     }
@@ -782,7 +782,7 @@ private fun PlanetChip(planet: Planet) {
             planet.getLocalizedName(language),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             color = getPlanetColor(planet),
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium
         )
     }
@@ -824,7 +824,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                 Text(
                     stringResource(StringKeyDosha.SUDARSHANA_CONVERGENCE),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -838,13 +838,13 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
             ) {
                 Text(
                     convergenceStrength,
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     "${synthesis.combinedStrengthScore.toInt()}%",
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Bold,
                     color = if (synthesis.combinedStrengthScore >= 60) AppTheme.SuccessColor else AppTheme.WarningColor
                 )
@@ -860,7 +860,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                         Text(
                             theme,
                             color = AppTheme.TextSecondary,
-                            fontSize = 13.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                         )
                     }
                 }
@@ -875,7 +875,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
                         Text(
                             theme,
                             color = AppTheme.TextSecondary,
-                            fontSize = 13.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                         )
                     }
                 }
@@ -952,12 +952,12 @@ private fun TimelineYearCard(
                     Text(
                         "$age",
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                         color = if (isCurrent) AppTheme.AccentPrimary else AppTheme.TextPrimary
                     )
                     Text(
                         stringResource(StringKey.YEARS),
-                        fontSize = 10.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     if (isCurrent) {
@@ -1008,18 +1008,18 @@ private fun SignSmall(prefix: String, sign: ZodiacSign, color: Color) {
     ) {
         Text(
             prefix,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = color,
             fontWeight = FontWeight.Bold
         )
         Text(
             stringResource(StringKeyUICommon.COLON),
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
         Text(
             sign.abbreviation,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextSecondary,
             fontWeight = FontWeight.Medium
         )
@@ -1047,13 +1047,13 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_COMBINED_ANALYSIS),
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         synthesis.overallAssessment,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -1072,7 +1072,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_TRIPLE_VIEW),
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -1111,7 +1111,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     Text(
                         stringResource(StringKeyDosha.KEY_THEMES),
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -1121,12 +1121,12 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                             "${stringResource(StringKeyDosha.PRIMARY_LABEL)}: ",
                             color = AppTheme.AccentPrimary,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                         )
                         Text(
                             synthesis.primaryFocus,
                             color = AppTheme.TextSecondary,
-                            fontSize = 13.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                         )
                     }
 
@@ -1136,12 +1136,12 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                                 "${stringResource(StringKeyDosha.SECONDARY_LABEL)}: ",
                                 color = AppTheme.AccentSecondary,
                                 fontWeight = FontWeight.Medium,
-                                fontSize = 13.sp
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                             )
                             Text(
                                 synthesis.secondaryFocus,
                                 color = AppTheme.TextSecondary,
-                                fontSize = 13.sp
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                             )
                         }
                     }
@@ -1171,7 +1171,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                             Text(
                                 stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
                                 fontWeight = FontWeight.SemiBold,
-                                fontSize = 16.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                                 color = AppTheme.TextPrimary
                             )
                         }
@@ -1186,7 +1186,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                                 Text(
                                     rec,
                                     color = AppTheme.TextSecondary,
-                                    fontSize = 14.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                     lineHeight = 20.sp
                                 )
                             }
@@ -1207,7 +1207,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
                     Text(
                         stringResource(StringKeyDosha.SCREEN_TIMELINE),
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(12.dp))
@@ -1239,7 +1239,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
                     Text(
                         result.yearlyProgression.trend,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextMuted,
                         fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                     )
@@ -1266,12 +1266,12 @@ private fun ContributionRow(color: Color, label: String, contribution: String) {
             Text(
                 label,
                 fontWeight = FontWeight.Medium,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = color
             )
             Text(
                 contribution,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 lineHeight = 18.sp
             )
@@ -1300,7 +1300,7 @@ private fun ProgressionRow(
         Text(
             label,
             fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = when {
                 isCurrent -> AppTheme.AccentPrimary
                 isPast -> AppTheme.TextMuted
@@ -1310,7 +1310,7 @@ private fun ProgressionRow(
         )
         Text(
             summary,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = if (isCurrent) AppTheme.TextPrimary else AppTheme.TextMuted,
             lineHeight = 18.sp
         )
@@ -1386,6 +1386,7 @@ private fun resolveZoneId(timezone: String): ZoneId {
         }
     }
 }
+
 
 
 

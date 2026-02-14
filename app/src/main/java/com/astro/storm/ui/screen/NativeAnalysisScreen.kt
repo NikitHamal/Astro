@@ -224,7 +224,7 @@ private fun NativeTabSelector(
                 label = {
                     Text(
                         text = displayName,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -1721,7 +1721,7 @@ private fun RecommendedPracticesCard(practices: List<String>) {
                     modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Text("ðŸ™", fontSize = 12.sp)
+                    Text("ðŸ™", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                     Text(
                         text = practice,
                         style = MaterialTheme.typography.bodySmall,
@@ -2132,6 +2132,7 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

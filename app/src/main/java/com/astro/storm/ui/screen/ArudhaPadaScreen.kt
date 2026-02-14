@@ -720,7 +720,7 @@ private fun ArudhaPadaCard(
                         ) {
                             Text(
                                 text = arudha.sign.symbol,
-                                fontSize = 14.sp
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14
                             )
                             Text(
                                 text = arudha.sign.displayName,
@@ -1036,7 +1036,7 @@ private fun YogaCard(yoga: ArudhaYoga) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     yoga.recommendations.forEach { rec ->
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                            Text("â€¢", color = AppTheme.AccentPrimary, fontSize = 12.sp)
+                            Text("â€¢", color = AppTheme.AccentPrimary, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                             Text(
                                 text = rec,
                                 style = MaterialTheme.typography.labelSmall,
@@ -1262,6 +1262,7 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

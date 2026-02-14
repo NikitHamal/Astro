@@ -516,14 +516,14 @@ private fun CowrieShell(
                 text = if (isOpen) stringResource(StringKeyUIExtra.OPEN_CIRCLE) else stringResource(StringKeyUIExtra.CLOSED_CIRCLE),
                 color = color,
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16
             )
         }
         Text(
             text = positionLabel,
             style = MaterialTheme.typography.labelSmall,
             color = AppTheme.TextSubtle,
-            fontSize = 8.sp
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S8
         )
     }
 }
@@ -871,7 +871,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
                 )
                 reading.interpretation.positiveFactors.forEach { factor ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("âœ“", color = AppTheme.SuccessColor, fontSize = 12.sp)
+                        Text("âœ“", color = AppTheme.SuccessColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -891,7 +891,7 @@ private fun PrimaryIndicationCard(reading: AshtamangalaReading) {
                 )
                 reading.interpretation.negativeFactors.forEach { factor ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Text("âš ", color = AppTheme.WarningColor, fontSize = 12.sp)
+                        Text("âš ", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = factor,
                             style = MaterialTheme.typography.bodySmall,
@@ -1609,6 +1609,7 @@ private val Icons.Outlined.Temple: ImageVector
 
 private val Icons.Outlined.TempleHindu: ImageVector
     get() = Icons.Outlined.Church // Fallback
+
 
 
 

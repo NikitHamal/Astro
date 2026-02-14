@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.tabs
+﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -188,13 +188,13 @@ private fun PanchangaSummaryCard(panchanga: PanchangaData) {
                 Column {
                     Text(
                         text = stringResource(StringKeyAnalysis.PANCHANGA_AT_BIRTH),
-                        fontSize = 20.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextMuted
                     )
                 }
@@ -292,12 +292,12 @@ private fun SunTimeIndicator(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
         Text(
             text = time,
-            fontSize = 14.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = color
         )
@@ -316,12 +316,12 @@ private fun MoonPhaseIndicator(phase: Double, paksha: String) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = paksha,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
         Text(
             text = "${String.format(Locale.US, "%.1f", phase)}%",
-            fontSize = 14.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = ChartDetailColors.AccentPurple
         )
@@ -381,12 +381,12 @@ private fun PanchangaElement(
     ) {
         Text(
             text = label,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = ChartDetailColors.TextMuted
         )
         Text(
             text = sanskrit,
-            fontSize = 9.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
             color = ChartDetailColors.TextMuted.copy(alpha = 0.7f)
         )
         Spacer(modifier = Modifier.height(6.dp))
@@ -396,7 +396,7 @@ private fun PanchangaElement(
         ) {
             Text(
                 text = value,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color,
                 textAlign = TextAlign.Center,
@@ -653,7 +653,7 @@ private fun ExpandableDetailCard(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = title,
-                                fontSize = 16.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                                 fontWeight = FontWeight.SemiBold,
                                 color = ChartDetailColors.TextPrimary
                             )
@@ -664,7 +664,7 @@ private fun ExpandableDetailCard(
                         }
                         Text(
                             text = subtitle,
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.TextMuted
                         )
                     }
@@ -677,7 +677,7 @@ private fun ExpandableDetailCard(
                     ) {
                         Text(
                             text = value,
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.Medium,
                             color = iconColor,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
@@ -728,7 +728,7 @@ private fun QualityBadge(quality: Quality) {
     ) {
         Text(
             text = text,
-            fontSize = 9.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
             fontWeight = FontWeight.Medium,
             color = color,
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -751,12 +751,12 @@ private fun DetailRow(
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = ChartDetailColors.TextMuted
         )
         Text(
             text = value,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.Medium,
             color = valueColor
         )
@@ -778,7 +778,7 @@ private fun ProgressRow(
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = ChartDetailColors.TextMuted
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -803,7 +803,7 @@ private fun ProgressRow(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "${String.format(Locale.US, "%.1f", progress)}%",
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.Medium,
                 color = color
             )
@@ -823,14 +823,14 @@ private fun DescriptionSection(
         )
         Text(
             text = title,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.SemiBold,
             color = ChartDetailColors.TextSecondary
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = description,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = ChartDetailColors.TextPrimary,
             lineHeight = 20.sp
         )
@@ -846,14 +846,14 @@ private fun ActivitiesSection(
         if (favorable.isNotEmpty()) {
             Text(
                 text = stringResource(StringKeyAnalysis.PANCHANGA_FAVORABLE_ACTIVITIES),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.SuccessColor
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = favorable.joinToString(", "),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = ChartDetailColors.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -863,14 +863,14 @@ private fun ActivitiesSection(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyAnalysis.PANCHANGA_AVOID),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.WarningColor
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = unfavorable.joinToString(", "),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = ChartDetailColors.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -918,13 +918,13 @@ private fun PanchangaInfoCard(
                     Column {
                         Text(
                             text = stringResource(StringKeyAnalysis.PANCHANGA_ABOUT),
-                            fontSize = 16.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextPrimary
                         )
                         Text(
                             text = stringResource(StringKeyAnalysis.PANCHANGA_ABOUT_SUBTITLE),
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.TextMuted
                         )
                     }
@@ -952,7 +952,7 @@ private fun PanchangaInfoCard(
 
                     Text(
                         text = stringResource(StringKeyAnalysis.PANCHANGA_ABOUT_DESCRIPTION),
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = ChartDetailColors.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -973,27 +973,27 @@ private fun PanchangaInfoCard(
                             verticalAlignment = Alignment.Top
                         ) {
                             Text(
-                                text = "•",
-                                fontSize = 14.sp,
+                                text = "â€¢",
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 color = ChartDetailColors.AccentGold,
                                 modifier = Modifier.padding(end = 8.dp, top = 2.dp)
                             )
                             Column {
                                 Text(
                                     text = name,
-                                    fontSize = 13.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                     fontWeight = FontWeight.SemiBold,
                                     color = ChartDetailColors.AccentTeal
                                 )
                                 Text(
                                     text = subtitle,
-                                    fontSize = 11.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                     color = ChartDetailColors.TextMuted
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = description,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = ChartDetailColors.TextSecondary,
                                     lineHeight = 18.sp
                                 )
@@ -1009,7 +1009,7 @@ private fun PanchangaInfoCard(
                     ) {
                         Text(
                             text = stringResource(StringKeyAnalysis.PANCHANGA_BIRTH_INSIGHT),
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = ChartDetailColors.TextSecondary,
                             lineHeight = 18.sp,
                             modifier = Modifier.padding(12.dp)
@@ -1039,12 +1039,13 @@ private fun getQualityColor(quality: Quality): Color {
 @Composable
 private fun getGanaColor(gana: String): Color {
     return when (gana.lowercase()) {
-        "deva", "देव" -> ChartDetailColors.AccentGold
-        "manushya", "मनुष्य" -> ChartDetailColors.AccentTeal
-        "rakshasa", "राक्षस" -> ChartDetailColors.AccentOrange
+        "deva", "à¤¦à¥‡à¤µ" -> ChartDetailColors.AccentGold
+        "manushya", "à¤®à¤¨à¥à¤·à¥à¤¯" -> ChartDetailColors.AccentTeal
+        "rakshasa", "à¤°à¤¾à¤•à¥à¤·à¤¸" -> ChartDetailColors.AccentOrange
         else -> ChartDetailColors.TextSecondary
     }
 }
+
 
 
 

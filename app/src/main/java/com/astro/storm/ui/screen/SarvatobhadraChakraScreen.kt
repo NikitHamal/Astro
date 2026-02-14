@@ -201,7 +201,7 @@ private fun SarvatobhadraTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -541,7 +541,7 @@ private fun ChakraGridCell(
     ) {
         Text(
             text = cell.displayLabel,
-            fontSize = 8.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S8,
             fontWeight = FontWeight.Medium,
             color = textColor,
             textAlign = TextAlign.Center,
@@ -788,7 +788,7 @@ private fun VedhaCard(vedha: SarvatobhadraChakraCalculator.NakshatraVedha) {
                     ) {
                         Text(
                             text = vedha.transitingPlanet.symbol,
-                            fontSize = 18.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                             color = effectColor
                         )
                     }
@@ -939,7 +939,7 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
                                         na.planetaryInfluence.forEach { planet ->
                                             Text(
                                                 text = planet.symbol,
-                                                fontSize = 18.sp,
+                                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                                                 color = AppTheme.AccentPrimary
                                             )
                                         }
@@ -1043,6 +1043,7 @@ private fun SarvatobhadraInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

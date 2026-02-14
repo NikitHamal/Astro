@@ -214,7 +214,7 @@ private fun AvasthaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -368,7 +368,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = strongest.planet.localizedAbbr(),
-                        fontSize = 24.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(strongest.planet)
                     )
                     Text(
@@ -412,7 +412,7 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = weakest.planet.localizedAbbr(),
-                        fontSize = 24.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(weakest.planet)
                     )
                     Text(
@@ -577,7 +577,7 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                         ) {
                             Text(
                                 text = rec.planet.localizedAbbr(),
-                                fontSize = 20.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                                 color = getPlanetColor(rec.planet)
                             )
                             Text(
@@ -666,7 +666,7 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     ) {
                         Text(
                             text = avastha.planet.localizedAbbr(),
-                            fontSize = 24.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                             color = getPlanetColor(avastha.planet)
                         )
                     }
@@ -884,7 +884,7 @@ private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
             ) {
                 Text(
                     text = avastha.planet.localizedAbbr(),
-                    fontSize = 24.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                     color = getPlanetColor(avastha.planet)
                 )
                 Column {
@@ -988,7 +988,7 @@ private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
             ) {
                 Text(
                     text = avastha.planet.localizedAbbr(),
-                    fontSize = 24.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                     color = getPlanetColor(avastha.planet)
                 )
                 Column {
@@ -1096,7 +1096,7 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 ) {
                     Text(
                         text = avastha.planet.localizedAbbr(),
-                        fontSize = 24.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(avastha.planet)
                     )
                     Text(
@@ -1205,7 +1205,7 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 ) {
                     Text(
                         text = avastha.planet.localizedAbbr(),
-                        fontSize = 24.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(avastha.planet)
                     )
                     Text(
@@ -1398,6 +1398,7 @@ private fun getLajjitadiColor(avastha: AvasthaCalculator.LajjitadiAvastha): Colo
         AvasthaCalculator.LajjitadiAvastha.KSHOBHITA -> AppTheme.ErrorColor
     }
 }
+
 
 
 

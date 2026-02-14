@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.main
+﻿package com.astro.storm.ui.screen.main
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -700,7 +700,7 @@ private fun PeriodSelectorItem(
             Text(
                 text = period.getLocalizedTitle(language).uppercase(),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                 color = textColor,
                 letterSpacing = 1.5.sp
@@ -752,7 +752,7 @@ private fun DailyHoroscopeHeader(
                 Text(
                     text = dateText.uppercase(),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextMuted,
                     letterSpacing = 1.5.sp
@@ -772,7 +772,7 @@ private fun DailyHoroscopeHeader(
                         Text(
                             text = stringResource(StringKey.BTN_PREVIEW).uppercase(),
                             fontFamily = SpaceGroteskFamily,
-                            fontSize = 9.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.AccentPrimary,
                             letterSpacing = 1.5.sp
@@ -787,7 +787,7 @@ private fun DailyHoroscopeHeader(
             Text(
                 text = stringResource(horoscope.themeKey),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = 19.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
                 lineHeight = 28.sp
@@ -805,7 +805,7 @@ private fun DailyHoroscopeHeader(
                         withStyle(
                             SpanStyle(
                                 fontFamily = CinzelDecorativeFamily,
-                                fontSize = 40.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S40,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.AccentGold
                             )
@@ -815,7 +815,7 @@ private fun DailyHoroscopeHeader(
                         withStyle(
                             SpanStyle(
                                 fontFamily = PoppinsFontFamily,
-                                fontSize = 17.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                                 fontWeight = FontWeight.Normal,
                                 color = AppTheme.TextSecondary
                             )
@@ -876,7 +876,7 @@ private fun InfoChip(
         Text(
             text = label,
             fontFamily = SpaceGroteskFamily,
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextSecondary,
             maxLines = 1,
@@ -914,7 +914,7 @@ private fun EnergyCard(overallEnergy: Int) {
             Text(
                 text = stringResource(StringKey.INSIGHTS_OVERALL_ENERGY).uppercase(),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 letterSpacing = 2.sp
@@ -943,7 +943,7 @@ private fun EnergyCard(overallEnergy: Int) {
                 Text(
                     text = localizedScore,
                     fontFamily = CinzelDecorativeFamily,
-                    fontSize = 21.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                     fontWeight = FontWeight.Bold,
                     color = energyColor
                 )
@@ -1011,7 +1011,7 @@ private fun LifeAreasSection(lifeAreas: List<HoroscopeCalculator.LifeAreaPredict
         Text(
             text = stringResource(StringKey.INSIGHTS_LIFE_AREAS).uppercase(),
             fontFamily = SpaceGroteskFamily,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             letterSpacing = 2.sp,
@@ -1083,7 +1083,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                     Text(
                         text = localizedAreaName,
                         fontFamily = PoppinsFontFamily,
-                        fontSize = 17.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1102,7 +1102,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                     Text(
                         text = prediction.prediction,
                         fontFamily = PoppinsFontFamily,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextSecondary,
                         lineHeight = 24.sp
                     )
@@ -1132,7 +1132,7 @@ private fun LifeAreaCard(prediction: HoroscopeCalculator.LifeAreaPrediction) {
                         Text(
                             text = prediction.advice,
                             fontFamily = PoppinsFontFamily,
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextSecondary,
                             lineHeight = 20.sp
                         )
@@ -1209,7 +1209,7 @@ private fun LuckyElementsCard(lucky: HoroscopeCalculator.LuckyElements) {
             Text(
                 text = stringResource(StringKey.INSIGHTS_LUCKY_ELEMENTS).uppercase(),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 letterSpacing = 2.sp
@@ -1262,7 +1262,7 @@ private fun LuckyElement(icon: ImageVector, label: String, value: String) {
         Text(
             text = label.uppercase(),
             fontFamily = SpaceGroteskFamily,
-            fontSize = 9.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextMuted,
             letterSpacing = 1.5.sp
@@ -1271,7 +1271,7 @@ private fun LuckyElement(icon: ImageVector, label: String, value: String) {
         Text(
             text = value,
             fontFamily = PoppinsFontFamily,
-            fontSize = 16.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             maxLines = 1
@@ -1298,7 +1298,7 @@ private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List
                 Text(
                     text = stringResource(StringKey.INSIGHTS_RECOMMENDATIONS).uppercase(),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor,
                     letterSpacing = 2.sp
@@ -1322,7 +1322,7 @@ private fun RecommendationsCard(recommendations: List<StringKey>, cautions: List
                 Text(
                     text = stringResource(StringKey.INSIGHTS_CAUTIONS).uppercase(),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.WarningColor,
                     letterSpacing = 2.sp
@@ -1362,7 +1362,7 @@ private fun BulletItem(
         Text(
             text = stringResource(textKey),
             fontFamily = PoppinsFontFamily,
-            fontSize = 16.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
             color = AppTheme.TextSecondary,
             lineHeight = 24.sp
         )
@@ -1408,7 +1408,7 @@ private fun AffirmationCard(affirmationKey: StringKey) {
                 Text(
                     text = stringResource(affirmationKey),
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 19.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                     fontWeight = FontWeight.Medium,
                     fontStyle = FontStyle.Italic,
                     color = AppTheme.TextPrimary,
@@ -1419,7 +1419,7 @@ private fun AffirmationCard(affirmationKey: StringKey) {
                 Text(
                     text = stringResource(StringKey.INSIGHTS_TODAYS_AFFIRMATION).uppercase(),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 9.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.AccentGold,
                     letterSpacing = 2.sp
@@ -1453,7 +1453,7 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
             Text(
                 text = dateRange.uppercase(),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted,
                 letterSpacing = 1.5.sp
@@ -1462,7 +1462,7 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
             Text(
                 text = stringResource(weekly.weeklyThemeKey),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = 19.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
                 lineHeight = 28.sp
@@ -1471,7 +1471,7 @@ private fun WeeklyOverviewHeader(weekly: HoroscopeCalculator.WeeklyHoroscope) {
             Text(
                 text = weekly.weeklyOverview,
                 fontFamily = PoppinsFontFamily,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -1495,7 +1495,7 @@ private fun WeeklyEnergyChart(dailyHighlights: List<HoroscopeCalculator.DailyHig
             Text(
                 text = stringResource(StringKey.INSIGHTS_WEEKLY_ENERGY).uppercase(),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 letterSpacing = 2.sp
@@ -1553,7 +1553,7 @@ private fun DailyEnergyBar(highlight: HoroscopeCalculator.DailyHighlight) {
         Text(
             text = dayAbbrev.uppercase(),
             fontFamily = SpaceGroteskFamily,
-            fontSize = 9.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextMuted,
             letterSpacing = 1.sp
@@ -1569,7 +1569,7 @@ private fun KeyDatesSection(keyDates: List<HoroscopeCalculator.KeyDate>) {
         Text(
             text = stringResource(StringKey.INSIGHTS_KEY_DATES).uppercase(),
             fontFamily = SpaceGroteskFamily,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             letterSpacing = 2.sp,
@@ -1619,7 +1619,7 @@ private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
                 Text(
                     text = dayOfMonth,
                     fontFamily = CinzelDecorativeFamily,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.Bold,
                     color = indicatorColor
                 )
@@ -1631,14 +1631,14 @@ private fun KeyDateCard(keyDate: HoroscopeCalculator.KeyDate) {
                 Text(
                     text = keyDate.event,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = keyDate.significance,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextMuted,
                     lineHeight = 18.sp
                 )
@@ -1662,7 +1662,7 @@ private fun WeeklyPredictionsSection(predictions: Map<HoroscopeCalculator.LifeAr
         Text(
             text = stringResource(StringKey.INSIGHTS_WEEKLY_OVERVIEW).uppercase(),
             fontFamily = SpaceGroteskFamily,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             letterSpacing = 2.sp,
@@ -1735,7 +1735,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
                 Text(
                     text = localizedAreaName,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 17.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     modifier = Modifier.weight(1f)
@@ -1752,7 +1752,7 @@ private fun WeeklyAreaCard(area: HoroscopeCalculator.LifeArea, prediction: Strin
                 Text(
                     text = prediction,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextSecondary,
                     lineHeight = 24.sp,
                     modifier = Modifier.padding(top = 12.dp)
@@ -1797,7 +1797,7 @@ private fun WeeklyAdviceCard(advice: String) {
                     Text(
                         text = stringResource(StringKey.INSIGHTS_WEEKLY_ADVICE).uppercase(),
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.AccentPrimary,
                         letterSpacing = 2.sp
@@ -1807,7 +1807,7 @@ private fun WeeklyAdviceCard(advice: String) {
                 Text(
                     text = advice,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary,
                     lineHeight = 24.sp
                 )
@@ -1848,7 +1848,7 @@ private fun CurrentDashaCard(
                 Text(
                     text = stringResource(StringKey.DASHA_CURRENT_PERIOD).uppercase(),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     letterSpacing = 2.sp
@@ -1868,7 +1868,7 @@ private fun CurrentDashaCard(
                     Text(
                         text = stringResource(StringKey.DASHA_ACTIVE).uppercase(),
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = 9.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.SuccessColor,
                         letterSpacing = 1.5.sp
@@ -1941,7 +1941,7 @@ private fun PratyantardashaRow(pratyantardasha: DashaCalculator.Pratyantardasha)
         Text(
             text = stringResource(StringKey.DASHA_PRATYANTARDASHA).uppercase(),
             fontFamily = SpaceGroteskFamily,
-            fontSize = 9.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextMuted,
             letterSpacing = 1.5.sp
@@ -1957,7 +1957,7 @@ private fun PratyantardashaRow(pratyantardasha: DashaCalculator.Pratyantardasha)
             Text(
                 text = pratyantardasha.planet.symbol,
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 8.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S8,
                 fontWeight = FontWeight.Bold,
                 color = planetColor
             )
@@ -1966,7 +1966,7 @@ private fun PratyantardashaRow(pratyantardasha: DashaCalculator.Pratyantardasha)
         Text(
             text = pratyantardasha.planet.getLocalizedName(language),
             fontFamily = PoppinsFontFamily,
-            fontSize = 14.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = planetColor
         )
@@ -2035,7 +2035,7 @@ private fun DashaPeriodRow(
             Text(
                 text = dateRange,
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted,
                 letterSpacing = 0.5.sp
             )
@@ -2046,14 +2046,14 @@ private fun DashaPeriodRow(
                 Text(
                     text = formattedDuration,
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.AccentPrimary
                 )
                 Text(
                     text = stringResource(StringKey.DASHA_REMAINING).uppercase(),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 9.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextMuted,
                     letterSpacing = 1.sp
@@ -2119,7 +2119,7 @@ private fun DashaTimelinePreview(
             Text(
                 text = stringResource(StringKey.DASHA_UPCOMING).uppercase(),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 letterSpacing = 2.sp
@@ -2151,7 +2151,7 @@ private fun DashaTimelinePreview(
                     Text(
                         text = stringResource(StringKey.DASHA_LAST_IN_MAHADASHA),
                         fontFamily = PoppinsFontFamily,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -2223,7 +2223,7 @@ private fun UpcomingPeriodItem(
             Text(
                 text = planet.symbol,
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Bold,
                 color = planetColor
             )
@@ -2235,14 +2235,14 @@ private fun UpcomingPeriodItem(
             Text(
                 text = stringResource(StringKey.DASHA_COMBINED_NAME, mahadashaPlanet.getLocalizedName(language), planet.getLocalizedName(language)),
                 fontFamily = PoppinsFontFamily,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = stringResource(StringKey.DASHA_STARTS, formattedDate),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted,
                 letterSpacing = 0.5.sp
             )
@@ -2252,7 +2252,7 @@ private fun UpcomingPeriodItem(
             Text(
                 text = stringResource(StringKeyMatch.TIME_IN, durationText),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 fontWeight = FontWeight.Medium,
                 color = if (isFirst) AppTheme.AccentPrimary else AppTheme.TextMuted,
                 letterSpacing = 0.5.sp
@@ -2269,7 +2269,7 @@ private fun PlanetaryTransitsSection(influences: List<HoroscopeCalculator.Planet
         Text(
             text = stringResource(StringKey.TRANSITS_CURRENT).uppercase(),
             fontFamily = SpaceGroteskFamily,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             letterSpacing = 2.sp,
@@ -2318,7 +2318,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
                     Text(
                         text = influence.planet.symbol,
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
                         color = planetColor
                     )
@@ -2338,7 +2338,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
             Text(
                 text = influence.planet.getLocalizedName(language),
                 fontFamily = PoppinsFontFamily,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -2348,7 +2348,7 @@ private fun TransitCard(influence: HoroscopeCalculator.PlanetaryInfluence) {
             Text(
                 text = influence.influence,
                 fontFamily = PoppinsFontFamily,
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -2423,7 +2423,7 @@ private fun EmptyInsightsState(
             Text(
                 text = stringResource(StringKey.SETTINGS_NO_PROFILE),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = 19.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                 fontWeight = FontWeight.Bold,
                 color = colors.TextPrimary,
                 textAlign = TextAlign.Center
@@ -2434,7 +2434,7 @@ private fun EmptyInsightsState(
             Text(
                 text = stringResource(StringKey.SETTINGS_TAP_TO_SELECT),
                 fontFamily = PoppinsFontFamily,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center,
                 lineHeight = 24.sp
@@ -2469,7 +2469,7 @@ private fun EmptyInsightsState(
                 Text(
                     text = stringResource(StringKey.BTN_CREATE_CHART).uppercase(),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     letterSpacing = 1.5.sp
                 )
@@ -2558,6 +2558,7 @@ private fun getPlanetColor(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
+
 
 
 

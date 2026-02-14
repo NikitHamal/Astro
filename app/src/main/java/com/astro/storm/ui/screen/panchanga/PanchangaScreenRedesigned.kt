@@ -337,13 +337,13 @@ private fun TodaySummaryCard(
                 Column {
                     Text(
                         text = todayDate.format(DateTimeFormatter.ofPattern("MMMM dd, yyyy")),
-                        fontSize = 17.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = "$dayOfWeek - ${panchanga.vara}",
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.AccentPrimary,
                         fontWeight = FontWeight.Medium
                     )
@@ -448,14 +448,14 @@ private fun PanchangaQuickItem(
             Column {
                 Text(
                     text = label.uppercase(),
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextMuted,
                     letterSpacing = 0.5.sp
                 )
                 Text(
                     text = value,
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.SemiBold,
                     color = color,
                     maxLines = 1,
@@ -478,7 +478,7 @@ private fun FiveLimbsCard(
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.PANCHANGA_FIVE_LIMBS),
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 14.dp)
@@ -561,7 +561,7 @@ private fun PanchangaLimbRow(
         ) {
             Text(
                 text = number.toString(),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -572,13 +572,13 @@ private fun PanchangaLimbRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = name,
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = description,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = AppTheme.TextMuted
             )
         }
@@ -589,7 +589,7 @@ private fun PanchangaLimbRow(
         ) {
             Text(
                 text = value,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color,
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
@@ -627,7 +627,7 @@ private fun AuspiciousTimingCard(
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.PANCHANGA_TIMING_AUSPICIOUSNESS),
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 14.dp)
@@ -693,13 +693,13 @@ private fun TimingRow(
             Column {
                 Text(
                     text = label,
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = if (isInauspicious) stringResource(StringKeyAnalysis.UI_AVOID_ACTIVITIES) else stringResource(StringKeyAnalysis.UI_AUSPICIOUS_TIMING),
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -711,7 +711,7 @@ private fun TimingRow(
         ) {
             Text(
                 text = value,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color,
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
@@ -732,7 +732,7 @@ private fun SunMoonCard(
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.PANCHANGA_SUN_MOON),
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 14.dp)
@@ -761,7 +761,7 @@ private fun SunMoonCard(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(StringKeyDosha.PANCHANGA_SUN),
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.PlanetSun
                         )
@@ -791,7 +791,7 @@ private fun SunMoonCard(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(StringKeyDosha.PANCHANGA_MOON),
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.LifeAreaLove
                         )
@@ -820,12 +820,12 @@ private fun SunMoonTimeRow(label: String, time: String) {
     ) {
         Text(
             text = label,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = AppTheme.TextMuted
         )
         Text(
             text = time,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary
         )
@@ -892,13 +892,13 @@ private fun BirthSummaryCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyAnalysis.UI_BIRTH_PANCHANGA),
-                        fontSize = 17.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = chart.birthData.name,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.AccentGold,
                         fontWeight = FontWeight.Medium
                     )
@@ -943,7 +943,7 @@ private fun BirthSummaryCard(
                         Column {
                             Text(
                                 text = stringResource(StringKey.LABEL_DATE),
-                                fontSize = 10.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextMuted,
                                 letterSpacing = 0.5.sp
@@ -952,7 +952,7 @@ private fun BirthSummaryCard(
                                 text = chart.birthData.dateTime.format(
                                     DateTimeFormatter.ofPattern("MMM dd, yyyy")
                                 ),
-                                fontSize = 14.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
@@ -960,7 +960,7 @@ private fun BirthSummaryCard(
                         Column(horizontalAlignment = Alignment.End) {
                             Text(
                                 text = stringResource(StringKey.LABEL_TIME),
-                                fontSize = 10.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextMuted,
                                 letterSpacing = 0.5.sp
@@ -969,7 +969,7 @@ private fun BirthSummaryCard(
                                 text = chart.birthData.dateTime.format(
                                     DateTimeFormatter.ofPattern("hh:mm a")
                                 ),
-                                fontSize = 14.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
@@ -978,7 +978,7 @@ private fun BirthSummaryCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "${panchanga.vara.displayName} - ${panchanga.tithi.tithi.displayName}",
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.AccentGold
                     )
@@ -1009,7 +1009,7 @@ private fun BirthDayInterpretationCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.UI_BIRTH_DAY_SIGNIFICANCE),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1019,7 +1019,7 @@ private fun BirthDayInterpretationCard(
 
             Text(
                 text = getBirthDayInterpretation(panchanga, language),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -1045,7 +1045,7 @@ private fun PanchangaElementsContent(
             ) {
                 Text(
                     text = stringResource(StringKeyDosha.PANCHANGA_INTRO),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextMuted,
                     lineHeight = 19.sp,
                     modifier = Modifier.padding(16.dp)
@@ -1145,7 +1145,7 @@ private fun ElementDetailCard(
                 ) {
                     Text(
                         text = name.first().toString(),
-                        fontSize = 17.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = color
                     )
@@ -1154,7 +1154,7 @@ private fun ElementDetailCard(
                 Column {
                     Text(
                         text = name,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1164,7 +1164,7 @@ private fun ElementDetailCard(
             // Description
             Text(
                 text = description,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 19.sp
             )
@@ -1180,7 +1180,7 @@ private fun ElementDetailCard(
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
                         text = stringResource(StringKeyDosha.PANCHANGA_SIGNIFICANCE),
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.SemiBold,
                         color = color,
                         letterSpacing = 0.5.sp
@@ -1188,7 +1188,7 @@ private fun ElementDetailCard(
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = significance,
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextPrimary,
                         lineHeight = 17.sp
                     )
@@ -1214,7 +1214,7 @@ private fun ElementDetailCard(
                             ) {
                                 Text(
                                     text = stringResource(StringKey.LABEL_TODAY),
-                                    fontSize = 9.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                                     fontWeight = FontWeight.Medium,
                                     color = AppTheme.TextMuted,
                                     letterSpacing = 0.5.sp
@@ -1222,7 +1222,7 @@ private fun ElementDetailCard(
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = it,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     fontWeight = FontWeight.SemiBold,
                                     color = AppTheme.AccentPrimary,
                                     textAlign = TextAlign.Center,
@@ -1244,7 +1244,7 @@ private fun ElementDetailCard(
                             ) {
                                 Text(
                                     text = stringResource(StringKey.LABEL_BIRTH),
-                                    fontSize = 9.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                                     fontWeight = FontWeight.Medium,
                                     color = AppTheme.TextMuted,
                                     letterSpacing = 0.5.sp
@@ -1252,7 +1252,7 @@ private fun ElementDetailCard(
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = it,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     fontWeight = FontWeight.SemiBold,
                                     color = AppTheme.AccentGold,
                                     textAlign = TextAlign.Center,
@@ -1354,14 +1354,14 @@ private fun PanchangaInfoDialog(onDismiss: () -> Unit) {
             Column {
                 Text(
                     text = stringResource(StringKeyDosha.PANCHANGA_ABOUT_DESC_1),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextSecondary,
                     lineHeight = 19.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyDosha.PANCHANGA_ABOUT_DESC_2),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextSecondary,
                     lineHeight = 19.sp
                 )
@@ -1430,6 +1430,7 @@ private fun rememberCurrentDateTime(zoneId: ZoneId) = produceState(
         delay(60_000)
     }
 }
+
 
 
 

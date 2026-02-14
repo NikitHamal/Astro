@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.tabs
+﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -299,7 +299,7 @@ private fun CurrentPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_CURRENT_DASHA_PERIOD),
-                        fontSize = 18.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                         fontWeight = FontWeight.Bold,
                         color = ChartDetailColors.TextPrimary,
                         letterSpacing = (-0.3).sp
@@ -307,7 +307,7 @@ private fun CurrentPeriodCard(
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = getLocalizedShortDescription(timeline, language),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextMuted,
                         fontWeight = FontWeight.Medium
                     )
@@ -439,7 +439,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
             ) {
                 Text(
                     text = timeline.birthNakshatraLord.symbol,
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Bold,
                     color = nakshatraLordColor
                 )
@@ -450,7 +450,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(StringKeyMatch.DASHA_BIRTH_NAKSHATRA),
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = ChartDetailColors.TextMuted,
                     fontWeight = FontWeight.Medium,
                     letterSpacing = 0.5.sp
@@ -458,7 +458,7 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = "${timeline.birthNakshatra.getLocalizedName(language)} (${stringResource(StringKeyMatch.DASHA_PADA)} ${formatNumber(timeline.birthNakshatraPada, language)})",
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
@@ -467,14 +467,14 @@ private fun BirthNakshatraInfo(timeline: DashaCalculator.DashaTimeline) {
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = stringResource(StringKeyMatch.DASHA_LORD),
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = ChartDetailColors.TextMuted,
                     fontWeight = FontWeight.Medium
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = timeline.birthNakshatraLord.getLocalizedName(language),
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = nakshatraLordColor
                 )
@@ -538,7 +538,7 @@ private fun SandhiAlertsCard(
                     Column {
                         Text(
                             text = stringResource(StringKeyMatch.DASHA_SANDHI_ALERTS),
-                            fontSize = 16.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextPrimary,
                             letterSpacing = (-0.2).sp
@@ -546,7 +546,7 @@ private fun SandhiAlertsCard(
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = stringResource(StringKeyMatch.DASHA_UPCOMING_TRANSITIONS, sandhis.size, 90),
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = ChartDetailColors.TextMuted
                         )
                     }
@@ -570,7 +570,7 @@ private fun SandhiAlertsCard(
                 Column(modifier = Modifier.padding(top = 16.dp)) {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_SANDHI_EXPLANATION),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextSecondary,
                         lineHeight = 18.sp,
                         modifier = Modifier.padding(bottom = 14.dp)
@@ -628,7 +628,7 @@ private fun SandhiAlertRow(
             ) {
                 Text(
                     text = sandhi.fromPlanet.symbol,
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.Bold,
                     color = fromColor
                 )
@@ -651,7 +651,7 @@ private fun SandhiAlertRow(
             ) {
                 Text(
                     text = sandhi.toPlanet.symbol,
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.Bold,
                     color = toColor
                 )
@@ -661,15 +661,15 @@ private fun SandhiAlertRow(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${sandhi.fromPlanet.getLocalizedName(language)} → ${sandhi.toPlanet.getLocalizedName(language)}",
-                    fontSize = 13.sp,
+                    text = "${sandhi.fromPlanet.getLocalizedName(language)} â†’ ${sandhi.toPlanet.getLocalizedName(language)}",
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(1.dp))
                 Text(
                     text = "$levelLabel ${stringResource(StringKeyMatch.DASHA_TRANSITION)}",
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = ChartDetailColors.TextMuted
                 )
             }
@@ -683,7 +683,7 @@ private fun SandhiAlertRow(
                         isImminent -> stringResource(StringKeyMatch.DASHA_IN_DAYS, daysUntil.toInt())
                         else -> formatDate(sandhi.transitionDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)
                     },
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = if (isWithinSandhi || isImminent) FontWeight.Bold else FontWeight.Normal,
                     color = if (isWithinSandhi || isImminent) {
                         ChartDetailColors.AccentOrange
@@ -694,8 +694,8 @@ private fun SandhiAlertRow(
                 if (!isWithinSandhi && daysUntil > 0) {
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "${formatDate(sandhi.sandhiStartDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} – ${formatDate(sandhi.sandhiEndDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
-                        fontSize = 10.sp,
+                        text = "${formatDate(sandhi.sandhiStartDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} â€“ ${formatDate(sandhi.sandhiEndDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = ChartDetailColors.TextMuted.copy(alpha = 0.8f)
                     )
                 }
@@ -724,7 +724,7 @@ private fun EmptyDashaState() {
             Spacer(modifier = Modifier.height(14.dp))
             Text(
                 text = stringResource(StringKeyMatch.DASHA_UNABLE_CALCULATE),
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = ChartDetailColors.TextMuted
             )
         }
@@ -806,7 +806,7 @@ private fun DashaPeriodRow(
                 }
                 Spacer(modifier = Modifier.height(3.dp))
                 Text(
-                    text = "$startDateFormatted – $endDateFormatted",
+                    text = "$startDateFormatted â€“ $endDateFormatted",
                     fontSize = (sizes.subFontSize.value - 1).sp,
                     color = ChartDetailColors.TextMuted,
                     maxLines = 1,
@@ -955,7 +955,7 @@ private fun CurrentPeriodSummary(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyMatch.DASHA_PERIOD_INSIGHTS),
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.AccentGold
                 )
@@ -963,7 +963,7 @@ private fun CurrentPeriodSummary(
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = interpretation,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = ChartDetailColors.TextPrimary,
                 lineHeight = 20.sp
             )
@@ -1015,7 +1015,7 @@ private fun DashaTimelineCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_TIMELINE),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary,
                         letterSpacing = (-0.2).sp
@@ -1023,7 +1023,7 @@ private fun DashaTimelineCard(
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_COMPLETE_CYCLE),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextMuted
                     )
                 }
@@ -1095,7 +1095,7 @@ private fun DashaTimelineCard(
                     ) {
                         Text(
                             text = dasha.planet.getLocalizedName(language),
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
                             color = when {
                                 isCurrent -> planetColor
@@ -1106,8 +1106,8 @@ private fun DashaTimelineCard(
                         )
 
                         Text(
-                            text = "${formatDate(dasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)} – ${formatDate(dasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)}",
-                            fontSize = 12.sp,
+                            text = "${formatDate(dasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)} â€“ ${formatDate(dasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.YEAR_ONLY)}",
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = if (isCurrent) ChartDetailColors.TextPrimary else ChartDetailColors.TextMuted,
                             modifier = Modifier.weight(1f)
                         )
@@ -1118,7 +1118,7 @@ private fun DashaTimelineCard(
                         ) {
                             Text(
                                 text = formatDurationYearsLocalized(dasha.durationYears, language),
-                                fontSize = 11.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                 fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Normal,
                                 color = if (isCurrent) planetColor else ChartDetailColors.TextMuted,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
@@ -1195,7 +1195,7 @@ private fun MahadashaCard(
                     ) {
                         Text(
                             text = mahadasha.planet.symbol,
-                            fontSize = 18.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -1206,7 +1206,7 @@ private fun MahadashaCard(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = "${mahadasha.planet.getLocalizedName(language)} ${stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA)}",
-                                fontSize = 15.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                                 fontWeight = FontWeight.SemiBold,
                                 color = ChartDetailColors.TextPrimary,
                                 letterSpacing = (-0.2).sp
@@ -1219,7 +1219,7 @@ private fun MahadashaCard(
                                 ) {
                                     Text(
                                         text = stringResource(StringKey.DASHA_ACTIVE),
-                                        fontSize = 10.sp,
+                                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                         fontWeight = FontWeight.Bold,
                                         color = planetColor,
                                         modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)
@@ -1229,8 +1229,8 @@ private fun MahadashaCard(
                         }
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
-                            text = "${formatDurationYearsLocalized(mahadasha.durationYears, language)} • ${formatDate(mahadasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)} – ${formatDate(mahadasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)}",
-                            fontSize = 11.sp,
+                            text = "${formatDurationYearsLocalized(mahadasha.durationYears, language)} â€¢ ${formatDate(mahadasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)} â€“ ${formatDate(mahadasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.FULL)}",
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.TextMuted,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -1239,8 +1239,8 @@ private fun MahadashaCard(
                             Spacer(modifier = Modifier.height(3.dp))
                             val percentComplete = String.format(java.util.Locale.ENGLISH, "%.1f", mahadasha.getProgressPercent(asOf))
                             Text(
-                                text = "${stringResource(StringKeyMatch.DASHA_PERCENT_COMPLETE, percentComplete)} • ${formatRemainingYearsLocalized(mahadasha.getRemainingYears(asOf), language)}",
-                                fontSize = 10.sp,
+                                text = "${stringResource(StringKeyMatch.DASHA_PERCENT_COMPLETE, percentComplete)} â€¢ ${formatRemainingYearsLocalized(mahadasha.getRemainingYears(asOf), language)}",
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = ChartDetailColors.AccentTeal,
                                 fontWeight = FontWeight.Medium
                             )
@@ -1277,7 +1277,7 @@ private fun MahadashaCard(
                     ) {
                         Text(
                             text = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextSecondary
                         )
@@ -1288,7 +1288,7 @@ private fun MahadashaCard(
                         ) {
                             Text(
                                 text = stringResource(StringKeyMatch.DASHA_SUB_PERIODS, mahadasha.antardashas.size),
-                                fontSize = 10.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = ChartDetailColors.TextMuted,
                                 fontWeight = FontWeight.Medium,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1357,7 +1357,7 @@ private fun AntardashaRow(
             ) {
                 Text(
                     text = antardasha.planet.symbol,
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -1366,8 +1366,8 @@ private fun AntardashaRow(
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "${mahadashaPlanet.symbol}–${antardasha.planet.getLocalizedName(language)}",
-                        fontSize = 13.sp,
+                        text = "${mahadashaPlanet.symbol}â€“${antardasha.planet.getLocalizedName(language)}",
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
                         color = when {
                             isCurrent -> planetColor
@@ -1379,7 +1379,7 @@ private fun AntardashaRow(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = "${String.format(java.util.Locale.ENGLISH, "%.0f", antardasha.getProgressPercent(asOf))}%",
-                            fontSize = 10.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.Bold,
                             color = planetColor.copy(alpha = 0.9f)
                         )
@@ -1391,7 +1391,7 @@ private fun AntardashaRow(
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = remaining,
-                            fontSize = 10.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = ChartDetailColors.AccentTeal,
                             fontWeight = FontWeight.Medium
                         )
@@ -1402,14 +1402,14 @@ private fun AntardashaRow(
 
         Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "${formatDate(antardasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} – ${formatDate(antardasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
-                fontSize = 11.sp,
+                text = "${formatDate(antardasha.startDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)} â€“ ${formatDate(antardasha.endDate.toLocalDate(), LocalDateSystem.current, LocalLanguage.current, DateFormat.MONTH_YEAR)}",
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = ChartDetailColors.TextMuted
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = formatDurationYearsLocalized(antardasha.durationYears, language),
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = ChartDetailColors.TextMuted.copy(alpha = 0.8f)
             )
         }
@@ -1469,7 +1469,7 @@ private fun DashaInfoCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_ABOUT_VIMSHOTTARI),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary,
                         letterSpacing = (-0.2).sp
@@ -1493,7 +1493,7 @@ private fun DashaInfoCard(
                 Column(modifier = Modifier.padding(top = 18.dp)) {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_VIMSHOTTARI_DESC),
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = ChartDetailColors.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -1507,7 +1507,7 @@ private fun DashaInfoCard(
                         Column(modifier = Modifier.padding(16.dp)) {
                             Text(
                                 text = stringResource(StringKeyMatch.DASHA_PERIODS_SEQUENCE),
-                                fontSize = 13.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                 fontWeight = FontWeight.SemiBold,
                                 color = ChartDetailColors.TextSecondary
                             )
@@ -1547,7 +1547,7 @@ private fun DashaInfoCard(
                             ) {
                                 Text(
                                     text = stringResource(StringKeyMatch.DASHA_TOTAL_CYCLE),
-                                    fontSize = 13.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                     fontWeight = FontWeight.SemiBold,
                                     color = ChartDetailColors.AccentGold
                                 )
@@ -1563,7 +1563,7 @@ private fun DashaInfoCard(
 
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_SANDHI_NOTE),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextMuted,
                         lineHeight = 18.sp
                     )
@@ -1584,7 +1584,7 @@ private fun DashaLevelsInfo(includeMicroLevels: Boolean) {
         Column(modifier = Modifier.padding(14.dp)) {
             Text(
                 text = stringResource(StringKeyMatch.DASHA_HIERARCHY),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.TextSecondary,
                 modifier = Modifier.padding(bottom = 12.dp)
@@ -1619,7 +1619,7 @@ private fun DashaLevelsInfo(includeMicroLevels: Boolean) {
                     ) {
                         Text(
                             text = "${index + 1}",
-                            fontSize = 10.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.Bold,
                             color = ChartDetailColors.AccentPurple
                         )
@@ -1628,13 +1628,13 @@ private fun DashaLevelsInfo(includeMicroLevels: Boolean) {
                     Column {
                         Text(
                             text = name,
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.Medium,
                             color = ChartDetailColors.TextPrimary
                         )
                         Text(
                             text = description,
-                            fontSize = 10.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = ChartDetailColors.TextMuted
                         )
                     }
@@ -1661,7 +1661,7 @@ private fun DashaDurationRow(planet: Planet, years: Int) {
         ) {
             Text(
                 text = planet.symbol,
-                fontSize = 9.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
             )
@@ -1669,13 +1669,13 @@ private fun DashaDurationRow(planet: Planet, years: Int) {
         Spacer(modifier = Modifier.width(10.dp))
         Text(
             text = planet.getLocalizedName(language),
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = ChartDetailColors.TextPrimary,
             modifier = Modifier.weight(1f)
         )
         Text(
             text = "${formatNumber(years, language)} ${stringResource(StringKeyMatch.DASHA_YEARS_ABBR)}",
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium,
             color = ChartDetailColors.TextMuted
         )
@@ -1779,27 +1779,27 @@ private fun getDashaLevelName(level: DashaCalculator.DashaLevel, language: Langu
     return when (level) {
         DashaCalculator.DashaLevel.MAHADASHA -> when (language) {
             Language.ENGLISH -> "Mahadasha"
-            Language.NEPALI -> "महादशा"
+            Language.NEPALI -> "à¤®à¤¹à¤¾à¤¦à¤¶à¤¾"
         }
         DashaCalculator.DashaLevel.ANTARDASHA -> when (language) {
             Language.ENGLISH -> "Antardasha"
-            Language.NEPALI -> "अन्तर्दशा"
+            Language.NEPALI -> "à¤…à¤¨à¥à¤¤à¤°à¥à¤¦à¤¶à¤¾"
         }
         DashaCalculator.DashaLevel.PRATYANTARDASHA -> when (language) {
             Language.ENGLISH -> "Pratyantardasha"
-            Language.NEPALI -> "प्रत्यन्तर्दशा"
+            Language.NEPALI -> "à¤ªà¥à¤°à¤¤à¥à¤¯à¤¨à¥à¤¤à¤°à¥à¤¦à¤¶à¤¾"
         }
         DashaCalculator.DashaLevel.SOOKSHMADASHA -> when (language) {
             Language.ENGLISH -> "Sookshmadasha"
-            Language.NEPALI -> "सूक्ष्मदशा"
+            Language.NEPALI -> "à¤¸à¥‚à¤•à¥à¤·à¥à¤®à¤¦à¤¶à¤¾"
         }
         DashaCalculator.DashaLevel.PRANADASHA -> when (language) {
             Language.ENGLISH -> "Pranadasha"
-            Language.NEPALI -> "प्राणदशा"
+            Language.NEPALI -> "à¤ªà¥à¤°à¤¾à¤£à¤¦à¤¶à¤¾"
         }
         DashaCalculator.DashaLevel.DEHADASHA -> when (language) {
             Language.ENGLISH -> "Dehadasha"
-            Language.NEPALI -> "देहदशा"
+            Language.NEPALI -> "à¤¦à¥‡à¤¹à¤¦à¤¶à¤¾"
         }
     }
 }
@@ -1820,9 +1820,9 @@ private fun formatRemainingYearsLocalized(years: Double, language: Language): St
             else -> ""
         }
         Language.NEPALI -> when {
-            wholeYears > 0 && remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष ${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
-            wholeYears > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष बाँकी"
-            remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
+            wholeYears > 0 && remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤· ${BikramSambatConverter.toNepaliNumerals(remainingMonths)} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
+            wholeYears > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤· à¤¬à¤¾à¤à¤•à¥€"
+            remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(remainingMonths)} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
             else -> ""
         }
     }
@@ -1843,9 +1843,9 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
             else -> "${remainingDays}d remaining"
         }
         Language.NEPALI -> when {
-            months > 0 && remainingDays > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना ${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
-            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना बाँकी"
-            else -> "${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
+            months > 0 && remainingDays > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ ${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
+            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
+            else -> "${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
         }
     }
 }
@@ -1868,9 +1868,9 @@ private fun formatRemainingTimeLocalized(today: LocalDate, endDate: LocalDate, l
             else -> "${days}d remaining"
         }
         Language.NEPALI -> when {
-            years > 0 -> "${BikramSambatConverter.toNepaliNumerals(years.toInt())} वर्ष ${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना बाँकी"
-            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना ${BikramSambatConverter.toNepaliNumerals(days.toInt())} दिन बाँकी"
-            else -> "${BikramSambatConverter.toNepaliNumerals(days.toInt())} दिन बाँकी"
+            years > 0 -> "${BikramSambatConverter.toNepaliNumerals(years.toInt())} à¤µà¤°à¥à¤· ${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
+            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ ${BikramSambatConverter.toNepaliNumerals(days.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
+            else -> "${BikramSambatConverter.toNepaliNumerals(days.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
         }
     }
 }
@@ -1888,8 +1888,8 @@ private fun formatDurationYearsLocalized(years: Double, language: Language): Str
             else -> "$wholeYears yrs"
         }
         Language.NEPALI -> when {
-            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष ${BikramSambatConverter.toNepaliNumerals(months)} महिना"
-            else -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष"
+            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤· ${BikramSambatConverter.toNepaliNumerals(months)} à¤®à¤¹à¤¿à¤¨à¤¾"
+            else -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤·"
         }
     }
 }
@@ -1917,12 +1917,12 @@ private fun formatPranadashaDurationLocalized(durationMinutes: Long, language: L
             hours >= 24 -> {
                 val days = hours / 24
                 val remainingHours = hours % 24
-                if (remainingHours > 0) "${BikramSambatConverter.toNepaliNumerals(days.toInt())} दिन ${BikramSambatConverter.toNepaliNumerals(remainingHours.toInt())} घण्टा"
-                else "${BikramSambatConverter.toNepaliNumerals(days.toInt())} दिन"
+                if (remainingHours > 0) "${BikramSambatConverter.toNepaliNumerals(days.toInt())} à¤¦à¤¿à¤¨ ${BikramSambatConverter.toNepaliNumerals(remainingHours.toInt())} à¤˜à¤£à¥à¤Ÿà¤¾"
+                else "${BikramSambatConverter.toNepaliNumerals(days.toInt())} à¤¦à¤¿à¤¨"
             }
-            hours > 0 && mins > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} घण्टा ${BikramSambatConverter.toNepaliNumerals(mins.toInt())} मिनेट"
-            hours > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} घण्टा"
-            else -> "${BikramSambatConverter.toNepaliNumerals(mins.toInt())} मिनेट"
+            hours > 0 && mins > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} à¤˜à¤£à¥à¤Ÿà¤¾ ${BikramSambatConverter.toNepaliNumerals(mins.toInt())} à¤®à¤¿à¤¨à¥‡à¤Ÿ"
+            hours > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} à¤˜à¤£à¥à¤Ÿà¤¾"
+            else -> "${BikramSambatConverter.toNepaliNumerals(mins.toInt())} à¤®à¤¿à¤¨à¥‡à¤Ÿ"
         }
     }
 }
@@ -1942,12 +1942,13 @@ private fun formatDehadashaDurationLocalized(durationMinutes: Long, language: La
             else -> "${mins}m"
         }
         Language.NEPALI -> when {
-            hours > 0 && mins > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} घण्टा ${BikramSambatConverter.toNepaliNumerals(mins.toInt())} मिनेट"
-            hours > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} घण्टा"
-            else -> "${BikramSambatConverter.toNepaliNumerals(mins.toInt())} मिनेट"
+            hours > 0 && mins > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} à¤˜à¤£à¥à¤Ÿà¤¾ ${BikramSambatConverter.toNepaliNumerals(mins.toInt())} à¤®à¤¿à¤¨à¥‡à¤Ÿ"
+            hours > 0 -> "${BikramSambatConverter.toNepaliNumerals(hours.toInt())} à¤˜à¤£à¥à¤Ÿà¤¾"
+            else -> "${BikramSambatConverter.toNepaliNumerals(mins.toInt())} à¤®à¤¿à¤¨à¥‡à¤Ÿ"
         }
     }
 }
+
 
 
 

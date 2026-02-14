@@ -382,7 +382,7 @@ private fun NeoVedicTopBar(
                 text = "ASTROSTORM",
                 fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
-                fontSize = 17.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 letterSpacing = 2.sp,
                 color = colors.TextPrimary
             )
@@ -489,6 +489,7 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
+
 
 
 

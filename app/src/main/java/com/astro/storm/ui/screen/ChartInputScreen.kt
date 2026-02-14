@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
@@ -381,17 +381,17 @@ fun ChartInputScreen(
 }
 
 /**
- * Parse coordinate string, removing common symbols like degree (°), apostrophe ('), etc.
- * Supports formats: "27.7", "27.7°", "27°42'", "-27.7", etc.
+ * Parse coordinate string, removing common symbols like degree (Â°), apostrophe ('), etc.
+ * Supports formats: "27.7", "27.7Â°", "27Â°42'", "-27.7", etc.
  */
 private fun parseCoordinate(value: String): Double? {
     // Remove common coordinate symbols and whitespace
     val cleaned = value.trim()
-        .replace("°", "")
+        .replace("Â°", "")
         .replace("'", "")
         .replace("\"", "")
-        .replace("′", "")  // Unicode prime
-        .replace("″", "")  // Unicode double prime
+        .replace("â€²", "")  // Unicode prime
+        .replace("â€³", "")  // Unicode double prime
         .replace(",", ".")  // Handle comma as decimal separator
         .trim()
 
@@ -498,7 +498,7 @@ private fun ChartInputHeader(
         Spacer(Modifier.width(12.dp))
         Text(
             text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
-            fontSize = 22.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
             fontWeight = FontWeight.SemiBold,
             color = colors.TextPrimary,
             letterSpacing = 0.3.sp
@@ -532,7 +532,7 @@ private fun IdentitySection(
 
         Text(
             text = stringResource(StringKey.INPUT_GENDER),
-            fontSize = 14.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             color = colors.TextSecondary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -655,7 +655,7 @@ private fun DateSystemToggle(
             ) {
                 Text(
                     text = adLabel,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = if (!useBSPicker) FontWeight.SemiBold else FontWeight.Normal,
                     color = if (!useBSPicker) colors.ButtonText else colors.TextSecondary,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -670,7 +670,7 @@ private fun DateSystemToggle(
             ) {
                 Text(
                     text = bsLabel,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = if (useBSPicker) FontWeight.SemiBold else FontWeight.Normal,
                     color = if (useBSPicker) colors.ButtonText else colors.TextSecondary,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -777,7 +777,7 @@ private fun GenerateButton(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         buttonText,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -865,7 +865,7 @@ private fun ChartTimePickerDialog(
                 Text(
                     text = stringResource(StringKey.INPUT_SELECT_TIME),
                     color = colors.TextSecondary,
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 20.dp)
@@ -917,7 +917,7 @@ private fun SectionTitle(title: String) {
     val colors = LocalAppThemeColors.current
     Text(
         text = title,
-        fontSize = 16.sp,
+        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
         fontWeight = FontWeight.SemiBold,
         color = colors.TextPrimary,
         letterSpacing = 0.5.sp
@@ -937,14 +937,14 @@ private fun ChartOutlinedTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = colors.TextSecondary, fontSize = 14.sp) },
+        label = { Text(label, color = colors.TextSecondary, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14) },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = chartTextFieldColors(),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        textStyle = LocalTextStyle.current.copy(fontSize = 16.sp)
+        textStyle = LocalTextStyle.current.copy(fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16)
     )
 }
 
@@ -992,7 +992,7 @@ private fun DateTimeChip(
             Text(
                 text = text,
                 color = colors.TextPrimary,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.Medium
             )
         }
@@ -1021,7 +1021,7 @@ private fun GenderChip(
             Text(
                 text = text,
                 color = if (isSelected) colors.ButtonText else colors.TextPrimary,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -1029,6 +1029,7 @@ private fun GenderChip(
         }
     }
 }
+
 
 
 

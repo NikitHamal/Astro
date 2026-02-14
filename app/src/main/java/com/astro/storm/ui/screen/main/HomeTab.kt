@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.main
+﻿package com.astro.storm.ui.screen.main
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -327,7 +327,7 @@ private fun HeroDashaCard(
                         text = stringResource(StringKey.CURRENT_MAHA_DASHA).uppercase(),
                         fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.Medium,
-                        fontSize = 10.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         letterSpacing = 2.sp,
                         color = planetColor
                     )
@@ -362,7 +362,7 @@ private fun HeroDashaCard(
                                 text = currentDasha.planet.getLocalizedName(language).take(2),
                                 fontFamily = CinzelDecorativeFamily,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                                 color = planetColor
                             )
                         }
@@ -375,7 +375,7 @@ private fun HeroDashaCard(
                                 text = "${currentDasha.planet.getLocalizedName(language)} ${stringResource(StringKey.HOME_DASHA_LABEL)}",
                                 fontFamily = CinzelDecorativeFamily,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = 19.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                                 color = colors.TextPrimary
                             )
 
@@ -394,7 +394,7 @@ private fun HeroDashaCard(
                                 },
                                 fontFamily = SpaceGroteskFamily,
                                 fontWeight = FontWeight.Normal,
-                                fontSize = 13.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                 color = colors.TextMuted
                             )
                         }
@@ -415,14 +415,14 @@ private fun HeroDashaCard(
                             Text(
                                 text = currentDasha.startDate.format(DateTimeFormatter.ofPattern("MMM yyyy")),
                                 fontFamily = SpaceGroteskFamily,
-                                fontSize = 10.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 letterSpacing = 0.5.sp,
                                 color = colors.TextMuted
                             )
                             Text(
                                 text = currentDasha.endDate.format(DateTimeFormatter.ofPattern("MMM yyyy")),
                                 fontFamily = SpaceGroteskFamily,
-                                fontSize = 10.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 letterSpacing = 0.5.sp,
                                 color = colors.TextMuted
                             )
@@ -445,7 +445,7 @@ private fun HeroDashaCard(
                         text = stringResource(StringKey.TAP_TO_VIEW_DASHAS),
                         fontFamily = PoppinsFontFamily,
                         fontWeight = FontWeight.Normal,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = colors.TextMuted
                     )
                 }
@@ -560,7 +560,7 @@ private fun QuickActionItem(
                 text = feature.getLocalizedTitle(language),
                 fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Medium,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 letterSpacing = 0.5.sp,
                 color = colors.TextPrimary,
                 maxLines = 2,
@@ -618,14 +618,14 @@ private fun TodaySnapshotSection(
                     text = today.format(DateTimeFormatter.ofPattern("EEEE", Locale.ENGLISH)),
                     fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = colors.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = today.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     letterSpacing = 0.5.sp,
                     color = colors.TextMuted
                 )
@@ -645,7 +645,7 @@ private fun TodaySnapshotSection(
                     text = stringResource(StringKey.VIEW_CURRENT_TRANSITS),
                     fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 15.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     color = colors.TextSecondary
                 )
             }
@@ -697,7 +697,7 @@ private fun SnapshotCard(
                     text = title.uppercase(),
                     fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     letterSpacing = 1.5.sp,
                     color = colors.TextMuted
                 )
@@ -770,14 +770,14 @@ private fun FeatureCategoryCard(
                         text = title,
                         fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = colors.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = subtitle,
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         color = colors.TextMuted,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -789,7 +789,7 @@ private fun FeatureCategoryCard(
                     text = features.size.toString(),
                     fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     letterSpacing = 0.5.sp,
                     color = accentColor
                 )
@@ -899,7 +899,7 @@ private fun CompactFeatureCard(
                 text = feature.getLocalizedTitle(language),
                 fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Medium,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = colors.TextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -924,7 +924,7 @@ private fun SectionHeader(
             text = title.uppercase(),
             fontFamily = SpaceGroteskFamily,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             letterSpacing = 2.sp,
             color = colors.TextMuted
         )
@@ -934,7 +934,7 @@ private fun SectionHeader(
                 text = subtitle,
                 fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = colors.TextSubtle
             )
         }
@@ -989,7 +989,7 @@ private fun EmptyHomeState(
                 text = stringResource(StringKey.NO_PROFILE_SELECTED),
                 fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
-                fontSize = 17.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 color = colors.TextPrimary,
                 textAlign = TextAlign.Center
             )
@@ -1000,7 +1000,7 @@ private fun EmptyHomeState(
                 text = stringResource(StringKey.NO_PROFILE_MESSAGE),
                 fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 color = colors.TextMuted,
                 textAlign = TextAlign.Center,
                 lineHeight = 24.sp,
@@ -1034,7 +1034,7 @@ private fun EmptyHomeState(
                     text = stringResource(StringKey.BTN_CREATE_CHART).uppercase(),
                     fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     letterSpacing = 1.5.sp
                 )
             }
@@ -1606,6 +1606,7 @@ private fun resolveZoneId(timezone: String): ZoneId {
         }
     }
 }
+
 
 
 

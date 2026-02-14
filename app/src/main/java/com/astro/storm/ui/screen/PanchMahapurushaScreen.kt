@@ -210,7 +210,7 @@ private fun TabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -515,7 +515,7 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                         modifier = Modifier.padding(vertical = 2.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("âœ¨", fontSize = 12.sp)
+                        Text("âœ¨", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = synergy,
                             style = MaterialTheme.typography.bodySmall,
@@ -612,7 +612,7 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                     ) {
                         Text(
                             text = yoga.planet.symbol,
-                            fontSize = 24.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                             color = yogaColor
                         )
                     }
@@ -745,7 +745,7 @@ private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
             ) {
                 Text(
                     text = yoga.planet.symbol,
-                    fontSize = 20.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                     color = yogaColor
                 )
                 Text(
@@ -1119,6 +1119,7 @@ private fun getYogaColor(type: PanchMahapurushaYogaCalculator.MahapurushaYogaTyp
         PanchMahapurushaYogaCalculator.MahapurushaYogaType.SASHA -> AppTheme.PlanetSaturn
     }
 }
+
 
 
 

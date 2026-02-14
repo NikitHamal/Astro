@@ -191,7 +191,7 @@ private fun YogaSummaryCard(analysis: YogaAnalysis) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKey.YOGA_ANALYSIS_SUMMARY),
-                    fontSize = 18.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.TextPrimary
                 )
@@ -251,12 +251,12 @@ private fun OverallStrengthBar(strength: Double, language: Language) {
         ) {
             Text(
                 text = stringResource(StringKey.YOGA_OVERALL_STRENGTH),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = ChartDetailColors.TextSecondary
             )
             Text(
                 text = formatPercentage(strength, language),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -280,7 +280,7 @@ private fun TopYogasSection(topYogas: List<Yoga>, language: Language) {
     Column {
         Text(
             text = stringResource(StringKey.YOGA_MOST_SIGNIFICANT),
-            fontSize = 14.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = theme.AccentGold,
             modifier = Modifier.padding(bottom = 8.dp)
@@ -303,13 +303,13 @@ private fun TopYogasSection(topYogas: List<Yoga>, language: Language) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = yoga.name,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = ChartDetailColors.TextPrimary
                     )
                 }
                 Text(
                     text = getLocalizedStrength(yoga.strength, language),
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     color = ChartDetailColors.TextMuted
                 )
             }
@@ -333,7 +333,7 @@ private fun YogaCategoryFilter(
             com.astro.storm.ui.components.common.NeoVedicChoicePill(
                 selected = selectedCategory == null,
                 onClick = { onCategorySelected(null) },
-                label = { Text(stringResource(StringKey.YOGA_ALL), fontSize = 12.sp) },
+                label = { Text(stringResource(StringKey.YOGA_ALL), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = ChartDetailColors.AccentGold.copy(alpha = 0.2f),
                     selectedLabelColor = ChartDetailColors.AccentGold,
@@ -355,7 +355,7 @@ private fun YogaCategoryFilter(
                 com.astro.storm.ui.components.common.NeoVedicChoicePill(
                     selected = selectedCategory == category,
                     onClick = { onCategorySelected(category) },
-                    label = { Text("${getCategoryDisplayName(category, language)} (${formatNumber(count, language)})", fontSize = 12.sp) },
+                    label = { Text("${getCategoryDisplayName(category, language)} (${formatNumber(count, language)})", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = getCategoryColor(category).copy(alpha = 0.2f),
                         selectedLabelColor = getCategoryColor(category),
@@ -429,13 +429,13 @@ private fun YogaCard(
                     Column {
                         Text(
                             text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaName(yoga, language),
-                            fontSize = 15.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.TextPrimary
                         )
                         Text(
                             text = getCategoryDisplayName(yoga.category, language),
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.TextMuted
                         )
                     }
@@ -467,7 +467,7 @@ private fun YogaCard(
                     if (yoga.sanskritName.isNotEmpty() && yoga.sanskritName != yoga.name) {
                         Text(
                             text = "${stringResource(StringKey.YOGA_SANSKRIT)}: ${yoga.sanskritName}",
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.Medium,
                             color = ChartDetailColors.AccentPurple,
                             modifier = Modifier.padding(bottom = 8.dp)
@@ -476,7 +476,7 @@ private fun YogaCard(
 
                     Text(
                         text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaDescription(yoga, language),
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = ChartDetailColors.TextSecondary,
                         modifier = Modifier.padding(bottom = 12.dp)
                     )
@@ -493,7 +493,7 @@ private fun YogaCard(
                             ) {
                                 Text(
                                     text = planet.getLocalizedName(language),
-                                    fontSize = 11.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                     color = ChartDetailColors.getPlanetColor(planet),
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -507,7 +507,7 @@ private fun YogaCard(
                             ) {
                                 Text(
                                     text = "${stringResource(StringKey.YOGA_HOUSE_PREFIX)}${formatNumber(house, language)}",
-                                    fontSize = 11.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                     color = ChartDetailColors.AccentPurple,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -527,14 +527,14 @@ private fun YogaCard(
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
                                 text = stringResource(StringKey.YOGA_EFFECTS),
-                                fontSize = 12.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 fontWeight = FontWeight.SemiBold,
                                 color = if (yoga.isAuspicious) ChartDetailColors.SuccessColor else ChartDetailColors.WarningColor
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
-                                fontSize = 13.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                 color = ChartDetailColors.TextPrimary,
                                 lineHeight = 20.sp
                             )
@@ -544,7 +544,7 @@ private fun YogaCard(
                     if (yoga.activationPeriod.isNotEmpty()) {
                         Text(
                             text = "${stringResource(StringKey.YOGA_ACTIVATION)}: ${yoga.activationPeriod}",
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.AccentTeal,
                             modifier = Modifier.padding(top = 8.dp)
                         )
@@ -562,7 +562,7 @@ private fun YogaCard(
                         )
                         Text(
                             text = "${stringResource(StringKey.YOGA_CANCELLATION_FACTORS)}:",
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = ChartDetailColors.SuccessColor,
                             modifier = Modifier.padding(bottom = 4.dp)
@@ -570,7 +570,7 @@ private fun YogaCard(
                         yoga.cancellationFactors.forEach { factor ->
                             Text(
                                 text = "â€¢ $factor",
-                                fontSize = 12.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = ChartDetailColors.TextSecondary
                             )
                         }
@@ -596,7 +596,7 @@ private fun YogaStrengthBadge(strength: Double, language: Language) {
     ) {
         Text(
             text = formatPercentage(strength, language),
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.Bold,
             color = color,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -632,7 +632,7 @@ private fun EmptyYogasMessage(category: YogaCategory?) {
                 } else {
                     stringResource(StringKey.YOGA_NONE_DETECTED)
                 },
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 color = ChartDetailColors.TextSecondary,
                 textAlign = TextAlign.Center
             )
@@ -737,7 +737,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_DEEP_ANALYSIS),
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     fontWeight = FontWeight.Bold,
                     color = theme.TextPrimary,
                     modifier = Modifier.weight(1f)
@@ -745,7 +745,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 
                 Text(
                     text = stringResource(com.astro.storm.core.common.StringKeyAnalysis.YOGA_VIEW_MORE),
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.Bold,
                     color = theme.AccentGold,
                     modifier = Modifier
@@ -790,7 +790,7 @@ private fun DetailedAnalysisSummary(result: Any, onViewDeepAnalysis: () -> Unit)
 
             Text(
                 text = summaryText,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = theme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -810,6 +810,7 @@ private fun getLocalizedStrength(strength: YogaStrength, language: Language): St
     }
     return stringResource(key)
 }
+
 
 
 

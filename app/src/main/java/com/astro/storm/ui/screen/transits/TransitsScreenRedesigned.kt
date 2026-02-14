@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.transits
+﻿package com.astro.storm.ui.screen.transits
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -285,7 +285,7 @@ private fun EphemerisTopBar(
                 Text(
                     text = "EPHEMERIS",
                     style = MaterialTheme.typography.displaySmall.copy(
-                        fontSize = 26.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S26,
                         letterSpacing = 0.4.sp
                     ),
                     color = AppTheme.TextPrimary,
@@ -394,7 +394,7 @@ private fun TransitPositionsMode(
 
 /**
  * Aspects mode showing transit aspects with glyphs and strength indicators.
- * Enhanced with aspect type glyphs (☌, ☍, △, □, ⚹).
+ * Enhanced with aspect type glyphs (â˜Œ, â˜, â–³, â–¡, âš¹).
  */
 @Composable
 private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
@@ -443,7 +443,7 @@ private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
                     aspectName.contains("trine", ignoreCase = true) -> AspectGlyphs.TRINE
                     aspectName.contains("square", ignoreCase = true) -> AspectGlyphs.SQUARE
                     aspectName.contains("sextile", ignoreCase = true) -> AspectGlyphs.SEXTILE
-                    else -> "→"
+                    else -> "â†’"
                 }
 
                 val transitPlanetGlyph = PlanetGlyphs.fromPlanetName(aspect.transitingPlanet.getLocalizedName(language))
@@ -510,7 +510,7 @@ private fun TransitAspectsMode(analysis: TransitAnalyzer.TransitAnalysis) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = "Orb: ${aspect.orb.roundToInt()}°",
+                                text = "Orb: ${aspect.orb.roundToInt()}Â°",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = AppTheme.TextMuted
                             )
@@ -562,3 +562,4 @@ private fun rememberCurrentDateTime(zoneId: ZoneId): androidx.compose.runtime.St
             delay(delayMillis.coerceAtLeast(250L))
         }
     }
+

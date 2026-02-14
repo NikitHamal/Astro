@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.tabs
+﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -288,7 +288,7 @@ private fun SectionHeader(
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = title,
-            fontSize = 16.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
             fontWeight = FontWeight.SemiBold,
             color = ChartDetailColors.TextPrimary
         )
@@ -319,7 +319,7 @@ private fun ConditionStatBadge(
         ) {
             Text(
                 text = count.toString(),
-                fontSize = 18.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -327,7 +327,7 @@ private fun ConditionStatBadge(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -433,13 +433,13 @@ private fun PlanetCardHeader(
             Column {
                 Text(
                     text = position.planet.localizedName(),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
                 Text(
-                    text = "${position.sign.localizedName()} • ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}",
-                    fontSize = 12.sp,
+                    text = "${position.sign.localizedName()} â€¢ ${stringResource(StringKey.CHART_HOUSE)} ${position.house.localized()}",
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = ChartDetailColors.TextSecondary
                 )
             }
@@ -448,7 +448,7 @@ private fun PlanetCardHeader(
         Column(horizontalAlignment = Alignment.End) {
             Text(
                 text = ChartDetailUtils.formatDegreeInSign(position.longitude),
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.AccentTeal
             )
@@ -499,7 +499,7 @@ private fun NakshatraChip(
         ) {
             Text(
                 text = "${nakshatra.localizedName()} ${pada.localized()}",
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = ChartDetailColors.AccentPurple
             )
             Spacer(modifier = Modifier.width(2.dp))
@@ -537,12 +537,12 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
         ) {
             Text(
                 text = stringResource(StringKeyAnalysis.PLANETS_SHADBALA),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = ChartDetailColors.TextSecondary
             )
             Text(
                 text = shadbala.strengthRating.localizedName(),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = strengthColor
             )
@@ -569,7 +569,7 @@ private fun ShadbalaProgressSection(shadbala: PlanetaryShadbala) {
                 formattedRequired,
                 formattedPercentage
             ),
-            fontSize = 10.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -638,7 +638,7 @@ private fun TapForDetailsHint() {
     ) {
         Text(
             text = stringResource(StringKey.ACC_VIEW_DETAILS),
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             color = ChartDetailColors.TextMuted
         )
         Icon(
@@ -649,6 +649,7 @@ private fun TapForDetailsHint() {
         )
     }
 }
+
 
 
 

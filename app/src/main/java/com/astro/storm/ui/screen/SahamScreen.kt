@@ -199,7 +199,7 @@ private fun SahamTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -616,7 +616,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     ) {
                         Text(
                             text = saham.lord.symbol,
-                            fontSize = 20.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                             color = strengthColor
                         )
                     }
@@ -932,6 +932,7 @@ private fun SahamInfoDialog(onDismiss: () -> Unit) {
         }
     }
 }
+
 
 
 

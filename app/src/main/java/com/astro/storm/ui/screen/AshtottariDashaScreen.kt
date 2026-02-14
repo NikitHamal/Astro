@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen
+﻿package com.astro.storm.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -340,7 +340,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                     Text(
                         stringResource(StringKeyDosha.ASHTOTTARI_APPLICABILITY),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         color = AppTheme.TextPrimary
                     )
                     Text(
@@ -348,7 +348,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
                             stringResource(StringKeyDosha.ASHTOTTARI_APPLICABLE)
                         else
                             stringResource(StringKeyDosha.ASHTOTTARI_NOT_APPLICABLE),
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -358,7 +358,7 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
 
             Text(
                 result.applicability.reason,
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 lineHeight = 20.sp
             )
@@ -381,7 +381,7 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_IDEAL_CONDITION),
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextPrimary,
                 lineHeight = 20.sp
             )
@@ -396,13 +396,13 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 Text(
                     stringResource(StringKeyDosha.BIRTH_NAKSHATRA),
                     color = AppTheme.TextMuted,
-                    fontSize = 13.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                 )
                 Text(
                     result.moonNakshatra.getLocalizedName(language),
                     color = AppTheme.TextPrimary,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 13.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                 )
             }
 
@@ -416,13 +416,13 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 Text(
                     stringResource(StringKeyDosha.ASHTOTTARI_STARTING_LORD),
                     color = AppTheme.TextMuted,
-                    fontSize = 13.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                 )
                 Text(
                     result.startingLord.getLocalizedName(language),
                     color = AppTheme.TextPrimary,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 13.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                 )
             }
 
@@ -436,13 +436,13 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
                 Text(
                     stringResource(StringKeyDosha.ASHTOTTARI_BALANCE),
                     color = AppTheme.TextMuted,
-                    fontSize = 13.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                 )
                 Text(
                     String.format("%.2f %s", result.balanceAtBirth, stringResource(StringKey.YEARS)),
                     color = AppTheme.TextPrimary,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 13.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
                 )
             }
         }
@@ -483,7 +483,7 @@ private fun CurrentPeriodCard(
                 Text(
                     stringResource(StringKeyDosha.ASHTOTTARI_CURRENT_PERIOD),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -506,25 +506,25 @@ private fun CurrentPeriodCard(
                     Text(
                         stringResource(StringKey.DASHA_MAHADASHA),
                         color = AppTheme.TextMuted,
-                        fontSize = 12.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                     )
                     Text(
                         mahadasha.planet.getLocalizedName(language),
                         color = AppTheme.TextPrimary,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 17.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         "${mahadasha.startDate.format(dateFormatter)}",
                         color = AppTheme.TextMuted,
-                        fontSize = 11.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11
                     )
                     Text(
                         "- ${mahadasha.endDate.format(dateFormatter)}",
                         color = AppTheme.TextMuted,
-                        fontSize = 11.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11
                     )
                 }
             }
@@ -548,13 +548,13 @@ private fun CurrentPeriodCard(
                         Text(
                             stringResource(StringKey.DASHA_ANTARDASHA),
                             color = AppTheme.TextMuted,
-                            fontSize = 12.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                         )
                         Text(
                             antardasha.antardashaLord.getLocalizedName(language),
                             color = AppTheme.TextPrimary,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16
                         )
                     }
                     RelationshipChip(antardasha.relationship)
@@ -573,13 +573,13 @@ private fun CurrentPeriodCard(
                     Text(
                         stringResource(StringKey.DASHA_PROGRESS),
                         color = AppTheme.TextMuted,
-                        fontSize = 12.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                     )
                     Text(
                         "${(progress * 100).toInt()}%",
                         color = AppTheme.AccentPrimary,
                         fontWeight = FontWeight.Medium,
-                        fontSize = 12.sp
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))
@@ -615,7 +615,7 @@ private fun RelationshipChip(relationship: PlanetRelationship) {
             text,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             color = color,
-            fontSize = 11.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
             fontWeight = FontWeight.Medium
         )
     }
@@ -636,7 +636,7 @@ private fun SystemInfoCard() {
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_SUBTITLE),
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary
             )
 
@@ -665,7 +665,7 @@ private fun SystemInfoCard() {
                         Text(
                             stringResource(period),
                             color = AppTheme.TextSecondary,
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -685,7 +685,7 @@ private fun SystemInfoCard() {
                 stringResource(StringKeyDosha.ASHTOTTARI_TOTAL_YEARS),
                 color = AppTheme.AccentPrimary,
                 fontWeight = FontWeight.Medium,
-                fontSize = 14.sp
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -693,7 +693,7 @@ private fun SystemInfoCard() {
             Text(
                 stringResource(StringKeyDosha.ASHTOTTARI_PLANETS_USED),
                 color = AppTheme.TextMuted,
-                fontSize = 12.sp
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
             )
         }
     }
@@ -775,7 +775,7 @@ private fun MahadashaTimelineCard(
                             mahadasha.planet.abbreviation,
                             color = getPlanetColor(mahadasha.planet),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14
                         )
                     }
 
@@ -786,7 +786,7 @@ private fun MahadashaTimelineCard(
                             Text(
                                 mahadasha.planet.getLocalizedName(language),
                                 fontWeight = FontWeight.SemiBold,
-                                fontSize = 16.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                                 color = AppTheme.TextPrimary
                             )
                             if (isCurrent) {
@@ -799,7 +799,7 @@ private fun MahadashaTimelineCard(
                                         stringResource(StringKeyDosha.CURRENT_LABEL),
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                                         color = AppTheme.SuccessColor,
-                                        fontSize = 10.sp,
+                                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                         fontWeight = FontWeight.Medium
                                     )
                                 }
@@ -808,7 +808,7 @@ private fun MahadashaTimelineCard(
                         Text(
                             "${String.format("%.1f", mahadasha.actualYears)} ${stringResource(StringKey.YEARS)}",
                             color = AppTheme.TextMuted,
-                            fontSize = 12.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                         )
                     }
                 }
@@ -818,12 +818,12 @@ private fun MahadashaTimelineCard(
                         Text(
                             mahadasha.startDate.format(dateFormatter),
                             color = AppTheme.TextMuted,
-                            fontSize = 11.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11
                         )
                         Text(
                             mahadasha.endDate.format(dateFormatter),
                             color = AppTheme.TextMuted,
-                            fontSize = 11.sp
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -865,7 +865,7 @@ private fun MahadashaTimelineCard(
                     Text(
                         stringResource(StringKey.DASHA_ANTARDASHA),
                         fontWeight = FontWeight.Medium,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary
                     )
 
@@ -905,7 +905,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
                 antardasha.antardashaLord.getLocalizedName(language),
                 color = if (antardasha.isCurrentlyRunning) AppTheme.AccentPrimary else AppTheme.TextSecondary,
                 fontWeight = if (antardasha.isCurrentlyRunning) FontWeight.Medium else FontWeight.Normal,
-                fontSize = 13.sp
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
             )
             if (antardasha.isCurrentlyRunning) {
                 Spacer(modifier = Modifier.width(6.dp))
@@ -919,7 +919,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
         Text(
             "${antardasha.startDate.format(dateFormatter)} - ${antardasha.endDate.format(dateFormatter)}",
             color = AppTheme.TextMuted,
-            fontSize = 11.sp
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11
         )
     }
 }
@@ -946,7 +946,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                         Text(
                             stringResource(StringKeyDosha.KEY_THEMES),
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 16.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(12.dp))
@@ -962,7 +962,7 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                                         theme,
                                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                                         color = AppTheme.AccentPrimary,
-                                        fontSize = 13.sp,
+                                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                         fontWeight = FontWeight.Medium
                                     )
                                 }
@@ -984,14 +984,14 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
                     Text(
                         stringResource(StringKeyDosha.SUDARSHANA_COMBINED_ANALYSIS),
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         interpretation.combinedEffects,
                         color = AppTheme.TextSecondary,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         lineHeight = 22.sp
                     )
                 }
@@ -1052,7 +1052,7 @@ private fun EffectsCard(
                 Text(
                     title,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -1061,11 +1061,11 @@ private fun EffectsCard(
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp)
                 ) {
-                    Text("•", color = AppTheme.AccentPrimary, modifier = Modifier.padding(end = 8.dp))
+                    Text("â€¢", color = AppTheme.AccentPrimary, modifier = Modifier.padding(end = 8.dp))
                     Text(
                         effect,
                         color = AppTheme.TextSecondary,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         lineHeight = 20.sp
                     )
                 }
@@ -1097,7 +1097,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 Text(
                     stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -1115,7 +1115,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     Text(
                         rec,
                         color = AppTheme.TextSecondary,
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         lineHeight = 20.sp
                     )
                 }
@@ -1198,6 +1198,7 @@ private fun resolveZoneId(timezone: String?): ZoneId {
         }
     }
 }
+
 
 
 

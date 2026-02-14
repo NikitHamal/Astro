@@ -82,7 +82,7 @@ fun DebugScreen(
         ) {
             Text(
                 text = stringResource(StringKeyAnalysis.DEBUG_ERROR_OCCURRED),
-                fontSize = 20.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
@@ -98,7 +98,7 @@ fun DebugScreen(
                     text = stackTrace,
                     color = AppTheme.TextSecondary,
                     fontFamily = FontFamily.Monospace,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
@@ -134,6 +134,7 @@ fun DebugScreen(
         }
     }
 }
+
 
 
 

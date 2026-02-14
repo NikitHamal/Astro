@@ -369,7 +369,7 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.strongestPlanet.symbol,
-                    fontSize = 24.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.SuccessColor
                 )
                 Text(
@@ -410,7 +410,7 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.weakestPlanet.symbol,
-                    fontSize = 24.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.ErrorColor
                 )
                 Text(
@@ -652,7 +652,7 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
                     ) {
                         Text(
                             text = planetBala.planet.symbol,
-                            fontSize = 22.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
                             color = scoreColor
                         )
                     }
@@ -821,6 +821,7 @@ private fun KalaBalaInfoDialog(onDismiss: () -> Unit) {
         containerColor = AppTheme.CardBackground
     )
 }
+
 
 
 

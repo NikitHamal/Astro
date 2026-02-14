@@ -214,7 +214,7 @@ private fun KemadrumaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -534,7 +534,7 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                     ) {
                         Text(
                             text = "\u263D",
-                            fontSize = 28.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S28,
                             color = AppTheme.PlanetMoon
                         )
                     }
@@ -1570,6 +1570,7 @@ private fun getPriorityColorFromInt(priority: Int): Color {
         else -> AppTheme.TextMuted
     }
 }
+
 
 
 

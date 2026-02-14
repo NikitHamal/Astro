@@ -1,4 +1,4 @@
-package com.astro.storm.ui.screen.chartdetail.tabs
+﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -175,7 +175,7 @@ private fun TransitOverviewCard(analysis: TransitAnalyzer.TransitAnalysis) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.TRANSIT_OVERVIEW),
-                    fontSize = 18.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                     fontWeight = FontWeight.Bold,
                     color = ChartDetailColors.TextPrimary
                 )
@@ -223,7 +223,7 @@ private fun OverviewBadge(count: Int, label: String, color: Color) {
         ) {
             Text(
                 text = count.toString(),
-                fontSize = 18.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -231,7 +231,7 @@ private fun OverviewBadge(count: Int, label: String, color: Color) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = ChartDetailColors.TextMuted
         )
     }
@@ -255,12 +255,12 @@ private fun OverallTransitAssessment(analysis: TransitAnalyzer.TransitAnalysis) 
         ) {
             Text(
                 text = stringResource(StringKeyAnalysis.TRANSIT_OVERALL_SCORE),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = ChartDetailColors.TextSecondary
             )
             Text(
                 text = "${String.format("%.1f", overallScore)}%",
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
@@ -279,7 +279,7 @@ private fun OverallTransitAssessment(analysis: TransitAnalyzer.TransitAnalysis) 
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = analysis.overallAssessment.summary,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = ChartDetailColors.TextMuted,
             lineHeight = 18.sp
         )
@@ -296,7 +296,7 @@ private fun CurrentTransitsCard(analysis: TransitAnalyzer.TransitAnalysis) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(StringKeyAnalysis.TRANSIT_CURRENT_POSITIONS),
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.SemiBold,
                 color = ChartDetailColors.TextSecondary,
                 modifier = Modifier.padding(bottom = 12.dp)
@@ -320,7 +320,7 @@ private fun CurrentTransitsCard(analysis: TransitAnalyzer.TransitAnalysis) {
                         ) {
                             Text(
                                 text = position.planet.symbol,
-                                fontSize = 12.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
                             )
@@ -329,13 +329,13 @@ private fun CurrentTransitsCard(analysis: TransitAnalyzer.TransitAnalysis) {
                         Column {
                             Text(
                                 text = position.planet.displayName,
-                                fontSize = 13.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                 fontWeight = FontWeight.Medium,
                                 color = ChartDetailColors.TextPrimary
                             )
                             Text(
                                 text = "${position.sign.displayName} ${ChartDetailUtils.formatDegreeInSign(position.longitude)}",
-                                fontSize = 11.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                 color = ChartDetailColors.TextMuted
                             )
                         }
@@ -348,7 +348,7 @@ private fun CurrentTransitsCard(analysis: TransitAnalyzer.TransitAnalysis) {
                         ) {
                             Text(
                                 text = "R",
-                                fontSize = 10.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.Bold,
                                 color = ChartDetailColors.WarningColor,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -399,7 +399,7 @@ private fun GocharaResultsCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.TRANSIT_GOCHARA_ANALYSIS),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -454,7 +454,7 @@ private fun GocharaResultRow(result: TransitAnalyzer.GocharaResult) {
             ) {
                 Text(
                     text = result.planet.symbol,
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -464,20 +464,20 @@ private fun GocharaResultRow(result: TransitAnalyzer.GocharaResult) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = result.planet.displayName,
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Medium,
                         color = ChartDetailColors.TextPrimary
                     )
                     Text(
-                        text = " • ${stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, result.houseFromMoon)}",
-                        fontSize = 11.sp,
+                        text = " â€¢ ${stringResource(StringKeyAnalysis.TRANSIT_HOUSE_FROM_MOON, result.houseFromMoon)}",
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         color = ChartDetailColors.TextMuted
                     )
                 }
                 if (result.isVedhaAffected) {
                     Text(
                         text = stringResource(StringKeyAnalysis.TRANSIT_VEDHA_FROM, result.vedhaSource?.displayName ?: stringResource(StringKeyMatch.MISC_UNKNOWN)),
-                        fontSize = 10.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = ChartDetailColors.WarningColor
                     )
                 }
@@ -496,7 +496,7 @@ private fun GocharaResultRow(result: TransitAnalyzer.GocharaResult) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = stringResource(result.effect.key),
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = effectColor
             )
         }
@@ -542,7 +542,7 @@ private fun TransitAspectsCard(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS_TO_NATAL),
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = ChartDetailColors.TextPrimary
                     )
@@ -592,14 +592,14 @@ private fun TransitAspectRow(aspect: TransitAnalyzer.TransitAspect) {
             ) {
                 Text(
                     text = aspect.transitingPlanet.symbol,
-                    fontSize = 9.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
             }
             Text(
                 text = " ${stringResource(aspect.aspectKey)} ",
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = ChartDetailColors.TextSecondary
             )
             Box(
@@ -610,7 +610,7 @@ private fun TransitAspectRow(aspect: TransitAnalyzer.TransitAspect) {
             ) {
                 Text(
                     text = aspect.natalPlanet.symbol,
-                    fontSize = 9.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S9,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -620,12 +620,12 @@ private fun TransitAspectRow(aspect: TransitAnalyzer.TransitAspect) {
         Column(horizontalAlignment = Alignment.End) {
             Text(
                 text = stringResource(StringKeyAnalysis.TRANSIT_ORB, String.format("%.1f", aspect.orb)),
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = ChartDetailColors.TextMuted
             )
             Text(
                 text = applyingText,
-                fontSize = 10.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = if (aspect.isApplying) ChartDetailColors.AccentTeal else ChartDetailColors.TextMuted
             )
         }
@@ -653,7 +653,7 @@ private fun SignificantPeriodsCard(analysis: TransitAnalyzer.TransitAnalysis) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.TRANSIT_SIGNIFICANT_PERIODS),
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = ChartDetailColors.TextPrimary
                 )
@@ -687,7 +687,7 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
         ) {
             Text(
                 text = period.description,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = ChartDetailColors.TextPrimary,
                 modifier = Modifier.weight(1f)
@@ -698,7 +698,7 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
             ) {
                 Text(
                     text = stringResource(StringKeyAnalysis.TRANSIT_INTENSITY, period.intensity),
-                    fontSize = 10.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = intensityColor,
                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                 )
@@ -717,7 +717,7 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
                 ) {
                     Text(
                         text = planet.symbol,
-                        fontSize = 8.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S8,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -726,6 +726,7 @@ private fun SignificantPeriodRow(period: TransitAnalyzer.SignificantPeriod) {
         }
     }
 }
+
 
 
 

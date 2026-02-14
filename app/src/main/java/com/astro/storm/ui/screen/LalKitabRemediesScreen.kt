@@ -201,7 +201,7 @@ fun LalKitabRemediesScreen(
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 stringResource(StringKeyDosha.LAL_KITAB_NOTE_DISTINCT),
-                                fontSize = 12.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.InfoColor,
                                 lineHeight = 16.sp
                             )
@@ -282,7 +282,7 @@ private fun TabSelector(
                 label = {
                     Text(
                         tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedIndex == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -326,7 +326,7 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         analysis.systemNote,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -389,7 +389,7 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
         Text(
             title,
             fontWeight = FontWeight.SemiBold,
-            fontSize = 15.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
             color = AppTheme.TextPrimary
         )
     }
@@ -440,7 +440,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Text(
                             affliction.planet.displayName.take(2),
                             fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.getPlanetColor(affliction.planet)
                         )
                     }
@@ -453,7 +453,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         )
                         Text(
                             "House ${affliction.house} â€¢ $afflictionTypeName",
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -466,7 +466,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                     Text(
                         affliction.severity.name,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.Medium,
                         color = severityColor
                     )
@@ -482,7 +482,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -491,11 +491,11 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢", color = AppTheme.TextMuted, fontSize = 12.sp)
+                                Text("â€¢", color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
                                 )
@@ -508,7 +508,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_SECTION_REMEDIES),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.SuccessColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -526,7 +526,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     remedy,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
                                 )
@@ -561,7 +561,7 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                     remedy.remedy,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
-                    fontSize = 14.sp
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14
                 )
             }
 
@@ -570,7 +570,7 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
             if (remedy.method.isNotEmpty()) {
                 Text(
                     remedy.method,
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextSecondary,
                     lineHeight = 18.sp
                 )
@@ -593,7 +593,7 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             remedy.frequency,
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -606,7 +606,7 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                         Text(
                             remedy.effectiveness,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                            fontSize = 10.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.SuccessColor
                         )
                     }
@@ -635,7 +635,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 Text(
                     stringResource(StringKeyDosha.LAL_KITAB_GENERAL_PRINCIPLES),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -647,11 +647,11 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     verticalAlignment = Alignment.Top
                 ) {
-                    Text("â€¢", color = AppTheme.AccentGold, fontSize = 14.sp)
+                    Text("â€¢", color = AppTheme.AccentGold, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14)
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         rec,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -681,13 +681,13 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_RIN_TITLE),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_RIN_DESC),
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -728,7 +728,7 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                             )
                             Text(
                                 stringResource(StringKeyDosha.LAL_KITAB_RIN_NONE_DESC),
-                                fontSize = 13.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -792,7 +792,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         )
                         Text(
                             debt.description,
-                            fontSize = 12.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -814,7 +814,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_INDICATORS),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -832,7 +832,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     indicator,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -844,7 +844,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.WarningColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -853,11 +853,11 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢", color = AppTheme.WarningColor, fontSize = 12.sp)
+                                Text("â€¢", color = AppTheme.WarningColor, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -869,7 +869,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_REMEDIES_LABEL),
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.SuccessColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -887,7 +887,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     remedy,
-                                    fontSize = 12.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -910,7 +910,7 @@ private fun DebtTypesReferenceCard() {
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_TYPES_TITLE),
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary
             )
 
@@ -939,12 +939,12 @@ private fun DebtTypesReferenceCard() {
                         Text(
                             name,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             desc,
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -965,13 +965,13 @@ private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: Language) {
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_WEEKLY_SCHEDULE),
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_DAILY_REMEDIES_DESC),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -1004,7 +1004,7 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                 Text(
                     entry.day.take(3),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.getPlanetColor(entry.planet)
                 )
             }
@@ -1028,7 +1028,7 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                         Text(
                             entry.planet.getLocalizedName(language),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            fontSize = 11.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.getPlanetColor(entry.planet)
                         )
@@ -1051,7 +1051,7 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             remedy,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextSecondary,
                             lineHeight = 18.sp
                         )
@@ -1138,7 +1138,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Column {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_FAVORABLE),
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1151,7 +1151,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                                 Text(
                                     color,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                    fontSize = 11.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1162,7 +1162,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_AVOID),
-                        fontSize = 11.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                         color = AppTheme.ErrorColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1175,7 +1175,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                                 Text(
                                     color,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                    fontSize = 11.sp,
+                                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1188,7 +1188,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     remedy.application,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
@@ -1244,7 +1244,7 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         remedy.favorableDirection,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1260,7 +1260,7 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         remedy.avoidDirection,
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.ErrorColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1271,13 +1271,14 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     remedy.application,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
             }
         }
     }
 }
+
 
 
 

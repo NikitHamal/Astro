@@ -230,8 +230,8 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                         Column {
-                            Text(analysis.vargaType.getLocalizedDisplayName(language), fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                            Text(analysis.description, fontSize = 12.sp, color = AppTheme.TextMuted)
+                            Text(analysis.vargaType.getLocalizedDisplayName(language), fontWeight = FontWeight.Bold, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18)
+                            Text(analysis.description, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                         }
                     }
                     
@@ -239,15 +239,15 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                     
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(stringResource(StringKeyAnalysis.CHART_ASCENDANT_LAGNA), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(stringResource(StringKeyAnalysis.CHART_ASCENDANT_LAGNA), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                             Text(analysis.ascendantSign.getLocalizedName(language), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_OVERALL_STRENGTH), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_OVERALL_STRENGTH), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                             Text("${analysis.overallStrengthScore}%", fontWeight = FontWeight.SemiBold, color = AppTheme.AccentGold)
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_DOMINANT_PLANET), fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_DOMINANT_PLANET), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                             Text(analysis.dominantPlanet?.getLocalizedName(language) ?: stringResource(StringKeyAnalysis.UI_NONE), fontWeight = FontWeight.SemiBold, color = AppTheme.AccentTeal)
                         }
                     }
@@ -264,12 +264,12 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Text(stringResource(StringKeyAnalysis.DIVISIONAL_PLANETS_SAME_SIGN_DESC), fontSize = 12.sp, color = AppTheme.TextMuted)
+                        Text(stringResource(StringKeyAnalysis.DIVISIONAL_PLANETS_SAME_SIGN_DESC), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                         Spacer(modifier = Modifier.height(12.dp))
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             items(analysis.vargottamaPlanets) { planet ->
                                 Surface(color = AppTheme.getPlanetColor(planet).copy(alpha = 0.15f), shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
-                                    Text(planet.getLocalizedName(language), modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = 12.sp, fontWeight = FontWeight.Medium, color = AppTheme.getPlanetColor(planet))
+                                    Text(planet.getLocalizedName(language), modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, fontWeight = FontWeight.Medium, color = AppTheme.getPlanetColor(planet))
                                 }
                             }
                         }
@@ -295,11 +295,11 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text("${stringResource(StringKeyAnalysis.HOUSE)} ${house.houseNumber}", fontSize = 11.sp, color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
+                                        Text("${stringResource(StringKeyAnalysis.HOUSE)} ${house.houseNumber}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                                         if (house.planetsInHouse.isEmpty()) {
-                                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_HOUSE_EMPTY), fontSize = 13.sp, color = AppTheme.TextMuted)
+                                            Text(stringResource(StringKeyAnalysis.DIVISIONAL_HOUSE_EMPTY), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextMuted)
                                         } else {
-                                            Text(house.planetsInHouse.joinToString { it.getLocalizedName(language) }, fontSize = 13.sp, color = AppTheme.TextPrimary, fontWeight = FontWeight.Medium)
+                                            Text(house.planetsInHouse.joinToString { it.getLocalizedName(language) }, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextPrimary, fontWeight = FontWeight.Medium)
                                         }
                                     }
                                 }
@@ -357,7 +357,7 @@ private fun TabSelector(
                 label = {
                     Text(
                         tabs[index],
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedIndex == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -382,7 +382,7 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(modifier = Modifier.width(8.dp))
-        Text(title, fontWeight = FontWeight.SemiBold, fontSize = 15.sp, color = AppTheme.TextPrimary)
+        Text(title, fontWeight = FontWeight.SemiBold, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15, color = AppTheme.TextPrimary)
     }
 }
 
@@ -494,13 +494,13 @@ private fun WealthPotentialCard(analysis: HoraAnalysis) {
                 Text(
                     stringResource(StringKeyDosha.DIVISIONAL_WEALTH_ANALYSIS),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     "${stringResource(StringKeyDosha.HORA_POTENTIAL)}: $label",
-                    fontSize = 14.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     color = color,
                     fontWeight = FontWeight.Medium
                 )
@@ -526,7 +526,7 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
                         Text(
                             planet.getLocalizedName(language),
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.getPlanetColor(planet)
                         )
@@ -534,7 +534,7 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(description, fontSize = 12.sp, color = AppTheme.TextMuted)
+            Text(description, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
         }
     }
 }
@@ -558,7 +558,7 @@ private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) 
                     Text(
                         indicator.planet.displayName.take(2),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.getPlanetColor(indicator.planet)
                     )
                 }
@@ -571,7 +571,7 @@ private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) 
                     )
                     Text(
                         stringResource(if (indicator.type == WealthType.SELF_EARNED) StringKeyDosha.HORA_SELF_EARNED else StringKeyDosha.HORA_INHERITED),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -585,7 +585,7 @@ private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) 
             if (indicator.sources.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 indicator.sources.forEach { source ->
-                    Text("â€¢ $source", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $source", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -642,7 +642,7 @@ private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: Language) {
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         analysis.shortJourneyIndicators.forEach { indicator ->
-                            Text("â€¢ $indicator", fontSize = 13.sp, color = AppTheme.TextSecondary)
+                            Text("â€¢ $indicator", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
                         }
                     }
                 }
@@ -687,10 +687,10 @@ private fun CourageAnalysisCard(analysis: CourageAnalysis) {
                     Text(
                         stringResource(StringKeyDosha.DREKKANA_COURAGE_TITLE),
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
-                    Text("${stringResource(StringKeyDosha.COURAGE_LEVEL)}: $label", fontSize = 14.sp, color = color, fontWeight = FontWeight.Medium)
+                    Text("${stringResource(StringKeyDosha.COURAGE_LEVEL)}: $label", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14, color = color, fontWeight = FontWeight.Medium)
                 }
             }
 
@@ -698,19 +698,19 @@ private fun CourageAnalysisCard(analysis: CourageAnalysis) {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDosha.COURAGE_PHYSICAL), fontSize = 11.sp, color = AppTheme.TextMuted)
-                    Text(analysis.physicalCourage, fontSize = 13.sp, color = AppTheme.TextPrimary)
+                    Text(stringResource(StringKeyDosha.COURAGE_PHYSICAL), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
+                    Text(analysis.physicalCourage, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextPrimary)
                 }
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDosha.COURAGE_MENTAL), fontSize = 11.sp, color = AppTheme.TextMuted)
-                    Text(analysis.mentalCourage, fontSize = 13.sp, color = AppTheme.TextPrimary)
+                    Text(stringResource(StringKeyDosha.COURAGE_MENTAL), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
+                    Text(analysis.mentalCourage, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextPrimary)
                 }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 "${stringResource(StringKeyDosha.COURAGE_INITIATIVE)}: ${analysis.initiativeAbility}",
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary
             )
         }
@@ -752,28 +752,28 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Column {
-                    Text(stringResource(StringKeyDosha.DREKKANA_YOUNGER), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.DREKKANA_YOUNGER), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                     Text(
                         "${indicators.estimatedYoungerSiblings.first}-${indicators.estimatedYoungerSiblings.last}",
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                 }
                 Column {
-                    Text(stringResource(StringKeyDosha.DREKKANA_ELDER), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.DREKKANA_ELDER), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                     Text(
                         "${indicators.estimatedElderSiblings.first}-${indicators.estimatedElderSiblings.last}",
-                        fontSize = 16.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                 }
                 Column {
-                    Text(stringResource(StringKeyDosha.DREKKANA_RELATIONSHIP), fontSize = 11.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.DREKKANA_RELATIONSHIP), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                     Text(
                         indicators.relationshipQuality.getLocalizedName(language),
-                        fontSize = 13.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = FontWeight.Medium,
                         color = relationshipColor
                     )
@@ -785,7 +785,7 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
                 HorizontalDivider(color = AppTheme.DividerColor)
                 Spacer(modifier = Modifier.height(12.dp))
                 indicators.siblingWelfareIndicators.forEach { welfare ->
-                    Text("â€¢ $welfare", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $welfare", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -813,13 +813,13 @@ private fun CommunicationCard(analysis: CommunicationAnalysis) {
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text("${stringResource(StringKeyDosha.DREKKANA_OVERALL)}: ${analysis.overallSkillLevel}", fontSize = 13.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyDosha.DREKKANA_WRITING)}: ${analysis.writingAbility}", fontSize = 13.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyDosha.DREKKANA_SPEAKING)}: ${analysis.speakingAbility}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.DREKKANA_OVERALL)}: ${analysis.overallSkillLevel}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.DREKKANA_WRITING)}: ${analysis.writingAbility}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.DREKKANA_SPEAKING)}: ${analysis.speakingAbility}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
 
             if (analysis.artisticTalents.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDosha.DREKKANA_ARTISTIC_TALENTS)}:", fontSize = 12.sp, fontWeight = FontWeight.Medium, color = AppTheme.TextPrimary)
+                Text("${stringResource(StringKeyDosha.DREKKANA_ARTISTIC_TALENTS)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, fontWeight = FontWeight.Medium, color = AppTheme.TextPrimary)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(analysis.artisticTalents) { talent ->
                         Surface(
@@ -829,7 +829,7 @@ private fun CommunicationCard(analysis: CommunicationAnalysis) {
                             Text(
                                 talent,
                                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                                fontSize = 11.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -903,7 +903,7 @@ private fun SpouseCharacteristicsCard(
                 Text(
                     stringResource(StringKeyDosha.NAVAMSA_SPOUSE_TITLE),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -917,14 +917,14 @@ private fun SpouseCharacteristicsCard(
 
             if (characteristics.probableProfessions.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDosha.NAVAMSA_PROBABLE_PROFESSIONS)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyDosha.NAVAMSA_PROBABLE_PROFESSIONS)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(characteristics.probableProfessions) { profession ->
                         Surface(color = AppTheme.ChipBackground, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
                             Text(
                                 profession,
                                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                                fontSize = 11.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -943,8 +943,8 @@ private fun InfoRow(label: String, value: String) {
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(label, fontSize = 13.sp, color = AppTheme.TextMuted)
-        Text(value, fontSize = 13.sp, color = AppTheme.TextPrimary, fontWeight = FontWeight.Medium)
+        Text(label, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextMuted)
+        Text(value, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextPrimary, fontWeight = FontWeight.Medium)
     }
 }
 
@@ -968,7 +968,7 @@ private fun MarriageTimingCard(factors: MarriageTimingFactors, language: Languag
 
             if (factors.favorableDashaPlanets.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(12.dp))
-                Text("${stringResource(StringKeyDosha.NAVAMSA_FAVORABLE_DASHA)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyDosha.NAVAMSA_FAVORABLE_DASHA)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(factors.favorableDashaPlanets) { planet ->
                         Surface(
@@ -978,7 +978,7 @@ private fun MarriageTimingCard(factors: MarriageTimingFactors, language: Languag
                             Text(
                                 planet.getLocalizedName(language),
                                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                                fontSize = 11.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                 color = AppTheme.SuccessColor
                             )
                         }
@@ -992,8 +992,8 @@ private fun MarriageTimingCard(factors: MarriageTimingFactors, language: Languag
 @Composable
 private fun StatColumn(label: String, value: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = color)
-        Text(label, fontSize = 11.sp, color = AppTheme.TextMuted)
+        Text(value, fontWeight = FontWeight.Bold, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18, color = color)
+        Text(label, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
     }
 }
 
@@ -1022,7 +1022,7 @@ private fun NavamsaKeyPlanetsCard(analysis: NavamsaMarriageAnalysis, language: L
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-            Text("${stringResource(StringKeyDosha.NAVAMSA_UPAPADA)}: ${analysis.upapadaSign.getLocalizedName(language)}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.NAVAMSA_UPAPADA)}: ${analysis.upapadaSign.getLocalizedName(language)}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
         }
     }
 }
@@ -1035,12 +1035,12 @@ private fun PlanetPositionRow(label: String, sign: String, color: Color) {
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(label, fontSize = 13.sp, color = AppTheme.TextSecondary)
+        Text(label, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
         Surface(color = color.copy(alpha = 0.2f), shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
             Text(
                 sign,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = color
             )
@@ -1074,17 +1074,17 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
 
             if (indicators.riskFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDosha.NAVAMSA_AREAS_ATTENTION)}:", fontSize = 12.sp, color = AppTheme.WarningColor)
+                Text("${stringResource(StringKeyDosha.NAVAMSA_AREAS_ATTENTION)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.WarningColor)
                 indicators.riskFactors.forEach { factor ->
-                    Text("â€¢ $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
 
             if (indicators.mitigatingFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDosha.NAVAMSA_PROTECTIVE_FACTORS)}:", fontSize = 12.sp, color = AppTheme.SuccessColor)
+                Text("${stringResource(StringKeyDosha.NAVAMSA_PROTECTIVE_FACTORS)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.SuccessColor)
                 indicators.mitigatingFactors.forEach { factor ->
-                    Text("â€¢ $factor", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1138,7 +1138,7 @@ private fun DashamsaTab(analysis: DashamsaAnalysis, language: Language) {
                                     modifier = Modifier.size(16.dp)
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(strength, fontSize = 13.sp, color = AppTheme.TextSecondary)
+                                Text(strength, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
                             }
                         }
                     }
@@ -1176,7 +1176,7 @@ private fun CareerTypesCard(careerTypes: List<CareerType>) {
                 Text(
                     stringResource(StringKeyDosha.DIVISIONAL_CAREER_ANALYSIS),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -1190,11 +1190,11 @@ private fun CareerTypesCard(careerTypes: List<CareerType>) {
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(career.name, fontWeight = FontWeight.Medium, color = AppTheme.TextPrimary)
-                        Text(career.suitability, fontSize = 12.sp, color = AppTheme.SuccessColor)
+                        Text(career.suitability, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.SuccessColor)
                     }
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         items(career.industries.take(3)) { industry ->
-                            Text(industry, fontSize = 11.sp, color = AppTheme.TextMuted)
+                            Text(industry, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                         }
                     }
                 }
@@ -1217,7 +1217,7 @@ private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDosha.DASHAMSA_BUSINESS), fontSize = 12.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.DASHAMSA_BUSINESS), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                     LinearProgressIndicator(
                         progress = { analysis.businessAptitude / 100f },
                         modifier = Modifier
@@ -1227,11 +1227,11 @@ private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
                         color = AppTheme.AccentGold,
                         trackColor = AppTheme.ChipBackground
                     )
-                    Text("${analysis.businessAptitude}%", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = AppTheme.AccentGold)
+                    Text("${analysis.businessAptitude}%", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14, fontWeight = FontWeight.Bold, color = AppTheme.AccentGold)
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(stringResource(StringKeyDosha.DASHAMSA_SERVICE), fontSize = 12.sp, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.DASHAMSA_SERVICE), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                     LinearProgressIndicator(
                         progress = { analysis.serviceAptitude / 100f },
                         modifier = Modifier
@@ -1241,12 +1241,12 @@ private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
                         color = AppTheme.AccentTeal,
                         trackColor = AppTheme.ChipBackground
                     )
-                    Text("${analysis.serviceAptitude}%", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = AppTheme.AccentTeal)
+                    Text("${analysis.serviceAptitude}%", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14, fontWeight = FontWeight.Bold, color = AppTheme.AccentTeal)
                 }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text(analysis.recommendation, fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text(analysis.recommendation, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
         }
     }
 }
@@ -1271,25 +1271,25 @@ private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text("${stringResource(StringKeyDosha.DASHAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = 14.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.DASHAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14, color = AppTheme.TextSecondary)
 
             if (analysis.favorableFactors.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
                 analysis.favorableFactors.forEach { factor ->
-                    Text("â€¢ $factor", fontSize = 12.sp, color = AppTheme.SuccessColor)
+                    Text("â€¢ $factor", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.SuccessColor)
                 }
             }
 
             if (analysis.recommendedDepartments.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDosha.DASHAMSA_RECOMMENDED_AREAS)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyDosha.DASHAMSA_RECOMMENDED_AREAS)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(analysis.recommendedDepartments) { dept ->
                         Surface(color = AppTheme.ChipBackground, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
                             Text(
                                 dept,
                                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                                fontSize = 11.sp,
+                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1346,7 +1346,7 @@ private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         analysis.ancestralPropertyIndicators.forEach { indicator ->
-                            Text("â€¢ $indicator", fontSize = 13.sp, color = AppTheme.TextSecondary)
+                            Text("â€¢ $indicator", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
                         }
                     }
                 }
@@ -1384,8 +1384,8 @@ private fun ParentAnalysisCard(
                 Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(28.dp))
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
-                    Text(title, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = AppTheme.TextPrimary)
-                    Text(analysis.overallWellbeing, fontSize = 13.sp, color = color, fontWeight = FontWeight.Medium)
+                    Text(title, fontWeight = FontWeight.Bold, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16, color = AppTheme.TextPrimary)
+                    Text(analysis.overallWellbeing, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = color, fontWeight = FontWeight.Medium)
                 }
             }
 
@@ -1397,8 +1397,8 @@ private fun ParentAnalysisCard(
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text("${stringResource(StringKeyDosha.DWADASAMSA_CHARACTERISTICS)}: ${analysis.characteristics}", fontSize = 13.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyDosha.DWADASAMSA_RELATIONSHIP)}: ${analysis.relationship}", fontSize = 13.sp, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.DWADASAMSA_CHARACTERISTICS)}: ${analysis.characteristics}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.DWADASAMSA_RELATIONSHIP)}: ${analysis.relationship}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
         }
     }
 }
@@ -1423,14 +1423,14 @@ private fun InheritanceCard(analysis: InheritanceAnalysis) {
             }
 
             Spacer(modifier = Modifier.height(12.dp))
-            Text("${stringResource(StringKeyDosha.DWADASAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = 14.sp, color = AppTheme.TextSecondary)
-            Text("${stringResource(StringKeyDosha.DWADASAMSA_TIMING)}: ${analysis.timing}", fontSize = 13.sp, color = AppTheme.TextMuted)
+            Text("${stringResource(StringKeyDosha.DWADASAMSA_POTENTIAL)}: ${analysis.potential}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14, color = AppTheme.TextSecondary)
+            Text("${stringResource(StringKeyDosha.DWADASAMSA_TIMING)}: ${analysis.timing}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextMuted)
 
             if (analysis.sources.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("${stringResource(StringKeyDosha.DWADASAMSA_SOURCES)}:", fontSize = 12.sp, color = AppTheme.TextMuted)
+                Text("${stringResource(StringKeyDosha.DWADASAMSA_SOURCES)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                 analysis.sources.forEach { source ->
-                    Text("â€¢ $source", fontSize = 12.sp, color = AppTheme.TextSecondary)
+                    Text("â€¢ $source", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                 }
             }
         }
@@ -1451,12 +1451,12 @@ private fun LongevityCard(indicators: ParentalLongevityIndicators) {
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Column {
-                    Text(stringResource(StringKeyDosha.DWADASAMSA_FATHER), fontSize = 12.sp, color = AppTheme.TextMuted)
-                    Text(indicators.fatherLongevity, fontSize = 13.sp, color = AppTheme.TextPrimary)
+                    Text(stringResource(StringKeyDosha.DWADASAMSA_FATHER), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
+                    Text(indicators.fatherLongevity, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextPrimary)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text(stringResource(StringKeyDosha.DWADASAMSA_MOTHER), fontSize = 12.sp, color = AppTheme.TextMuted)
-                    Text(indicators.motherLongevity, fontSize = 13.sp, color = AppTheme.TextPrimary)
+                    Text(stringResource(StringKeyDosha.DWADASAMSA_MOTHER), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
+                    Text(indicators.motherLongevity, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextPrimary)
                 }
             }
 
@@ -1473,7 +1473,7 @@ private fun LongevityCard(indicators: ParentalLongevityIndicators) {
                             modifier = Modifier.size(14.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(concern, fontSize = 12.sp, color = AppTheme.TextSecondary)
+                        Text(concern, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextSecondary)
                     }
                 }
             }
@@ -1503,7 +1503,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 Text(
                     stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -1519,12 +1519,13 @@ private fun RecommendationsCard(recommendations: List<String>) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text(rec, fontSize = 13.sp, color = AppTheme.TextSecondary, lineHeight = 18.sp)
+                    Text(rec, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary, lineHeight = 18.sp)
                 }
             }
         }
     }
 }
+
 
 
 

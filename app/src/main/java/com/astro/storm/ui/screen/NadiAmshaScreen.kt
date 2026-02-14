@@ -192,12 +192,12 @@ private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
                 Column {
                     Text(
                         stringResource(StringKeyAdvanced.NADI_LORD),
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         nadi.nadiLord.getLocalizedName(LocalLanguage.current),
-                        fontSize = 20.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -215,8 +215,8 @@ private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
 @Composable
 private fun NadiInfoItem(label: String, value: String) {
     Column {
-        Text(label, fontSize = 11.sp, color = AppTheme.TextMuted)
-        Text(value, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+        Text(label, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
+        Text(value, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14, fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
     }
 }
 
@@ -242,7 +242,7 @@ private fun NadiSummaryCard(result: NadiAmshaResult) {
                     result.ascendantNadi.energyType.displayName
                 ),
                 color = AppTheme.TextSecondary,
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 lineHeight = 20.sp
             )
         }
@@ -268,7 +268,7 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
             ) {
                 Text(
                     position.planet.symbol,
-                    fontSize = 20.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                     color = AppTheme.getPlanetColor(position.planet)
                 )
             }
@@ -285,13 +285,13 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
                         position.nadiNumber,
                         position.nadiSign.getLocalizedName(LocalLanguage.current)
                     ),
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
             Text(
                 position.nadiLord.getLocalizedName(LocalLanguage.current),
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextMuted,
                 fontWeight = FontWeight.Medium
             )
@@ -305,12 +305,12 @@ private fun RectificationHeader(chart: VedicChart) {
         Text(
             stringResource(StringKeyAdvanced.NADI_RECTIFICATION_TITLE),
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
             color = AppTheme.TextPrimary
         )
         Text(
             "${stringResource(StringKeyAdvanced.NADI_CURRENT_TIME)}: ${chart.birthData.dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}",
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextMuted
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -344,7 +344,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
                 )
                 Text(
                     candidate.description,
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -355,7 +355,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
                 Text(
                     "${candidate.confidence}%",
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    fontSize = 11.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentPrimary
                 )
@@ -363,6 +363,7 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
         }
     }
 }
+
 
 
 

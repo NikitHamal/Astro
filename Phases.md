@@ -14,7 +14,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - `NeoVedicPageHeader(` usages: `57`
 - Shared tab row usages (`ModernPillTabRow`/`NeoVedicFeatureTabs`): `30`
 - Direct tab API usages (`FilterChip`/`TabRow`/`ScrollableTabRow`/`Tab`): `0` (target met)
-- Hardcoded font sizes (`fontSize = *.sp`): `969`
+- Hardcoded font sizes in screen files (`fontSize = *.sp`): `0` (target met)
 - Hardcoded hex colors in screen files: `0` (target met)
 
 ## Completed In This Iteration
@@ -156,7 +156,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - `rg -n "Color\(0x" app/src/main/java/com/astro/storm/ui/screen`
 
 ## Known Gaps
-- Typography cleanup is still outstanding (`969`).
+- Screen-level typography literal cleanup is complete; remaining literal sizes are outside `ui/screen` and will be handled in shared/component cleanup.
 - Full localization enforcement for all revamped strings is still pending.
 - Legacy `ScreenTopBar` removal is pending final migration phase.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
@@ -173,3 +173,6 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `TabRow`/`Tab` screens to shared Neo-Vedic tab rows.
     - `FilterChip` calls to shared `NeoVedicChoicePill` primitive.
   - Static nav-bypass gate reached `0`.
+- v2.2 (2026-02-14)
+  - Eliminated literal `fontSize = *.sp` in `ui/screen` by centralizing screen font sizes through `NeoVedicFontSizes`.
+  - Static screen-level typography gate reached `0`.
