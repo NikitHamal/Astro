@@ -61,6 +61,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import kotlin.math.roundToInt
 
 enum class PredictionsTab(val stringKey: StringKey) {
@@ -1071,7 +1072,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("â€¢ ", color = areaColor)
+                                Text(stringResource(StringKeyUICommon.BULLET) + " ", color = areaColor)
                                 Text(
                                     factor,
                                     style = MaterialTheme.typography.bodySmall,
@@ -1142,7 +1143,7 @@ private fun PredictionTimeframe(title: String, prediction: String, color: Color)
 @Composable
 private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
     val language = currentLanguage()
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+    val dateFormatter = predictionDateFormatter(language, "MMM dd, yyyy")
 
     Card(
         modifier = Modifier
@@ -1217,7 +1218,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
 @Composable
 private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
     val language = currentLanguage()
-    val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+    val dateFormatter = predictionDateFormatter(language, "MMM dd, yyyy")
 
     Card(
         modifier = Modifier
@@ -1292,7 +1293,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
 @Composable
 private fun KeyDatesCard(dates: List<KeyDate>) {
     val language = currentLanguage()
-    val dateFormatter = DateTimeFormatter.ofPattern("EEEE, MMM dd")
+    val dateFormatter = predictionDateFormatter(language, "EEEE, MMM dd")
 
     Card(
         modifier = Modifier
@@ -2016,6 +2017,11 @@ private fun getAdvice(area: LifeArea, language: Language): String = when (area) 
     LifeArea.FAMILY -> StringResources.get(StringKeyPrediction.PRED_FAMILY_ADVICE, language)
     LifeArea.SPIRITUAL -> StringResources.get(StringKeyPrediction.PRED_SPIRIT_ADVICE, language)
     else -> StringResources.get(StringKeyPrediction.PRED_CAREER_ADVICE, language)
+}
+
+private fun predictionDateFormatter(language: Language, pattern: String): DateTimeFormatter {
+    val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+    return DateTimeFormatter.ofPattern(pattern, locale)
 }
 
 @Composable
