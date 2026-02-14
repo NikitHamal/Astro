@@ -102,6 +102,7 @@ import com.astro.storm.ui.viewmodel.AshtavargaTransitViewModel.TransitSummary
 import com.astro.storm.ui.viewmodel.AshtavargaTransitViewModel.TransitTab
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 /**
  * Ashtavarga Transit Predictions Screen
@@ -495,7 +496,7 @@ private fun SummaryStatisticsCard(
                             )
                         }
                         Text(
-                            text = next.transitDate.format(DateTimeFormatter.ofPattern("MMM d")),
+                            text = next.transitDate.format(formatMonthDay(language)),
                             style = MaterialTheme.typography.bodySmall,
                             color = colors.AccentPrimary
                         )
@@ -802,7 +803,7 @@ private fun CurrentTransitCard(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = transit.entryDate?.format(DateTimeFormatter.ofPattern("MMM d")) ?: "-",
+                        text = transit.entryDate?.format(formatMonthDay(language)) ?: "-",
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextMuted
                     )
@@ -813,7 +814,7 @@ private fun CurrentTransitCard(
                         color = qualityColor
                     )
                     Text(
-                        text = transit.exitDate?.format(DateTimeFormatter.ofPattern("MMM d")) ?: "-",
+                        text = transit.exitDate?.format(formatMonthDay(language)) ?: "-",
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextMuted
                     )
@@ -1060,12 +1061,12 @@ private fun UpcomingTransitCard(
                         .padding(8.dp)
                 ) {
                     Text(
-                        text = transit.transitDate.format(DateTimeFormatter.ofPattern("MMM")),
+                        text = transit.transitDate.format(formatMonth(language)),
                         style = MaterialTheme.typography.labelSmall,
                         color = colors.TextMuted
                     )
                     Text(
-                        text = transit.transitDate.format(DateTimeFormatter.ofPattern("d")),
+                        text = transit.transitDate.format(formatDay(language)),
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = colors.TextPrimary
@@ -1405,7 +1406,7 @@ private fun PlanetDetailCardSS(
                                     color = colors.TextPrimary
                                 )
                                 Text(
-                                    text = transit.transitDate.format(DateTimeFormatter.ofPattern("MMM d, yyyy")),
+                                    text = transit.transitDate.format(formatMonthDayYear(language)),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = colors.TextMuted
                                 )
@@ -1780,6 +1781,26 @@ private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.storm.u
 }
 
 private data class TabInfo(val title: String)
+
+private fun localeForLanguage(language: Language): Locale {
+    return if (language == Language.NEPALI) {
+        Locale.forLanguageTag("ne-NP")
+    } else {
+        Locale.ENGLISH
+    }
+}
+
+private fun formatMonthDay(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM d", localeForLanguage(language))
+
+private fun formatMonth(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM", localeForLanguage(language))
+
+private fun formatDay(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("d", localeForLanguage(language))
+
+private fun formatMonthDayYear(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("MMM d, yyyy", localeForLanguage(language))
 
 
 

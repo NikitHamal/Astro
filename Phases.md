@@ -230,3 +230,8 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - Replaced hardcoded key-Arudha description list with string-key backed descriptions.
   - Removed residual hardcoded English weekday literals in `RemediesScreen.kt` weekly schedule wiring by switching from `Triple` literals to localized `(Planet, label)` pairs.
   - Added supporting string keys in `StringKeyDosha` for new Arudha description/template text.
+- v3.3 (2026-02-14)
+  - Standardized date/time formatter usage in entry + transit wave screens:
+    - `ChartInputScreen.kt`: replaced inline date/time formatter literals with shared screen-level formatter constants.
+    - `AshtavargaTransitScreen.kt`: replaced repeated inline date patterns with centralized language-aware formatter helpers (`en`/`ne` locale selection).
+  - Kept static gates stable (`ScreenTopBar=0`, direct tab APIs=0, hardcoded `fontSize = *.sp` in `ui/screen`=0).

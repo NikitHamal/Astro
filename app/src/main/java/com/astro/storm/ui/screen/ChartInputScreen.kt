@@ -54,6 +54,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.astro.storm.ui.theme.LocalAppThemeColors
 
+private val chartInputDateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
+private val chartInputTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChartInputScreen(
@@ -569,9 +572,9 @@ private fun DateTimeSection(
     val dateDisplayText = remember(selectedDate, useBSPicker, language) {
         if (useBSPicker) {
             BikramSambatConverter.toBS(selectedDate)?.format(language)
-                ?: selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                ?: selectedDate.format(chartInputDateFormatter)
         } else {
-            selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            selectedDate.format(chartInputDateFormatter)
         }
     }
 
@@ -607,7 +610,7 @@ private fun DateTimeSection(
                 contentDescription = selectDateText
             )
             DateTimeChip(
-                text = selectedTime.format(DateTimeFormatter.ofPattern("HH:mm")),
+                text = selectedTime.format(chartInputTimeFormatter),
                 onClick = onShowTimePicker,
                 modifier = Modifier.weight(0.7f),
                 contentDescription = selectTimeText
