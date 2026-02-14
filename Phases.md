@@ -166,6 +166,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
   - Remedies screen visible bullet separators are now normalized to shared localized bullet tokens.
 - Legacy `ScreenTopBar` has been removed; `NeoVedicPageHeader` is now the only active screen header path.
 - Local build gate currently blocked by environment JDK version parsing (`25.0.2`) during Gradle/Kotlin script setup.
+- CI compile stability fixes are now tracked in this plan and shipped incrementally when errors surface.
 
 ## Version Ledger
 - v2.0 (2026-02-14)
@@ -212,3 +213,7 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - v2.9 (2026-02-14)
   - Replaced remaining mojibake bullet/separator literals in `RemediesScreen.kt` with shared localized bullet token (`StringKeyUICommon.BULLET`).
   - Kept screen-level typography/nav gates intact while improving visible text consistency in remedies UI.
+- v3.0 (2026-02-14)
+  - Fixed CI `compileReleaseKotlin` blockers:
+    - `ModernTabRow.kt`: corrected `LocalContentColor` import to Material3 and aligned `interactionSource` parameters with non-null API expectations.
+    - `YogasTabContent.kt`: replaced malformed Nepali digit char literals with Unicode escapes (`\u0966`..`\u096F`).

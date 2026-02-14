@@ -685,7 +685,7 @@ private fun formatNumber(number: Int, language: Language): String {
     return when (language) {
         Language.ENGLISH -> number.toString()
         Language.NEPALI -> {
-            val nepaliDigits = charArrayOf('à¥¦', 'à¥§', 'à¥¨', 'à¥©', 'à¥ª', 'à¥«', 'à¥¬', 'à¥­', 'à¥®', 'à¥¯')
+            val nepaliDigits = charArrayOf('\u0966', '\u0967', '\u0968', '\u0969', '\u096A', '\u096B', '\u096C', '\u096D', '\u096E', '\u096F')
             number.toString().map { char ->
                 if (char.isDigit()) nepaliDigits[char.digitToInt()] else char
             }.joinToString("")
@@ -698,7 +698,7 @@ private fun formatPercentage(value: Double, language: Language): String {
     return when (language) {
         Language.ENGLISH -> "$formatted%"
         Language.NEPALI -> {
-            val nepaliDigits = charArrayOf('à¥¦', 'à¥§', 'à¥¨', 'à¥©', 'à¥ª', 'à¥«', 'à¥¬', 'à¥­', 'à¥®', 'à¥¯')
+            val nepaliDigits = charArrayOf('\u0966', '\u0967', '\u0968', '\u0969', '\u096A', '\u096B', '\u096C', '\u096D', '\u096E', '\u096F')
             val nepaliNumber = formatted.map { char ->
                 when {
                     char.isDigit() -> nepaliDigits[char.digitToInt()]

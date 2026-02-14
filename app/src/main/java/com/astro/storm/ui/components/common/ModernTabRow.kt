@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableChipColors
 import androidx.compose.material3.SelectableChipElevation
@@ -36,7 +37,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContentColor
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -300,7 +300,7 @@ fun NeoVedicChoicePill(
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(),
     elevation: SelectableChipElevation? = FilterChipDefaults.filterChipElevation(),
     border: BorderStroke? = FilterChipDefaults.filterChipBorder(enabled = enabled, selected = selected),
-    interactionSource: MutableInteractionSource? = null
+    interactionSource: MutableInteractionSource = MutableInteractionSource()
 ) {
     FilterChip(
         selected = selected,
@@ -328,7 +328,7 @@ fun NeoVedicNavItem(
     icon: @Composable (() -> Unit)? = null,
     selectedContentColor: Color = LocalContentColor.current,
     unselectedContentColor: Color = selectedContentColor.copy(alpha = 0.7f),
-    interactionSource: MutableInteractionSource? = null
+    interactionSource: MutableInteractionSource = MutableInteractionSource()
 ) {
     Tab(
         selected = selected,
