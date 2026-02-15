@@ -50,6 +50,7 @@ import com.astro.storm.ui.viewmodel.ChartViewModel
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneOffset
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.astro.storm.ui.theme.LocalAppThemeColors
@@ -265,6 +266,29 @@ fun ChartInputScreen(
                 isCalculating = isCalculating,
                 isEditMode = isEditMode,
                 onClick = {
+                    val normalizedTimezone = normalizeTimezoneForStorage(selectedTimezone)
+
+                    if (isEditMode && chartToEdit != null) {
+                        val currentLat = parseCoordinate(latitude)
+                        val currentLon = parseCoordinate(longitude)
+                        val candidateBirthData = BirthData(
+                            name = name.ifBlank { unknownText },
+                            dateTime = LocalDateTime.of(selectedDate, selectedTime),
+                            latitude = currentLat ?: chartToEdit.latitude,
+                            longitude = currentLon ?: chartToEdit.longitude,
+                            timezone = normalizedTimezone,
+                            location = locationLabel.ifBlank { unknownText },
+                            gender = selectedGender
+                        )
+
+                        if (isSameAsExistingChartInput(candidateBirthData, chartToEdit)) {
+                            chartCalculationInitiated = false
+                            chartSaveRequested = false
+                            onChartCalculated()
+                            return@GenerateButton
+                        }
+                    }
+
                     // Use comprehensive validation for all birth data fields
                     val validationKey = validateBirthDataInput(
                         name = name,
@@ -272,7 +296,7 @@ fun ChartInputScreen(
                         longitude = longitude,
                         selectedDate = selectedDate,
                         locationLabel = locationLabel,
-                        timezone = selectedTimezone
+                        timezone = normalizedTimezone
                     )
                     if (validationKey != null) {
                         errorKey = validationKey
@@ -290,7 +314,7 @@ fun ChartInputScreen(
                         dateTime = dateTime,
                         latitude = lat,
                         longitude = lon,
-                        timezone = selectedTimezone,
+                        timezone = normalizedTimezone,
                         location = locationLabel.ifBlank { unknownText },
                         gender = selectedGender
                     )
@@ -381,6 +405,34 @@ fun ChartInputScreen(
             shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
         )
     }
+}
+
+private fun normalizeTimezoneForStorage(timezone: String): String {
+    val trimmed = timezone.trim()
+    if (trimmed.isEmpty()) return ZoneOffset.UTC.id
+    return runCatching { ZoneId.of(trimmed).id }.getOrElse { trimmed }
+}
+
+private fun isSameAsExistingChartInput(
+    candidate: BirthData,
+    existing: com.astro.storm.data.repository.SavedChart
+): Boolean {
+    val sameName = candidate.name.trim() == existing.name.trim()
+    val sameDateTime = candidate.dateTime == existing.dateTime
+    val sameLocation = candidate.location.trim() == existing.location.trim()
+    val sameTimezone = normalizeTimezoneForStorage(candidate.timezone) ==
+            normalizeTimezoneForStorage(existing.timezone)
+    val sameGender = candidate.gender == existing.gender
+    val sameLatitude = kotlin.math.abs(candidate.latitude - existing.latitude) < 1e-6
+    val sameLongitude = kotlin.math.abs(candidate.longitude - existing.longitude) < 1e-6
+
+    return sameName &&
+            sameDateTime &&
+            sameLocation &&
+            sameTimezone &&
+            sameGender &&
+            sameLatitude &&
+            sameLongitude
 }
 
 /**
