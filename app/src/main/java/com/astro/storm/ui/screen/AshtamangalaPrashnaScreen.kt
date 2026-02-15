@@ -191,6 +191,25 @@ private fun localizedDayName(day: DayOfWeek, language: Language): String {
     return day.getDisplayName(TextStyle.FULL, ashtamangalaLocale(language))
 }
 
+@Composable
+private fun localizedCategoryName(category: QueryCategory): String = when (category) {
+    QueryCategory.HEALTH -> stringResource(StringKeyAshtamangala.CAT_HEALTH)
+    QueryCategory.WEALTH -> stringResource(StringKeyAshtamangala.CAT_WEALTH)
+    QueryCategory.RELATIONSHIP -> stringResource(StringKeyAshtamangala.CAT_RELATIONSHIP)
+    QueryCategory.CAREER -> stringResource(StringKeyAshtamangala.CAT_CAREER)
+    QueryCategory.TRAVEL -> stringResource(StringKeyAshtamangala.CAT_TRAVEL)
+    QueryCategory.LOST_OBJECT -> stringResource(StringKeyAshtamangala.CAT_LOST)
+    QueryCategory.LITIGATION -> stringResource(StringKeyAshtamangala.CAT_LITIGATION)
+    QueryCategory.SPIRITUAL -> stringResource(StringKeyAshtamangala.CAT_SPIRITUAL)
+}
+
+@Composable
+private fun localizedConfidenceLabel(confidence: ConfidenceLevel): String = when (confidence) {
+    ConfidenceLevel.HIGH -> stringResource(StringKeyAshtamangala.YESNO_HIGH)
+    ConfidenceLevel.MEDIUM -> stringResource(StringKeyAshtamangala.YESNO_MEDIUM)
+    ConfidenceLevel.LOW -> stringResource(StringKeyAshtamangala.YESNO_LOW)
+}
+
 // ============================================
 // CATEGORY SELECTION
 // ============================================
@@ -287,7 +306,7 @@ private fun CategoryCard(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = category.displayName,
+                    text = localizedCategoryName(category),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
@@ -371,7 +390,7 @@ private fun CowrieThrowContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = category.displayName,
+                    text = localizedCategoryName(category),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.AccentGold
@@ -831,7 +850,7 @@ private fun YesNoProbabilityCard(probability: YesNoProbability) {
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
-                        text = probability.confidence.name,
+                        text = localizedConfidenceLabel(probability.confidence),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,

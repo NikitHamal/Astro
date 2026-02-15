@@ -282,3 +282,9 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `NativeAnalysisScreen.kt`: replaced mojibake comment separators with stable ASCII separators.
     - `VarshaphalaScreen.kt`: replaced mojibake comment separators with stable ASCII separators.
   - Verified no remaining mojibake patterns in these files and re-ran UI consistency/typography reports.
+- v4.2 (2026-02-14)
+  - Localized remaining Ashtamangala UI enum-label leaks:
+    - `AshtamangalaPrashnaScreen.kt`:
+      - Replaced `QueryCategory.displayName` rendering with localized string-key mapping.
+      - Replaced `ConfidenceLevel.name` badge rendering with localized confidence labels.
+  - Kept all static consistency/typography gates green after the update.
