@@ -283,7 +283,7 @@ class SwissEphemerisEngine internal constructor(
         ayanamsaName: String,
         nodeModeName: String
     ): String {
-        return "${birthData.dateTime}_${birthData.latitude}_${birthData.longitude}_${birthData.timezone}_${houseSystem.name}_$ayanamsaName_$nodeModeName"
+        return "${birthData.dateTime}_${birthData.latitude}_${birthData.longitude}_${birthData.timezone}_${houseSystem.name}_${ayanamsaName}_${nodeModeName}"
     }
 
     fun calculatePlanetPosition(

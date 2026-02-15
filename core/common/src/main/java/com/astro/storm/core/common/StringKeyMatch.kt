@@ -590,6 +590,7 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
 
     // Dasha Tab Content Strings
     DASHA_CURRENT_DASHA_PERIOD("Current Dasha Period", "हालको दशा अवधि"),
+    DASHA_NEXT_PERIOD("Next Period", "अर्को अवधि"),
     DASHA_BIRTH_NAKSHATRA("Birth Nakshatra", "जन्म नक्षत्र"),
     DASHA_LORD("Lord", "स्वामी"),
     DASHA_PADA("Pada", "पाद"),
