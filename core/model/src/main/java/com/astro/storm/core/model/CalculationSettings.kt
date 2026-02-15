@@ -27,5 +27,5 @@ enum class Ayanamsa(val swissEphId: Int) {
 data class CalculationSettings(
     val nodeType: NodeType = NodeType.MEAN,
     val ayanamsa: Ayanamsa = Ayanamsa.LAHIRI,
-    val houseSystem: HouseSystem = HouseSystem.PLACIDUS
+    val houseSystem: HouseSystem = HouseSystem.DEFAULT
 )

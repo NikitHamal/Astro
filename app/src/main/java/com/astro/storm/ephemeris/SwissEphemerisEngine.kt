@@ -246,12 +246,20 @@ class SwissEphemerisEngine internal constructor(
 
     fun calculateVedicChart(
         birthData: BirthData,
-        houseSystem: HouseSystem = HouseSystem.DEFAULT
+        houseSystem: HouseSystem? = null
     ): VedicChart {
         validateBirthData(birthData)
         ensureOpen()
 
-        val cacheKey = getCacheKey(birthData, houseSystem)
+        val effectiveHouseSystem = houseSystem ?: astroSettings.houseSystem.value
+        val currentAyanamsa = astroSettings.ayanamsa.value
+        val currentNodeMode = astroSettings.nodeMode.value
+        val cacheKey = getCacheKey(
+            birthData = birthData,
+            houseSystem = effectiveHouseSystem,
+            ayanamsaName = currentAyanamsa.name,
+            nodeModeName = currentNodeMode.name
+        )
         val cachedChart = calculationCache.get(cacheKey)
         if (cachedChart != null) {
             Log.d(TAG, "Chart cache hit for key: $cacheKey")
@@ -263,14 +271,19 @@ class SwissEphemerisEngine internal constructor(
             // Double-check cache inside lock to prevent race conditions
             calculationCache.get(cacheKey)?.let { return@write it }
 
-            val newChart = performChartCalculation(birthData, houseSystem)
+            val newChart = performChartCalculation(birthData, effectiveHouseSystem)
             calculationCache.put(cacheKey, newChart)
             newChart
         }
     }
 
-    private fun getCacheKey(birthData: BirthData, houseSystem: HouseSystem): String {
-        return "${birthData.dateTime}_${birthData.latitude}_${birthData.longitude}_${birthData.timezone}_${houseSystem.name}_$ayanamsaType"
+    private fun getCacheKey(
+        birthData: BirthData,
+        houseSystem: HouseSystem,
+        ayanamsaName: String,
+        nodeModeName: String
+    ): String {
+        return "${birthData.dateTime}_${birthData.latitude}_${birthData.longitude}_${birthData.timezone}_${houseSystem.name}_$ayanamsaName_$nodeModeName"
     }
 
     fun calculatePlanetPosition(
@@ -337,19 +350,12 @@ class SwissEphemerisEngine internal constructor(
         houseCuspsBuffer.fill(0.0)
         ascMcBuffer.fill(0.0)
 
-        // Use preferred house system if DEFAULT is passed
-        val effectiveHouseSystem = if (houseSystem == HouseSystem.DEFAULT) {
-            astroSettings.houseSystem.value
-        } else {
-            houseSystem
-        }
-
         val houseResult = swissEph.swe_houses(
             julianDay,
             currentFlags,
             birthData.latitude.toDouble(),
             birthData.longitude.toDouble(),
-            effectiveHouseSystem.code.code,
+            houseSystem.code.code,
             houseCuspsBuffer,
             ascMcBuffer
         )
@@ -364,7 +370,13 @@ class SwissEphemerisEngine internal constructor(
         val houseCuspsCopy = (1..12).map { houseCuspsBuffer[it] }
 
         val planetPositions = Planet.ALL_PLANETS.map { planet ->
-            calculatePlanetPositionInternal(planet, julianDay, houseCuspsCopy)
+            calculatePlanetPositionInternal(
+                planet = planet,
+                julianDay = julianDay,
+                houseCusps = houseCuspsCopy,
+                houseSystem = houseSystem,
+                ascendant = ascendant
+            )
         }
 
         return VedicChart(
@@ -376,7 +388,7 @@ class SwissEphemerisEngine internal constructor(
             midheaven = midheaven,
             planetPositions = planetPositions,
             houseCusps = houseCuspsCopy,
-            houseSystem = effectiveHouseSystem
+            houseSystem = houseSystem
         )
     }
 
@@ -400,25 +412,34 @@ class SwissEphemerisEngine internal constructor(
         }
 
         val currentFlags = if (isSidereal) SweConst.SEFLG_SIDEREAL else 0
+        val effectiveHouseSystem = astroSettings.houseSystem.value
         
         swissEph.swe_houses(
             julianDay,
             currentFlags,
             latitude,
             longitude,
-            'P'.code,
+            effectiveHouseSystem.code.code,
             houseCuspsBuffer,
             ascMcBuffer
         )
 
         val houseCuspsCopy = (1..12).map { houseCuspsBuffer[it] }
-        return calculatePlanetPositionInternal(planet, julianDay, houseCuspsCopy)
+        return calculatePlanetPositionInternal(
+            planet = planet,
+            julianDay = julianDay,
+            houseCusps = houseCuspsCopy,
+            houseSystem = effectiveHouseSystem,
+            ascendant = ascMcBuffer[ASC_INDEX]
+        )
     }
 
     private fun calculatePlanetPositionInternal(
         planet: Planet,
         julianDay: Double,
-        houseCusps: List<Double>
+        houseCusps: List<Double>,
+        houseSystem: HouseSystem,
+        ascendant: Double
     ): PlanetPosition {
         planetResultBuffer.fill(0.0)
         errorBuffer.setLength(0)
@@ -492,8 +513,16 @@ class SwissEphemerisEngine internal constructor(
 
         val (nakshatra, pada) = Nakshatra.fromLongitude(normalizedLongitude)
 
-        val house = determineHouse(normalizedLongitude, houseCusps)
-        val isOnCusp = isNearHouseCusp(normalizedLongitude, houseCusps)
+        val house = if (houseSystem == HouseSystem.WHOLE_SIGN) {
+            determineWholeSignHouse(sign, ascendant)
+        } else {
+            determineHouse(normalizedLongitude, houseCusps)
+        }
+        val isOnCusp = if (houseSystem == HouseSystem.WHOLE_SIGN) {
+            false
+        } else {
+            isNearHouseCusp(normalizedLongitude, houseCusps)
+        }
 
         return PlanetPosition(
             planet = planet,
@@ -518,6 +547,11 @@ class SwissEphemerisEngine internal constructor(
         return houseCusps.any { cusp ->
             angularDistance(longitude, cusp) <= threshold
         }
+    }
+
+    private fun determineWholeSignHouse(sign: ZodiacSign, ascendant: Double): Int {
+        val ascendantSign = ZodiacSign.fromLongitude(normalizeDegree(ascendant))
+        return ((sign.number - ascendantSign.number + 12) % 12) + 1
     }
 
     private fun determineHouse(longitude: Double, houseCusps: List<Double>): Int {

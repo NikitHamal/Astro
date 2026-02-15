@@ -6,7 +6,6 @@ import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.core.model.BirthData
-import com.astro.storm.core.model.HouseSystem
 import com.astro.storm.core.common.StringKeyHoroscope
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyTransit
@@ -419,7 +418,7 @@ class TransitAnalyzer @Inject constructor(
             location = "Transit Chart"
         )
 
-        val transitChart = ephemerisEngine.calculateVedicChart(transitBirthData, HouseSystem.DEFAULT)
+        val transitChart = ephemerisEngine.calculateVedicChart(transitBirthData)
         return transitChart.planetPositions
     }
 

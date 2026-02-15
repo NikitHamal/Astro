@@ -28,6 +28,6 @@ enum class HouseSystem(val code: Char, val stringKey: StringKeyInterface) {
     }
 
     companion object {
-        val DEFAULT = PLACIDUS
+        val DEFAULT = WHOLE_SIGN
     }
 }

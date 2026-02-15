@@ -87,11 +87,11 @@ class AstrologySettingsManager @Inject constructor(
     }
 
     private fun getPersistedHouseSystem(): HouseSystem {
-        val name = prefs.getString(KEY_HOUSE_SYSTEM, HouseSystem.PLACIDUS.name)
+        val name = prefs.getString(KEY_HOUSE_SYSTEM, HouseSystem.DEFAULT.name)
         return try {
-            HouseSystem.valueOf(name ?: HouseSystem.PLACIDUS.name)
+            HouseSystem.valueOf(name ?: HouseSystem.DEFAULT.name)
         } catch (e: Exception) {
-            HouseSystem.PLACIDUS
+            HouseSystem.DEFAULT
         }
     }
 

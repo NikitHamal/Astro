@@ -34,8 +34,11 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
+import com.astro.storm.core.model.Ayanamsa
 import com.astro.storm.core.model.HouseSystem
 import com.astro.storm.core.model.VedicChart
+import com.astro.storm.data.preferences.AstrologySettingsManager
+import com.astro.storm.data.preferences.NodeCalculationMode
 import com.astro.storm.data.preferences.ThemeManager
 import com.astro.storm.data.preferences.ThemeMode
 import com.astro.storm.data.repository.SavedChart
@@ -484,9 +487,11 @@ private fun SettingsItem(
 
 @Composable
 private fun HouseSystemSetting() {
+    val context = LocalContext.current
+    val astroSettings = remember { AstrologySettingsManager.getInstance(context) }
     val language = LocalLanguage.current
+    val selectedSystem by astroSettings.houseSystem.collectAsState()
     var expanded by remember { mutableStateOf(false) }
-    var selectedSystem by remember { mutableStateOf(HouseSystem.DEFAULT) }
 
     Card(
         modifier = Modifier
@@ -550,7 +555,7 @@ private fun HouseSystemSetting() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                selectedSystem = system
+                                astroSettings.setHouseSystem(system)
                                 expanded = false
                             }
                             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -559,7 +564,7 @@ private fun HouseSystemSetting() {
                         RadioButton(
                             selected = system == selectedSystem,
                             onClick = {
-                                selectedSystem = system
+                                astroSettings.setHouseSystem(system)
                                 expanded = false
                             },
                             colors = RadioButtonDefaults.colors(
@@ -817,15 +822,16 @@ private fun ThemeSetting(themeManager: ThemeManager) {
 
 @Composable
 private fun AyanamsaSetting() {
-    val language = LocalLanguage.current
-    val ayanamsaKeys = listOf(
-        StringKey.AYANAMSA_LAHIRI,
-        StringKey.AYANAMSA_RAMAN,
-        StringKey.AYANAMSA_KRISHNAMURTI,
-        StringKey.AYANAMSA_TRUE_CHITRAPAKSHA
+    val context = LocalContext.current
+    val astroSettings = remember { AstrologySettingsManager.getInstance(context) }
+    val ayanamsaOptions = listOf(
+        Ayanamsa.LAHIRI,
+        Ayanamsa.RAMAN,
+        Ayanamsa.KRISHNAMURTI,
+        Ayanamsa.TRUE_CHITRAPAKSHA
     )
+    val selectedAyanamsa by astroSettings.ayanamsa.collectAsState()
     var expanded by remember { mutableStateOf(false) }
-    var selectedAyanamsaKey by remember { mutableStateOf(ayanamsaKeys[0]) }
 
     Card(
         modifier = Modifier
@@ -868,7 +874,7 @@ private fun AyanamsaSetting() {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = stringResource(selectedAyanamsaKey),
+                        text = stringResource(selectedAyanamsa.toStringKey()),
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.AccentPrimary
                     )
@@ -884,21 +890,21 @@ private fun AyanamsaSetting() {
             if (expanded) {
                 HorizontalDivider(color = AppTheme.DividerColor)
 
-                ayanamsaKeys.forEach { key ->
+                ayanamsaOptions.forEach { option ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                selectedAyanamsaKey = key
+                                astroSettings.setAyanamsa(option)
                                 expanded = false
                             }
                             .padding(horizontal = 16.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         RadioButton(
-                            selected = key == selectedAyanamsaKey,
+                            selected = option == selectedAyanamsa,
                             onClick = {
-                                selectedAyanamsaKey = key
+                                astroSettings.setAyanamsa(option)
                                 expanded = false
                             },
                             colors = RadioButtonDefaults.colors(
@@ -908,9 +914,9 @@ private fun AyanamsaSetting() {
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            text = stringResource(key),
+                            text = stringResource(option.toStringKey()),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = if (key == selectedAyanamsaKey) AppTheme.TextPrimary else AppTheme.TextSecondary
+                            color = if (option == selectedAyanamsa) AppTheme.TextPrimary else AppTheme.TextSecondary
                         )
                     }
                 }
@@ -919,10 +925,23 @@ private fun AyanamsaSetting() {
     }
 }
 
+private fun Ayanamsa.toStringKey(): StringKey {
+    return when (this) {
+        Ayanamsa.LAHIRI -> StringKey.AYANAMSA_LAHIRI
+        Ayanamsa.RAMAN -> StringKey.AYANAMSA_RAMAN
+        Ayanamsa.KRISHNAMURTI -> StringKey.AYANAMSA_KRISHNAMURTI
+        Ayanamsa.TRUE_CHITRAPAKSHA -> StringKey.AYANAMSA_TRUE_CHITRAPAKSHA
+        Ayanamsa.FAGAN_BRADLEY,
+        Ayanamsa.YUKTESHWAR,
+        Ayanamsa.JN_BHASIN,
+        Ayanamsa.SAYANA -> StringKey.AYANAMSA_LAHIRI
+    }
+}
+
 @Composable
 private fun NodeSetting() {
     val context = LocalContext.current
-    val astroSettings = remember { com.astro.storm.data.preferences.AstrologySettingsManager.getInstance(context) }
+    val astroSettings = remember { AstrologySettingsManager.getInstance(context) }
     val currentNodeMode by astroSettings.nodeMode.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
@@ -967,7 +986,7 @@ private fun NodeSetting() {
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = if (currentNodeMode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) 
+                        text = if (currentNodeMode == NodeCalculationMode.TRUE) 
                             stringResource(StringKey.SETTINGS_NODE_TRUE) 
                         else stringResource(StringKey.SETTINGS_NODE_MEAN),
                         style = MaterialTheme.typography.bodySmall,
@@ -985,8 +1004,8 @@ private fun NodeSetting() {
             if (expanded) {
                 HorizontalDivider(color = AppTheme.DividerColor)
 
-                com.astro.storm.data.preferences.NodeCalculationMode.entries.forEach { mode ->
-                    val nameKey = if (mode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) 
+                NodeCalculationMode.entries.forEach { mode ->
+                    val nameKey = if (mode == NodeCalculationMode.TRUE) 
                         StringKey.SETTINGS_NODE_TRUE else StringKey.SETTINGS_NODE_MEAN
                     
                     Row(

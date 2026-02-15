@@ -115,7 +115,7 @@ class ChartViewModel @Inject constructor(
      */
     fun calculateChart(
         birthData: BirthData,
-        houseSystem: HouseSystem = HouseSystem.DEFAULT
+        houseSystem: HouseSystem? = null
     ) {
         viewModelScope.launch(ioDispatcher) {
             // Reset the save guard for new calculations
@@ -140,7 +140,7 @@ class ChartViewModel @Inject constructor(
     fun calculateChartForUpdate(
         birthData: BirthData,
         existingChartId: Long,
-        houseSystem: HouseSystem = HouseSystem.DEFAULT
+        houseSystem: HouseSystem? = null
     ) {
         viewModelScope.launch(ioDispatcher) {
             lastSavedChartHash = null
