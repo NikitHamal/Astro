@@ -111,8 +111,8 @@ fun AshtottariDashaScreen(
     var expandedMahadashaIndex by remember { mutableIntStateOf(-1) }
 
     val tabs = listOf(
-        stringResource(StringKeyDosha.ASHTOTTARI_ABOUT),
-        stringResource(StringKeyDosha.ASHTOTTARI_TIMELINE),
+        stringResource(StringKeyDosha.SCREEN_ABOUT),
+        stringResource(StringKeyDosha.SCREEN_TIMELINE),
         stringResource(StringKeyDosha.SCREEN_INTERPRETATION)
     )
 

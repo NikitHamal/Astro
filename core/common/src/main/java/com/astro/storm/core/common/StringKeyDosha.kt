@@ -2270,6 +2270,7 @@ enum class StringKeyDosha(override val en: String, override val ne: String) : St
     SCREEN_NO_DATA("No data available", "कुनै डाटा उपलब्ध छैन"),
     SCREEN_ERROR_CALCULATION("Error calculating results", "परिणाम गणनामा त्रुटि"),
     SCREEN_OVERVIEW("Overview", "सिंहावलोकन"),
+    SCREEN_ABOUT("About", "बारेमा"),
     SCREEN_DETAILS("Details", "विवरणहरू"),
     SCREEN_TIMELINE("Timeline", "समयरेखा"),
     SCREEN_INTERPRETATION("Interpretation", "व्याख्या"),

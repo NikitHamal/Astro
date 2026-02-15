@@ -1,5 +1,6 @@
 package com.astro.storm.ui.screen
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,31 +15,42 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.CalendarToday
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material.icons.outlined.Timeline
+import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
@@ -56,7 +68,6 @@ import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
-import com.astro.storm.ui.screen.chartdetail.tabs.DashasTabContent
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
 import com.astro.storm.ui.viewmodel.DashaUiState
@@ -69,6 +80,7 @@ private enum class VimsottariTab { ABOUT, TIMELINE, INTERPRETATION }
 private data class CurrentVimsottariPeriodInfo(
     val mahadasha: String?,
     val antardasha: String?,
+    val pratyantardasha: String?,
     val isLoading: Boolean,
     val hasError: Boolean
 )
@@ -82,11 +94,16 @@ fun VimsottariDashaScreen(
     val language = LocalLanguage.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    var showInfoDialog by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(chart) { viewModel.loadDashaTimeline(chart) }
 
     val currentPeriodInfo = remember(uiState, language) {
         extractCurrentVimsottariPeriodInfo(uiState, language)
+    }
+
+    if (showInfoDialog) {
+        VimsottariInfoDialog(onDismiss = { showInfoDialog = false })
     }
 
     Scaffold(
@@ -96,7 +113,7 @@ fun VimsottariDashaScreen(
                 chartName = chart?.birthData?.name ?: stringResource(StringKey.NO_PROFILE_MESSAGE),
                 currentPeriodInfo = currentPeriodInfo,
                 onBack = onBack,
-                onTodayClick = { viewModel.requestScrollToToday() }
+                onInfoClick = { showInfoDialog = true }
             )
         }
     ) { paddingValues ->
@@ -140,13 +157,8 @@ fun VimsottariDashaScreen(
                     )
 
                     when (VimsottariTab.entries[selectedTab]) {
-                        VimsottariTab.ABOUT -> VimsottariAboutTab()
-                        VimsottariTab.TIMELINE -> DashasTabContent(
-                            timeline = state.timeline,
-                            scrollToTodayEvent = viewModel.scrollToTodayEvent,
-                            includeMicroLevels = false,
-                            showInfoFooter = false
-                        )
+                        VimsottariTab.ABOUT -> VimsottariAboutTab(timeline = state.timeline)
+                        VimsottariTab.TIMELINE -> VimsottariTimelineTab(timeline = state.timeline)
                         VimsottariTab.INTERPRETATION -> VimsottariInterpretationTab(timeline = state.timeline)
                     }
                 }
@@ -160,7 +172,7 @@ private fun VimsottariDashaTopBar(
     chartName: String,
     currentPeriodInfo: CurrentVimsottariPeriodInfo,
     onBack: () -> Unit,
-    onTodayClick: () -> Unit
+    onInfoClick: () -> Unit
 ) {
     val subtitle = when {
         currentPeriodInfo.isLoading -> stringResource(StringKey.DASHA_CALCULATING)
@@ -168,6 +180,10 @@ private fun VimsottariDashaTopBar(
         currentPeriodInfo.mahadasha != null -> buildString {
             append(currentPeriodInfo.mahadasha)
             currentPeriodInfo.antardasha?.let {
+                append(" -> ")
+                append(it)
+            }
+            currentPeriodInfo.pratyantardasha?.let {
                 append(" -> ")
                 append(it)
             }
@@ -181,8 +197,8 @@ private fun VimsottariDashaTopBar(
         title = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
         subtitle = subtitle,
         onBack = onBack,
-        actionIcon = Icons.Outlined.CalendarToday,
-        onAction = onTodayClick
+        actionIcon = Icons.Outlined.Info,
+        onAction = onInfoClick
     )
 }
 
@@ -192,7 +208,7 @@ private fun VimsottariTabRow(
     onTabSelected: (Int) -> Unit
 ) {
     val tabs = listOf(
-        TabItem(title = stringResource(StringKeyDosha.VIMSOTTARI_ABOUT), accentColor = AppTheme.AccentPrimary),
+        TabItem(title = stringResource(StringKeyDosha.SCREEN_ABOUT), accentColor = AppTheme.AccentPrimary),
         TabItem(title = stringResource(StringKeyDosha.SCREEN_TIMELINE), accentColor = AppTheme.AccentTeal),
         TabItem(title = stringResource(StringKeyDosha.SCREEN_INTERPRETATION), accentColor = AppTheme.AccentGold)
     )
@@ -209,8 +225,11 @@ private fun VimsottariTabRow(
 }
 
 @Composable
-private fun VimsottariAboutTab() {
+private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
     val language = LocalLanguage.current
+    val dateSystem = LocalDateSystem.current
+    val now = remember(timeline) { timeline.nowInTimelineZone() }
+    val nextMahadasha = remember(timeline, now) { timeline.getNextMahadasha(now) }
     val sequence = remember {
         listOf(
             Planet.KETU to 7,
@@ -231,11 +250,7 @@ private fun VimsottariAboutTab() {
         verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
     ) {
         item {
-            VimsottariInfoCard(
-                icon = Icons.Outlined.Info,
-                title = stringResource(StringKeyDosha.VIMSOTTARI_ABOUT),
-                subtitle = stringResource(StringKeyDosha.DASHA_VIMSOTTARI_DESC)
-            )
+            ActiveDashaCard(timeline = timeline, now = now)
         }
 
         item {
@@ -307,13 +322,142 @@ private fun VimsottariAboutTab() {
             }
         }
 
-        item {
-            VimsottariInfoCard(
-                icon = Icons.Outlined.Lightbulb,
-                title = stringResource(StringKeyMatch.DASHA_PERIOD_INSIGHTS),
-                subtitle = "Interpret Mahadasha as the life-theme, Antardasha as the active chapter, and Pratyantardasha as short-term trigger."
+        nextMahadasha?.let { next ->
+            item {
+                Surface(
+                    shape = MaterialTheme.shapes.large,
+                    color = AppTheme.CardBackground
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = stringResource(StringKeyMatch.DASHA_NEXT_PERIOD),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = AppTheme.TextSecondary
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = next.planet.getLocalizedName(language),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = AppTheme.TextPrimary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "${formatDate(next.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(next.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ActiveDashaCard(
+    timeline: DashaCalculator.DashaTimeline,
+    now: java.time.LocalDateTime
+) {
+    val language = LocalLanguage.current
+    val dateSystem = LocalDateSystem.current
+
+    val maha = timeline.currentMahadasha
+    val antar = timeline.currentAntardasha
+    val praty = timeline.currentPratyantardasha
+
+    Surface(
+        shape = MaterialTheme.shapes.large,
+        color = AppTheme.CardBackground
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.Timeline,
+                    contentDescription = null,
+                    tint = AppTheme.AccentPrimary,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(StringKeyMatch.DASHA_CURRENT_DASHA_PERIOD),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = AppTheme.TextPrimary
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            maha?.let {
+                ActiveLevelRow(
+                    label = stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA),
+                    planet = it.planet,
+                    dateRange = "${formatDate(it.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(it.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                    progress = it.getProgressPercent(now).toFloat() / 100f
+                )
+            }
+
+            antar?.let {
+                ActiveLevelRow(
+                    label = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
+                    planet = it.planet,
+                    dateRange = "${formatDate(it.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(it.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                    progress = it.getProgressPercent(now).toFloat() / 100f
+                )
+            }
+
+            praty?.let {
+                ActiveLevelRow(
+                    label = stringResource(StringKeyMatch.DASHA_LEVEL_PRATYANTARDASHA),
+                    planet = it.planet,
+                    dateRange = "${formatDate(it.startDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)} - ${formatDate(it.endDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)}",
+                    progress = calculateProgress(it.startDate.toLocalDate(), it.endDate.toLocalDate(), now.toLocalDate())
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ActiveLevelRow(
+    label: String,
+    planet: Planet,
+    dateRange: String,
+    progress: Float
+) {
+    val language = LocalLanguage.current
+
+    Column(modifier = Modifier.padding(bottom = 10.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                color = AppTheme.TextSecondary
+            )
+            Text(
+                text = planet.getLocalizedName(language),
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextPrimary,
+                fontWeight = FontWeight.Medium
             )
         }
+        Text(
+            text = dateRange,
+            style = MaterialTheme.typography.bodySmall,
+            color = AppTheme.TextSecondary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        LinearProgressIndicator(
+            progress = { progress.coerceIn(0f, 1f) },
+            modifier = Modifier.fillMaxWidth(),
+            color = AppTheme.AccentPrimary
+        )
     }
 }
 
@@ -337,6 +481,167 @@ private fun HierarchyRow(level: String, name: String, desc: String) {
         Column {
             Text(text = name, style = MaterialTheme.typography.bodyMedium, color = AppTheme.TextPrimary)
             Text(text = desc, style = MaterialTheme.typography.bodySmall, color = AppTheme.TextSecondary)
+        }
+    }
+}
+
+@Composable
+private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
+    val language = LocalLanguage.current
+    val dateSystem = LocalDateSystem.current
+    val now = remember(timeline) { timeline.nowInTimelineZone() }
+    var expandedMahadashaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
+    ) {
+        item {
+            Surface(
+                shape = MaterialTheme.shapes.large,
+                color = AppTheme.CardBackground
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "120-year cycle with Mahadasha -> Antardasha -> Pratyantardasha.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextSecondary
+                    )
+                }
+            }
+        }
+
+        itemsIndexed(
+            items = timeline.mahadashas,
+            key = { index, mahadasha ->
+                "mahadasha_${mahadasha.planet.symbol}_${mahadasha.startDate.toLocalDate().toEpochDay()}_$index"
+            }
+        ) { _, mahadasha ->
+            val cardKey = "${mahadasha.planet.symbol}_${mahadasha.startDate.toLocalDate().toEpochDay()}"
+            val isExpanded = cardKey in expandedMahadashaKeys
+            val isCurrent = mahadasha == timeline.currentMahadasha
+            val currentAntardasha = if (isCurrent) timeline.currentAntardasha else null
+            val currentPratyantardasha = if (isCurrent) timeline.currentPratyantardasha else null
+            val expandRotation by animateFloatAsState(
+                targetValue = if (isExpanded) 180f else 0f,
+                animationSpec = tween(220),
+                label = "vimsottari_expand_rotation"
+            )
+
+            Surface(
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                color = if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.08f) else AppTheme.CardBackground
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = rememberRipple(),
+                            onClick = {
+                                expandedMahadashaKeys = if (isExpanded) {
+                                    expandedMahadashaKeys - cardKey
+                                } else {
+                                    expandedMahadashaKeys + cardKey
+                                }
+                            }
+                        )
+                        .animateContentSize()
+                        .padding(16.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = mahadasha.planet.getLocalizedName(language),
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = AppTheme.TextPrimary,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        if (isCurrent) {
+                            Text(
+                                text = stringResource(StringKeyMatch.MISC_CURRENT),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = AppTheme.AccentPrimary,
+                                modifier = Modifier.padding(end = 10.dp)
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.Filled.ExpandMore,
+                            contentDescription = null,
+                            tint = AppTheme.TextSecondary,
+                            modifier = Modifier.rotate(expandRotation)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "${formatDurationYearsMonths(mahadasha.durationYears)} | ${formatDate(mahadasha.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(mahadasha.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextSecondary
+                    )
+
+                    if (isCurrent) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LinearProgressIndicator(
+                            progress = { mahadasha.getProgressPercent(now).toFloat() / 100f },
+                            modifier = Modifier.fillMaxWidth(),
+                            color = AppTheme.AccentPrimary
+                        )
+                    }
+
+                    if (isExpanded) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        HorizontalDivider(color = AppTheme.DividerColor)
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        mahadasha.antardashas.forEach { antardasha ->
+                            val isCurrentAntardasha = antardasha == currentAntardasha
+                            Text(
+                                text = antardasha.planet.getLocalizedName(language),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = AppTheme.TextPrimary,
+                                fontWeight = if (isCurrentAntardasha) FontWeight.SemiBold else FontWeight.Normal
+                            )
+                            Text(
+                                text = "${formatDate(antardasha.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(antardasha.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = AppTheme.TextSecondary
+                            )
+
+                            if (isCurrentAntardasha) {
+                                Spacer(modifier = Modifier.height(4.dp))
+                                LinearProgressIndicator(
+                                    progress = { antardasha.getProgressPercent(now).toFloat() / 100f },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    color = AppTheme.AccentTeal
+                                )
+
+                                if (antardasha.pratyantardashas.isNotEmpty()) {
+                                    Spacer(modifier = Modifier.height(6.dp))
+                                    antardasha.pratyantardashas.forEach { praty ->
+                                        val isCurrentPraty = praty == currentPratyantardasha
+                                        Text(
+                                            text = "- ${praty.planet.getLocalizedName(language)} | ${formatDate(praty.startDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)} - ${formatDate(praty.endDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)}${if (isCurrentPraty) " [current]" else ""}",
+                                            style = MaterialTheme.typography.bodySmall,
+                                            color = if (isCurrentPraty) AppTheme.AccentGold else AppTheme.TextSecondary,
+                                            modifier = Modifier.padding(start = 8.dp, bottom = 2.dp)
+                                        )
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -471,6 +776,45 @@ private fun VimsottariInfoCard(
 }
 
 @Composable
+private fun VimsottariInfoDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
+                style = MaterialTheme.typography.titleLarge,
+                color = AppTheme.TextPrimary
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = stringResource(StringKeyDosha.DASHA_VIMSOTTARI_DESC),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = AppTheme.TextPrimary
+                )
+                Text(
+                    text = "This screen focuses on Mahadasha, Antardasha, and Pratyantardasha.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextSecondary
+                )
+                Text(
+                    text = "Use Timeline for full period flow and Interpretation for active-period guidance.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextSecondary
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentPrimary)
+            }
+        },
+        containerColor = AppTheme.CardBackground
+    )
+}
+
+@Composable
 private fun VimsottariErrorContent(
     paddingValues: PaddingValues,
     message: String,
@@ -500,16 +844,18 @@ private fun extractCurrentVimsottariPeriodInfo(
         is DashaUiState.Success -> {
             val md = uiState.timeline.currentMahadasha
             val ad = uiState.timeline.currentAntardasha
+            val pd = uiState.timeline.currentPratyantardasha
             CurrentVimsottariPeriodInfo(
                 mahadasha = md?.planet?.getLocalizedName(language),
                 antardasha = ad?.planet?.getLocalizedName(language),
+                pratyantardasha = pd?.planet?.getLocalizedName(language),
                 isLoading = false,
                 hasError = false
             )
         }
-        is DashaUiState.Loading -> CurrentVimsottariPeriodInfo(null, null, true, false)
-        is DashaUiState.Error -> CurrentVimsottariPeriodInfo(null, null, false, true)
-        is DashaUiState.Idle -> CurrentVimsottariPeriodInfo(null, null, false, false)
+        is DashaUiState.Loading -> CurrentVimsottariPeriodInfo(null, null, null, true, false)
+        is DashaUiState.Error -> CurrentVimsottariPeriodInfo(null, null, null, false, true)
+        is DashaUiState.Idle -> CurrentVimsottariPeriodInfo(null, null, null, false, false)
     }
 }
 

@@ -262,9 +262,9 @@ private fun YoginiDashaTabRow(
     onTabSelected: (Int) -> Unit
 ) {
     val tabs = listOf(
-        TabItem(title = stringResource(StringKeyDosha.YOGINI_DASHA_CURRENT)),
-        TabItem(title = stringResource(StringKeyDosha.YOGINI_DASHA_TIMELINE)),
-        TabItem(title = stringResource(StringKeyMatch.DETAILS))
+        TabItem(title = stringResource(StringKeyDosha.SCREEN_ABOUT)),
+        TabItem(title = stringResource(StringKeyDosha.SCREEN_TIMELINE)),
+        TabItem(title = stringResource(StringKeyDosha.SCREEN_INTERPRETATION))
     )
 
     ModernPillTabRow(
