@@ -50,27 +50,27 @@ data class GlyphToken(
  * Aspect glyph constants for Vedic astrological aspects
  */
 object AspectGlyphs {
-    const val CONJUNCTION = "☌"     // 0° - planets together
-    const val OPPOSITION = "☍"      // 180° - planets opposite
-    const val TRINE = "△"           // 120° - harmonious
-    const val SQUARE = "□"          // 90° - challenging
-    const val SEXTILE = "⚹"         // 60° - moderately harmonious
-    const val QUINCUNX = "⚻"        // 150° - adjustment needed
+    const val CONJUNCTION = "\u260c"     // 0� - planets together
+    const val OPPOSITION = "\u260d"      // 180� - planets opposite
+    const val TRINE = "\u25b3"           // 120� - harmonious
+    const val SQUARE = "\u25a1"          // 90� - challenging
+    const val SEXTILE = "\u26b9"         // 60� - moderately harmonious
+    const val QUINCUNX = "\u26bb"        // 150� - adjustment needed
 }
 
 /**
  * Planet Unicode glyphs for visual representation
  */
 object PlanetGlyphs {
-    const val SUN = "☉"
-    const val MOON = "☽"
-    const val MARS = "♂"
-    const val MERCURY = "☿"
-    const val JUPITER = "♃"
-    const val VENUS = "♀"
-    const val SATURN = "♄"
-    const val RAHU = "☊"
-    const val KETU = "☋"
+    const val SUN = "\u2609"
+    const val MOON = "\u263d"
+    const val MARS = "\u2642"
+    const val MERCURY = "\u263f"
+    const val JUPITER = "\u2643"
+    const val VENUS = "\u2640"
+    const val SATURN = "\u2644"
+    const val RAHU = "\u260a"
+    const val KETU = "\u260b"
 
     fun fromPlanetName(name: String): String = when {
         name.contains("sun", ignoreCase = true) || name.contains("surya", ignoreCase = true) -> SUN
@@ -178,7 +178,7 @@ fun mapToEphemerisEvents(
                 aspectKeyName.contains("square") -> AspectGlyphs.SQUARE
                 aspectKeyName.contains("sextile") -> AspectGlyphs.SEXTILE
                 aspectKeyName.contains("quincunx") -> AspectGlyphs.QUINCUNX
-                else -> "→"
+                else -> "\u2192"
             }
 
             val transitPlanetGlyph = PlanetGlyphs.fromPlanetName(aspect.transitingPlanet.getLocalizedName(language))

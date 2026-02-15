@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAshtamangala
 import com.astro.storm.core.common.StringKeyUIExtra
+import com.astro.storm.core.common.BikramSambatConverter
+import com.astro.storm.core.common.Language
 import com.astro.storm.data.localization.currentLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
@@ -56,6 +58,9 @@ import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import kotlinx.coroutines.delay
+import java.time.DayOfWeek
+import java.time.format.TextStyle
+import java.util.Locale
 
 /**
  * Ashtamangala Prashna Screen
@@ -176,6 +181,14 @@ fun AshtamangalaPrashnaScreen(
             }
         }
     }
+}
+
+private fun ashtamangalaLocale(language: Language): Locale {
+    return if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+}
+
+private fun localizedDayName(day: DayOfWeek, language: Language): String {
+    return day.getDisplayName(TextStyle.FULL, ashtamangalaLocale(language))
 }
 
 // ============================================
@@ -430,7 +443,7 @@ private fun CowrieThrowContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = if (isThrowingShells) "..." else "8",
+                    text = if (isThrowingShells) "..." else if (currentLanguage() == Language.NEPALI) BikramSambatConverter.toNepaliNumerals(8) else "8",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentGold
@@ -1385,6 +1398,7 @@ private fun TimingTab(reading: AshtamangalaReading) {
                     Divider(color = AppTheme.BorderColor)
 
                     reading.timingPrediction.bestDay?.let { day ->
+                        val language = currentLanguage()
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -1395,7 +1409,7 @@ private fun TimingTab(reading: AshtamangalaReading) {
                                 color = AppTheme.TextMuted
                             )
                             Text(
-                                text = day.name.lowercase().replaceFirstChar { it.uppercase() },
+                                text = localizedDayName(day, language),
                                 style = MaterialTheme.typography.bodySmall,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.SuccessColor
@@ -1404,6 +1418,7 @@ private fun TimingTab(reading: AshtamangalaReading) {
                     }
 
                     reading.timingPrediction.avoidDay?.let { day ->
+                        val language = currentLanguage()
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
@@ -1414,7 +1429,7 @@ private fun TimingTab(reading: AshtamangalaReading) {
                                 color = AppTheme.TextMuted
                             )
                             Text(
-                                text = day.name.lowercase().replaceFirstChar { it.uppercase() },
+                                text = localizedDayName(day, language),
                                 style = MaterialTheme.typography.bodySmall,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.WarningColor

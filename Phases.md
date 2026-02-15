@@ -268,3 +268,12 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `transits/TransitsScreenRedesigned.kt`: normalized Nepali locale creation to `Locale.forLanguageTag("ne-NP")` in date-header formatting.
     - `chartdetail/tabs/ChartTabContent.kt`: replaced default-locale birth date/time formatters with app-language-aware formatter helpers.
   - Quality gate scripts remained stable after changes.
+- v4.0 (2026-02-14)
+  - Applied additional localization/visual consistency fixes:
+    - `AshtamangalaPrashnaScreen.kt`:
+      - Localized timing weekday labels using locale-aware `DayOfWeek` display names.
+      - Localized center shell count numeral for Nepali mode.
+    - `transits/EphemerisUiMapper.kt`:
+      - Replaced mojibake aspect/planet glyph literals with stable Unicode escapes.
+      - Normalized fallback aspect arrow glyph to Unicode escape.
+  - Static UI consistency and typography/nav audits remained green.
