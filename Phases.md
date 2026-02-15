@@ -277,3 +277,8 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
       - Replaced mojibake aspect/planet glyph literals with stable Unicode escapes.
       - Normalized fallback aspect arrow glyph to Unicode escape.
   - Static UI consistency and typography/nav audits remained green.
+- v4.1 (2026-02-14)
+  - Completed codebase cleanup pass for residual encoding artifacts in large wave screens:
+    - `NativeAnalysisScreen.kt`: replaced mojibake comment separators with stable ASCII separators.
+    - `VarshaphalaScreen.kt`: replaced mojibake comment separators with stable ASCII separators.
+  - Verified no remaining mojibake patterns in these files and re-ran UI consistency/typography reports.
