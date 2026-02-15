@@ -34,6 +34,7 @@ AstroStorm is a high-precision Vedic Astrology application designed for Android 
 - Added centralized `TimezoneSanitizer` and integrated it into repository mapping, transit analysis, and Swiss engine timezone resolution.
 - Added transit error-state handling with retry to avoid indefinite loading on analysis exceptions.
 - Added UI-state reset hooks to prevent stale `ChartUiState.Error` toast repetition after back navigation.
+- Added resilient chart calculation fallback in `ChartViewModel` (normalized/system/UTC timezone attempts) and safer mapped error messaging for parser edge-case failures.
 
 ## Architecture Decisions
 - Keep calculation engines modular by domain (dasha, varga, transit, prashna, varshaphala).

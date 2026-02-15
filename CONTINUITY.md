@@ -1,5 +1,5 @@
 ## Goal (incl. success criteria):
-Fix recurring `length=13; index=13` runtime failures, unblock transit screen loading, and prevent stale error toast recurrence after back navigation; then commit and push.
+Fully eliminate recurring `length=13; index=13` failures in chart create/edit flows, keep transit stable, and push a robust runtime-safe fix.
 
 ## Constraints/Assumptions:
 - User requested direct fix + push.
@@ -11,6 +11,7 @@ Fix recurring `length=13; index=13` runtime failures, unblock transit screen loa
 - Normalize timezone values at repository mapping boundaries so loaded charts use valid timezone IDs.
 - Stop infinite loading in transit screen by handling analysis exceptions explicitly with retry UI.
 - Reset chart UI error state when leaving chart input and after showing error snackbar to avoid repeated stale toasts.
+- Add resilient chart calculation fallback in `ChartViewModel` (timezone-attempt sequence + safe mapped error) so create/update does not fail hard on parser edge cases.
 
 ## State:
 - Done:
@@ -18,10 +19,11 @@ Fix recurring `length=13; index=13` runtime failures, unblock transit screen loa
   - Added explicit transit analysis error state + retry in `TransitsScreenRedesigned`.
   - Added state reset hooks in navigation callbacks and main-screen error snackbar handling.
   - Added chart-input error-dialog reset behavior for runtime (non-validation) errors.
+  - Added `ChartViewModel` resilient chart calculation path with timezone fallback attempts and calculation error mapping.
 - Now:
-  - Final diff review, commit, and push.
+  - Commit and push the new `ChartViewModel` fallback patch.
 - Next:
-  - Ask user to verify profile edit no-change save, transit load, and back navigation behavior.
+  - Ask user to verify new chart creation with `Generate & Save`, plus edit/transit regressions.
 
 ## Open Questions (UNCONFIRMED if needed):
 - UNCONFIRMED: exact low-level source of `StringIndexOutOfBoundsException(length=13,index=13)` in prior runtime path (guarded via timezone sanitization/fallback).
@@ -35,6 +37,7 @@ Fix recurring `length=13; index=13` runtime failures, unblock transit screen loa
 - `app/src/main/java/com/astro/storm/ui/screen/ChartInputScreen.kt`
 - `app/src/main/java/com/astro/storm/ui/screen/main/MainScreen.kt`
 - `app/src/main/java/com/astro/storm/ui/navigation/Navigation.kt`
+- `app/src/main/java/com/astro/storm/ui/viewmodel/ChartViewModel.kt`
 - `CONTINUITY.md`
 - Commands:
   - `git status --short`

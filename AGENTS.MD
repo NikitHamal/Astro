@@ -15,6 +15,7 @@
 - Added `TimezoneSanitizer` and wired it into repository mapping, transit analyzer, and Swiss ephemeris timezone resolution.
 - Added transit screen error-state UI with retry instead of infinite loading when analysis fails.
 - Added navigation/main-screen reset hooks to avoid stale error snackbar reappearing after back navigation.
+- Added resilient fallback calculation flow in `ChartViewModel` to retry with sanitized/system/UTC timezone before surfacing an error.
 
 ## Architecture Decisions
 - Maintain modular ephemeris engines and feature-specific calculators.

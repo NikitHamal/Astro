@@ -17,15 +17,19 @@ import com.astro.storm.ephemeris.SwissEphemerisEngine
 import com.astro.storm.ephemeris.TransitAnalyzer
 import com.astro.storm.ui.chart.ChartColorConfig
 import com.astro.storm.ui.chart.ChartRenderer
+import com.astro.storm.util.TimezoneSanitizer
 import com.astro.storm.util.ChartExporter
 import com.astro.storm.util.ExportUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.util.Objects
 import javax.inject.Inject
 
@@ -43,6 +47,9 @@ class ChartViewModel @Inject constructor(
     private val horoscopeCalculator: HoroscopeCalculator,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
+    companion object {
+        private const val TAG = "ChartViewModel"
+    }
 
     // Default chart renderer for light theme - for theme-aware rendering, use getChartRenderer(isDark)
     val chartRenderer = ChartRenderer(application, ChartColorConfig.Light)
@@ -124,11 +131,12 @@ class ChartViewModel @Inject constructor(
 
             try {
                 val chart = withContext(Dispatchers.Default) {
-                    ephemerisEngine.calculateVedicChart(birthData, houseSystem)
+                    calculateChartWithFallback(birthData, houseSystem)
                 }
                 _uiState.value = ChartUiState.Success(chart)
             } catch (e: Exception) {
-                _uiState.value = ChartUiState.Error(e.message ?: "Unknown error occurred")
+                Log.e(TAG, "Chart calculation failed", e)
+                _uiState.value = ChartUiState.Error(mapCalculationError(e))
             }
         }
     }
@@ -148,7 +156,7 @@ class ChartViewModel @Inject constructor(
 
             try {
                 val chart = withContext(Dispatchers.Default) {
-                    ephemerisEngine.calculateVedicChart(birthData, houseSystem)
+                    calculateChartWithFallback(birthData, houseSystem)
                 }
 
                 // Preserve the ID of the existing chart so repository.updateChart knows which one to update
@@ -168,8 +176,52 @@ class ChartViewModel @Inject constructor(
                 // This ensures UI and other screens reflect changes immediately
                 _uiState.value = ChartUiState.Success(updatedChart)
             } catch (e: Exception) {
-                _uiState.value = ChartUiState.Error(e.message ?: "Unknown error occurred")
+                Log.e(TAG, "Chart update calculation failed", e)
+                _uiState.value = ChartUiState.Error(mapCalculationError(e))
             }
+        }
+    }
+
+    /**
+     * Runs chart calculation with robust timezone fallbacks.
+     * This protects against edge-case timezone parser failures for legacy/invalid values.
+     */
+    private fun calculateChartWithFallback(
+        birthData: BirthData,
+        houseSystem: HouseSystem?
+    ): VedicChart {
+        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(birthData.timezone, ZoneOffset.UTC)
+        val systemTimezone = ZoneId.systemDefault().id
+
+        val attempts = linkedSetOf(
+            normalizedTimezone,
+            ZoneOffset.UTC.id,
+            systemTimezone
+        )
+
+        var lastError: Exception? = null
+        for (timezoneId in attempts) {
+            val candidateBirthData = birthData.copy(timezone = timezoneId)
+            try {
+                return ephemerisEngine.calculateVedicChart(candidateBirthData, houseSystem)
+            } catch (e: Exception) {
+                lastError = e
+                Log.w(TAG, "Chart calculation attempt failed for timezone=$timezoneId", e)
+            }
+        }
+
+        throw lastError ?: IllegalStateException("Chart calculation failed with all timezone fallbacks")
+    }
+
+    private fun mapCalculationError(error: Exception): String {
+        val msg = error.message
+        val isIndexFailure = error is StringIndexOutOfBoundsException ||
+                (msg?.contains("index=", ignoreCase = true) == true &&
+                        msg.contains("length=", ignoreCase = true))
+        return if (isIndexFailure) {
+            "Calculation failed due to invalid date/time-timezone parsing. Please reselect timezone and try again."
+        } else {
+            msg ?: "Calculation failed"
         }
     }
 
