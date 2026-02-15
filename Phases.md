@@ -262,3 +262,9 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
     - `AshtottariDashaScreen.kt`: localized antardasha compact date formatter with language-aware locale.
     - `NadiAmshaScreen.kt`: consolidated repeated `HH:mm:ss` pattern into shared formatter constant for consistency.
   - Static style/nav gates remained unchanged after the batch.
+- v3.9 (2026-02-14)
+  - Completed locale-aware formatter cleanup in remaining transit/chart detail paths:
+    - `transits/EphemerisUiMapper.kt`: switched event time formatter to language-aware locale mapping (`en`/`ne`) and applied it to period/aspect/position time labels.
+    - `transits/TransitsScreenRedesigned.kt`: normalized Nepali locale creation to `Locale.forLanguageTag("ne-NP")` in date-header formatting.
+    - `chartdetail/tabs/ChartTabContent.kt`: replaced default-locale birth date/time formatters with app-language-aware formatter helpers.
+  - Quality gate scripts remained stable after changes.

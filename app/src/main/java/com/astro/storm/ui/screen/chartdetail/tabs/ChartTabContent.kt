@@ -65,6 +65,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
@@ -85,15 +86,14 @@ import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-// Performance Optimization: Define formatters as top-level constants to avoid
-// recreating them on each recomposition. This reduces object allocation and
-// improves rendering performance, especially in frequently recomposed UIs.
-private val birthDateFormatter: DateTimeFormatter by lazy {
-    DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.getDefault())
-}
-private val birthTimeFormatter: DateTimeFormatter by lazy {
-    DateTimeFormatter.ofPattern("hh:mm a", Locale.getDefault())
-}
+private fun chartTabLocale(language: Language): Locale =
+    if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+
+private fun birthDateFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("dd MMMM yyyy", chartTabLocale(language))
+
+private fun birthTimeFormatter(language: Language): DateTimeFormatter =
+    DateTimeFormatter.ofPattern("hh:mm a", chartTabLocale(language))
 
 @Composable
 fun ChartTabContent(
@@ -506,6 +506,7 @@ private fun BirthDetailsCard(
     isExpanded: Boolean,
     onToggleExpand: (Boolean) -> Unit
 ) {
+    val language = LocalLanguage.current
     val rotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,
         label = "rotation"
@@ -513,18 +514,16 @@ private fun BirthDetailsCard(
 
     val birthData = chart.birthData
 
-    // Performance Optimization: Formatting is now done with the top-level
-    // birthDateFormatter and birthTimeFormatter constants.
-    val formattedDate = remember(birthData.dateTime) {
+    val formattedDate = remember(birthData.dateTime, language) {
         try {
-            birthData.dateTime.format(birthDateFormatter)
+            birthData.dateTime.format(birthDateFormatter(language))
         } catch (e: Exception) {
             "N/A"
         }
     }
-    val formattedTime = remember(birthData.dateTime) {
+    val formattedTime = remember(birthData.dateTime, language) {
         try {
-            birthData.dateTime.format(birthTimeFormatter)
+            birthData.dateTime.format(birthTimeFormatter(language))
         } catch (e: Exception) {
             "N/A"
         }

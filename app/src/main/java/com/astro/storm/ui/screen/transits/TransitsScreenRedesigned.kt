@@ -313,7 +313,7 @@ private fun EphemerisTopBar(
 }
 
 private fun dateHeaderFormatter(language: Language): DateTimeFormatter {
-    val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
+    val locale = if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
     return DateTimeFormatter.ofPattern("MMMM d, yyyy", locale)
 }
 

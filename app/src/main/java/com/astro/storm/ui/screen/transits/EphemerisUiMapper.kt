@@ -101,7 +101,10 @@ data class EphemerisEventUi(
     val isHighlighted: Boolean
 )
 
-private val timeFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
+private fun timeFormat(language: Language): DateTimeFormatter {
+    val locale = if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
+    return DateTimeFormatter.ofPattern("hh:mm a", locale)
+}
 
 /**
  * Maps transit analysis data to UI-ready ephemeris events.
@@ -142,7 +145,7 @@ fun mapToEphemerisEvents(
 
         events += EphemerisEventUi(
             date = period.startDate.toLocalDate(),
-            timeLabel = period.startDate.format(timeFormat),
+            timeLabel = period.startDate.format(timeFormat(language)),
             primaryGlyphs = glyphs.ifEmpty {
                 listOf(GlyphToken(StringResources.get(StringKeyEphemerisUi.FALLBACK_TRANSIT_TOKEN, language)))
             },
@@ -196,7 +199,7 @@ fun mapToEphemerisEvents(
 
             events += EphemerisEventUi(
                 date = eventDateTime.toLocalDate(),
-                timeLabel = eventDateTime.format(timeFormat),
+                timeLabel = eventDateTime.format(timeFormat(language)),
                 primaryGlyphs = listOf(
                     GlyphToken(transitPlanetGlyph),
                     GlyphToken(natalPlanetGlyph)
@@ -243,7 +246,7 @@ fun mapToEphemerisEvents(
 
             events += EphemerisEventUi(
                 date = eventDateTime.toLocalDate(),
-                timeLabel = eventDateTime.format(timeFormat),
+                timeLabel = eventDateTime.format(timeFormat(language)),
                 primaryGlyphs = listOf(GlyphToken(planetGlyph)),
                 aspectGlyph = null,
                 title = title,
