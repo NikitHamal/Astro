@@ -166,7 +166,7 @@ fun FullScreenChartDialog(
             ) {
                 Text(
                     text = chartTitle,
-                    fontSize = 20.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                     fontWeight = FontWeight.Bold,
                     color = DialogColors.AccentGold
                 )
@@ -267,7 +267,7 @@ fun FullScreenChartDialog(
                     Text(
                         text = "${(scale * 100).toInt()}%",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = DialogColors.TextSecondary
                     )
                 }
@@ -299,7 +299,7 @@ private fun ActionButton(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = if (enabled) DialogColors.TextSecondary else DialogColors.TextMuted
         )
     }

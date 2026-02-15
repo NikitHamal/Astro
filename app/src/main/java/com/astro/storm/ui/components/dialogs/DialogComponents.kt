@@ -59,7 +59,7 @@ fun DialogCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = title,
-                    fontSize = 16.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = DialogColors.TextPrimary
                 )
@@ -84,12 +84,12 @@ fun DetailRow(
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = DialogColors.TextMuted
         )
         Text(
             text = value,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.Medium,
             color = valueColor
         )
@@ -112,7 +112,7 @@ fun StatusChip(
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = DialogColors.TextSecondary
         )
         Surface(
@@ -121,7 +121,7 @@ fun StatusChip(
         ) {
             Text(
                 text = value,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color,
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -146,7 +146,7 @@ fun StrengthRow(
     ) {
         Text(
             text = label,
-            fontSize = 13.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             color = DialogColors.TextSecondary,
             modifier = Modifier.weight(1f)
         )
@@ -163,7 +163,7 @@ fun StrengthRow(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = String.format("%.1f", value),
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = DialogColors.TextPrimary,
                 modifier = Modifier.width(40.dp),
@@ -185,13 +185,13 @@ fun SummaryBadge(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            fontSize = 18.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            fontSize = 12.sp,
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = DialogColors.TextMuted
         )
     }

@@ -109,8 +109,8 @@ fun LocationSearchField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            label = { Text(label, color = AppTheme.TextMuted, fontSize = 14.sp) },
-            placeholder = { Text(placeholder, color = AppTheme.TextSubtle, fontSize = 14.sp) },
+            label = { Text(label, color = AppTheme.TextMuted, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14) },
+            placeholder = { Text(placeholder, color = AppTheme.TextSubtle, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14) },
             leadingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Search,
@@ -171,14 +171,14 @@ fun LocationSearchField(
             keyboardActions = KeyboardActions(
                 onSearch = { focusManager.clearFocus() }
             ),
-            textStyle = LocalTextStyle.current.copy(fontSize = 16.sp)
+            textStyle = LocalTextStyle.current.copy(fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16)
         )
 
         AnimatedVisibility(visible = errorMessage != null) {
             Text(
                 text = errorMessage ?: "",
                 color = AppTheme.ErrorColor,
-                fontSize = 12.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
         }
@@ -273,7 +273,7 @@ private fun LocationResultItem(
             Text(
                 text = mainName,
                 color = AppTheme.TextPrimary,
-                fontSize = 15.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.Medium,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -284,7 +284,7 @@ private fun LocationResultItem(
                 Text(
                     text = details,
                     color = AppTheme.TextMuted,
-                    fontSize = 13.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -301,7 +301,7 @@ private fun LocationResultItem(
                     stringResource(StringKeyUIExtra.DEGREE)
                 ),
                 color = AppTheme.TextSubtle,
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 letterSpacing = 0.3.sp
             )
         }

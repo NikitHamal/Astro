@@ -135,7 +135,7 @@ private fun PlanetDialogHeader(
                 ) {
                     Text(
                         text = planetPosition.planet.localizedAbbr(),
-                        fontSize = 20.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = Color.White
                     )
@@ -144,13 +144,13 @@ private fun PlanetDialogHeader(
                 Column {
                     Text(
                         text = planetPosition.planet.getLocalizedName(LocalLanguage.current),
-                        fontSize = 22.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
                         fontWeight = FontWeight.Bold,
                         color = DialogColors.TextPrimary
                     )
                     Text(
                         text = "${planetPosition.sign.getLocalizedName(LocalLanguage.current)} • ${stringResource(StringKeyAnalysis.HOUSE)} ${planetPosition.house}",
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = DialogColors.TextSecondary
                     )
                 }
@@ -193,13 +193,13 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                 ) {
                     Text(
                         text = stringResource(StringKeyAnalysis.DIALOG_OVERALL, String.format("%.2f", shadbala.totalRupas), String.format("%.2f", shadbala.requiredRupas)),
-                        fontSize = 14.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = DialogColors.TextPrimary
                     )
                     Text(
                         text = shadbala.strengthRating.displayName,
-                        fontSize = 12.sp,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Bold,
                         color = color
                     )
@@ -217,14 +217,14 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.DIALOG_PERCENT_OF_REQUIRED, String.format("%.1f", shadbala.percentageOfRequired)),
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = DialogColors.TextMuted
                 )
             }
 
             HorizontalDivider(color = DialogColors.DividerColor)
 
-            Text(stringResource(StringKeyAnalysis.DIALOG_STRENGTH_BREAKDOWN), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_STRENGTH_BREAKDOWN), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
 
             StrengthRow(stringResource(StringKeyAnalysis.DIALOG_STHANA_BALA), shadbala.sthanaBala.total, 180.0)
             StrengthRow(stringResource(StringKeyAnalysis.DIALOG_DIG_BALA), shadbala.digBala, 60.0)
@@ -257,7 +257,7 @@ private fun SignificationsCard(planet: Planet) {
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_NATURE), significations.nature, natureColor)
             DetailRow(stringResource(StringKeyAnalysis.DIALOG_ELEMENT), significations.element, DialogColors.TextSecondary)
 
-            Text(stringResource(StringKeyAnalysis.DIALOG_REPRESENTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_REPRESENTS), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
             significations.represents.forEach { item ->
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
@@ -266,15 +266,15 @@ private fun SignificationsCard(planet: Planet) {
                             .background(DialogColors.AccentGold, CircleShape)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = item, fontSize = 13.sp, color = DialogColors.TextPrimary)
+                    Text(text = item, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = DialogColors.TextPrimary)
                 }
             }
 
-            Text(stringResource(StringKeyAnalysis.DIALOG_BODY_PARTS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
-            Text(text = significations.bodyParts, fontSize = 13.sp, color = DialogColors.TextPrimary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_BODY_PARTS), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(text = significations.bodyParts, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = DialogColors.TextPrimary)
 
-            Text(stringResource(StringKeyAnalysis.DIALOG_PROFESSIONS), fontSize = 13.sp, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
-            Text(text = significations.professions, fontSize = 13.sp, color = DialogColors.TextPrimary)
+            Text(stringResource(StringKeyAnalysis.DIALOG_PROFESSIONS), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, fontWeight = FontWeight.SemiBold, color = DialogColors.TextSecondary)
+            Text(text = significations.professions, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = DialogColors.TextPrimary)
         }
     }
 }
@@ -287,19 +287,19 @@ private fun HousePlacementCard(position: PlanetPosition) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
                 text = interpretation.houseName,
-                fontSize = 15.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.SemiBold,
                 color = DialogColors.AccentGold
             )
             Text(
                 text = interpretation.houseSignification,
-                fontSize = 13.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 color = DialogColors.TextSecondary
             )
             HorizontalDivider(color = DialogColors.DividerColor)
             Text(
                 text = interpretation.interpretation,
-                fontSize = 14.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = DialogColors.TextPrimary,
                 lineHeight = 22.sp
             )
@@ -377,13 +377,13 @@ private fun PredictionsCard(
                     Column {
                         Text(
                             text = prediction.title,
-                            fontSize = 14.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = DialogColors.TextPrimary
                         )
                         Text(
                             text = prediction.description,
-                            fontSize = 13.sp,
+                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = DialogColors.TextSecondary,
                             lineHeight = 20.sp
                         )

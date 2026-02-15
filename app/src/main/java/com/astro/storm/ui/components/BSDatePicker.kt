@@ -336,7 +336,7 @@ private fun BSDatePickerHeader(
         Text(
             text = stringResource(StringKeyMatch.BS_DATE_PICKER_TITLE),
             fontWeight = FontWeight.SemiBold,
-            fontSize = 18.sp
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18
         )
 
         val goToTodayDesc = stringResource(StringKeyMatch.BS_GO_TO_TODAY)
@@ -362,7 +362,7 @@ private fun BSDatePickerHeader(
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = stringResource(StringKeyMatch.BS_TODAY),
-                    fontSize = 12.sp,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = colors.accentColor
                 )
@@ -952,7 +952,7 @@ private fun WeekdayHeader(
             val isSaturday = weekday == BSWeekday.SATURDAY
             Text(
                 text = weekday.getName(language, short = true),
-                fontSize = 11.sp,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Medium,
                 color = if (isSaturday) colors.saturdayColor else colors.textMuted,
                 textAlign = TextAlign.Center,
@@ -1052,7 +1052,7 @@ private fun DayCell(
             fontWeight = if (isSelected || isToday) FontWeight.Bold else FontWeight.Normal,
             color = textColor,
             textAlign = TextAlign.Center,
-            fontSize = 13.sp
+            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13
         )
     }
 }

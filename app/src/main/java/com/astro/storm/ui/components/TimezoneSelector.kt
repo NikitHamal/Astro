@@ -463,7 +463,7 @@ private fun TimezoneSearchField(
                 .focusRequester(focusRequester),
             textStyle = TextStyle(
                 color = TimezoneSelectorTheme.TextPrimary,
-                fontSize = 16.sp
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16
             ),
             singleLine = true,
             cursorBrush = SolidColor(TimezoneSelectorTheme.AccentColor),
