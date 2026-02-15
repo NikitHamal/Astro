@@ -16,7 +16,7 @@ import com.astro.storm.data.localization.LocalizationManager
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringResources
 import com.astro.storm.data.templates.TemplateSelector
-import java.time.DateTimeException
+import com.astro.storm.util.TimezoneSanitizer
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
@@ -24,7 +24,6 @@ import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 /**
  * Comprehensive Transit Analysis System
@@ -389,17 +388,7 @@ class TransitAnalyzer @Inject constructor(
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        try {
-            return ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600)
-                return ZoneOffset.ofTotalSeconds(totalSeconds)
-            }
-            throw IllegalArgumentException("Invalid timezone: $timezone")
-        }
+        return TimezoneSanitizer.resolveZoneId(timezone, ZoneOffset.UTC)
     }
 
     /**
@@ -409,12 +398,13 @@ class TransitAnalyzer @Inject constructor(
         dateTime: LocalDateTime,
         timezone: String = "UTC"
     ): List<PlanetPosition> {
+        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(timezone, ZoneOffset.UTC)
         val transitBirthData = BirthData(
             name = "Transit",
             dateTime = dateTime,
             latitude = 0.0,
             longitude = 0.0,
-            timezone = timezone,
+            timezone = normalizedTimezone,
             location = "Transit Chart"
         )
 

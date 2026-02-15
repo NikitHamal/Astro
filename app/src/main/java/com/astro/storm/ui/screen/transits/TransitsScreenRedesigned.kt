@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -62,15 +63,14 @@ import com.astro.storm.ui.components.common.NeoVedicEphemerisTransitItem
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
+import com.astro.storm.util.TimezoneSanitizer
 
 private enum class EphemerisMode(val titleKey: StringKey) {
     TIMELINE(StringKey.PERIOD_TODAY),
@@ -86,17 +86,22 @@ fun TransitsScreenRedesigned(
 ) {
     val language = LocalLanguage.current
     val colors = AppTheme.current
-    val zoneId = remember(chart) { resolveZoneId(chart?.birthData?.timezone) }
+    val zoneId = remember(chart) {
+        TimezoneSanitizer.resolveZoneId(chart?.birthData?.timezone, ZoneId.systemDefault())
+    }
     val nowInZone by rememberCurrentDateTime(zoneId)
     val asOf = remember(nowInZone) { nowInZone.withSecond(0).withNano(0) }
 
     var selectedMode by rememberSaveable { mutableIntStateOf(0) }
+    var retryToken by rememberSaveable { mutableIntStateOf(0) }
 
-    val analysis = remember(chart, asOf) {
+    val analysisResult = remember(chart, asOf, language, retryToken) {
         chart?.let {
-            runCatching { transitAnalyzer.analyzeTransits(it, asOf, language) }.getOrNull()
+            runCatching { transitAnalyzer.analyzeTransits(it, asOf, language) }
         }
     }
+    val analysis = analysisResult?.getOrNull()
+    val analysisError = analysisResult?.exceptionOrNull()
 
     val events = remember(analysis, language) {
         analysis?.let { mapToEphemerisEvents(it, language) } ?: emptyList()
@@ -132,6 +137,28 @@ fun TransitsScreenRedesigned(
                 icon = Icons.Outlined.Public,
                 modifier = Modifier.padding(padding)
             )
+            return@Scaffold
+        }
+
+        if (analysisError != null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = NeoVedicTokens.ScreenPadding),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                NeoVedicEmptyState(
+                    title = stringResource(StringKey.ERROR_CALCULATION_FAILED),
+                    subtitle = analysisError.message
+                        ?: stringResource(StringKeyMatch.ERROR_GENERIC_RETRY),
+                    icon = Icons.Outlined.Sync
+                )
+                TextButton(onClick = { retryToken++ }) {
+                    Text(text = stringResource(StringKey.BTN_RETRY))
+                }
+            }
             return@Scaffold
         }
 
@@ -549,21 +576,6 @@ private fun formatDegree(longitude: Double, language: Language): String {
     val deg = degInSign.toInt()
     val min = ((degInSign - deg) * 60).toInt()
     return StringResources.get(StringKeyEphemerisUi.DEGREE_MINUTE_LABEL, language, deg, min)
-}
-
-private fun resolveZoneId(timezone: String?): ZoneId {
-    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-    return try {
-        ZoneId.of(timezone)
-    } catch (_: DateTimeException) {
-        val numericHours = timezone.trim().toDoubleOrNull()
-        if (numericHours != null) {
-            val totalSeconds = (numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600)
-            ZoneOffset.ofTotalSeconds(totalSeconds)
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
 }
 
 @Composable

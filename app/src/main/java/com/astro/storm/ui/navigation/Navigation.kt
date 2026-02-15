@@ -428,10 +428,12 @@ fun AstroStormNavigation(
             ChartInputScreen(
                 viewModel = viewModel,
                 onNavigateBack = {
+                    viewModel.resetState()
                     navController.popBackStack()
                 },
                 onChartCalculated = {
                     // After chart is saved, navigate back and it will auto-select
+                    viewModel.resetState()
                     navController.popBackStack()
                 }
             )
@@ -721,8 +723,14 @@ fun AstroStormNavigation(
             ChartInputScreen(
                 viewModel = viewModel,
                 editChartId = chartId,
-                onNavigateBack = { navController.popBackStack() },
-                onChartCalculated = { navController.popBackStack() }
+                onNavigateBack = {
+                    viewModel.resetState()
+                    navController.popBackStack()
+                },
+                onChartCalculated = {
+                    viewModel.resetState()
+                    navController.popBackStack()
+                }
             )
         }
 

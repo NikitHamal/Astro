@@ -11,6 +11,7 @@ import com.astro.storm.core.model.PlanetPosition
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.VedicAstrologyUtils
+import com.astro.storm.util.TimezoneSanitizer
 import swisseph.SweConst
 import swisseph.SweDate
 import swisseph.SwissEph
@@ -20,7 +21,6 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import kotlin.math.roundToInt
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -656,18 +656,7 @@ class SwissEphemerisEngine internal constructor(
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: Exception) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt()
-                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
-            }
-        }
+        return TimezoneSanitizer.resolveZoneId(timezone, ZoneOffset.UTC)
     }
 
     override fun close() {

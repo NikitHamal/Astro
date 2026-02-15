@@ -2,10 +2,12 @@ package com.astro.storm.data.repository
 
 import com.astro.storm.data.local.ChartDao
 import com.astro.storm.data.local.ChartEntity
+import com.astro.storm.util.TimezoneSanitizer
 import com.astro.storm.core.model.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -55,7 +57,7 @@ class ChartRepository @Inject constructor(private val chartDao: ChartDao) {
             dateTime = birthData.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
             latitude = birthData.latitude,
             longitude = birthData.longitude,
-            timezone = birthData.timezone,
+            timezone = TimezoneSanitizer.normalizeTimezoneId(birthData.timezone, ZoneOffset.UTC),
             location = birthData.location,
             julianDay = julianDay,
             ayanamsa = ayanamsa,
@@ -70,13 +72,14 @@ class ChartRepository @Inject constructor(private val chartDao: ChartDao) {
     }
 
     private fun ChartEntity.toVedicChart(): VedicChart {
+        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(timezone, ZoneOffset.UTC)
         return VedicChart(
             birthData = BirthData(
                 name = name,
                 dateTime = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME),
                 latitude = latitude,
                 longitude = longitude,
-                timezone = timezone,
+                timezone = normalizedTimezone,
                 location = location,
                 gender = Gender.fromString(gender)
             ),
@@ -93,6 +96,7 @@ class ChartRepository @Inject constructor(private val chartDao: ChartDao) {
     }
 
     private fun ChartEntity.toSavedChart(): SavedChart {
+        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(timezone, ZoneOffset.UTC)
         return SavedChart(
             id = id,
             name = name,
@@ -101,7 +105,7 @@ class ChartRepository @Inject constructor(private val chartDao: ChartDao) {
             createdAt = createdAt,
             latitude = latitude,
             longitude = longitude,
-            timezone = timezone,
+            timezone = normalizedTimezone,
             gender = Gender.fromString(gender)
         )
     }

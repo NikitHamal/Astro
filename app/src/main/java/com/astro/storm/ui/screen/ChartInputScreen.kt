@@ -47,6 +47,7 @@ import com.astro.storm.ui.components.LocationSearchField
 import com.astro.storm.ui.components.TimezoneSelector
 import com.astro.storm.ui.viewmodel.ChartUiState
 import com.astro.storm.ui.viewmodel.ChartViewModel
+import com.astro.storm.util.TimezoneSanitizer
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -377,8 +378,12 @@ fun ChartInputScreen(
     if (showErrorDialog) {
         AlertDialog(
             onDismissRequest = {
+                val shouldReset = errorKey == null
                 showErrorDialog = false
                 errorKey = null
+                if (shouldReset) {
+                    viewModel.resetState()
+                }
             },
             title = {
                 Text(
@@ -395,8 +400,12 @@ fun ChartInputScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
+                    val shouldReset = errorKey == null
                     showErrorDialog = false
                     errorKey = null
+                    if (shouldReset) {
+                        viewModel.resetState()
+                    }
                 }) {
                     Text(stringResource(StringKey.BTN_OK), color = colors.AccentPrimary)
                 }
@@ -408,9 +417,7 @@ fun ChartInputScreen(
 }
 
 private fun normalizeTimezoneForStorage(timezone: String): String {
-    val trimmed = timezone.trim()
-    if (trimmed.isEmpty()) return ZoneOffset.UTC.id
-    return runCatching { ZoneId.of(trimmed).id }.getOrElse { trimmed }
+    return TimezoneSanitizer.normalizeTimezoneId(timezone, ZoneOffset.UTC)
 }
 
 private fun isSameAsExistingChartInput(
@@ -514,10 +521,8 @@ private fun validateBirthDataInput(
         return StringKey.ERROR_LONGITUDE_RANGE
     }
 
-    // Timezone validation - ensure it's a valid zone ID
-    try {
-        ZoneId.of(timezone)
-    } catch (_: Exception) {
+    // Timezone validation
+    if (TimezoneSanitizer.resolveZoneIdOrNull(timezone) == null) {
         return StringKey.ERROR_TIMEZONE_INVALID
     }
 

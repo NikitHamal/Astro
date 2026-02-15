@@ -155,6 +155,7 @@ fun MainScreen(
                     message = state.message,
                     duration = SnackbarDuration.Long
                 )
+                viewModel.resetState()
             }
             else -> {
                 snackbarHostState.currentSnackbarData?.dismiss()
