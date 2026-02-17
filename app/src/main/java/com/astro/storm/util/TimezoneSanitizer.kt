@@ -12,6 +12,16 @@ object TimezoneSanitizer {
 
     private val zoneTokenRegex = Regex("[A-Za-z_]+(?:/[A-Za-z0-9_+\\-]+)+")
     private val offsetTokenRegex = Regex("(?i)(?:UTC|GMT)?\\s*[+-]\\d{1,2}(?::?\\d{2})?")
+    private val legacyZoneAliases = mapOf(
+        "ASIA/KATMANDU" to "Asia/Kathmandu",
+        "ASIA/CALCUTTA" to "Asia/Kolkata",
+        "ASIA/SAIGON" to "Asia/Ho_Chi_Minh",
+        "EUROPE/KIEV" to "Europe/Kyiv",
+        "US/EASTERN" to "America/New_York",
+        "US/CENTRAL" to "America/Chicago",
+        "US/MOUNTAIN" to "America/Denver",
+        "US/PACIFIC" to "America/Los_Angeles"
+    )
 
     fun resolveZoneIdOrNull(rawTimezone: String?): ZoneId? {
         val trimmed = rawTimezone?.trim().orEmpty()
@@ -30,16 +40,18 @@ object TimezoneSanitizer {
         return null
     }
 
-    fun resolveZoneId(rawTimezone: String?, fallback: ZoneId = ZoneOffset.UTC): ZoneId {
-        return resolveZoneIdOrNull(rawTimezone) ?: fallback
+    fun resolveZoneId(rawTimezone: String?): ZoneId {
+        return resolveZoneIdOrNull(rawTimezone)
+            ?: throw IllegalArgumentException("Invalid timezone identifier: ${rawTimezone?.trim().orEmpty()}")
     }
 
-    fun normalizeTimezoneId(rawTimezone: String?, fallback: ZoneId = ZoneOffset.UTC): String {
-        return resolveZoneId(rawTimezone, fallback).id
+    fun normalizeTimezoneId(rawTimezone: String?): String {
+        return resolveZoneId(rawTimezone).id
     }
 
     private fun parseZoneId(candidate: String): ZoneId? {
-        return runCatching { ZoneId.of(candidate.trim()) }.getOrNull()
+        val canonical = canonicalizeZoneCandidate(candidate)
+        return runCatching { ZoneId.of(canonical) }.getOrNull()
     }
 
     private fun parseOffset(candidate: String): ZoneOffset? {
@@ -102,5 +114,11 @@ object TimezoneSanitizer {
             .forEach { candidates += it }
 
         return candidates.toList()
+    }
+
+    private fun canonicalizeZoneCandidate(candidate: String): String {
+        val trimmed = candidate.trim()
+        if (trimmed.isEmpty()) return trimmed
+        return legacyZoneAliases[trimmed.uppercase(Locale.ROOT)] ?: trimmed
     }
 }

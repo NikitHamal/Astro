@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.astro.storm.core.common.BikramSambatConverter
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
@@ -40,8 +41,7 @@ import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.BirthData
 import com.astro.storm.core.model.Gender
-import com.astro.storm.ephemeris.yoga.YogaCategory
-import com.astro.storm.ephemeris.yoga.YogaStrength
+import com.astro.storm.data.repository.SavedChart
 import com.astro.storm.ui.components.BSDatePickerDialog
 import com.astro.storm.ui.components.LocationSearchField
 import com.astro.storm.ui.components.TimezoneSelector
@@ -51,7 +51,6 @@ import com.astro.storm.util.TimezoneSanitizer
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneOffset
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.astro.storm.ui.theme.LocalAppThemeColors
@@ -67,15 +66,19 @@ fun ChartInputScreen(
     onNavigateBack: () -> Unit,
     onChartCalculated: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
-    val savedCharts by viewModel.savedCharts.collectAsState()
+    // Determine if we're in edit mode
+    val isEditMode = editChartId != null
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val savedCharts: List<SavedChart> = if (isEditMode) {
+        viewModel.savedCharts.collectAsStateWithLifecycle().value
+    } else {
+        emptyList()
+    }
     val focusManager = LocalFocusManager.current
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
     val colors = LocalAppThemeColors.current
-
-    // Determine if we're in edit mode
-    val isEditMode = editChartId != null
 
     // Find the chart to edit (if in edit mode)
     val chartToEdit = remember(editChartId, savedCharts) {
@@ -417,7 +420,7 @@ fun ChartInputScreen(
 }
 
 private fun normalizeTimezoneForStorage(timezone: String): String {
-    return TimezoneSanitizer.normalizeTimezoneId(timezone, ZoneOffset.UTC)
+    return TimezoneSanitizer.normalizeTimezoneId(timezone)
 }
 
 private fun isSameAsExistingChartInput(

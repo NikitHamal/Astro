@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -22,7 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -70,10 +69,11 @@ import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyUICommon
 import com.astro.storm.core.common.StringKeyUIExtra
 import com.astro.storm.data.localization.stringResource
-import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.util.TimezoneSanitizer
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import java.util.TimeZone
 
 /**
@@ -108,12 +108,12 @@ private object TimezoneSelectorTheme {
  */
 private data class TimezoneInfo(
     val id: String,
-    val displayName: String,
     val city: String,
     val region: String,
     val utcOffset: String,
     val currentTime: String,
     val offsetMinutes: Int,
+    val searchableText: String,
     val isCommon: Boolean = false
 )
 
@@ -190,12 +190,12 @@ fun TimezonePickerDialog(
 
                     TimezoneInfo(
                         id = id,
-                        displayName = "$city ($utcOffset)",
                         city = city,
                         region = region,
                         utcOffset = utcOffset,
                         currentTime = zonedTime.format(timeFormatter),
                         offsetMinutes = totalSeconds / 60,
+                        searchableText = "$id $city $region $utcOffset".lowercase(Locale.ROOT),
                         isCommon = id in COMMON_TIMEZONES
                     )
                 } catch (e: Exception) {
@@ -211,12 +211,9 @@ fun TimezonePickerDialog(
             if (searchQuery.isBlank()) {
                 allTimezones
             } else {
-                val query = searchQuery.lowercase().trim()
+                val query = searchQuery.lowercase(Locale.ROOT).trim()
                 allTimezones.filter { tz ->
-                    tz.id.lowercase().contains(query) ||
-                            tz.city.lowercase().contains(query) ||
-                            tz.region.lowercase().contains(query) ||
-                            tz.utcOffset.lowercase().contains(query)
+                    tz.searchableText.contains(query)
                 }
             }
         }
@@ -325,10 +322,10 @@ fun TimezonePickerDialog(
                         }
                     }
 
-                    items(
+                    itemsIndexed(
                         items = filteredTimezones,
-                        key = { it.id }
-                    ) { timezone ->
+                        key = { _, item -> item.id }
+                    ) { index, timezone ->
                         TimezoneItem(
                             timezone = timezone,
                             isSelected = timezone.id == selectedTimezone,
@@ -340,7 +337,7 @@ fun TimezonePickerDialog(
 
                         // Add section header when transitioning from common to all
                         if (searchQuery.isBlank() && timezone.isCommon) {
-                            val nextTimezone = filteredTimezones.getOrNull(filteredTimezones.indexOf(timezone) + 1)
+                            val nextTimezone = filteredTimezones.getOrNull(index + 1)
                             if (nextTimezone != null && !nextTimezone.isCommon) {
                                 Text(
                                     text = stringResource(StringKeyUICommon.ALL_TIMEZONES),
@@ -596,31 +593,27 @@ fun TimezoneSelector(
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
-    val language = LocalLanguage.current
     var showDialog by remember { mutableStateOf(false) }
 
     // Get timezone display info
     val timezoneInfo = remember(selectedTimezone) {
-        try {
-            val now = ZonedDateTime.now()
-            val zoneId = ZoneId.of(selectedTimezone)
-            val zonedTime = now.withZoneSameInstant(zoneId)
-            val offset = zonedTime.offset
-            val totalSeconds = offset.totalSeconds
-            val hours = totalSeconds / 3600
-            val minutes = kotlin.math.abs((totalSeconds % 3600) / 60)
+        val now = ZonedDateTime.now()
+        val zoneId = TimezoneSanitizer.resolveZoneId(selectedTimezone)
+        val zonedTime = now.withZoneSameInstant(zoneId)
+        val offset = zonedTime.offset
+        val totalSeconds = offset.totalSeconds
+        val hours = totalSeconds / 3600
+        val minutes = kotlin.math.abs((totalSeconds % 3600) / 60)
 
-            val utcOffset = if (minutes == 0) {
-                "UTC${if (hours >= 0) "+" else ""}$hours"
-            } else {
-                "UTC${if (hours >= 0) "+" else ""}$hours:${minutes.toString().padStart(2, '0')}"
-            }
-
-            val city = selectedTimezone.split("/").lastOrNull()?.replace("_", " ") ?: selectedTimezone
-            "$city ($utcOffset)"
-        } catch (e: Exception) {
-            selectedTimezone
+        val utcOffset = if (minutes == 0) {
+            "UTC${if (hours >= 0) "+" else ""}$hours"
+        } else {
+            "UTC${if (hours >= 0) "+" else ""}$hours:${minutes.toString().padStart(2, '0')}"
         }
+
+        val displayId = zoneId.id
+        val city = displayId.split("/").lastOrNull()?.replace("_", " ") ?: displayId
+        "$city ($utcOffset)"
     }
 
     Card(

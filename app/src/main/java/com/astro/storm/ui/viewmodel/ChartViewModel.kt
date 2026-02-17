@@ -28,8 +28,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.ZoneId
-import java.time.ZoneOffset
 import java.util.Objects
 import javax.inject.Inject
 
@@ -131,7 +129,7 @@ class ChartViewModel @Inject constructor(
 
             try {
                 val chart = withContext(Dispatchers.Default) {
-                    calculateChartWithFallback(birthData, houseSystem)
+                    calculateChartStrict(birthData, houseSystem)
                 }
                 _uiState.value = ChartUiState.Success(chart)
             } catch (e: Exception) {
@@ -156,7 +154,7 @@ class ChartViewModel @Inject constructor(
 
             try {
                 val chart = withContext(Dispatchers.Default) {
-                    calculateChartWithFallback(birthData, houseSystem)
+                    calculateChartStrict(birthData, houseSystem)
                 }
 
                 // Preserve the ID of the existing chart so repository.updateChart knows which one to update
@@ -183,34 +181,15 @@ class ChartViewModel @Inject constructor(
     }
 
     /**
-     * Runs chart calculation with robust timezone fallbacks.
-     * This protects against edge-case timezone parser failures for legacy/invalid values.
+     * Runs chart calculation in strict mode with a single normalized timezone.
      */
-    private fun calculateChartWithFallback(
+    private fun calculateChartStrict(
         birthData: BirthData,
         houseSystem: HouseSystem?
     ): VedicChart {
-        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(birthData.timezone, ZoneOffset.UTC)
-        val systemTimezone = ZoneId.systemDefault().id
-
-        val attempts = linkedSetOf(
-            normalizedTimezone,
-            ZoneOffset.UTC.id,
-            systemTimezone
-        )
-
-        var lastError: Exception? = null
-        for (timezoneId in attempts) {
-            val candidateBirthData = birthData.copy(timezone = timezoneId)
-            try {
-                return ephemerisEngine.calculateVedicChart(candidateBirthData, houseSystem)
-            } catch (e: Exception) {
-                lastError = e
-                Log.w(TAG, "Chart calculation attempt failed for timezone=$timezoneId", e)
-            }
-        }
-
-        throw lastError ?: IllegalStateException("Chart calculation failed with all timezone fallbacks")
+        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(birthData.timezone)
+        val normalizedBirthData = birthData.copy(timezone = normalizedTimezone)
+        return ephemerisEngine.calculateVedicChart(normalizedBirthData, houseSystem)
     }
 
     private fun mapCalculationError(error: Exception): String {

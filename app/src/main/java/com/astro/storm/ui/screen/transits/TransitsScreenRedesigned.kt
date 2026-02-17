@@ -87,7 +87,8 @@ fun TransitsScreenRedesigned(
     val language = LocalLanguage.current
     val colors = AppTheme.current
     val zoneId = remember(chart) {
-        TimezoneSanitizer.resolveZoneId(chart?.birthData?.timezone, ZoneId.systemDefault())
+        val timezone = chart?.birthData?.timezone
+        if (timezone.isNullOrBlank()) ZoneId.of("UTC") else TimezoneSanitizer.resolveZoneId(timezone)
     }
     val nowInZone by rememberCurrentDateTime(zoneId)
     val asOf = remember(nowInZone) { nowInZone.withSecond(0).withNano(0) }

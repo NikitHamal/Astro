@@ -361,7 +361,9 @@ class SwissEphemerisEngine internal constructor(
         )
 
         if (houseResult < 0) {
-            Log.w(TAG, "House calculation returned error code: $houseResult, using Placidus fallback")
+            throw EphemerisCalculationException(
+                "House calculation failed with code: $houseResult"
+            )
         }
 
         val ascendant = ascMcBuffer[ASC_INDEX]
@@ -614,8 +616,19 @@ class SwissEphemerisEngine internal constructor(
     private fun convertToUtc(dateTime: LocalDateTime, timezone: String): LocalDateTime {
         return try {
             val zoneId = resolveZoneId(timezone)
-            val zonedDateTime = ZonedDateTime.of(dateTime, zoneId)
-            zonedDateTime.withZoneSameInstant(ZoneId.of("UTC")).toLocalDateTime()
+            val rules = zoneId.rules
+            val validOffsets = rules.getValidOffsets(dateTime)
+            val zonedDateTime = when {
+                validOffsets.size == 1 -> ZonedDateTime.ofLocal(dateTime, zoneId, validOffsets[0])
+                validOffsets.isEmpty() -> throw IllegalArgumentException(
+                    "Invalid local date-time for timezone (DST gap): $dateTime in $timezone"
+                )
+                else -> {
+                    // Overlap (typically DST clock rollback): consistently pick the earlier offset.
+                    ZonedDateTime.ofLocal(dateTime, zoneId, validOffsets.first())
+                }
+            }
+            zonedDateTime.withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime()
         } catch (e: Exception) {
             throw IllegalArgumentException("Invalid timezone: $timezone", e)
         }
@@ -656,7 +669,7 @@ class SwissEphemerisEngine internal constructor(
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return TimezoneSanitizer.resolveZoneId(timezone, ZoneOffset.UTC)
+        return TimezoneSanitizer.resolveZoneId(timezone)
     }
 
     override fun close() {

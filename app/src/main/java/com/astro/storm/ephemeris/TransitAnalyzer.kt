@@ -19,7 +19,6 @@ import com.astro.storm.data.templates.TemplateSelector
 import com.astro.storm.util.TimezoneSanitizer
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -388,7 +387,7 @@ class TransitAnalyzer @Inject constructor(
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return TimezoneSanitizer.resolveZoneId(timezone, ZoneOffset.UTC)
+        return TimezoneSanitizer.resolveZoneId(timezone)
     }
 
     /**
@@ -398,7 +397,7 @@ class TransitAnalyzer @Inject constructor(
         dateTime: LocalDateTime,
         timezone: String = "UTC"
     ): List<PlanetPosition> {
-        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(timezone, ZoneOffset.UTC)
+        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(timezone)
         val transitBirthData = BirthData(
             name = "Transit",
             dateTime = dateTime,
