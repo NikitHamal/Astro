@@ -68,7 +68,6 @@ class SwissEphemerisEngine internal constructor(
     private val planetResultBuffer = DoubleArray(PLANET_RESULT_SIZE)
     private val houseCuspsBuffer = DoubleArray(HOUSE_CUSPS_ARRAY_SIZE)
     private val ascMcBuffer = DoubleArray(ASC_MC_ARRAY_SIZE)
-    private val errorBuffer = StringBuffer(ERROR_BUFFER_SIZE)
     private var lastSiderealMode: Int = -1
 
     private val calculationFlags: Int = if (hasHighPrecisionEphemeris) {
@@ -85,8 +84,6 @@ class SwissEphemerisEngine internal constructor(
         private const val PLANET_RESULT_SIZE = 6
         private const val HOUSE_CUSPS_ARRAY_SIZE = 13
         private const val ASC_MC_ARRAY_SIZE = 10
-        private const val ERROR_BUFFER_SIZE = 256
-
         private const val ASC_INDEX = 0
         private const val MC_INDEX = 1
 
@@ -444,7 +441,6 @@ class SwissEphemerisEngine internal constructor(
         ascendant: Double
     ): PlanetPosition {
         planetResultBuffer.fill(0.0)
-        errorBuffer.setLength(0)
 
         val nodeMode = astroSettings.nodeMode.value
         val rahuId = if (nodeMode == com.astro.storm.data.preferences.NodeCalculationMode.TRUE) {
@@ -472,15 +468,11 @@ class SwissEphemerisEngine internal constructor(
             sweId,
             currentCalculationFlags,
             planetResultBuffer,
-            errorBuffer
+            null
         )
 
         if (calcResult < 0) {
-            val errorMessage = if (errorBuffer.isNotEmpty()) {
-                errorBuffer.toString()
-            } else {
-                "Unknown calculation error (code: $calcResult)"
-            }
+            val errorMessage = "Swiss Ephemeris calculation error (code: $calcResult)"
             throw EphemerisCalculationException(
                 "Failed to calculate ${planet.displayName}: $errorMessage"
             )
