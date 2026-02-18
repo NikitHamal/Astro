@@ -28,6 +28,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.DateTimeException
+import java.time.ZoneId
+import java.time.zone.ZoneRulesException
 import java.util.Objects
 import javax.inject.Inject
 
@@ -129,7 +132,7 @@ class ChartViewModel @Inject constructor(
 
             try {
                 val chart = withContext(Dispatchers.Default) {
-                    calculateChartStrict(birthData, houseSystem)
+                    calculateChartWithTimezoneFallback(birthData, houseSystem)
                 }
                 _uiState.value = ChartUiState.Success(chart)
             } catch (e: Exception) {
@@ -154,7 +157,7 @@ class ChartViewModel @Inject constructor(
 
             try {
                 val chart = withContext(Dispatchers.Default) {
-                    calculateChartStrict(birthData, houseSystem)
+                    calculateChartWithTimezoneFallback(birthData, houseSystem)
                 }
 
                 // Preserve the ID of the existing chart so repository.updateChart knows which one to update
@@ -181,27 +184,88 @@ class ChartViewModel @Inject constructor(
     }
 
     /**
-     * Runs chart calculation in strict mode with a single normalized timezone.
+     * Runs chart calculation with controlled timezone fallbacks to guard against
+     * parser edge cases seen with legacy or device-provided timezone identifiers.
      */
-    private fun calculateChartStrict(
+    private fun calculateChartWithTimezoneFallback(
         birthData: BirthData,
         houseSystem: HouseSystem?
     ): VedicChart {
-        val normalizedTimezone = TimezoneSanitizer.normalizeTimezoneId(birthData.timezone)
-        val normalizedBirthData = birthData.copy(timezone = normalizedTimezone)
-        return ephemerisEngine.calculateVedicChart(normalizedBirthData, houseSystem)
+        val timezoneAttempts = buildTimezoneAttempts(birthData.timezone)
+        var lastError: Exception? = null
+
+        timezoneAttempts.forEachIndexed { index, timezoneId ->
+            val attemptBirthData = birthData.copy(timezone = timezoneId)
+            val attemptLabel = when (index) {
+                0 -> "selected"
+                1 -> "system"
+                else -> "utc"
+            }
+
+            try {
+                if (index > 0) {
+                    Log.w(
+                        TAG,
+                        "Retrying chart calculation with $attemptLabel timezone fallback: $timezoneId"
+                    )
+                }
+                return ephemerisEngine.calculateVedicChart(attemptBirthData, houseSystem)
+            } catch (e: Exception) {
+                lastError = e
+                val canRetry = index < timezoneAttempts.lastIndex && shouldRetryWithTimezoneFallback(e)
+                if (canRetry) {
+                    Log.w(
+                        TAG,
+                        "Chart calculation failed with timezone attempt '$timezoneId'; trying next fallback",
+                        e
+                    )
+                } else {
+                    throw e
+                }
+            }
+        }
+
+        throw lastError ?: IllegalStateException("Chart calculation failed")
     }
 
     private fun mapCalculationError(error: Exception): String {
         val msg = error.message
-        val isIndexFailure = error is StringIndexOutOfBoundsException ||
+        val isTimezoneDateTimeParsingFailure = shouldRetryWithTimezoneFallback(error) ||
                 (msg?.contains("index=", ignoreCase = true) == true &&
                         msg.contains("length=", ignoreCase = true))
-        return if (isIndexFailure) {
+        return if (isTimezoneDateTimeParsingFailure) {
             "Calculation failed due to invalid date/time-timezone parsing. Please reselect timezone and try again."
         } else {
             msg ?: "Calculation failed"
         }
+    }
+
+    private fun buildTimezoneAttempts(rawTimezone: String?): List<String> {
+        val attempts = linkedSetOf<String>()
+        val selectedNormalized = TimezoneSanitizer.resolveZoneIdOrNull(rawTimezone)?.id
+        if (!selectedNormalized.isNullOrBlank()) {
+            attempts += selectedNormalized
+        }
+        attempts += ZoneId.systemDefault().id
+        attempts += "UTC"
+        return attempts.toList()
+    }
+
+    private fun shouldRetryWithTimezoneFallback(error: Exception): Boolean {
+        val causes = generateSequence<Throwable>(error) { it.cause }.toList()
+        if (causes.any { it is StringIndexOutOfBoundsException || it is DateTimeException || it is ZoneRulesException }) {
+            return true
+        }
+
+        return causes
+            .mapNotNull { it.message?.lowercase() }
+            .any { message ->
+                "timezone" in message ||
+                        "time zone" in message ||
+                        "zone id" in message ||
+                        ("date/time" in message && "timezone" in message) ||
+                        ("index=" in message && "length=" in message)
+            }
     }
 
     /**
