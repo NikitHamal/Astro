@@ -82,7 +82,9 @@ class SwissEphemerisEngine internal constructor(
         private const val TAG = "SwissEphemerisEngine"
 
         private const val PLANET_RESULT_SIZE = 6
-        private const val HOUSE_CUSPS_ARRAY_SIZE = 13
+        // Keep one extra slot to guard against JNI wrapper edge cases where index 13 is touched.
+        // We still consume houses from indices 1..12.
+        private const val HOUSE_CUSPS_ARRAY_SIZE = 14
         private const val ASC_MC_ARRAY_SIZE = 10
         private const val ASC_INDEX = 0
         private const val MC_INDEX = 1

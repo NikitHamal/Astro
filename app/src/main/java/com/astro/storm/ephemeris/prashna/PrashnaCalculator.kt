@@ -131,7 +131,8 @@ class PrashnaCalculator(context: Context) {
         val julianDay = calculateJulianDay(utcDateTime)
         val ayanamsa = swissEph.swe_get_ayanamsa_ut(julianDay)
 
-        val houseCuspsArr = DoubleArray(13)
+        // Sized to include defensive index 13 access in some runtime wrappers.
+        val houseCuspsArr = DoubleArray(14)
         val ascMcArr = DoubleArray(10)
 
         swissEph.swe_houses(

@@ -191,6 +191,26 @@ class ChartViewModel @Inject constructor(
         birthData: BirthData,
         houseSystem: HouseSystem?
     ): VedicChart {
+        return try {
+            calculateChartWithTimezoneAttempts(birthData, houseSystem)
+        } catch (e: Exception) {
+            if (houseSystem == HouseSystem.WHOLE_SIGN || !isIndexBoundaryFailure(e)) {
+                throw e
+            }
+
+            Log.w(
+                TAG,
+                "Retrying chart calculation with WHOLE_SIGN fallback after boundary failure",
+                e
+            )
+            calculateChartWithTimezoneAttempts(birthData, HouseSystem.WHOLE_SIGN)
+        }
+    }
+
+    private fun calculateChartWithTimezoneAttempts(
+        birthData: BirthData,
+        houseSystem: HouseSystem?
+    ): VedicChart {
         val timezoneAttempts = buildTimezoneAttempts(birthData.timezone)
         var lastError: Exception? = null
 
@@ -230,6 +250,9 @@ class ChartViewModel @Inject constructor(
 
     private fun mapCalculationError(error: Exception): String {
         val msg = error.message
+        if (isIndexBoundaryFailure(error)) {
+            return "Calculation failed due to an internal calculation boundary issue. Please try again."
+        }
         val isTimezoneDateTimeParsingFailure = shouldRetryWithTimezoneFallback(error) ||
                 (msg?.contains("index=", ignoreCase = true) == true &&
                         msg.contains("length=", ignoreCase = true))
@@ -253,7 +276,12 @@ class ChartViewModel @Inject constructor(
 
     private fun shouldRetryWithTimezoneFallback(error: Exception): Boolean {
         val causes = generateSequence<Throwable>(error) { it.cause }.toList()
-        if (causes.any { it is StringIndexOutOfBoundsException || it is DateTimeException || it is ZoneRulesException }) {
+        if (causes.any {
+                it is StringIndexOutOfBoundsException ||
+                        it is ArrayIndexOutOfBoundsException ||
+                        it is DateTimeException ||
+                        it is ZoneRulesException
+            }) {
             return true
         }
 
@@ -266,6 +294,15 @@ class ChartViewModel @Inject constructor(
                         ("date/time" in message && "timezone" in message) ||
                         ("index=" in message && "length=" in message)
             }
+    }
+
+    private fun isIndexBoundaryFailure(error: Exception): Boolean {
+        val causes = generateSequence<Throwable>(error) { it.cause }.toList()
+        if (causes.any { it is ArrayIndexOutOfBoundsException || it is StringIndexOutOfBoundsException }) {
+            return true
+        }
+        val message = error.message?.lowercase().orEmpty()
+        return "index=" in message && "length=" in message
     }
 
     /**
