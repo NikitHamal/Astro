@@ -415,25 +415,107 @@ fun ChartInputScreen(
                         viewModel.resetState()
                     }
                 }) {
-            Text(
-                text = stringResource(StringKey.BTN_OK),
-                color = colors.AccentPrimary,
-                fontFamily = SpaceGroteskFamily,
-                fontWeight = FontWeight.Bold
-            )
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(
-                    stringResource(StringKey.BTN_CANCEL),
-                    color = colors.TextSecondary,
-                    fontFamily = SpaceGroteskFamily
-                )
-            }
-        },
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        colors = DatePickerDefaults.colors(containerColor = colors.CardBackground)
-    ) {
+                    Text(
+                        text = stringResource(StringKey.BTN_OK),
+                        color = colors.AccentPrimary,
+                        fontFamily = SpaceGroteskFamily,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            },
+            containerColor = colors.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+        )
+    }
+}
+
+private fun normalizeTimezoneForStorage(timezone: String): String {
+    return TimezoneSanitizer.normalizeTimezoneId(timezone)
+}
+
+private fun isSameAsExistingChartInput(
+    candidate: BirthData,
+    existing: SavedChart
+): Boolean {
+    val sameName = candidate.name.trim() == existing.name.trim()
+    val sameDateTime = candidate.dateTime == existing.dateTime
+    val sameLocation = candidate.location.trim() == existing.location.trim()
+    val sameTimezone = normalizeTimezoneForStorage(candidate.timezone) ==
+            normalizeTimezoneForStorage(existing.timezone)
+    val sameGender = candidate.gender == existing.gender
+    val sameLatitude = kotlin.math.abs(candidate.latitude - existing.latitude) < 1e-6
+    val sameLongitude = kotlin.math.abs(candidate.longitude - existing.longitude) < 1e-6
+
+    return sameName &&
+            sameDateTime &&
+            sameLocation &&
+            sameTimezone &&
+            sameGender &&
+            sameLatitude &&
+            sameLongitude
+}
+
+private fun parseCoordinate(value: String): Double? {
+    val cleaned = value.trim()
+        .replace("\u00B0", "")
+        .replace("'", "")
+        .replace("\"", "")
+        .replace("\u2032", "")
+        .replace("\u2033", "")
+        .replace(",", ".")
+        .trim()
+
+    return cleaned.toDoubleOrNull()
+}
+
+@Suppress("UNUSED_PARAMETER")
+private fun validateBirthDataInput(
+    name: String,
+    latitude: String,
+    longitude: String,
+    selectedDate: LocalDate,
+    locationLabel: String,
+    timezone: String
+): StringKey? {
+    if (name.length > 100) {
+        return StringKey.ERROR_NAME_TOO_LONG
+    }
+
+    if (selectedDate.isAfter(LocalDate.now())) {
+        return StringKey.ERROR_DATE_IN_FUTURE
+    }
+
+    if (selectedDate.year < 1800) {
+        return StringKey.ERROR_DATE_TOO_OLD
+    }
+
+    val lat = parseCoordinate(latitude)
+    val lon = parseCoordinate(longitude)
+
+    if (lat == null || lon == null) {
+        return StringKey.ERROR_INVALID_COORDS
+    }
+
+    if (lat < -90 || lat > 90) {
+        return StringKey.ERROR_LATITUDE_RANGE
+    }
+
+    if (lon < -180 || lon > 180) {
+        return StringKey.ERROR_LONGITUDE_RANGE
+    }
+
+    if (TimezoneSanitizer.resolveZoneIdOrNull(timezone) == null) {
+        return StringKey.ERROR_TIMEZONE_INVALID
+    }
+
+    return null
+}
+
+@Composable
+private fun ChartInputHeader(
+    onNavigateBack: () -> Unit,
+    isEditMode: Boolean = false
+) {
     val colors = LocalAppThemeColors.current
     val goBackText = stringResource(StringKey.BTN_BACK)
     Row(
@@ -454,14 +536,14 @@ fun ChartInputScreen(
             )
         }
         Spacer(Modifier.width(12.dp))
-            Text(
-                text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
-                fontSize = NeoVedicFontSizes.S22,
-                fontFamily = CinzelDecorativeFamily,
-                fontWeight = FontWeight.Bold,
-                color = colors.TextPrimary,
-                letterSpacing = 0.3.sp
-            )
+        Text(
+            text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
+            fontSize = NeoVedicFontSizes.S22,
+            fontFamily = CinzelDecorativeFamily,
+            fontWeight = FontWeight.Bold,
+            color = colors.TextPrimary,
+            letterSpacing = 0.3.sp
+        )
     }
 }
 

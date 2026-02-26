@@ -85,7 +85,7 @@ fun getPlanetColors(): Map<Planet, Color> {
         Planet.RAHU to colors.PlanetRahu,
         Planet.KETU to colors.PlanetKetu,
         Planet.TRUE_NODE to colors.PlanetRahu,
-        Planet.URANUS to DialogColors.DialogColors.AccentTeal,
+        Planet.URANUS to DialogColors.AccentTeal,
         Planet.NEPTUNE to colors.InfoColor,
         Planet.PLUTO to colors.LifeAreaSpiritual
     )
@@ -196,7 +196,7 @@ fun FullScreenChartDialog(
                     Icon(
                         Icons.Default.Close,
                         contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE),
-                        tint = AppTheme.AppTheme.TextPrimary
+                        tint = AppTheme.TextPrimary
                     )
                 }
             }
@@ -296,7 +296,7 @@ fun FullScreenChartDialog(
                         text = "${(scale * 100).toInt()}%",
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
-                        color = AppTheme.AppTheme.TextSecondary
+                        color = AppTheme.TextSecondary
                     )
                 }
             }
@@ -321,7 +321,7 @@ private fun ActionButton(
         Icon(
             icon,
             contentDescription = label,
-            tint = if (enabled) AppTheme.AccentPrimary else AppTheme.AppTheme.TextMuted,
+            tint = if (enabled) AppTheme.AccentPrimary else AppTheme.TextMuted,
             modifier = Modifier.size(28.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -1101,7 +1101,7 @@ fun HouseDetailDialog(
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.AppTheme.TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1115,10 +1115,10 @@ fun HouseDetailDialog(
                     item {
                         DialogCard(title = stringResource(StringKeyAnalysis.DIALOG_HOUSE_INFO), icon = Icons.Outlined.Home) {
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), AppTheme.DialogColors.AccentTeal)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), AppTheme.AppTheme.TextPrimary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_ZODIAC_SIGN), sign.getLocalizedName(language), DialogColors.AccentTeal)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_CUSP_DEGREE), formatDegree(houseCusp), AppTheme.TextPrimary)
                                 DetailRow(stringResource(StringKeyAnalysis.DIALOG_SIGN_LORD), sign.ruler.getLocalizedName(language), AppTheme.AccentPrimary)
-                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE_TYPE), houseDetails.type, AppTheme.AppTheme.TextSecondary)
+                                DetailRow(stringResource(StringKeyAnalysis.DIALOG_HOUSE_TYPE), houseDetails.type, AppTheme.TextSecondary)
                             }
                         }
                     }
@@ -1134,7 +1134,7 @@ fun HouseDetailDialog(
                                                 .background(AppTheme.AccentPrimary, CircleShape)
                                         )
                                         Spacer(modifier = Modifier.width(8.dp))
-                                        Text(text = signification, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.AppTheme.TextPrimary)
+                                        Text(text = signification, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextPrimary)
                                     }
                                 }
                             }
@@ -1165,13 +1165,13 @@ fun HouseDetailDialog(
                                                     text = planet.planet.getLocalizedName(language),
                                                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                                     fontWeight = FontWeight.Medium,
-                                                    color = AppTheme.AppTheme.TextPrimary
+                                                    color = AppTheme.TextPrimary
                                                 )
                                             }
                                             Text(
                                                 text = formatDegreeInSign(planet.longitude),
                                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
-                                                color = AppTheme.AppTheme.TextSecondary
+                                                color = AppTheme.TextSecondary
                                             )
                                         }
                                     }
@@ -1185,7 +1185,7 @@ fun HouseDetailDialog(
                             Text(
                                 text = houseDetails.interpretation,
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
-                                color = AppTheme.AppTheme.TextPrimary,
+                                color = AppTheme.TextPrimary,
                                 lineHeight = 22.sp
                             )
                         }
@@ -1239,16 +1239,16 @@ fun ShadbalaDialog(
                                 text = stringResource(StringKeyAnalysis.DIALOG_SHADBALA_ANALYSIS),
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
                                 fontWeight = FontWeight.Bold,
-                                color = AppTheme.AppTheme.TextPrimary
+                                color = AppTheme.TextPrimary
                             )
                             Text(
                                 text = stringResource(StringKeyAnalysis.DIALOG_SIXFOLD_STRENGTH),
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
-                                color = AppTheme.AppTheme.TextSecondary
+                                color = AppTheme.TextSecondary
                             )
                         }
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.AppTheme.TextPrimary)
+                            Icon(Icons.Default.Close, contentDescription = stringResource(StringKeyAnalysis.DIALOG_CLOSE), tint = AppTheme.TextPrimary)
                         }
                     }
                 }
@@ -1313,7 +1313,7 @@ private fun SummaryBadge(label: String, value: String, color: Color) {
         Text(
             text = label,
             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
-            color = AppTheme.AppTheme.TextMuted
+            color = AppTheme.TextMuted
         )
     }
 }
@@ -1354,7 +1354,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                             text = shadbala.planet.getLocalizedName(language),
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary
                         )
                         Text(
                             text = shadbala.strengthRating.getLocalizedName(language),
@@ -1373,12 +1373,12 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                         text = stringResource(StringKeyDosha.SHADBALA_RUPAS_VALUE, String.format("%.2f", shadbala.totalRupas)),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyDosha.LABEL_REQUIRED_VALUE, String.format("%.2f", shadbala.requiredRupas)),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
-                        color = AppTheme.AppTheme.TextMuted
+                        color = AppTheme.TextMuted
                     )
                 }
             }
@@ -1398,7 +1398,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                     shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor
                     else -> AppTheme.ErrorColor
                 },
-                trackColor = AppTheme.AppTheme.DividerColor
+                trackColor = AppTheme.DividerColor
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -1406,7 +1406,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
             Text(
                 text = stringResource(StringKeyDosha.LABEL_PERCENT_REQUIRED_VALUE, String.format("%.1f", shadbala.percentageOfRequired)),
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
-                color = AppTheme.AppTheme.TextMuted
+                color = AppTheme.TextMuted
             )
         }
     }
@@ -1896,5 +1896,3 @@ private fun getHouseDetails(house: Int, language: Language): HouseDetails {
         interpretation = StringResources.get(interpKey, language)
     )
 }
-
-
