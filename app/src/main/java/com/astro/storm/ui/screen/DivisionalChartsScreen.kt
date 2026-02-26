@@ -1,5 +1,7 @@
 ﻿package com.astro.storm.ui.screen
 
+import com.astro.storm.ui.components.common.vedicCornerMarkers
+
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

@@ -1,5 +1,7 @@
 ﻿package com.astro.storm.ui.screen.chartdetail.tabs
 
+import com.astro.storm.ui.components.common.vedicCornerMarkers
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState

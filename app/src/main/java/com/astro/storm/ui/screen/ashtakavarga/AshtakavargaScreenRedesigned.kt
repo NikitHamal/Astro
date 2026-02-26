@@ -1,5 +1,7 @@
 ﻿package com.astro.storm.ui.screen.ashtakavarga
 
+import com.astro.storm.ui.components.common.vedicCornerMarkers
+
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
