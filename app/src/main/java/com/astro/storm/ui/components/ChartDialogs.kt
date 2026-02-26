@@ -867,7 +867,7 @@ private fun DialogCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = NeoVedicTokens.ElementCornerRadius,
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground,
         border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
