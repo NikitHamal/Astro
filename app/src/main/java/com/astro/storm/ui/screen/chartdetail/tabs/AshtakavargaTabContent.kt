@@ -57,6 +57,7 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.AshtakavargaCalculator
+import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 
 /**
@@ -125,8 +126,9 @@ fun AshtakavargaTabContent(chart: VedicChart) {
 @Composable
 private fun AshtakavargaSummaryCard(ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = ChartDetailColors.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -258,8 +260,9 @@ private fun SarvashtakavargaCard(
     )
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -428,8 +431,9 @@ private fun BhinnashtakavargaCard(
     )
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = ChartDetailColors.CardBackground
     ) {
         Column(
@@ -648,8 +652,9 @@ private fun InterpretationGuideCard(isExpanded: Boolean, onToggleExpand: (Boolea
     )
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = ChartDetailColors.CardBackground
     ) {
         Column(

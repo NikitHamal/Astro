@@ -293,13 +293,9 @@ private fun AshtakavargaSummaryCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = AppTheme.SuccessColor.copy(alpha = 0.1f),
-                spotColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
-            ),
+            .vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -377,8 +373,9 @@ private fun AshtakavargaSummaryCard(
 
             // Overall strength bar
             Surface(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
                 color = AppTheme.CardBackgroundElevated
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
@@ -454,8 +451,9 @@ private fun HouseStrengthDistribution(
     ashtakavarga: AshtakavargaCalculator.AshtakavargaAnalysis
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -592,8 +590,9 @@ private fun AshtakavargaInsightsCard(
         .map { it.key to it.value }
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -707,8 +706,9 @@ private fun PlanetQuickView(
     val language = LocalLanguage.current
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -826,6 +826,7 @@ private fun SarvashtakavargaHouseCard(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -1120,8 +1121,9 @@ private fun HouseDetailCard(
     val language = LocalLanguage.current
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

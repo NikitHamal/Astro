@@ -213,9 +213,10 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
     ) {
         item {
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -259,9 +260,10 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
             item {
                 SectionHeader(stringResource(StringKeyAnalysis.DIVISIONAL_VARGOTTAMA_PLANETS), Icons.Default.Star, AppTheme.AccentGold)
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(stringResource(StringKeyAnalysis.DIVISIONAL_PLANETS_SAME_SIGN_DESC), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
@@ -281,9 +283,10 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
         item {
             SectionHeader(stringResource(StringKeyAnalysis.DIVISIONAL_HOUSE_PLACEMENTS), Icons.Default.Home, AppTheme.AccentPrimary)
             Card(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     analysis.houseAnalysis.chunked(2).forEach { row ->
@@ -292,7 +295,8 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                                 Surface(
                                     modifier = Modifier.weight(1f).padding(vertical = 4.dp),
                                     color = AppTheme.CardBackgroundElevated,
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
                                         Text("${stringResource(StringKeyAnalysis.HOUSE)} ${house.houseNumber}", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
@@ -472,9 +476,10 @@ private fun WealthPotentialCard(analysis: HoraAnalysis) {
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(20.dp),
@@ -512,9 +517,10 @@ private fun WealthPotentialCard(analysis: HoraAnalysis) {
 @Composable
 private fun PlanetChipsCard(planets: List<Planet>, description: String, language: Language) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -542,9 +548,10 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
 @Composable
 private fun WealthIndicatorCard(indicator: WealthIndicator, language: Language) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -621,9 +628,10 @@ private fun DrekkanaTab(analysis: DrekkanaAnalysis, language: Language) {
         if (analysis.shortJourneyIndicators.isNotEmpty()) {
             item {
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -670,9 +678,10 @@ private fun CourageAnalysisCard(analysis: CourageAnalysis) {
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -728,9 +737,10 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
     }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -795,9 +805,10 @@ private fun SiblingIndicatorsCard(indicators: SiblingIndicators, language: Langu
 @Composable
 private fun CommunicationCard(analysis: CommunicationAnalysis) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -885,11 +896,12 @@ private fun SpouseCharacteristicsCard(
     direction: String
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -951,9 +963,10 @@ private fun InfoRow(label: String, value: String) {
 @Composable
 private fun MarriageTimingCard(factors: MarriageTimingFactors, language: Language) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(stringResource(StringKeyDosha.NAVAMSA_TIMING_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
@@ -1000,9 +1013,10 @@ private fun StatColumn(label: String, value: String, color: Color) {
 @Composable
 private fun NavamsaKeyPlanetsCard(analysis: NavamsaMarriageAnalysis, language: Language) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(stringResource(StringKeyDosha.NAVAMSA_KEY_PLANETS_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
@@ -1053,12 +1067,13 @@ private fun MultipleMarriageCard(indicators: MultipleMarriageIndicators) {
     if (!indicators.hasStrongIndicators && indicators.riskFactors.isEmpty()) return
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(
             containerColor = if (indicators.hasStrongIndicators) AppTheme.WarningColor.copy(alpha = 0.1f)
             else AppTheme.CardBackground
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1122,9 +1137,10 @@ private fun DashamsaTab(analysis: DashamsaAnalysis, language: Language) {
         if (analysis.professionalStrengths.isNotEmpty()) {
             item {
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(stringResource(StringKeyDosha.DASHAMSA_PROFESSIONAL_STRENGTHS), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
@@ -1158,11 +1174,12 @@ private fun DashamsaTab(analysis: DashamsaAnalysis, language: Language) {
 @Composable
 private fun CareerTypesCard(careerTypes: List<CareerType>) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
         ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1206,9 +1223,10 @@ private fun CareerTypesCard(careerTypes: List<CareerType>) {
 @Composable
 private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(stringResource(StringKeyDosha.DASHAMSA_BUSINESS_VS_SERVICE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
@@ -1254,9 +1272,10 @@ private fun BusinessVsServiceCard(analysis: BusinessVsServiceAnalysis) {
 @Composable
 private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1329,9 +1348,10 @@ private fun DwadasamsaTab(analysis: DwadasamsaAnalysis, language: Language) {
         if (analysis.ancestralPropertyIndicators.isNotEmpty()) {
             item {
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1375,9 +1395,10 @@ private fun ParentAnalysisCard(
     color: Color
 ) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1406,9 +1427,10 @@ private fun ParentAnalysisCard(
 @Composable
 private fun InheritanceCard(analysis: InheritanceAnalysis) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1440,9 +1462,10 @@ private fun InheritanceCard(analysis: InheritanceAnalysis) {
 @Composable
 private fun LongevityCard(indicators: ParentalLongevityIndicators) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(stringResource(StringKeyDosha.DWADASAMSA_LONGEVITY_TITLE), fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
@@ -1487,9 +1510,10 @@ private fun LongevityCard(indicators: ParentalLongevityIndicators) {
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {

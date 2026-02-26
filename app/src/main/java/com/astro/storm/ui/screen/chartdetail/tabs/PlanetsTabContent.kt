@@ -67,6 +67,7 @@ import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.ephemeris.PlanetaryShadbala
 import com.astro.storm.ephemeris.RetrogradeCombustionCalculator
 import com.astro.storm.ephemeris.ShadbalaCalculator
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
 import com.astro.storm.ui.screen.chartdetail.components.ConditionChip
@@ -214,11 +215,13 @@ private fun PlanetaryConditionsSummary(
     onClick: (() -> Unit)? = null
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .vedicCornerMarkers(color = ChartDetailColors.AccentGold),
         onClick = onClick ?: {},
         enabled = onClick != null,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, com.astro.storm.ui.theme.AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -358,6 +361,7 @@ private fun PlanetDetailCard(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
+            .vedicCornerMarkers(color = planetColor)
             .semantics {
                 role = Role.Button
                 contentDescription = buildString {
@@ -369,7 +373,8 @@ private fun PlanetDetailCard(
                 }
             },
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, com.astro.storm.ui.theme.AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -491,7 +496,8 @@ private fun NakshatraChip(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackgroundElevated
+        color = ChartDetailColors.CardBackgroundElevated,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, com.astro.storm.ui.theme.AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
