@@ -1,6 +1,12 @@
 package com.astro.storm.ui.components.dialogs
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.NeoVedicTokens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -137,7 +143,8 @@ private fun PlanetDialogHeader(
                         text = planetPosition.planet.localizedAbbr(),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = Color.White,
+                        fontFamily = CinzelDecorativeFamily
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
@@ -146,7 +153,8 @@ private fun PlanetDialogHeader(
                         text = planetPosition.planet.getLocalizedName(LocalLanguage.current),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
                         fontWeight = FontWeight.Bold,
-                        color = DialogColors.TextPrimary
+                        color = DialogColors.TextPrimary,
+                        fontFamily = CinzelDecorativeFamily
                     )
                     Text(
                         text = "${planetPosition.sign.getLocalizedName(LocalLanguage.current)} • ${stringResource(StringKeyAnalysis.HOUSE)} ${planetPosition.house}",
@@ -379,13 +387,15 @@ private fun PredictionsCard(
                             text = prediction.title,
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
-                            color = DialogColors.TextPrimary
+                            color = DialogColors.TextPrimary,
+                            fontFamily = SpaceGroteskFamily
                         )
                         Text(
                             text = prediction.description,
                             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                             color = DialogColors.TextSecondary,
-                            lineHeight = 20.sp
+                            lineHeight = 20.sp,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }

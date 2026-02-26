@@ -1,6 +1,10 @@
 package com.astro.storm.ui.components.dialogs
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.NeoVedicTokens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -42,8 +46,9 @@ fun DialogCard(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        color = DialogColors.DialogSurface
+        shape = NeoVedicTokens.ElementCornerRadius,
+        color = AppTheme.CardBackground,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -61,7 +66,8 @@ fun DialogCard(
                     text = title,
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
-                    color = DialogColors.TextPrimary
+                    color = DialogColors.TextPrimary,
+                    fontFamily = CinzelDecorativeFamily
                 )
             }
             content()
@@ -85,13 +91,15 @@ fun DetailRow(
         Text(
             text = label,
             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
-            color = DialogColors.TextMuted
+            color = DialogColors.TextMuted,
+            fontFamily = SpaceGroteskFamily
         )
         Text(
             text = value,
             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
             fontWeight = FontWeight.Medium,
-            color = valueColor
+            color = valueColor,
+            fontFamily = SpaceGroteskFamily
         )
     }
 }
@@ -113,7 +121,8 @@ fun StatusChip(
         Text(
             text = label,
             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
-            color = DialogColors.TextSecondary
+            color = DialogColors.TextSecondary,
+            fontFamily = SpaceGroteskFamily
         )
         Surface(
             shape = RoundedCornerShape(6.dp),
@@ -124,7 +133,8 @@ fun StatusChip(
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color,
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                fontFamily = SpaceGroteskFamily
             )
         }
     }

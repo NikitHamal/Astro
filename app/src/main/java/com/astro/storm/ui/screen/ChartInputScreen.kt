@@ -54,6 +54,11 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import com.astro.storm.ui.theme.LocalAppThemeColors
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.NeoVedicFontSizes
 
 private val chartInputDateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 private val chartInputTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -410,135 +415,25 @@ fun ChartInputScreen(
                         viewModel.resetState()
                     }
                 }) {
-                    Text(stringResource(StringKey.BTN_OK), color = colors.AccentPrimary)
-                }
-            },
-            containerColor = colors.CardBackground,
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        )
-    }
-}
-
-private fun normalizeTimezoneForStorage(timezone: String): String {
-    return TimezoneSanitizer.normalizeTimezoneId(timezone)
-}
-
-private fun isSameAsExistingChartInput(
-    candidate: BirthData,
-    existing: com.astro.storm.data.repository.SavedChart
-): Boolean {
-    val sameName = candidate.name.trim() == existing.name.trim()
-    val sameDateTime = candidate.dateTime == existing.dateTime
-    val sameLocation = candidate.location.trim() == existing.location.trim()
-    val sameTimezone = normalizeTimezoneForStorage(candidate.timezone) ==
-            normalizeTimezoneForStorage(existing.timezone)
-    val sameGender = candidate.gender == existing.gender
-    val sameLatitude = kotlin.math.abs(candidate.latitude - existing.latitude) < 1e-6
-    val sameLongitude = kotlin.math.abs(candidate.longitude - existing.longitude) < 1e-6
-
-    return sameName &&
-            sameDateTime &&
-            sameLocation &&
-            sameTimezone &&
-            sameGender &&
-            sameLatitude &&
-            sameLongitude
-}
-
-/**
- * Parse coordinate string, removing common symbols like degree (\u00B0), apostrophe ('), etc.
- * Supports formats: "27.7", "27.7\u00B0", "27\u00B042'", "-27.7", etc.
- */
-private fun parseCoordinate(value: String): Double? {
-    // Remove common coordinate symbols and whitespace
-    val cleaned = value.trim()
-        .replace("\u00B0", "")
-        .replace("'", "")
-        .replace("\"", "")
-        .replace("\u2032", "")  // Unicode prime
-        .replace("\u2033", "")  // Unicode double prime
-        .replace(",", ".")  // Handle comma as decimal separator
-        .trim()
-
-    return cleaned.toDoubleOrNull()
-}
-
-
-
-/**
- * Comprehensive input validation for birth data entry.
- *
- * Validates:
- * - Name length (max 100 characters)
- * - Date range (1800-present, not in future for birth charts)
- * - Latitude range (-90 to 90)
- * - Longitude range (-180 to 180)
- * - Location presence (required if coordinates are provided)
- * - Timezone validity
- *
- * @param name The name input
- * @param latitude The latitude string input
- * @param longitude The longitude string input
- * @param selectedDate The selected date
- * @param locationLabel The location label
- * @param timezone The selected timezone
- * @return StringKey for the validation error, or null if valid
- */
-private fun validateBirthDataInput(
-    name: String,
-    latitude: String,
-    longitude: String,
-    selectedDate: LocalDate,
-    locationLabel: String,
-    timezone: String
-): StringKey? {
-    // Name validation - max 100 characters
-    if (name.length > 100) {
-        return StringKey.ERROR_NAME_TOO_LONG
-    }
-
-    // Date validation - not in the future for birth charts
-    if (selectedDate.isAfter(LocalDate.now())) {
-        return StringKey.ERROR_DATE_IN_FUTURE
-    }
-
-    // Date validation - reasonable historical limit (1800 CE)
-    // Swiss Ephemeris has data from 5401 BCE to 5399 CE, but 1800 is reasonable for birth charts
-    if (selectedDate.year < 1800) {
-        return StringKey.ERROR_DATE_TOO_OLD
-    }
-
-    // Location/coordinate validation - need either location label or valid coordinates
-    val lat = parseCoordinate(latitude)
-    val lon = parseCoordinate(longitude)
-
-    if (lat == null || lon == null) {
-        return StringKey.ERROR_INVALID_COORDS
-    }
-
-    if (lat < -90 || lat > 90) {
-        return StringKey.ERROR_LATITUDE_RANGE
-    }
-
-    if (lon < -180 || lon > 180) {
-        return StringKey.ERROR_LONGITUDE_RANGE
-    }
-
-    // Timezone validation
-    if (TimezoneSanitizer.resolveZoneIdOrNull(timezone) == null) {
-        return StringKey.ERROR_TIMEZONE_INVALID
-    }
-
-    return null
-}
-
-
-
-@Composable
-private fun ChartInputHeader(
-    onNavigateBack: () -> Unit,
-    isEditMode: Boolean = false
-) {
+            Text(
+                text = stringResource(StringKey.BTN_OK),
+                color = colors.AccentPrimary,
+                fontFamily = SpaceGroteskFamily,
+                fontWeight = FontWeight.Bold
+            )
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    stringResource(StringKey.BTN_CANCEL),
+                    color = colors.TextSecondary,
+                    fontFamily = SpaceGroteskFamily
+                )
+            }
+        },
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        colors = DatePickerDefaults.colors(containerColor = colors.CardBackground)
+    ) {
     val colors = LocalAppThemeColors.current
     val goBackText = stringResource(StringKey.BTN_BACK)
     Row(
@@ -559,13 +454,14 @@ private fun ChartInputHeader(
             )
         }
         Spacer(Modifier.width(12.dp))
-        Text(
-            text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
-            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S22,
-            fontWeight = FontWeight.SemiBold,
-            color = colors.TextPrimary,
-            letterSpacing = 0.3.sp
-        )
+            Text(
+                text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
+                fontSize = NeoVedicFontSizes.S22,
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
+                color = colors.TextPrimary,
+                letterSpacing = 0.3.sp
+            )
     }
 }
 
@@ -595,7 +491,7 @@ private fun IdentitySection(
 
         Text(
             text = stringResource(StringKey.INPUT_GENDER),
-            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
+            fontSize = NeoVedicFontSizes.S14,
             color = colors.TextSecondary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
@@ -702,7 +598,7 @@ private fun DateSystemToggle(
 
     Surface(
         onClick = onToggle,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = colors.ChipBackground,
         border = BorderStroke(1.dp, colors.BorderColor)
     ) {
@@ -712,14 +608,15 @@ private fun DateSystemToggle(
         ) {
             // AD option
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = if (!useBSPicker) colors.AccentPrimary else Color.Transparent,
                 modifier = Modifier.padding(1.dp)
             ) {
                 Text(
                     text = adLabel,
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
+                    fontSize = NeoVedicFontSizes.S12,
                     fontWeight = if (!useBSPicker) FontWeight.SemiBold else FontWeight.Normal,
+                    fontFamily = SpaceGroteskFamily,
                     color = if (!useBSPicker) colors.ButtonText else colors.TextSecondary,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                 )
@@ -727,14 +624,15 @@ private fun DateSystemToggle(
 
             // BS option
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = if (useBSPicker) colors.AccentPrimary else Color.Transparent,
                 modifier = Modifier.padding(1.dp)
             ) {
                 Text(
                     text = bsLabel,
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
+                    fontSize = NeoVedicFontSizes.S12,
                     fontWeight = if (useBSPicker) FontWeight.SemiBold else FontWeight.Normal,
+                    fontFamily = SpaceGroteskFamily,
                     color = if (useBSPicker) colors.ButtonText else colors.TextSecondary,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                 )
@@ -774,7 +672,8 @@ private fun CoordinatesSection(
                 ),
                 keyboardActions = KeyboardActions(
                     onNext = { longitudeFocusRequester.requestFocus() }
-                )
+                ),
+                fontFamily = SpaceGroteskFamily
             )
 
             ChartOutlinedTextField(
@@ -790,7 +689,8 @@ private fun CoordinatesSection(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = { onDone() }
-                )
+                ),
+                fontFamily = SpaceGroteskFamily
             )
         }
     }
@@ -811,7 +711,7 @@ private fun GenerateButton(
             .fillMaxWidth()
             .height(56.dp)
             .semantics { contentDescription = buttonContentDesc },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         colors = ButtonDefaults.buttonColors(
             containerColor = colors.ButtonBackground,
             contentColor = colors.ButtonText,
@@ -840,8 +740,9 @@ private fun GenerateButton(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         buttonText,
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
-                        fontWeight = FontWeight.Medium
+                        fontSize = NeoVedicFontSizes.S16,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
@@ -867,7 +768,12 @@ private fun ChartDatePickerDialog(
                     datePickerState.selectedDateMillis?.let(onConfirm)
                 }
             ) {
-                Text(stringResource(StringKey.BTN_OK), color = colors.AccentPrimary)
+                Text(
+                    stringResource(StringKey.BTN_OK),
+                    color = colors.AccentPrimary,
+                    fontFamily = SpaceGroteskFamily,
+                    fontWeight = FontWeight.Bold
+                )
             }
         },
         dismissButton = {
@@ -917,7 +823,7 @@ private fun ChartTimePickerDialog(
 
     androidx.compose.ui.window.Dialog(onDismissRequest = onDismiss) {
         Surface(
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
             color = colors.CardBackground,
             tonalElevation = 6.dp
         ) {
@@ -928,7 +834,9 @@ private fun ChartTimePickerDialog(
                 Text(
                     text = stringResource(StringKey.INPUT_SELECT_TIME),
                     color = colors.TextSecondary,
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
+                    fontSize = NeoVedicFontSizes.S14,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 20.dp)
@@ -961,13 +869,22 @@ private fun ChartTimePickerDialog(
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = onDismiss) {
-                        Text(stringResource(StringKey.BTN_CANCEL), color = colors.TextSecondary)
+                        Text(
+                            stringResource(StringKey.BTN_CANCEL),
+                            color = colors.TextSecondary,
+                            fontFamily = SpaceGroteskFamily
+                        )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     TextButton(
                         onClick = { onConfirm(timePickerState.hour, timePickerState.minute) }
                     ) {
-                        Text(stringResource(StringKey.BTN_OK), color = colors.AccentPrimary)
+                        Text(
+                            stringResource(StringKey.BTN_OK),
+                            color = colors.AccentPrimary,
+                            fontFamily = SpaceGroteskFamily,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                 }
             }
@@ -980,8 +897,9 @@ private fun SectionTitle(title: String) {
     val colors = LocalAppThemeColors.current
     Text(
         text = title,
-        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
-        fontWeight = FontWeight.SemiBold,
+        fontSize = NeoVedicFontSizes.S16,
+        fontFamily = CinzelDecorativeFamily,
+        fontWeight = FontWeight.Bold,
         color = colors.TextPrimary,
         letterSpacing = 0.5.sp
     )
@@ -994,20 +912,31 @@ private fun ChartOutlinedTextField(
     label: String,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    fontFamily: androidx.compose.ui.text.font.FontFamily = PoppinsFontFamily
 ) {
     val colors = LocalAppThemeColors.current
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = colors.TextSecondary, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14) },
+        label = { 
+            Text(
+                label, 
+                color = colors.TextSecondary, 
+                fontSize = NeoVedicFontSizes.S14,
+                fontFamily = SpaceGroteskFamily
+            ) 
+        },
         modifier = modifier.fillMaxWidth(),
         singleLine = true,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         colors = chartTextFieldColors(),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        textStyle = LocalTextStyle.current.copy(fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16)
+        textStyle = LocalTextStyle.current.copy(
+            fontSize = NeoVedicFontSizes.S16,
+            fontFamily = fontFamily
+        )
     )
 }
 
@@ -1044,7 +973,7 @@ private fun DateTimeChip(
                     Modifier.semantics { this.contentDescription = contentDescription }
                 } else Modifier
             ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = colors.ChipBackground,
         border = BorderStroke(1.dp, colors.BorderColor)
     ) {
@@ -1055,8 +984,9 @@ private fun DateTimeChip(
             Text(
                 text = text,
                 color = colors.TextPrimary,
-                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
-                fontWeight = FontWeight.Medium
+                fontSize = NeoVedicFontSizes.S16,
+                fontWeight = FontWeight.Medium,
+                fontFamily = SpaceGroteskFamily
             )
         }
     }
@@ -1073,7 +1003,7 @@ private fun GenderChip(
     Surface(
         onClick = onClick,
         modifier = modifier.height(40.dp),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = if (isSelected) colors.AccentPrimary else colors.ChipBackground,
         border = BorderStroke(1.dp, if (isSelected) colors.AccentPrimary else colors.BorderColor)
     ) {
@@ -1084,8 +1014,9 @@ private fun GenderChip(
             Text(
                 text = text,
                 color = if (isSelected) colors.ButtonText else colors.TextPrimary,
-                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
+                fontSize = NeoVedicFontSizes.S12,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                fontFamily = SpaceGroteskFamily,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
