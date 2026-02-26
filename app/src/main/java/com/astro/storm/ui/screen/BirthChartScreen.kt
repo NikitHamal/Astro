@@ -217,46 +217,11 @@ fun EmptyChartScreen(
                 .background(AppTheme.ScreenBackground),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(horizontal = 48.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .size(80.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
-                        .background(AppTheme.CardBackground),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.AutoGraph,
-                        contentDescription = null,
-                        tint = AppTheme.TextMuted,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text(
-                    text = stringResource(StringKeyMatch.MISC_NO_DATA),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary,
-                    textAlign = TextAlign.Center
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = AppTheme.TextMuted,
-                    textAlign = TextAlign.Center,
-                    lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * 1.3
-                )
-            }
+            com.astro.storm.ui.components.common.NeoVedicEmptyState(
+                title = title,
+                subtitle = message,
+                icon = Icons.Rounded.AutoGraph
+            )
         }
     }
 }

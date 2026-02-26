@@ -52,6 +52,8 @@ import com.astro.storm.core.model.Nakshatra
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.delay
 
 /**
@@ -429,14 +431,16 @@ fun QuickInsightChip(
             Text(
                 label,
                 style = MaterialTheme.typography.labelSmall,
-                color = color.copy(alpha = 0.8f)
+                color = color.copy(alpha = 0.8f),
+                fontFamily = SpaceGroteskFamily
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 value,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
-                color = color
+                color = color,
+                fontFamily = SpaceGroteskFamily
             )
         }
     }
@@ -545,7 +549,8 @@ fun ComparisonRow(
             style = MaterialTheme.typography.bodySmall,
             color = AppTheme.LifeAreaLove,
             modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontFamily = SpaceGroteskFamily
         )
         Surface(
             color = AppTheme.ChipBackground,
@@ -555,7 +560,8 @@ fun ComparisonRow(
                 label,
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted,
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                fontFamily = SpaceGroteskFamily
             )
         }
         Text(
@@ -563,7 +569,8 @@ fun ComparisonRow(
             style = MaterialTheme.typography.bodySmall,
             color = AppTheme.AccentTeal,
             modifier = Modifier.weight(1f),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontFamily = SpaceGroteskFamily
         )
     }
 }
@@ -592,7 +599,8 @@ fun NakshatraComparisonRow(
                 brideValue,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                color = AppTheme.LifeAreaLove
+                color = AppTheme.LifeAreaLove,
+                fontFamily = SpaceGroteskFamily
             )
         }
         Surface(
@@ -603,7 +611,8 @@ fun NakshatraComparisonRow(
                 label,
                 style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted,
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                fontFamily = SpaceGroteskFamily
             )
         }
         Column(
@@ -614,7 +623,8 @@ fun NakshatraComparisonRow(
                 groomValue,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
-                color = AppTheme.AccentTeal
+                color = AppTheme.AccentTeal,
+                fontFamily = SpaceGroteskFamily
             )
         }
     }
@@ -888,7 +898,8 @@ fun RemedyItem(number: Int, remedy: String) {
                 "$number",
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.AccentPrimary
+                color = AppTheme.AccentPrimary,
+                fontFamily = SpaceGroteskFamily
             )
         }
         Spacer(modifier = Modifier.width(14.dp))
@@ -897,7 +908,8 @@ fun RemedyItem(number: Int, remedy: String) {
             style = MaterialTheme.typography.bodyMedium,
             color = AppTheme.TextSecondary,
             lineHeight = 22.sp,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            fontFamily = PoppinsFontFamily
         )
     }
 }

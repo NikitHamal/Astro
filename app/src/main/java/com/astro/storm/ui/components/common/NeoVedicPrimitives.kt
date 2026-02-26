@@ -26,10 +26,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.ColumnScope
@@ -743,4 +746,30 @@ fun NeoVedicSectionDivider(
                 .background(AppTheme.DividerColor)
         )
     }
+}
+
+fun Modifier.vedicCornerMarkers(
+    color: Color,
+    cornerLength: Dp = 12.dp,
+    strokeWidth: Dp = 1.dp
+) = this.drawWithContent {
+    drawContent()
+    val len = cornerLength.toPx()
+    val sw = strokeWidth.toPx()
+
+    // Top-left
+    drawLine(color, Offset(0f, sw / 2), Offset(len, sw / 2), sw)
+    drawLine(color, Offset(sw / 2, 0f), Offset(sw / 2, len), sw)
+
+    // Top-right
+    drawLine(color, Offset(size.width - len, sw / 2), Offset(size.width, sw / 2), sw)
+    drawLine(color, Offset(size.width - sw / 2, 0f), Offset(size.width - sw / 2, len), sw)
+
+    // Bottom-left
+    drawLine(color, Offset(0f, size.height - sw / 2), Offset(len, size.height - sw / 2), sw)
+    drawLine(color, Offset(sw / 2, size.height - len), Offset(sw / 2, size.height), sw)
+
+    // Bottom-right
+    drawLine(color, Offset(size.width - len, size.height - sw / 2), Offset(size.width, size.height - sw / 2), sw)
+    drawLine(color, Offset(size.width - sw / 2, size.height - len), Offset(size.width - sw / 2, size.height), sw)
 }

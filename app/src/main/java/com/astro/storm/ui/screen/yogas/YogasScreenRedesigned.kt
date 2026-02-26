@@ -96,8 +96,12 @@ import com.astro.storm.ephemeris.yoga.Yoga
 import com.astro.storm.ephemeris.yoga.YogaAnalysis
 import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaStrength
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 
 /**
  * Redesigned Yogas Screen
@@ -250,14 +254,10 @@ private fun YogasSummaryCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
-                spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
-            ),
+            .vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // Header
@@ -292,6 +292,7 @@ private fun YogasSummaryCard(
                         text = stringResource(StringKey.YOGA_ANALYSIS_SUMMARY),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = CinzelDecorativeFamily,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
                     )
@@ -419,6 +420,7 @@ private fun YogaStatItem(
                 text = value,
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                 fontWeight = FontWeight.Bold,
+                fontFamily = SpaceGroteskFamily,
                 color = color
             )
             Spacer(modifier = Modifier.height(2.dp))
@@ -468,7 +470,7 @@ private fun YogaCategoryFilter(
                         .clickable { onCategorySelected(null) },
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = if (isSelected) AppTheme.AccentPrimary.copy(alpha = 0.15f) else AppTheme.CardBackground,
-                    border = if (isSelected) null else androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor)
+                    border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Text(
                         text = String.format(stringResource(com.astro.storm.core.common.StringKeyAnalysis.UI_ALL_COUNT_FMT), categoryStats.values.sum()),
@@ -492,7 +494,7 @@ private fun YogaCategoryFilter(
                         .clickable { onCategorySelected(if (isSelected) null else category) },
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = if (isSelected) categoryColor.copy(alpha = 0.15f) else AppTheme.CardBackground,
-                    border = if (isSelected) null else androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor)
+                    border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Text(
                         text = "${category.getLocalizedName(language)} ($count)",
@@ -575,7 +577,8 @@ private fun YogaCard(
                 indication = rememberRipple(color = categoryColor.copy(alpha = 0.3f))
             ) { onToggleExpand(!isExpanded) },
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -619,6 +622,7 @@ private fun YogaCard(
                                 text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaName(yoga, language),
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                                 fontWeight = FontWeight.SemiBold,
+                                fontFamily = CinzelDecorativeFamily,
                                 color = AppTheme.TextPrimary,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -648,6 +652,7 @@ private fun YogaCard(
                                     text = yoga.category.getLocalizedName(language),
                                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     fontWeight = FontWeight.Medium,
+                                    fontFamily = SpaceGroteskFamily,
                                     color = categoryColor,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                                 )
@@ -661,6 +666,7 @@ private fun YogaCard(
                                     text = "${yoga.strengthPercentage.toInt()}%",
                                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     fontWeight = FontWeight.Bold,
+                                    fontFamily = SpaceGroteskFamily,
                                     color = strengthColor,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                                 )
@@ -785,6 +791,7 @@ private fun YogaCard(
                                     text = yoga.strength.getLocalizedName(language),
                                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                                     fontWeight = FontWeight.SemiBold,
+                                    fontFamily = SpaceGroteskFamily,
                                     color = strengthColor
                                 )
                             }
@@ -829,6 +836,7 @@ private fun YogaCard(
                             Text(
                                 text = com.astro.storm.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
+                                fontFamily = PoppinsFontFamily,
                                 color = AppTheme.TextPrimary,
                                 lineHeight = 19.sp
                             )
@@ -895,31 +903,11 @@ private fun EmptyYogasContent(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.AutoAwesome,
-                contentDescription = null,
-                tint = AppTheme.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKey.YOGA_NO_YOGAS_FOUND),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKey.YOGA_NO_CHART_MESSAGE),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
+        com.astro.storm.ui.components.common.NeoVedicEmptyState(
+            title = stringResource(StringKey.YOGA_NO_YOGAS_FOUND),
+            subtitle = stringResource(StringKey.YOGA_NO_CHART_MESSAGE),
+            icon = Icons.Outlined.AutoAwesome
+        )
     }
 }
 

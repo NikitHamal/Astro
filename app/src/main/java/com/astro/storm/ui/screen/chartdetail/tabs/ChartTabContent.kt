@@ -81,6 +81,9 @@ import com.astro.storm.ephemeris.DivisionalChartType
 import com.astro.storm.ui.chart.ChartRenderer
 import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.screen.chartdetail.ChartDetailUtils
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.format.DateTimeFormatter
@@ -349,7 +352,8 @@ private fun MainChartCard(
             .fillMaxWidth()
             .clickable { onChartClick(chartInfo.first, currentChartData) },
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, com.astro.storm.ui.screen.chartdetail.ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -362,7 +366,8 @@ private fun MainChartCard(
                         text = chartInfo.first,
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.AccentGold
+                        color = ChartDetailColors.AccentGold,
+                        fontFamily = com.astro.storm.ui.theme.CinzelDecorativeFamily
                     )
                     if (chartInfo.second.isNotEmpty()) {
                         Text(
@@ -536,7 +541,8 @@ private fun BirthDetailsCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, com.astro.storm.ui.screen.chartdetail.ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -558,7 +564,8 @@ private fun BirthDetailsCard(
                         text = stringResource(StringKeyAnalysis.CHART_BIRTH_DETAILS),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
+                        color = ChartDetailColors.TextPrimary,
+                        fontFamily = com.astro.storm.ui.theme.CinzelDecorativeFamily
                     )
                 }
                 Icon(
@@ -640,7 +647,8 @@ private fun BirthDataItem(
                 text = label,
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
                 color = ChartDetailColors.TextMuted,
-                lineHeight = 12.sp
+                lineHeight = 12.sp,
+                fontFamily = com.astro.storm.ui.theme.SpaceGroteskFamily
             )
             Text(
                 text = value,
@@ -757,7 +765,8 @@ private fun ChartDetailsCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, com.astro.storm.ui.screen.chartdetail.ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -775,7 +784,8 @@ private fun ChartDetailsCard(
                     text = stringResource(StringKeyAnalysis.CHART_PLANETARY_POSITIONS),
                     fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
-                    color = ChartDetailColors.TextPrimary
+                    color = ChartDetailColors.TextPrimary,
+                    fontFamily = com.astro.storm.ui.theme.CinzelDecorativeFamily
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
@@ -827,7 +837,8 @@ private fun AscendantRow(chart: VedicChart) {
                 text = stringResource(StringKeyAnalysis.CHART_ASCENDANT_LAGNA),
                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.Medium,
-                color = ChartDetailColors.AccentGold
+                color = ChartDetailColors.AccentGold,
+                fontFamily = com.astro.storm.ui.theme.SpaceGroteskFamily
             )
             Row {
                 Text(
@@ -952,7 +963,8 @@ private fun HouseCuspsCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, com.astro.storm.ui.screen.chartdetail.ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -974,7 +986,8 @@ private fun HouseCuspsCard(
                         text = stringResource(StringKeyAnalysis.CHART_HOUSE_CUSPS),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
+                        color = ChartDetailColors.TextPrimary,
+                        fontFamily = com.astro.storm.ui.theme.CinzelDecorativeFamily
                     )
                 }
                 Icon(
@@ -1076,7 +1089,8 @@ private fun AstronomicalDataCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, com.astro.storm.ui.screen.chartdetail.ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1098,7 +1112,8 @@ private fun AstronomicalDataCard(
                         text = stringResource(StringKeyAnalysis.CHART_ASTRONOMICAL_DATA),
                         fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
-                        color = ChartDetailColors.TextPrimary
+                        color = ChartDetailColors.TextPrimary,
+                        fontFamily = com.astro.storm.ui.theme.CinzelDecorativeFamily
                     )
                 }
                 Icon(
@@ -1137,7 +1152,8 @@ private fun InfoRow(label: String, value: String) {
         Text(
             text = label,
             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
-            color = ChartDetailColors.TextMuted
+            color = ChartDetailColors.TextMuted,
+            fontFamily = com.astro.storm.ui.theme.SpaceGroteskFamily
         )
         Text(
             text = value,

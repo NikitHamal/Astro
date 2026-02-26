@@ -53,6 +53,11 @@ import com.astro.storm.core.model.*
 import com.astro.storm.ephemeris.MatchmakingCalculator
 import com.astro.storm.ephemeris.VedicAstrologyUtils
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -346,13 +351,14 @@ private fun EnhancedProfileSelectionSection(
 ) {
     val hasSelection = brideChart != null || groomChart != null
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shadowElevation = 0.dp,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -473,7 +479,7 @@ private fun EnhancedProfileCard(
         label = "scale"
     )
 
-    Card(
+    Surface(
         modifier = modifier
             .scale(scale)
             .clickable(
@@ -481,13 +487,10 @@ private fun EnhancedProfileCard(
                 indication = null,
                 onClick = onClick
             ),
-        colors = CardDefaults.cardColors(
-            containerColor = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground
-        ),
+        color = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        border = if (chart != null) null else androidx.compose.foundation.BorderStroke(
-            1.dp, AppTheme.BorderColor.copy(alpha = 0.5f)
-        )
+        shadowElevation = 0.dp,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -523,7 +526,8 @@ private fun EnhancedProfileCard(
                 label,
                 style = MaterialTheme.typography.labelSmall,
                 color = if (chart != null) color else AppTheme.TextMuted,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                fontFamily = SpaceGroteskFamily
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -555,13 +559,14 @@ private fun EnhancedCompatibilityScoreCard(
     result: MatchmakingResult,
     animatedProgress: Float
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            .padding(16.dp)
+            .vedicCornerMarkers(color = getRatingColor(result.rating)),
+        color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Box(
             modifier = Modifier
@@ -603,7 +608,8 @@ private fun EnhancedCompatibilityScoreCard(
                             text = String.format("%.1f", result.totalPoints),
                             style = MaterialTheme.typography.displaySmall,
                             fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             text = stringResource(StringKeyMatch.MATCH_OUT_OF, result.maxPoints.toInt()),
@@ -749,12 +755,13 @@ private fun OverviewSection(
     groomChart: VedicChart?
 ) {
     Column(modifier = Modifier.padding(horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
-        Card(
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -769,7 +776,8 @@ private fun OverviewSection(
                         stringResource(StringKeyMatch.MATCH_GUNA_DISTRIBUTION),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        fontFamily = CinzelDecorativeFamily
                     )
                 }
 
@@ -819,7 +827,8 @@ private fun EnhancedGunaScoreBar(guna: GunaAnalysis) {
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary,
-                    maxLines = 1
+                    maxLines = 1,
+                    fontFamily = CinzelDecorativeFamily
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
@@ -827,7 +836,8 @@ private fun EnhancedGunaScoreBar(guna: GunaAnalysis) {
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = PoppinsFontFamily
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -876,10 +886,11 @@ private fun ProfileComparisonCard(
     brideChart: VedicChart,
     groomChart: VedicChart
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -894,7 +905,8 @@ private fun ProfileComparisonCard(
                     stringResource(StringKeyMatch.MATCH_PROFILE_COMPARISON),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    fontFamily = CinzelDecorativeFamily
                 )
             }
 
@@ -909,10 +921,11 @@ private fun ProfileComparisonCard(
                         brideChart.birthData.name ?: stringResource(StringKeyMatch.MATCH_BRIDE),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
-                        color = AppTheme.LifeAreaLove
+                        color = AppTheme.LifeAreaLove,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
-                Text(stringResource(StringKeyMatch.MATCH_VS), color = AppTheme.TextMuted)
+                Text(stringResource(StringKeyMatch.MATCH_VS), color = AppTheme.TextMuted, fontFamily = PoppinsFontFamily)
                 Column(
                     modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -921,7 +934,8 @@ private fun ProfileComparisonCard(
                         groomChart.birthData.name ?: stringResource(StringKeyMatch.MATCH_GROOM),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
-                        color = AppTheme.AccentTeal
+                        color = AppTheme.AccentTeal,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
@@ -940,10 +954,11 @@ private fun ProfileComparisonCard(
 
 @Composable
 private fun SpecialConsiderationsCard(considerations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -958,7 +973,8 @@ private fun SpecialConsiderationsCard(considerations: List<String>) {
                     stringResource(StringKeyMatch.MATCH_KEY_CONSIDERATIONS),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    fontFamily = CinzelDecorativeFamily
                 )
             }
 
@@ -981,7 +997,8 @@ private fun SpecialConsiderationsCard(considerations: List<String>) {
                         consideration,
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
-                        lineHeight = 20.sp
+                        lineHeight = 20.sp,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
@@ -1062,13 +1079,14 @@ private fun AnimatedGunaCard(
         MatchmakingCalculator.getGunaDescription(guna.gunaType.displayName, language)
     }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -1104,14 +1122,16 @@ private fun AnimatedGunaCard(
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             gunaDescription,
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -1151,7 +1171,8 @@ private fun AnimatedGunaCard(
                         Text(
                             stringResource(StringKeyMatch.MATCH_BRIDE),
                             style = MaterialTheme.typography.labelSmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = SpaceGroteskFamily
                         )
                     }
                     Text(
@@ -1166,7 +1187,8 @@ private fun AnimatedGunaCard(
                         Text(
                             stringResource(StringKeyMatch.MATCH_GROOM),
                             style = MaterialTheme.typography.labelSmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = SpaceGroteskFamily
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Box(
@@ -1198,7 +1220,8 @@ private fun AnimatedGunaCard(
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary,
                     lineHeight = 20.sp,
-                    modifier = Modifier.padding(12.dp)
+                    modifier = Modifier.padding(12.dp),
+                    fontFamily = PoppinsFontFamily
                 )
             }
         }
@@ -1208,12 +1231,13 @@ private fun AnimatedGunaCard(
 @Composable
 private fun DoshaSection(result: MatchmakingResult) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        Card(
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1229,12 +1253,14 @@ private fun DoshaSection(result: MatchmakingResult) {
                             stringResource(StringKeyMatch.MATCH_MANGLIK_DOSHA_ANALYSIS),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             stringResource(StringKeyMatch.MATCH_MARS_PLACEMENT),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -1263,7 +1289,8 @@ private fun DoshaSection(result: MatchmakingResult) {
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = getManglikStatusColor(result.manglikCompatibilityLevel),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -1285,12 +1312,13 @@ private fun EnhancedManglikPersonCard(
     accentColor: Color
 ) {
     val language = LocalLanguage.current
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1319,13 +1347,15 @@ private fun EnhancedManglikPersonCard(
                             analysis.person,
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = accentColor
+                            color = accentColor,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         if (analysis.marsHouse > 0) {
                             Text(
                                 stringResource(StringKeyMatch.MATCH_MARS_IN_HOUSE, analysis.marsHouse),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextMuted
+                                color = AppTheme.TextMuted,
+                                fontFamily = PoppinsFontFamily
                             )
                         }
                     }
@@ -1364,7 +1394,8 @@ private fun EnhancedManglikPersonCard(
                             Text(
                                 stringResource(StringKeyUIExtra.BULLET_SPACE) + factor,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.WarningColor.copy(alpha = 0.9f)
+                                color = AppTheme.WarningColor.copy(alpha = 0.9f),
+                                fontFamily = PoppinsFontFamily
                             )
                         }
                     }
@@ -1390,7 +1421,8 @@ private fun EnhancedManglikPersonCard(
                             Text(
                                 stringResource(StringKeyUIExtra.CHECKMARK_SPACE) + cancellation,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.SuccessColor.copy(alpha = 0.9f)
+                                color = AppTheme.SuccessColor.copy(alpha = 0.9f),
+                                fontFamily = PoppinsFontFamily
                             )
                         }
                     }
@@ -1405,15 +1437,14 @@ private fun NadiDoshaCard(result: MatchmakingResult) {
     val nadiGuna = result.gunaAnalyses.find { it.gunaType == GunaType.NADI }
     val hasNadiDosha = nadiGuna?.obtainedPoints == 0.0
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (hasNadiDosha) AppTheme.ErrorColor.copy(alpha = 0.06f) 
-                           else AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (hasNadiDosha) AppTheme.ErrorColor.copy(alpha = 0.06f)
+                       else AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1434,17 +1465,19 @@ private fun NadiDoshaCard(result: MatchmakingResult) {
                             stringResource(StringKeyMatch.MATCH_NADI_DOSHA),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             stringResource(StringKeyMatch.MATCH_HEALTH_PROGENY),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
                 Surface(
-                    color = if (hasNadiDosha) AppTheme.ErrorColor.copy(alpha = 0.12f) 
+                    color = if (hasNadiDosha) AppTheme.ErrorColor.copy(alpha = 0.12f)
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
@@ -1495,7 +1528,8 @@ private fun NadiDoshaCard(result: MatchmakingResult) {
                             stringResource(StringKeyMatch.MATCH_NADI_WARNING),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor,
-                            modifier = Modifier.padding(12.dp)
+                            modifier = Modifier.padding(12.dp),
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -1509,15 +1543,14 @@ private fun BhakootDoshaCard(result: MatchmakingResult) {
     val bhakootGuna = result.gunaAnalyses.find { it.gunaType == GunaType.BHAKOOT }
     val hasBhakootDosha = bhakootGuna?.obtainedPoints == 0.0
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (hasBhakootDosha) AppTheme.WarningColor.copy(alpha = 0.06f) 
-                           else AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (hasBhakootDosha) AppTheme.WarningColor.copy(alpha = 0.06f)
+                       else AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1538,17 +1571,19 @@ private fun BhakootDoshaCard(result: MatchmakingResult) {
                             stringResource(StringKeyMatch.MATCH_BHAKOOT_DOSHA),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             stringResource(StringKeyMatch.MATCH_FINANCIAL_HARMONY),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
                 Surface(
-                    color = if (hasBhakootDosha) AppTheme.WarningColor.copy(alpha = 0.12f) 
+                    color = if (hasBhakootDosha) AppTheme.WarningColor.copy(alpha = 0.12f)
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
@@ -1599,12 +1634,13 @@ private fun NakshatraSection(
     groomChart: VedicChart?
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        Card(
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1620,12 +1656,14 @@ private fun NakshatraSection(
                             stringResource(StringKeyMatch.MATCH_NAKSHATRA_COMPATIBILITY),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             stringResource(StringKeyMatch.MATCH_BIRTH_STAR),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -1676,15 +1714,14 @@ private fun NakshatraSection(
 private fun RajjuAnalysisCard(result: MatchmakingResult) {
     val hasRajjuDosha = !result.additionalFactors.rajjuCompatible
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (hasRajjuDosha) AppTheme.ErrorColor.copy(alpha = 0.06f) 
-                           else AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (hasRajjuDosha) AppTheme.ErrorColor.copy(alpha = 0.06f)
+                       else AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1705,17 +1742,19 @@ private fun RajjuAnalysisCard(result: MatchmakingResult) {
                             stringResource(StringKeyMatch.MATCH_RAJJU_MATCHING),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             stringResource(StringKeyMatch.MATCH_LONGEVITY),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
                 Surface(
-                    color = if (hasRajjuDosha) AppTheme.ErrorColor.copy(alpha = 0.12f) 
+                    color = if (hasRajjuDosha) AppTheme.ErrorColor.copy(alpha = 0.12f)
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
@@ -1734,7 +1773,8 @@ private fun RajjuAnalysisCard(result: MatchmakingResult) {
                 stringResource(StringKeyMatch.MATCH_RAJJU_DESCRIPTION),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
-                lineHeight = 18.sp
+                lineHeight = 18.sp,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -1744,15 +1784,14 @@ private fun RajjuAnalysisCard(result: MatchmakingResult) {
 private fun VedhaAnalysisCard(result: MatchmakingResult) {
     val hasVedha = result.additionalFactors.vedhaPresent
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (hasVedha) AppTheme.WarningColor.copy(alpha = 0.06f) 
-                           else AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (hasVedha) AppTheme.WarningColor.copy(alpha = 0.06f)
+                       else AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1773,17 +1812,19 @@ private fun VedhaAnalysisCard(result: MatchmakingResult) {
                             stringResource(StringKeyMatch.MATCH_VEDHA_ANALYSIS),
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             stringResource(StringKeyMatch.MATCH_OBSTRUCTION_CHECK),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
                 Surface(
-                    color = if (hasVedha) AppTheme.WarningColor.copy(alpha = 0.12f) 
+                    color = if (hasVedha) AppTheme.WarningColor.copy(alpha = 0.12f)
                            else AppTheme.SuccessColor.copy(alpha = 0.12f),
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
@@ -1802,7 +1843,8 @@ private fun VedhaAnalysisCard(result: MatchmakingResult) {
                 stringResource(StringKeyMatch.MATCH_VEDHA_DESCRIPTION),
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
-                lineHeight = 18.sp
+                lineHeight = 18.sp,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -1814,12 +1856,13 @@ private fun StreeDeerghCard(
     brideChart: VedicChart?,
     groomChart: VedicChart?
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1835,12 +1878,14 @@ private fun StreeDeerghCard(
                         stringResource(StringKeyMatch.MATCH_STREE_DEERGHA),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        fontFamily = CinzelDecorativeFamily
                     )
                     Text(
                         stringResource(StringKeyMatch.MATCH_PROSPERITY_FACTORS),
                         style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted
+                        color = AppTheme.TextMuted,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
@@ -1907,12 +1952,13 @@ private fun StreeDeerghCard(
 @Composable
 private fun EnhancedRemediesSection(result: MatchmakingResult) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        Card(
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1928,12 +1974,14 @@ private fun EnhancedRemediesSection(result: MatchmakingResult) {
                             stringResource(StringKeyMatch.MATCH_SUGGESTED_REMEDIES),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             stringResource(StringKeyMatch.MATCH_VEDIC_RECOMMENDATIONS),
                             style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -1971,7 +2019,8 @@ private fun EnhancedRemediesSection(result: MatchmakingResult) {
                     stringResource(StringKeyMatch.MATCH_REMEDIES_DISCLAIMER),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.InfoColor,
-                    lineHeight = 18.sp
+                    lineHeight = 18.sp,
+                    fontFamily = PoppinsFontFamily
                 )
             }
         }

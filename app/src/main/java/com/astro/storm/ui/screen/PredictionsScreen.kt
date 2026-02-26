@@ -52,6 +52,11 @@ import com.astro.storm.ephemeris.HoroscopeCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -156,7 +161,7 @@ fun PredictionsScreen(
                         tabs = tabItems,
                         selectedIndex = selectedTab.ordinal,
                         onTabSelected = { selectedTab = PredictionsTab.entries[it] },
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding, vertical = com.astro.storm.ui.theme.NeoVedicTokens.SpaceXS)
                     )
                     
                     HorizontalDivider(color = AppTheme.DividerColor.copy(alpha = 0.5f))
@@ -402,12 +407,15 @@ private fun RemediesTabContent(data: PredictionData) {
 private fun LifePathCard(overview: LifeOverview) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .vedicCornerMarkers(color = AppTheme.AccentPrimary),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -424,6 +432,7 @@ private fun LifePathCard(overview: LifeOverview) {
                 Text(
                     StringResources.get(StringKey.PREDICTIONS_YOUR_LIFE_PATH, language),
                     style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -431,7 +440,8 @@ private fun LifePathCard(overview: LifeOverview) {
 
             Text(
                 overview.lifeTheme,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = CinzelDecorativeFamily,
+                    style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.AccentPrimary,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -439,7 +449,8 @@ private fun LifePathCard(overview: LifeOverview) {
 
             Text(
                 overview.overallPath,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -470,7 +481,8 @@ private fun LifePathCard(overview: LifeOverview) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         strength,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -503,7 +515,8 @@ private fun LifePathCard(overview: LifeOverview) {
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             overview.spiritualPath,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -517,12 +530,15 @@ private fun LifePathCard(overview: LifeOverview) {
 private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .vedicCornerMarkers(color = AppTheme.AccentPrimary),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -541,6 +557,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                     Text(
                         StringResources.get(StringKey.PREDICTIONS_CURRENT_PERIOD, language),
                         style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -557,7 +574,8 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                     ) {
                         Text(
                             "${period.overallEnergy}/10",
-                            style = MaterialTheme.typography.labelLarge,
+                            fontFamily = SpaceGroteskFamily,
+                    style = MaterialTheme.typography.labelLarge,
                             fontWeight = FontWeight.Bold,
                             color = getEnergyColor(period.overallEnergy)
                         )
@@ -569,7 +587,8 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
 
             Text(
                 period.period,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                    style = MaterialTheme.typography.labelMedium,
                 color = AppTheme.TextMuted
             )
 
@@ -577,7 +596,8 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
 
             Text(
                 period.dashaInfo,
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                    style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.AccentPrimary
             )
@@ -586,7 +606,8 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
 
             Text(
                 period.dashaEffect,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -599,6 +620,7 @@ private fun CurrentPeriodCard(period: CurrentPeriodAnalysis) {
                 Text(
                     StringResources.get(StringKey.PREDICTIONS_ACTIVE_TRANSITS, language),
                     style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -634,6 +656,7 @@ private fun TransitHighlightChip(transit: TransitHighlight) {
             ) {
                 Text(
                     transit.planet.symbol,
+                    fontFamily = CinzelDecorativeFamily,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = planetColor
@@ -654,7 +677,8 @@ private fun TransitHighlightChip(transit: TransitHighlight) {
             Spacer(modifier = Modifier.height(6.dp))
             Text(
                 transit.description,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -668,12 +692,14 @@ private fun TransitHighlightChip(transit: TransitHighlight) {
 private fun ActiveYogasSummaryCard(yogas: List<ActiveYoga>) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -687,6 +713,7 @@ private fun ActiveYogasSummaryCard(yogas: List<ActiveYoga>) {
                 Text(
                     StringResources.get(StringKey.PREDICTIONS_ACTIVE_YOGAS, language),
                     style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -716,6 +743,7 @@ private fun YogaItem(yoga: ActiveYoga) {
             ) {
                 Text(
                     yoga.name,
+                    fontFamily = PoppinsFontFamily,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
@@ -737,7 +765,8 @@ private fun YogaItem(yoga: ActiveYoga) {
 
             Text(
                 yoga.description,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
 
@@ -747,7 +776,8 @@ private fun YogaItem(yoga: ActiveYoga) {
                     yoga.planets.forEach { planet ->
                         Text(
                             planet.symbol,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                    style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = getPlanetColor(planet)
                         )
@@ -762,12 +792,14 @@ private fun YogaItem(yoga: ActiveYoga) {
 private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // Opportunities
@@ -783,6 +815,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
                     Text(
                         StringResources.get(StringKey.PREDICTIONS_OPPORTUNITIES, language),
                         style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.SuccessColor
                     )
@@ -815,6 +848,7 @@ private fun ChallengesOpportunitiesCard(data: ChallengesOpportunities) {
                     Text(
                         StringResources.get(StringKey.PREDICTIONS_CURRENT_CHALLENGES, language),
                         style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.WarningColor
                     )
@@ -853,12 +887,14 @@ private fun OpportunityItem(opportunity: Opportunity) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     opportunity.area,
+                    fontFamily = SpaceGroteskFamily,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
                 )
                 Text(
                     opportunity.description,
+                    fontFamily = PoppinsFontFamily,
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -889,12 +925,14 @@ private fun ChallengeItem(challenge: Challenge) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     challenge.area,
+                    fontFamily = SpaceGroteskFamily,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.WarningColor
                 )
                 Text(
                     challenge.description,
+                    fontFamily = PoppinsFontFamily,
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
@@ -907,17 +945,20 @@ private fun ChallengeItem(challenge: Challenge) {
 private fun QuickLifeAreasSummary(areas: List<LifeAreaPrediction>) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 StringResources.get(StringKey.PREDICTIONS_LIFE_AREAS_GLANCE, language),
                 style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 12.dp)
@@ -972,7 +1013,7 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
     var expanded by remember { mutableStateOf(false) }
     val areaColor = area.area.color
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
@@ -983,8 +1024,10 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                 )
             )
             .clickable { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1075,7 +1118,8 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                                 Text(stringResource(StringKeyUICommon.BULLET) + " ", color = areaColor)
                                 Text(
                                     factor,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1109,7 +1153,8 @@ private fun LifeAreaDetailCard(area: LifeAreaPrediction) {
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     area.advice,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1126,14 +1171,16 @@ private fun PredictionTimeframe(title: String, prediction: String, color: Color)
     Column {
         Text(
             title,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                    style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.SemiBold,
             color = color
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             prediction,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
             color = AppTheme.TextSecondary,
             lineHeight = 18.sp
         )
@@ -1145,12 +1192,14 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
     val language = currentLanguage()
     val dateFormatter = predictionDateFormatter(language, "MMM dd, yyyy")
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1164,6 +1213,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                 Text(
                     StringResources.get(StringKey.PREDICTIONS_FAVORABLE_PERIODS, language),
                     style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1180,13 +1230,15 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                         Text(
                             "${period.startDate.format(dateFormatter)} - ${period.endDate.format(dateFormatter)}",
                             style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             period.reason,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
                         if (period.bestFor.isNotEmpty()) {
@@ -1194,6 +1246,7 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                             Text(
                                 StringResources.get(StringKey.PREDICTIONS_BEST_FOR, language) + stringResource(StringKeyUICommon.COLON),
                                 style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
                                 color = AppTheme.TextMuted
                             )
                             period.bestFor.forEach { item ->
@@ -1201,7 +1254,8 @@ private fun FavorablePeriodsCard(periods: List<FavorablePeriod>) {
                                     Text(stringResource(StringKeyUICommon.BULLET) + " ", color = AppTheme.SuccessColor)
                                     Text(
                                         item,
-                                        style = MaterialTheme.typography.bodySmall,
+                                        fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                                         color = AppTheme.TextSecondary
                                     )
                                 }
@@ -1220,12 +1274,14 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
     val language = currentLanguage()
     val dateFormatter = predictionDateFormatter(language, "MMM dd, yyyy")
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1239,6 +1295,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                 Text(
                     StringResources.get(StringKey.PREDICTIONS_CAUTION_PERIODS, language),
                     style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1255,13 +1312,15 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                         Text(
                             "${period.startDate.format(dateFormatter)} - ${period.endDate.format(dateFormatter)}",
                             style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.WarningColor
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             period.reason,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
                         if (period.avoid.isNotEmpty()) {
@@ -1269,6 +1328,7 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                             Text(
                                 StringResources.get(StringKey.PREDICTIONS_CAUTION_FOR, language) + stringResource(StringKeyUICommon.COLON),
                                 style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
                                 color = AppTheme.TextMuted
                             )
                             period.avoid.forEach { item ->
@@ -1276,7 +1336,8 @@ private fun UnfavorablePeriodsCard(periods: List<UnfavorablePeriod>) {
                                     Text(stringResource(StringKeyUICommon.BULLET) + " ", color = AppTheme.WarningColor)
                                     Text(
                                         item,
-                                        style = MaterialTheme.typography.bodySmall,
+                                        fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                                         color = AppTheme.TextSecondary
                                     )
                                 }
@@ -1295,12 +1356,14 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
     val language = currentLanguage()
     val dateFormatter = predictionDateFormatter(language, "EEEE, MMM dd")
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1314,6 +1377,7 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
                 Text(
                     StringResources.get(StringKey.PREDICTIONS_IMPORTANT_DATES, language),
                     style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1341,6 +1405,7 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
                         Text(
                             keyDate.date.dayOfMonth.toString(),
                             style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Bold,
                             color = if (keyDate.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor
                         )
@@ -1352,17 +1417,20 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
                         Text(
                             keyDate.date.format(dateFormatter),
                             style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             keyDate.event,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             keyDate.significance,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -1380,10 +1448,12 @@ private fun KeyDatesCard(dates: List<KeyDate>) {
 private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: String) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shadowElevation = 0.dp
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1397,6 +1467,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
                 Text(
                     StringResources.get(StringKey.PREDICTIONS_REMEDIAL_SUGGESTIONS, language),
                     style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1431,6 +1502,7 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
                             Text(
                                 (index + 1).toString(),
                                 style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.AccentPrimary
                             )
@@ -1438,7 +1510,8 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             remedy,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodyMedium,
                             color = AppTheme.TextSecondary,
                             lineHeight = 20.sp
                         )
@@ -1457,30 +1530,12 @@ private fun RemedialSuggestionsCard(remedies: List<String>, currentPeriod: Strin
 private fun EmptyPredictionsState(modifier: Modifier = Modifier) {
     val language = currentLanguage()
 
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                Icons.Outlined.InsertChart,
-                contentDescription = null,
-                tint = AppTheme.TextSubtle,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                StringResources.get(StringKey.PREDICTIONS_NO_CHART_SELECTED, language),
-                style = MaterialTheme.typography.titleMedium,
-                color = AppTheme.TextMuted
-            )
-            Text(
-                StringResources.get(StringKey.PREDICTIONS_SELECT_CHART_MESSAGE, language),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextSubtle
-            )
-        }
-    }
+    NeoVedicEmptyState(
+        title = StringResources.get(StringKey.PREDICTIONS_NO_CHART_SELECTED, language),
+        subtitle = StringResources.get(StringKey.PREDICTIONS_SELECT_CHART_MESSAGE, language),
+        icon = Icons.Outlined.InsertChart,
+        modifier = modifier
+    )
 }
 
 @Composable
@@ -1534,7 +1589,8 @@ private fun ErrorState(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 message,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                    style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 32.dp)
