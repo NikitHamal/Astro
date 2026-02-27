@@ -38,12 +38,14 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -602,8 +604,29 @@ private fun CharaDashaSystemInfoCard(
                     color = AppTheme.TextPrimary
                 )
             }
-
-
+            Spacer(modifier = Modifier.height(12.dp))
+            InfoRow(
+                label = stringResource(StringKeyDosha.UI_START),
+                value = result.startingSign.getLocalizedName(language)
+            )
+            InfoRow(
+                label = stringResource(StringKeyDosha.CHARA_DASHA_DIRECTION),
+                value = when (result.countDirection) {
+                    CharaDashaCalculator.CountDirection.FORWARD -> "Forward"
+                    CharaDashaCalculator.CountDirection.BACKWARD -> "Backward"
+                }
+            )
+            InfoRow(
+                label = stringResource(StringKeyDosha.KARAKAMSHA_TITLE),
+                value = result.karakamsha.getLocalizedName(language)
+            )
+            InfoRow(
+                label = stringResource(StringKeyDosha.SCREEN_TIMELINE),
+                value = result.mahadashas.size.toString()
+            )
+        }
+    }
+}
 
 @Composable
 private fun InfoRow(label: String, value: String) {

@@ -37,7 +37,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.PersonOff
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Star
@@ -1352,37 +1351,10 @@ private fun YoginiDetailCard(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
-                        text = yogini.getEffects(language),
+                        text = yogini.getDescription(language),
                         fontSize = NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp,
-                        fontFamily = PoppinsFontFamily
-                    )
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Outlined.NotificationsActive,
-                            contentDescription = null,
-                            tint = AppTheme.AccentTeal,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(StringKeyDosha.YOGINI_RESULT_TYPE),
-                            fontSize = NeoVedicFontSizes.S13,
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.AccentTeal,
-                            fontFamily = SpaceGroteskFamily
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = yogini.getResult(language),
-                        fontSize = NeoVedicFontSizes.S13,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 18.sp,
                         fontFamily = PoppinsFontFamily
                     )
                 }

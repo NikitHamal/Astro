@@ -478,7 +478,7 @@ private fun ActiveDashaCard(
                         color = AppTheme.TextPrimary
                     )
                     Text(
-                        text = stringResource(StringKey.DASHA_CURRENT_DESCRIPTION),
+                        text = stringResource(StringKey.DASHA_CURRENT_PERIOD),
                         fontFamily = PoppinsFontFamily,
                         fontSize = NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted

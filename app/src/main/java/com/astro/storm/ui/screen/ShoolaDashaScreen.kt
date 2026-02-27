@@ -85,6 +85,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.shoola.DashaDirection
+import com.astro.storm.ephemeris.shoola.HealthSeverity
 import com.astro.storm.ephemeris.shoola.HealthVulnerabilityPeriod
 import com.astro.storm.ephemeris.shoola.LongevityAssessment
 import com.astro.storm.ephemeris.shoola.LongevityCategory
@@ -94,7 +95,6 @@ import com.astro.storm.ephemeris.shoola.ShoolaDashaResult
 import com.astro.storm.ephemeris.shoola.ShoolaDashaPeriod
 import com.astro.storm.ephemeris.shoola.ShoolaRemedy
 import com.astro.storm.ephemeris.shoola.TriMurtiAnalysis
-import com.astro.storm.ephemeris.shoola.getSeverityColor
 import com.astro.storm.ui.components.common.ModernPillTabRow
 import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
@@ -1358,16 +1358,6 @@ private fun ShoolaRemedyCard(
                     fontFamily = PoppinsFontFamily
                 )
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = if (language == Language.NEPALI) remedy.instructionNe else remedy.instruction,
-                fontSize = NeoVedicFontSizes.S12,
-                color = AppTheme.TextSecondary,
-                lineHeight = 20.sp,
-                fontFamily = PoppinsFontFamily
-            )
 
             Row(
                 modifier = Modifier.padding(top = 12.dp),

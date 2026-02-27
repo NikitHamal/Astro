@@ -616,6 +616,7 @@ private fun CurrentSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAna
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SandhiDetailCard(
     sandhi: DashaSandhiAnalyzer.SandhiAnalysis,

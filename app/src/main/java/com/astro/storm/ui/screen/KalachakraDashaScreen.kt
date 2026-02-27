@@ -95,8 +95,6 @@ import com.astro.storm.core.model.ZodiacSign
 import com.astro.storm.data.localization.DateFormat
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.formatLocalized
-import com.astro.storm.data.localization.formatRemainingDaysLocalized
-import com.astro.storm.data.localization.formatRemainingYearsLocalized
 import com.astro.storm.data.localization.localized
 import com.astro.storm.data.localization.localizedName
 import com.astro.storm.data.localization.stringResource
@@ -1344,7 +1342,7 @@ private fun JeevaAnalysisCard(
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = analysis.longevityPrediction,
+                text = analysis.spiritualPrediction,
                 fontSize = NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 19.sp,
