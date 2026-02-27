@@ -1353,28 +1353,7 @@ private fun ShoolaRemedyCard(
     }
 }
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    color = typeColor.copy(alpha = 0.15f)
-                ) {
-                    Text(
-                        text = if (language == Language.NEPALI) remedy.remedyType.displayNameNe
-                        else remedy.remedyType.displayName,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = typeColor,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                    )
-                }
+
                 remedy.targetPlanet?.let { planet ->
                     Text(
                         text = planet.displayName,

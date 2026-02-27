@@ -417,6 +417,7 @@ fun AstroStormNavigation(
                             ExportFormat.IMAGE -> viewModel.exportChartToImage(chart, density)
                             ExportFormat.JSON -> viewModel.exportChartToJson(chart)
                             ExportFormat.CSV -> viewModel.exportChartToCsv(chart)
+                            ExportFormat.TEXT -> viewModel.exportChartToText(chart)
                         }
                     }
                 }

@@ -609,14 +609,16 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     SETTINGS_TAP_TO_SELECT("Tap to select or create a profile", "प्रोफाइल छान्न वा बनाउन ट्याप गर्नुहोस्"),
 
     // Export settings
-    SETTINGS_EXPORT_PDF("Export as PDF", "PDF को रूपमा निर्यात"),
+    SETTINGS_EXPORT_PDF("PDF Report", "PDF रिपोर्ट"),
     SETTINGS_EXPORT_PDF_DESC("Complete chart report", "पूर्ण कुण्डली रिपोर्ट"),
-    SETTINGS_EXPORT_IMAGE("Export as Image", "छविको रूपमा निर्यात"),
+    SETTINGS_EXPORT_IMAGE("Chart Image", "कुण्डली छवि"),
     SETTINGS_EXPORT_IMAGE_DESC("High-quality chart image", "उच्च गुणस्तर कुण्डली छवि"),
-    SETTINGS_EXPORT_JSON("Export as JSON", "JSON को रूपमा निर्यात"),
+    SETTINGS_EXPORT_JSON("JSON Data", "JSON डाटा"),
     SETTINGS_EXPORT_JSON_DESC("Machine-readable format", "मेसिन-पठनयोग्य ढाँचा"),
     SETTINGS_EXPORT_CSV("CSV Data", "CSV डाटा"),
     SETTINGS_EXPORT_CSV_DESC("Spreadsheet format", "स्प्रेडसिट ढाँचा"),
+    SETTINGS_EXPORT_TEXT("Text Report", "पाठ रिपोर्ट"),
+    SETTINGS_EXPORT_TEXT_DESC("Plain text format", "सादा पाठ ढाँचा"),
 
     // Preferences
     SETTINGS_HOUSE_SYSTEM("House System", "भाव पद्धति"),

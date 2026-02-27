@@ -1125,7 +1125,8 @@ enum class ExportFormat(
     PDF(StringKey.SETTINGS_EXPORT_PDF, StringKey.SETTINGS_EXPORT_PDF_DESC, Icons.Outlined.PictureAsPdf),
     IMAGE(StringKey.SETTINGS_EXPORT_IMAGE, StringKey.SETTINGS_EXPORT_IMAGE_DESC, Icons.Outlined.Image),
     JSON(StringKey.SETTINGS_EXPORT_JSON, StringKey.SETTINGS_EXPORT_JSON_DESC, Icons.Outlined.Code),
-    CSV(StringKey.SETTINGS_EXPORT_CSV, StringKey.SETTINGS_EXPORT_CSV_DESC, Icons.Outlined.TableChart);
+    CSV(StringKey.SETTINGS_EXPORT_CSV, StringKey.SETTINGS_EXPORT_CSV_DESC, Icons.Outlined.TableChart),
+    TEXT(StringKey.SETTINGS_EXPORT_TEXT, StringKey.SETTINGS_EXPORT_TEXT_DESC, Icons.Outlined.Description);
 
     fun getLocalizedTitle(language: Language): String = StringResources.get(titleKey, language)
     fun getLocalizedDescription(language: Language): String = StringResources.get(descriptionKey, language)

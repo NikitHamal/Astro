@@ -1353,43 +1353,7 @@ private fun JeevaAnalysisCard(
         }
     }
 }
-                Text(
-                    text = stringResource(StringKeyDosha.KALACHAKRA_JEEVA_ANALYSIS),
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
-                )
-            }
 
-            Spacer(modifier = Modifier.height(14.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_JEEVA_LORD),
-                    value = analysis.jeevaLord.getLocalizedName(language),
-                    color = AppTheme.TextPrimary
-                )
-                InfoItem(
-                    label = stringResource(StringKeyDosha.KALACHAKRA_STRENGTH),
-                    value = analysis.jeevaLordStrength.split(" - ").firstOrNull() ?: analysis.jeevaLordStrength,
-                    color = AppTheme.TextSecondary
-                )
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            Text(
-                text = analysis.spiritualPrediction,
-                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
-                color = AppTheme.TextSecondary,
-                lineHeight = 19.sp
-            )
-        }
-    }
-}
 
 @Composable
 private fun RelationshipCard(

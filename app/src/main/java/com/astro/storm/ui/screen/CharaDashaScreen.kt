@@ -603,31 +603,7 @@ private fun CharaDashaSystemInfoCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
 
-            InfoRow(
-                label = stringResource(StringKeyAnalysis.CHART_LAGNA),
-                value = result.lagnaSign.getLocalizedName(language)
-            )
-            InfoRow(
-                label = stringResource(StringKeyDosha.CHARA_DASHA_DIRECTION),
-                value = if (result.isOddLagna) {
-                    stringResource(StringKeyDosha.CHARA_DASHA_DIRECT)
-                } else {
-                    stringResource(StringKeyDosha.CHARA_DASHA_REVERSE)
-                }
-            )
-            InfoRow(
-                label = stringResource(StringKeyAnalysis.CHARA_DASHA_TYPE),
-                value = if (result.isOddLagna) {
-                    stringResource(StringKeyDosha.CHARA_DASHA_ODD_LAGNA)
-                } else {
-                    stringResource(StringKeyDosha.CHARA_DASHA_EVEN_LAGNA)
-                }
-            )
-        }
-    }
-}
 
 @Composable
 private fun InfoRow(label: String, value: String) {
