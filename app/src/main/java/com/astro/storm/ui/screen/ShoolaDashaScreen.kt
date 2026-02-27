@@ -1410,6 +1410,122 @@ private fun ShoolaRemedyCard(
     }
 }
 
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                    color = typeColor.copy(alpha = 0.15f)
+                ) {
+                    Text(
+                        text = if (language == Language.NEPALI) remedy.remedyType.displayNameNe
+                        else remedy.remedyType.displayName,
+                        fontSize = NeoVedicFontSizes.S10,
+                        color = typeColor,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = SpaceGroteskFamily
+                    )
+                }
+                remedy.targetPlanet?.let { planet ->
+                    Text(
+                        text = planet.displayName,
+                        fontSize = NeoVedicFontSizes.S13,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary,
+                        fontFamily = PoppinsFontFamily
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = "${remedy.effectiveness}%",
+                    fontSize = NeoVedicFontSizes.S10,
+                    fontWeight = FontWeight.SemiBold,
+                    color = typeColor,
+                    fontFamily = SpaceGroteskFamily
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = if (language == Language.NEPALI) remedy.descriptionNe else remedy.description,
+                fontSize = NeoVedicFontSizes.S13,
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextPrimary,
+                fontFamily = PoppinsFontFamily
+            )
+
+            remedy.mantra?.let { mantra ->
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = mantra,
+                    fontSize = NeoVedicFontSizes.S11,
+                    color = AppTheme.AccentGold,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = PoppinsFontFamily
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = if (language == Language.NEPALI) remedy.instructionNe else remedy.instruction,
+                fontSize = NeoVedicFontSizes.S12,
+                color = AppTheme.TextSecondary,
+                lineHeight = 20.sp,
+                fontFamily = PoppinsFontFamily
+            )
+
+            Row(
+                modifier = Modifier.padding(top = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
+            ) {
+                remedy.deity?.let { deity ->
+                    Column {
+                        Text(
+                            text = stringResource(StringKeyAdvanced.SHOOLA_DEITY),
+                            fontSize = NeoVedicFontSizes.S10,
+                            color = AppTheme.TextMuted,
+                            fontFamily = SpaceGroteskFamily
+                        )
+                        Text(
+                            text = if (language == Language.NEPALI) remedy.deityNe ?: deity else deity,
+                            fontSize = NeoVedicFontSizes.S11,
+                            color = AppTheme.TextSecondary,
+                            fontFamily = PoppinsFontFamily
+                        )
+                    }
+                }
+                remedy.bestDay?.let { day ->
+                    Column {
+                        Text(
+                            text = stringResource(StringKeyAdvanced.SHOOLA_BEST_DAY),
+                            fontSize = NeoVedicFontSizes.S10,
+                            color = AppTheme.TextMuted,
+                            fontFamily = SpaceGroteskFamily
+                        )
+                        Text(
+                            text = if (language == Language.NEPALI) remedy.bestDayNe ?: day else day,
+                            fontSize = NeoVedicFontSizes.S11,
+                            color = AppTheme.TextSecondary,
+                            fontFamily = PoppinsFontFamily
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
                 remedy.targetPlanet?.let { planet ->
                     Text(
                         text = planet.displayName,
