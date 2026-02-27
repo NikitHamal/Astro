@@ -1324,54 +1324,6 @@ private fun AntardashaRow(
     }
 }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            InfoRow(
-                label = stringResource(StringKeyAnalysis.CHART_LAGNA),
-                value = result.lagnaSign.getLocalizedName(language)
-            )
-            InfoRow(
-                label = stringResource(StringKeyDosha.CHARA_DASHA_DIRECTION),
-                value = if (result.isOddLagna) {
-                    stringResource(StringKeyDosha.CHARA_DASHA_DIRECT)
-                } else {
-                    stringResource(StringKeyDosha.CHARA_DASHA_REVERSE)
-                }
-            )
-            InfoRow(
-                label = stringResource(StringKeyAnalysis.CHARA_DASHA_TYPE),
-                value = if (result.isOddLagna) {
-                    stringResource(StringKeyDosha.CHARA_DASHA_ODD_LAGNA)
-                } else {
-                    stringResource(StringKeyDosha.CHARA_DASHA_EVEN_LAGNA)
-                }
-            )
-        }
-    }
-}
-
-@Composable
-private fun InfoRow(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = label,
-            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
-            color = AppTheme.TextMuted
-        )
-        Text(
-            text = value,
-            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
-            fontWeight = FontWeight.Medium,
-            color = AppTheme.TextPrimary
-        )
-    }
-}
-
 @Composable
 private fun CharaDashaInterpretationCard(
     mahadasha: CharaDashaCalculator.CharaMahadasha,
