@@ -225,25 +225,9 @@ private fun AshtottariDashaTopBar(
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
-    val language = LocalLanguage.current
-    val subtitle = when {
-        isCalculating -> stringResource(StringKey.DASHA_CALCULATING)
-        result != null -> buildString {
-            result.currentMahadasha?.let { md ->
-                append(md.planet.getLocalizedName(language))
-                result.currentAntardasha?.let { ad ->
-                    append(" -> ")
-                    append(ad.antardashaLord.getLocalizedName(language))
-                }
-                append(" | ")
-            }
-            append(chartName)
-        }
-        else -> chartName
-    }
     NeoVedicPageHeader(
         title = stringResource(StringKeyDosha.ASHTOTTARI_TITLE),
-        subtitle = subtitle,
+        subtitle = chartName,
         onBack = onBack,
         actionIcon = Icons.Outlined.Info,
         onAction = onInfoClick

@@ -249,24 +249,9 @@ private fun YoginiDashaTopBar(
     currentPeriodInfo: CurrentYoginiPeriodInfo,
     onBack: () -> Unit
 ) {
-    val language = LocalLanguage.current
-    val subtitle = when {
-        currentPeriodInfo.isLoading -> stringResource(StringKey.DASHA_CALCULATING)
-        currentPeriodInfo.hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
-        currentPeriodInfo.mahadasha != null -> buildString {
-            append(currentPeriodInfo.mahadasha)
-            currentPeriodInfo.antardasha?.let {
-                append(" -> ")
-                append(it)
-            }
-            append(" | ")
-            append(chartName)
-        }
-        else -> chartName
-    }
     NeoVedicPageHeader(
         title = stringResource(StringKeyDosha.YOGINI_DASHA_TITLE),
-        subtitle = subtitle,
+        subtitle = chartName,
         onBack = onBack,
     )
 }
@@ -688,9 +673,12 @@ private fun BirthBalanceCard(
     language: Language
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = getYoginiColor(balance.yogini)),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -839,8 +827,9 @@ private fun YoginiSequenceCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
@@ -922,9 +911,12 @@ private fun TimelineHeaderCard(
     language: Language
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = AppTheme.AccentGold),
         shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -982,12 +974,12 @@ private fun YoginiMahadashaCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
+            .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = yoginiColor.copy(alpha = 0.3f))
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = if (isCurrent) {
             yoginiColor.copy(alpha = 0.08f)
         } else {
@@ -995,7 +987,9 @@ private fun YoginiMahadashaCard(
         },
         border = if (isCurrent) {
             androidx.compose.foundation.BorderStroke(1.dp, yoginiColor.copy(alpha = 0.3f))
-        } else null
+        } else {
+            androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        }
     ) {
         Column(
             modifier = Modifier
@@ -1247,6 +1241,25 @@ private fun YoginiDetailCard(
     yogini: YoginiDashaCalculator.Yogini,
     language: Language
 ) {
+    var isExpanded by rememberSaveable(key = "yogini_detail_${yogini.ordinal}") { mutableStateOf(false) }
+    val rotation by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        animationSpec = tween(durationMillis = 250),
+        label = "detail_rotation"
+    )
+
+    val yoginiColor = getYoginiColor(yogini)
+    val natureColor = getNatureColor(yogini.nature)
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
+            .clickable { isExpanded = !isExpanded },
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
     var isExpanded by rememberSaveable(key = "yogini_detail_${yogini.ordinal}") { mutableStateOf(false) }
     val rotation by animateFloatAsState(
         targetValue = if (isExpanded) 180f else 0f,

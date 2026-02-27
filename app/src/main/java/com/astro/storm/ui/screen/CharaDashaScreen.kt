@@ -239,24 +239,9 @@ private fun CharaDashaTopBar(
     hasError: Boolean,
     onBack: () -> Unit
 ) {
-    val language = LocalLanguage.current
-    val subtitle = when {
-        isCalculating -> stringResource(StringKey.DASHA_CALCULATING)
-        hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
-        currentMahadasha != null -> buildString {
-            append(currentMahadasha.sign.getLocalizedName(language))
-            currentAntardasha?.let {
-                append(" -> ")
-                append(it.sign.getLocalizedName(language))
-            }
-            append(" | ")
-            append(chartName)
-        }
-        else -> chartName
-    }
     NeoVedicPageHeader(
         title = stringResource(StringKeyDosha.CHARA_DASHA_TITLE),
-        subtitle = subtitle,
+        subtitle = chartName,
         onBack = onBack
     )
 }

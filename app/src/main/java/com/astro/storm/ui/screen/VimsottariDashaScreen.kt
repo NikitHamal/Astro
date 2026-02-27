@@ -198,28 +198,9 @@ private fun VimsottariDashaTopBar(
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
-    val subtitle = when {
-        currentPeriodInfo.isLoading -> stringResource(StringKey.DASHA_CALCULATING)
-        currentPeriodInfo.hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
-        currentPeriodInfo.mahadasha != null -> buildString {
-            append(currentPeriodInfo.mahadasha)
-            currentPeriodInfo.antardasha?.let {
-                append(" -> ")
-                append(it)
-            }
-            currentPeriodInfo.pratyantardasha?.let {
-                append(" -> ")
-                append(it)
-            }
-            append(" | ")
-            append(chartName)
-        }
-        else -> chartName
-    }
-
     NeoVedicPageHeader(
         title = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
-        subtitle = subtitle,
+        subtitle = chartName,
         onBack = onBack,
         actionIcon = Icons.Outlined.Info,
         onAction = onInfoClick

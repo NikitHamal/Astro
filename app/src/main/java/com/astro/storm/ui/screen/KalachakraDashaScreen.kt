@@ -261,24 +261,9 @@ private fun KalachakraDashaTopBar(
     currentPeriodInfo: CurrentPeriodInfo,
     onBack: () -> Unit
 ) {
-    val language = LocalLanguage.current
-    val subtitle = when {
-        currentPeriodInfo.isLoading -> stringResource(StringKey.DASHA_CALCULATING)
-        currentPeriodInfo.hasError -> "${stringResource(StringKey.DASHA_ERROR)} - $chartName"
-        currentPeriodInfo.mahadasha != null -> buildString {
-            append(currentPeriodInfo.mahadasha)
-            currentPeriodInfo.antardasha?.let {
-                append(" -> ")
-                append(it)
-            }
-            append(" | ")
-            append(chartName)
-        }
-        else -> chartName
-    }
     NeoVedicPageHeader(
         title = stringResource(StringKeyDosha.KALACHAKRA_DASHA_TITLE),
-        subtitle = subtitle,
+        subtitle = chartName,
         onBack = onBack
     )
 }
@@ -676,9 +661,12 @@ private fun NakshatraGroupCard(
     }
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = groupColor.copy(alpha = 0.08f)
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = groupColor),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = groupColor.copy(alpha = 0.08f),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, groupColor.copy(alpha = 0.3f))
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -780,9 +768,12 @@ private fun HealthIndicatorCard(
     val healthColor = getHealthColor(healthIndicator)
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = healthColor),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -870,13 +861,14 @@ private fun InterpretationCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+            .clip(RoundedCornerShape(NeoVedicTokens.CardCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple()
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier

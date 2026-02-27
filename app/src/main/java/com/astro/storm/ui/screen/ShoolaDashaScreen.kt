@@ -218,21 +218,9 @@ private fun ShoolaDashaTopBar(
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
-    val language = LocalLanguage.current
-    val subtitle = when {
-        isCalculating -> stringResource(StringKey.DASHA_CALCULATING)
-        result != null -> buildString {
-            result.currentMahadasha?.let { md ->
-                append(md.sign.getLocalizedName(language))
-                append(" | ")
-            }
-            append(chartName)
-        }
-        else -> chartName
-    }
     NeoVedicPageHeader(
         title = stringResource(StringKeyAdvanced.SHOOLA_TITLE),
-        subtitle = subtitle,
+        subtitle = chartName,
         onBack = onBack,
         actionIcon = Icons.Outlined.Info,
         onAction = onInfoClick

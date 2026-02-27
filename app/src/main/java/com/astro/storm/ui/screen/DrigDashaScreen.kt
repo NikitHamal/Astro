@@ -184,21 +184,9 @@ private fun DrigDashaTopBar(
     isLoading: Boolean,
     onBack: () -> Unit
 ) {
-    val language = LocalLanguage.current
-    val subtitle = when {
-        isLoading -> stringResource(StringKey.DASHA_CALCULATING)
-        analysis != null -> buildString {
-            analysis.currentDasha?.let { md ->
-                append(md.sign.getLocalizedName(language))
-                append(" | ")
-            }
-            append(chartName)
-        }
-        else -> chartName
-    }
     NeoVedicPageHeader(
         title = stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_DASHA_TITLE),
-        subtitle = subtitle,
+        subtitle = chartName,
         onBack = onBack
     )
 }
