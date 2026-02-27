@@ -1260,27 +1260,6 @@ private fun YoginiDetailCard(
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-    var isExpanded by rememberSaveable(key = "yogini_detail_${yogini.ordinal}") { mutableStateOf(false) }
-    val rotation by animateFloatAsState(
-        targetValue = if (isExpanded) 180f else 0f,
-        animationSpec = tween(durationMillis = 250),
-        label = "detail_rotation"
-    )
-
-    val yoginiColor = getYoginiColor(yogini)
-    val natureColor = getNatureColor(yogini.nature)
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple(color = yoginiColor.copy(alpha = 0.3f))
-            ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
-    ) {
         Column(
             modifier = Modifier
                 .padding(18.dp)
