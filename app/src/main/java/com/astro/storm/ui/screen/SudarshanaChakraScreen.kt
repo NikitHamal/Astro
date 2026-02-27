@@ -223,7 +223,7 @@ private fun AgeSelector(
 ) {
     val language = currentLanguage()
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -408,7 +408,7 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
 private fun CurrentSignsCard(result: SudarshanaChakraResult) {
     val language = currentLanguage()
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
@@ -520,7 +520,7 @@ private fun ChakraCard(
     val language = currentLanguage()
     var isExpanded by remember { mutableStateOf(false) }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded },
@@ -798,7 +798,7 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
         else -> stringResource(StringKeyDosha.SUDARSHANA_WEAK_CONVERGENCE)
     }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = if (synthesis.combinedStrengthScore >= 60)
@@ -928,7 +928,7 @@ private fun TimelineYearCard(
     }
 
     result?.let { chakraResult ->
-        Card(
+        com.astro.storm.ui.components.common.NeoVedicCard(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
                 containerColor = if (isCurrent)
@@ -1038,7 +1038,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
     ) {
         // Overall Assessment
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -1063,7 +1063,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
         // Three Chakra Contributions
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -1100,7 +1100,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
         // Primary and Secondary Focus
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
@@ -1152,7 +1152,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
         // Recommendations
         if (result.recommendations.isNotEmpty()) {
             item {
-                Card(
+                com.astro.storm.ui.components.common.NeoVedicCard(
                     modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
                         containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
@@ -1198,7 +1198,7 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
         // Yearly Progression
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)

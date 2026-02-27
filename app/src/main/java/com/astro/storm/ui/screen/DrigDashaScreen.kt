@@ -248,7 +248,7 @@ private fun OverviewTab(
 
         // Interpretation
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
@@ -306,7 +306,7 @@ private fun LongevityCard(
         AyurSpan.PURNAYU -> AppTheme.SuccessColor
     }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(
@@ -393,7 +393,7 @@ private fun CurrentPeriodCard(
 
     val signColor = getSignColor(period.sign)
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
@@ -550,7 +550,7 @@ private fun KeySignsCard(
     maheshwaraSign: ZodiacSign,
     language: Language
 ) {
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
@@ -708,7 +708,7 @@ private fun DashaPeriodCard(
     else
         Color.Transparent
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier
             .fillMaxWidth()
             .border(
@@ -913,7 +913,7 @@ private fun MarakaAnalysisTab(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(
@@ -954,7 +954,7 @@ private fun MarakaAnalysisTab(
         val marakaPeriods = analysis.drigDashaSequence.filter { it.isMarakaPeriod }
         if (marakaPeriods.isEmpty()) {
             item {
-                Card(
+                com.astro.storm.ui.components.common.NeoVedicCard(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
@@ -989,7 +989,7 @@ private fun MarakaAnalysisTab(
 
         // Rudra Sign Analysis
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
@@ -1041,7 +1041,7 @@ private fun MarakaPeriodCard(
 ) {
     val dateFormatter = remember(language) { drigMonthYearFormatter(language) }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
@@ -1104,7 +1104,7 @@ private fun SthiraKarakasTab(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 colors = CardDefaults.cardColors(
@@ -1154,7 +1154,7 @@ private fun SthiraKarakaCard(
 ) {
     val signColor = getSignColor(karakaInfo.position.sign)
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)

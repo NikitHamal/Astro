@@ -83,6 +83,7 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaSandhiAnalyzer
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicCard
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -297,10 +298,9 @@ private fun OverviewSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
 
 @Composable
 private fun VolatilityScoreCard(score: Int) {
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(
             modifier = Modifier
@@ -401,10 +401,9 @@ private fun StatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    NeoVedicCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(
             modifier = Modifier
@@ -430,10 +429,9 @@ private fun StatCard(
 
 @Composable
 private fun GuidanceCard(guidance: String) {
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Row(
             modifier = Modifier
@@ -471,12 +469,10 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
     val language = LocalLanguage.current
     val monthDayYearFormatter = sandhiMonthDayYearFormatter()
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = getSandhiIntensityColor(sandhi.intensity).copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        backgroundColor = getSandhiIntensityColor(sandhi.intensity).copy(alpha = 0.1f),
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(
             modifier = Modifier

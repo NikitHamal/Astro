@@ -42,6 +42,7 @@ import com.astro.storm.ephemeris.AshtottariMahadasha
 import com.astro.storm.ephemeris.AshtottariAntardasha
 import com.astro.storm.ephemeris.PlanetRelationship
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicCard
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -313,15 +314,13 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
     val language = LocalLanguage.current
     val isApplicable = result.applicability.isApplicable
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isApplicable)
-                AppTheme.SuccessColor.copy(alpha = 0.1f)
-            else
-                AppTheme.WarningColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        backgroundColor = if (isApplicable)
+            AppTheme.SuccessColor.copy(alpha = 0.1f)
+        else
+            AppTheme.WarningColor.copy(alpha = 0.1f),
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(
             modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
@@ -370,10 +369,9 @@ private fun ApplicabilityStatusCard(result: AshtottariDashaResult) {
 private fun ConditionDetailsCard(result: AshtottariDashaResult) {
     val language = LocalLanguage.current
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(
             modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
@@ -460,12 +458,10 @@ private fun CurrentPeriodCard(
     val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
     val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        backgroundColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(
             modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
@@ -625,10 +621,9 @@ private fun RelationshipChip(relationship: PlanetRelationship) {
 private fun SystemInfoCard() {
     val language = LocalLanguage.current
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(
             modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
@@ -740,17 +735,14 @@ private fun MahadashaTimelineCard(
         AshtottariDashaCalculator.calculateAntardashas(mahadasha, asOf)
     }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onExpandChange() },
-        colors = CardDefaults.cardColors(
-            containerColor = if (isCurrent)
-                AppTheme.AccentPrimary.copy(alpha = 0.15f)
-            else
-                AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    NeoVedicCard(
+        modifier = Modifier.fillMaxWidth(),
+        backgroundColor = if (isCurrent)
+            AppTheme.AccentPrimary.copy(alpha = 0.15f)
+        else
+            AppTheme.CardBackground,
+        contentPadding = PaddingValues(0.dp),
+        onClick = onExpandChange
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -938,10 +930,9 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
         // Key Themes
         if (interpretation.keyThemes.isNotEmpty()) {
             item {
-                Card(
+                NeoVedicCard(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    contentPadding = PaddingValues(0.dp)
                 ) {
                     Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
                         Text(
@@ -976,10 +967,9 @@ private fun InterpretationContent(result: AshtottariDashaResult) {
 
         // Combined Effects
         item {
-            Card(
+            NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                contentPadding = PaddingValues(0.dp)
             ) {
                 Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
                     Text(
@@ -1036,10 +1026,9 @@ private fun EffectsCard(
     effects: List<String>,
     icon: ImageVector
 ) {
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1079,12 +1068,10 @@ private fun EffectsCard(
 private fun RecommendationsCard(recommendations: List<String>) {
     val language = LocalLanguage.current
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        backgroundColor = AppTheme.SuccessColor.copy(alpha = 0.1f),
+        contentPadding = PaddingValues(0.dp)
     ) {
         Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
             Row(verticalAlignment = Alignment.CenterVertically) {

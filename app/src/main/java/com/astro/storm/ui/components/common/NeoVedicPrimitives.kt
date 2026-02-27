@@ -14,10 +14,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,6 +41,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import com.astro.storm.ui.theme.AppTheme
 import com.astro.storm.ui.theme.NeoVedicTokens
 
@@ -122,6 +129,49 @@ fun NeoVedicPageHeader(
             }
 
             actions()
+        }
+    }
+}
+
+@Composable
+fun NeoVedicCard(
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(NeoVedicTokens.SpaceMD),
+    borderColor: Color = AppTheme.BorderColor,
+    backgroundColor: Color = AppTheme.CardBackground,
+    colors: CardColors? = null,
+    shape: Shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+    onClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    val cardColors = colors ?: CardDefaults.cardColors(containerColor = backgroundColor)
+
+    if (onClick != null) {
+        Card(
+            modifier = modifier,
+            onClick = onClick,
+            enabled = enabled,
+            shape = shape,
+            colors = cardColors,
+            border = BorderStroke(NeoVedicTokens.BorderWidth, borderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        ) {
+            Box(modifier = Modifier.padding(contentPadding)) {
+                content()
+            }
+        }
+    } else {
+        Card(
+            modifier = modifier,
+            shape = shape,
+            colors = cardColors,
+            border = BorderStroke(NeoVedicTokens.BorderWidth, borderColor),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+        ) {
+            Box(modifier = Modifier.padding(contentPadding)) {
+                content()
+            }
         }
     }
 }

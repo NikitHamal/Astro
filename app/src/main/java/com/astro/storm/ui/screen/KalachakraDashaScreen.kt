@@ -348,7 +348,6 @@ private fun CurrentPeriodCard(
         modifier = Modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 4.dp,
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
@@ -1067,7 +1066,6 @@ private fun DehaJeevaOverviewCard(
         modifier = Modifier
             .fillMaxWidth()
             .shadow(
-                elevation = 4.dp,
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
                 ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
                 spotColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)

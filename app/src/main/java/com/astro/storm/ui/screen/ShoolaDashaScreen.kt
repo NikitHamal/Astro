@@ -277,7 +277,7 @@ private fun LongevityStatusCard(
     val displayName = if (language == Language.NEPALI)
         longevity.category.displayNameNe else longevity.category.displayName
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = statusColor.copy(alpha = 0.1f)),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -337,7 +337,7 @@ private fun TriMurtiCard(
     triMurti: TriMurtiAnalysis,
     language: Language
 ) {
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -481,7 +481,7 @@ private fun CurrentPeriodCard(
 
     val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = natureColor.copy(alpha = 0.1f)),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -630,7 +630,7 @@ private fun ShoolaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = modifier,
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -705,7 +705,7 @@ private fun ShoolaPeriodCard(
         else -> stringResource(StringKeyAdvanced.SHOOLA_FUTURE)
     }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
@@ -910,7 +910,7 @@ private fun ShoolaHealthSection(
                 VulnerabilityCard(vulnerability = vulnerability, language = language)
             }
         } else {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -949,7 +949,7 @@ private fun HealthConcernsCard(
     period: ShoolaDashaPeriod,
     language: Language
 ) {
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -1023,7 +1023,7 @@ private fun VulnerabilityCard(
 ) {
     val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = getSeverityColor(vulnerability.severity).copy(alpha = 0.08f)
@@ -1095,7 +1095,7 @@ private fun LongevityFactorsCard(
     longevity: LongevityAssessment,
     language: Language
 ) {
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -1169,7 +1169,7 @@ private fun ShoolaRemediesSection(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (result.remedies.isEmpty()) {
-            Card(
+            com.astro.storm.ui.components.common.NeoVedicCard(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
@@ -1218,7 +1218,7 @@ private fun ShoolaRemedyCard(
         RemedyType.LIFESTYLE -> AppTheme.LifeAreaHealth
     }
 
-    Card(
+    com.astro.storm.ui.components.common.NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)

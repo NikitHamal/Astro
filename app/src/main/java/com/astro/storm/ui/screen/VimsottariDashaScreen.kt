@@ -68,6 +68,7 @@ import com.astro.storm.core.model.Planet
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicCard
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
 import com.astro.storm.ui.theme.AppTheme
@@ -256,11 +257,8 @@ private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
         }
 
         item {
-            Surface(
-                shape = MaterialTheme.shapes.large,
-                color = AppTheme.CardBackground
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+            NeoVedicCard {
+                Column {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_PERIODS_SEQUENCE),
                         style = MaterialTheme.typography.titleMedium,
@@ -293,11 +291,8 @@ private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
         }
 
         item {
-            Surface(
-                shape = MaterialTheme.shapes.large,
-                color = AppTheme.CardBackground
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+            NeoVedicCard {
+                Column {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_HIERARCHY),
                         style = MaterialTheme.typography.titleMedium,
@@ -326,11 +321,8 @@ private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
 
         nextMahadasha?.let { next ->
             item {
-                Surface(
-                    shape = MaterialTheme.shapes.large,
-                    color = AppTheme.CardBackground
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
+                NeoVedicCard {
+                    Column {
                         Text(
                             text = stringResource(StringKeyMatch.DASHA_NEXT_PERIOD),
                             style = MaterialTheme.typography.titleSmall,
@@ -368,11 +360,8 @@ private fun ActiveDashaCard(
     val antar = timeline.currentAntardasha
     val praty = timeline.currentPratyantardasha
 
-    Surface(
-        shape = MaterialTheme.shapes.large,
-        color = AppTheme.CardBackground
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+    NeoVedicCard {
+        Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Outlined.Timeline,
@@ -500,11 +489,8 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
         verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
     ) {
         item {
-            Surface(
-                shape = MaterialTheme.shapes.large,
-                color = AppTheme.CardBackground
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+            NeoVedicCard {
+                Column {
                     Text(
                         text = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
                         style = MaterialTheme.typography.titleMedium,
@@ -537,27 +523,20 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
                 label = "vimsottari_expand_rotation"
             )
 
-            Surface(
-                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-                color = if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.08f) else AppTheme.CardBackground
+            NeoVedicCard(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(),
+                backgroundColor = if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.08f) else AppTheme.CardBackground,
+                onClick = {
+                    expandedMahadashaKeys = if (isExpanded) {
+                        expandedMahadashaKeys - cardKey
+                    } else {
+                        expandedMahadashaKeys + cardKey
+                    }
+                }
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = rememberRipple(),
-                            onClick = {
-                                expandedMahadashaKeys = if (isExpanded) {
-                                    expandedMahadashaKeys - cardKey
-                                } else {
-                                    expandedMahadashaKeys + cardKey
-                                }
-                            }
-                        )
-                        .animateContentSize()
-                        .padding(16.dp)
-                ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = mahadasha.planet.getLocalizedName(language),
@@ -721,11 +700,8 @@ private fun PeriodInterpretationCard(
     progress: Float,
     summary: String
 ) {
-    Surface(
-        shape = MaterialTheme.shapes.large,
-        color = AppTheme.CardBackground
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+    NeoVedicCard {
+        Column {
             Text(text = title, style = MaterialTheme.typography.titleSmall, color = AppTheme.TextSecondary)
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = planetName, style = MaterialTheme.typography.titleMedium, color = AppTheme.TextPrimary, fontWeight = FontWeight.SemiBold)
@@ -749,14 +725,10 @@ private fun VimsottariInfoCard(
     title: String,
     subtitle: String
 ) {
-    Surface(
-        shape = MaterialTheme.shapes.large,
-        color = AppTheme.CardBackground
-    ) {
+    NeoVedicCard {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
