@@ -244,9 +244,9 @@ object YogaCalculator {
 
     private fun stringKeyId(key: com.astro.storm.core.common.StringKeyInterface): String {
         return if (key is Enum<*>) {
-            "${key::class.qualifiedName}:${key.name}"
+            "${key.javaClass.name}:${key.name}"
         } else {
-            "${key::class.qualifiedName}:${key.en}"
+            "${key.javaClass.name}:${key.en}"
         }
     }
 
