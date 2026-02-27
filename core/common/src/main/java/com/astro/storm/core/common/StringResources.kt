@@ -17,6 +17,7 @@ package com.astro.storm.core.common
  * ```
  */
 object StringResources {
+    private val indexedPlaceholderRegex = Regex("\\{(\\d+)}")
 
     /**
      * Get localized string for a given key
@@ -33,6 +34,14 @@ object StringResources {
      */
     fun get(key: StringKeyInterface, language: Language, vararg args: Any): String {
         val template = get(key, language)
+        if (args.isEmpty()) return template
+
+        val braceFormatted = indexedPlaceholderRegex.replace(template) { match ->
+            val index = match.groupValues[1].toIntOrNull() ?: return@replace match.value
+            args.getOrNull(index)?.toString() ?: match.value
+        }
+        if (braceFormatted != template) return braceFormatted
+
         return try {
             String.format(template, *args)
         } catch (e: Exception) {

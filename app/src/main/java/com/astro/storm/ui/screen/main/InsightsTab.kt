@@ -1347,6 +1347,25 @@ private fun BulletItem(
     textKey: StringKey,
     iconTint: Color
 ) {
+    val language = LocalLanguage.current
+    val rawText = stringResource(textKey)
+    val displayText = remember(rawText, language) {
+        if (language != Language.ENGLISH) {
+            rawText
+        } else {
+            val firstLetterIndex = rawText.indexOfFirst { it.isLetter() }
+            if (firstLetterIndex >= 0 && rawText[firstLetterIndex].isLowerCase()) {
+                buildString(rawText.length) {
+                    append(rawText.substring(0, firstLetterIndex))
+                    append(rawText[firstLetterIndex].uppercaseChar())
+                    append(rawText.substring(firstLetterIndex + 1))
+                }
+            } else {
+                rawText
+            }
+        }
+    }
+
     Row(
         modifier = Modifier.padding(vertical = 4.dp),
         verticalAlignment = Alignment.Top
@@ -1359,7 +1378,7 @@ private fun BulletItem(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = stringResource(textKey),
+            text = displayText,
             fontFamily = PoppinsFontFamily,
             fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
             color = AppTheme.TextSecondary,

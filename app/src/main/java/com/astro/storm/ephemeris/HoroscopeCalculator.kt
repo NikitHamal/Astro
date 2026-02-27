@@ -895,7 +895,7 @@ class HoroscopeCalculator @Inject constructor(
             ELEMENT_RECOMMENDATIONS_KEYS[moon.sign.element]?.let { recommendations.add(it) }
         }
 
-        return recommendations.take(3)
+        return recommendations.distinct().take(3)
     }
 
     private fun generateCautions(
@@ -911,7 +911,7 @@ class HoroscopeCalculator @Inject constructor(
                 PLANET_CAUTIONS_KEYS[influence.planet]?.let { cautions.add(it) }
             }
 
-        return cautions.take(2)
+        return cautions.distinct().take(2)
     }
 
     private fun generateAffirmationKey(dashaLord: Planet?): StringKey {
@@ -1478,26 +1478,26 @@ class HoroscopeCalculator @Inject constructor(
         )
 
         private val BEST_AREA_RECOMMENDATIONS_KEYS = mapOf(
-            LifeArea.CAREER to StringKey.LIFE_AREA_CAREER,
-            LifeArea.LOVE to StringKey.LIFE_AREA_LOVE,
-            LifeArea.HEALTH to StringKey.LIFE_AREA_HEALTH,
-            LifeArea.FINANCE to StringKey.LIFE_AREA_FINANCE,
-            LifeArea.FAMILY to StringKey.LIFE_AREA_FAMILY,
-            LifeArea.SPIRITUALITY to StringKey.LIFE_AREA_SPIRITUALITY
+            LifeArea.CAREER to StringKey.AREA_REC_CAREER,
+            LifeArea.LOVE to StringKey.AREA_REC_LOVE,
+            LifeArea.HEALTH to StringKey.AREA_REC_HEALTH,
+            LifeArea.FINANCE to StringKey.AREA_REC_FINANCE,
+            LifeArea.FAMILY to StringKey.AREA_REC_FAMILY,
+            LifeArea.SPIRITUALITY to StringKey.AREA_REC_SPIRITUALITY
         )
 
         private val ELEMENT_RECOMMENDATIONS_KEYS = mapOf(
-            "Fire" to StringKey.THEME_DYNAMIC_ACTION,
-            "Earth" to StringKey.THEME_PRACTICAL_PROGRESS,
-            "Air" to StringKey.THEME_SOCIAL_CONNECTIONS,
-            "Water" to StringKey.THEME_EMOTIONAL_INSIGHT
+            "Fire" to StringKey.THEME_DESC_DYNAMIC_ACTION,
+            "Earth" to StringKey.THEME_DESC_PRACTICAL_PROGRESS,
+            "Air" to StringKey.THEME_DESC_SOCIAL_CONNECTIONS,
+            "Water" to StringKey.THEME_DESC_EMOTIONAL_INSIGHT
         )
 
         private val PLANET_CAUTIONS_KEYS = mapOf(
-            Planet.SATURN to StringKey.ADVICE_SATURN,
-            Planet.MARS to StringKey.ADVICE_MARS,
-            Planet.RAHU to StringKey.ADVICE_RAHU,
-            Planet.KETU to StringKey.ADVICE_KETU
+            Planet.SATURN to StringKey.CAUTION_SATURN,
+            Planet.MARS to StringKey.CAUTION_MARS,
+            Planet.RAHU to StringKey.CAUTION_RAHU,
+            Planet.KETU to StringKey.CAUTION_KETU
         )
 
         private val DASHA_AFFIRMATIONS_KEYS = mapOf(

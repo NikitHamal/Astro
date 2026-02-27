@@ -4,7 +4,6 @@ import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyYogaExpanded
 import com.astro.storm.core.common.StringResources
-import com.astro.storm.core.model.Planet
 
 /**
  * Yoga Localization - Localization utilities for Yoga names and effects
@@ -17,6 +16,9 @@ import com.astro.storm.core.model.Planet
  * @author AstroStorm
  */
 object YogaLocalization {
+    private val bhavaSanskritPattern = Regex("Bhava\\s+Yoga\\s+(\\d+)\\s*-\\s*(\\d+)", RegexOption.IGNORE_CASE)
+    private val bhavaNamePattern = Regex("Lord\\s+of\\s+(\\d+)\\s+in\\s+House\\s+(\\d+)", RegexOption.IGNORE_CASE)
+    private val unresolvedPlaceholderPattern = Regex("\\{\\d+}")
 
     /**
      * Get localized house significations
@@ -48,10 +50,14 @@ object YogaLocalization {
             if (key == StringKeyYogaExpanded.YOGA_VARGOTTAMA_SPEC && yoga.planets.isNotEmpty()) {
                 return StringResources.get(key, language, yoga.planets.first().getLocalizedName(language))
             }
-            if (yoga.category == YogaCategory.BHAVA_YOGA && yoga.houses.isNotEmpty()) {
-                val lordName = StringResources.get(getLordKey(yoga.planets.firstOrNull()), language)
-                val houseName = StringResources.get(com.astro.storm.core.common.StringKeyMatch.HOUSE_LABEL, language, yoga.houses.first())
-                return StringResources.get(key, language, lordName, houseName)
+            if (yoga.category == YogaCategory.BHAVA_YOGA) {
+                val lordHouse = extractBhavaLordHouse(yoga)
+                val placementHouse = yoga.houses.firstOrNull() ?: extractBhavaPlacementHouse(yoga)
+                if (lordHouse != null && placementHouse != null) {
+                    val lordName = StringResources.get(getLordKey(lordHouse), language)
+                    val houseName = StringResources.get(StringKeyMatch.HOUSE_LABEL, language, placementHouse)
+                    return StringResources.get(key, language, lordName, houseName)
+                }
             }
             if (yoga.category == YogaCategory.CONJUNCTION_YOGA && yoga.planets.size >= 2) {
                 val planetNames = yoga.planets.map { it.getLocalizedName(language) }
@@ -67,7 +73,12 @@ object YogaLocalization {
                     else -> yoga.name
                 }
             }
-            return StringResources.get(key, language)
+            val localizedName = StringResources.get(key, language)
+            return if (containsUnresolvedPlaceholders(localizedName)) {
+                getLocalizedYogaName(yoga.name, language)
+            } else {
+                localizedName
+            }
         }
         return getLocalizedYogaName(yoga.name, language)
     }
@@ -85,37 +96,62 @@ object YogaLocalization {
      */
     fun getLocalizedYogaEffects(yoga: Yoga, language: Language): String {
         yoga.effectsKey?.let { key ->
-            if (yoga.category == YogaCategory.BHAVA_YOGA && yoga.houses.isNotEmpty()) {
-                val lordHouse = "House ${getHouseFromLord(yoga.planets.firstOrNull(), yoga.name)}"
-                val houseName = "House ${yoga.houses.first()}"
-                return StringResources.get(key, language, lordHouse, houseName)
+            if (yoga.category == YogaCategory.BHAVA_YOGA) {
+                val lordHouse = extractBhavaLordHouse(yoga)
+                val placementHouse = yoga.houses.firstOrNull() ?: extractBhavaPlacementHouse(yoga)
+                if (lordHouse != null && placementHouse != null) {
+                    val lordName = StringResources.get(getLordKey(lordHouse), language)
+                    val houseName = StringResources.get(StringKeyMatch.HOUSE_LABEL, language, placementHouse)
+                    val localizedEffects = StringResources.get(key, language, lordName, houseName)
+                    return if (containsUnresolvedPlaceholders(localizedEffects)) yoga.effects else localizedEffects
+                }
             }
-            return StringResources.get(key, language)
+            val localizedEffects = StringResources.get(key, language)
+            return if (containsUnresolvedPlaceholders(localizedEffects)) yoga.effects else localizedEffects
         }
         return getLocalizedYogaEffects(yoga.name, language).ifEmpty { yoga.effects }
     }
 
-    private fun getLordKey(planet: Planet?): com.astro.storm.core.common.StringKeyInterface {
-        return when (planet) {
-            Planet.SUN -> StringKeyYogaExpanded.LORD_1 // Simplified mapping, ideally should be house-based
-            Planet.MOON -> StringKeyYogaExpanded.LORD_4
-            Planet.MARS -> StringKeyYogaExpanded.LORD_1
-            Planet.MERCURY -> StringKeyYogaExpanded.LORD_3
-            Planet.JUPITER -> StringKeyYogaExpanded.LORD_9
-            Planet.VENUS -> StringKeyYogaExpanded.LORD_2
-            Planet.SATURN -> StringKeyYogaExpanded.LORD_10
-            else -> com.astro.storm.core.common.StringKeyMatch.REPORT_PLANET
+    private fun getLordKey(lordHouse: Int): com.astro.storm.core.common.StringKeyInterface {
+        return when (lordHouse) {
+            1 -> StringKeyYogaExpanded.LORD_1
+            2 -> StringKeyYogaExpanded.LORD_2
+            3 -> StringKeyYogaExpanded.LORD_3
+            4 -> StringKeyYogaExpanded.LORD_4
+            5 -> StringKeyYogaExpanded.LORD_5
+            6 -> StringKeyYogaExpanded.LORD_6
+            7 -> StringKeyYogaExpanded.LORD_7
+            8 -> StringKeyYogaExpanded.LORD_8
+            9 -> StringKeyYogaExpanded.LORD_9
+            10 -> StringKeyYogaExpanded.LORD_10
+            11 -> StringKeyYogaExpanded.LORD_11
+            12 -> StringKeyYogaExpanded.LORD_12
+            else -> StringKeyMatch.REPORT_PLANET
         }
     }
-    
-    /**
-     * Get the house number ruled by a planet for a specific chart.
-     * Since we don't have the chart here, we attempt to extract it from the yoga name
-     * which was originally generated as "Lord of X in House Y"
-     */
-    private fun getHouseFromLord(planet: Planet?, yogaName: String): Int {
-        // Extract from "Lord of X in House Y"
-        return yogaName.substringAfter("Lord of ").substringBefore(" in").toIntOrNull() ?: 1
+
+    private fun extractBhavaLordHouse(yoga: Yoga): Int? {
+        bhavaSanskritPattern.find(yoga.sanskritName)?.let { match ->
+            return match.groupValues.getOrNull(1)?.toIntOrNull()
+        }
+        bhavaNamePattern.find(yoga.name)?.let { match ->
+            return match.groupValues.getOrNull(1)?.toIntOrNull()
+        }
+        return null
+    }
+
+    private fun extractBhavaPlacementHouse(yoga: Yoga): Int? {
+        bhavaSanskritPattern.find(yoga.sanskritName)?.let { match ->
+            return match.groupValues.getOrNull(2)?.toIntOrNull()
+        }
+        bhavaNamePattern.find(yoga.name)?.let { match ->
+            return match.groupValues.getOrNull(2)?.toIntOrNull()
+        }
+        return null
+    }
+
+    private fun containsUnresolvedPlaceholders(value: String): Boolean {
+        return unresolvedPlaceholderPattern.containsMatchIn(value)
     }
 
     /**

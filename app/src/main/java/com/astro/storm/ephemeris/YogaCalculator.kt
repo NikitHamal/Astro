@@ -26,6 +26,7 @@ import com.astro.storm.ephemeris.yoga.YogaAnalysis
 import com.astro.storm.ephemeris.yoga.YogaCategory
 import com.astro.storm.ephemeris.yoga.YogaEvaluator
 import com.astro.storm.ephemeris.yoga.YogaStrength
+import java.util.Locale
 
 /**
  * Yoga Calculator - Orchestrator for Planetary Yoga Analysis
@@ -125,34 +126,39 @@ object YogaCalculator {
     fun calculateYogas(chart: VedicChart): YogaAnalysis {
         // Collect yogas from all evaluators
         val allYogas = mutableListOf<Yoga>()
-        val yogasByCategory = mutableMapOf<YogaCategory, MutableList<Yoga>>()
-
-        // Initialize category lists
-        YogaCategory.entries.forEach { category ->
-            yogasByCategory[category] = mutableListOf()
-        }
 
         // Execute each evaluator
         evaluators.forEach { evaluator ->
             try {
                 val yogas = evaluator.evaluate(chart)
                 allYogas.addAll(yogas)
-                yogasByCategory[evaluator.category]?.addAll(yogas)
             } catch (e: Exception) {
                 // Log error but continue with other evaluators
                 android.util.Log.e("YogaCalculator", "Error in ${evaluator.category}: ${e.message}")
             }
         }
 
+        val deduplicatedYogas = deduplicateYogas(allYogas)
+        val yogasByCategory = deduplicatedYogas.groupByTo(
+            destination = mutableMapOf<YogaCategory, MutableList<Yoga>>(),
+            keySelector = { it.category },
+            valueTransform = { it }
+        )
+
+        // Ensure all categories exist in the map for stable consumers
+        YogaCategory.entries.forEach { category ->
+            yogasByCategory.putIfAbsent(category, mutableListOf())
+        }
+
         // Calculate overall strength
-        val overallStrength = calculateOverallStrength(allYogas)
+        val overallStrength = calculateOverallStrength(deduplicatedYogas)
 
         // Determine dominant category
         val dominantCategory = determineDominantCategory(yogasByCategory)
 
         return YogaAnalysis(
             chart = chart,
-            allYogas = allYogas.sortedByDescending { it.strengthPercentage },
+            allYogas = deduplicatedYogas.sortedByDescending { it.strengthPercentage },
             rajaYogas = yogasByCategory[YogaCategory.RAJA_YOGA] ?: emptyList(),
             dhanaYogas = yogasByCategory[YogaCategory.DHANA_YOGA] ?: emptyList(),
             mahapurushaYogas = yogasByCategory[YogaCategory.MAHAPURUSHA_YOGA] ?: emptyList(),
@@ -166,6 +172,89 @@ object YogaCalculator {
             dominantYogaCategory = dominantCategory,
             overallYogaStrength = overallStrength
         )
+    }
+
+    /**
+     * Deduplicate yogas emitted by overlapping evaluators.
+     * Keeps the strongest and most detailed representation per semantic signature.
+     */
+    private fun deduplicateYogas(yogas: List<Yoga>): List<Yoga> {
+        if (yogas.isEmpty()) return emptyList()
+
+        val deduped = LinkedHashMap<String, Yoga>()
+        yogas.forEach { yoga ->
+            val signature = buildYogaDedupSignature(yoga)
+            val existing = deduped[signature]
+            if (existing == null || isBetterDuplicateCandidate(yoga, existing)) {
+                deduped[signature] = yoga
+            }
+        }
+        return deduped.values.toList()
+    }
+
+    private fun buildYogaDedupSignature(yoga: Yoga): String {
+        val planetsSig = yoga.planets.map { it.name }.sorted().joinToString("|")
+        val housesSig = yoga.houses.sorted().joinToString("|")
+        val nameSig = when (yoga.category) {
+            YogaCategory.BHAVA_YOGA -> {
+                // Bhava entries can share planet + placement (e.g., dual-lord planets),
+                // so include explicit lord-placement identity.
+                "bhava:${normalizeDedupText(yoga.sanskritName)}"
+            }
+            YogaCategory.CONJUNCTION_YOGA -> {
+                // Conjunction duplicates often come from differently named evaluators
+                // for the same planets in the same house.
+                "conjunction:${yoga.planets.size}"
+            }
+            else -> {
+                val keyId = yoga.nameKey?.let(::stringKeyId)
+                if (keyId != null) {
+                    "key:$keyId:name:${normalizeDedupText(yoga.name)}"
+                } else {
+                    "name:${normalizeDedupText(yoga.name)}"
+                }
+            }
+        }
+        return "$nameSig::planets:$planetsSig::houses:$housesSig"
+    }
+
+    private fun isBetterDuplicateCandidate(candidate: Yoga, current: Yoga): Boolean {
+        val candidateScore = yogaSpecificityScore(candidate)
+        val currentScore = yogaSpecificityScore(current)
+        if (candidateScore != currentScore) return candidateScore > currentScore
+
+        if (candidate.strengthPercentage != current.strengthPercentage) {
+            return candidate.strengthPercentage > current.strengthPercentage
+        }
+
+        return candidate.effects.length > current.effects.length
+    }
+
+    private fun yogaSpecificityScore(yoga: Yoga): Int {
+        var score = 0
+        if (yoga.nameKey != null) score += 10
+        if (yoga.descriptionKey != null) score += 8
+        if (yoga.effectsKey != null) score += 12
+        if (yoga.activationKey != null) score += 6
+        if (yoga.detailedResult != null) score += 15
+        if (yoga.sanskritName.isNotBlank() && yoga.sanskritName != yoga.name) score += 4
+        if (yoga.cancellationFactors.isNotEmpty()) score += 2
+        return score
+    }
+
+    private fun stringKeyId(key: com.astro.storm.core.common.StringKeyInterface): String {
+        return if (key is Enum<*>) {
+            "${key::class.qualifiedName}:${key.name}"
+        } else {
+            "${key::class.qualifiedName}:${key.en}"
+        }
+    }
+
+    private fun normalizeDedupText(value: String): String {
+        return value
+            .trim()
+            .lowercase(Locale.ROOT)
+            .replace(Regex("\\s+"), " ")
     }
 
     /**

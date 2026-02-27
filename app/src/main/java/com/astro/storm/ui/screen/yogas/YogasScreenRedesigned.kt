@@ -624,7 +624,7 @@ private fun YogaCard(
                                 fontWeight = FontWeight.SemiBold,
                                 fontFamily = CinzelDecorativeFamily,
                                 color = AppTheme.TextPrimary,
-                                maxLines = 1,
+                                maxLines = 2,
                                 overflow = TextOverflow.Ellipsis
                             )
                             if (yoga.isAuspicious) {
@@ -754,6 +754,7 @@ private fun YogaCard(
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextMuted
                             )
+                            Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = yoga.houses.joinToString(", ") { "${it}H" },
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
@@ -854,6 +855,7 @@ private fun YogaCard(
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextMuted
                             )
+                            Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = yoga.activationPeriod,
                                 fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
