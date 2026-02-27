@@ -1017,6 +1017,7 @@ private fun PlanetaryNakshatraCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .vedicCornerMarkers(color = AppTheme.AccentGold)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
@@ -1236,8 +1237,10 @@ private fun TarabalaSummaryChip(
     color: Color
 ) {
     Surface(
+        modifier = Modifier.vedicCornerMarkers(color = color),
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.5f))
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
@@ -1352,7 +1355,9 @@ private fun NakshatraRemediesTab(
         // Lucky Numbers and Colors
         Row(modifier = Modifier.fillMaxWidth()) {
             Card(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .vedicCornerMarkers(color = AppTheme.AccentGold),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
@@ -1376,7 +1381,9 @@ private fun NakshatraRemediesTab(
             Spacer(modifier = Modifier.width(12.dp))
 
             Card(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f)
+                    .vedicCornerMarkers(color = AppTheme.AccentGold),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
                 shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)

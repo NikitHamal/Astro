@@ -425,6 +425,7 @@ private fun AshtakavargaStatItem(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.3f)),
         color = color.copy(alpha = 0.1f)
     ) {
         Column(
@@ -674,6 +675,7 @@ private fun InsightHouseChip(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.3f)),
         color = color.copy(alpha = 0.1f)
     ) {
         Column(
@@ -944,12 +946,14 @@ private fun PlanetAshtakavargaCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .vedicCornerMarkers(color = planetColor)
             .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = planetColor.copy(alpha = 0.3f))
             ) { onToggleExpand() },
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -1000,6 +1004,7 @@ private fun PlanetAshtakavargaCard(
                 // Strength indicator
                 Surface(
                     shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, getBinduColor(totalBindus / 12).copy(alpha = 0.3f)),
                     color = getBinduColor(totalBindus / 12).copy(alpha = 0.15f)
                 ) {
                     Text(
@@ -1137,6 +1142,7 @@ private fun HouseDetailCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Surface(
                         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, getBinduColor(totalBindus).copy(alpha = 0.3f)),
                         color = getBinduColor(totalBindus).copy(alpha = 0.15f)
                     ) {
                         Row(

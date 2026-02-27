@@ -783,7 +783,8 @@ private fun PlanetDetailCard(
                 // Strength grade chip
                 Surface(
                     color = getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.3f))
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
@@ -809,7 +810,8 @@ private fun PlanetDetailCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Surface(
                         color = AppTheme.AccentGold.copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, AppTheme.AccentGold.copy(alpha = 0.3f))
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
@@ -975,7 +977,8 @@ private fun VargaPositionRow(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Surface(
                 color = getDignityColor(position.dignity).copy(alpha = 0.15f),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, getDignityColor(position.dignity).copy(alpha = 0.3f))
             ) {
                 Text(
                     getLocalizedDignity(position.dignity, language),
@@ -1102,7 +1105,8 @@ private fun VimsopakaCard(
 
                 Surface(
                     color = getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, getStrengthGradeColor(strength.strengthGrade).copy(alpha = 0.3f))
                 ) {
                     Text(
                         getLocalizedStrengthGrade(strength.strengthGrade, language),

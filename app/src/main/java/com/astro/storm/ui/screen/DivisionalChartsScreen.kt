@@ -272,7 +272,11 @@ private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) 
                         Spacer(modifier = Modifier.height(12.dp))
                         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             items(analysis.vargottamaPlanets) { planet ->
-                                Surface(color = AppTheme.getPlanetColor(planet).copy(alpha = 0.15f), shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
+                                Surface(
+                                    color = AppTheme.getPlanetColor(planet).copy(alpha = 0.15f),
+                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, AppTheme.getPlanetColor(planet).copy(alpha = 0.3f))
+                                ) {
                                     Text(planet.getLocalizedName(language), modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp), fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, fontWeight = FontWeight.Medium, color = AppTheme.getPlanetColor(planet))
                                 }
                             }
@@ -528,8 +532,9 @@ private fun PlanetChipsCard(planets: List<Planet>, description: String, language
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(planets) { planet ->
                     Surface(
-                        color = AppTheme.getPlanetColor(planet).copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                        color = AppTheme.getPlanetColor(planet).copy(alpha = 0.15f),
+                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, AppTheme.getPlanetColor(planet).copy(alpha = 0.3f))
                     ) {
                         Text(
                             planet.getLocalizedName(language),
@@ -837,7 +842,8 @@ private fun CommunicationCard(analysis: CommunicationAnalysis) {
                     items(analysis.artisticTalents) { talent ->
                         Surface(
                             color = AppTheme.ChipBackground,
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor.copy(alpha = 0.5f))
                         ) {
                             Text(
                                 talent,
@@ -934,7 +940,11 @@ private fun SpouseCharacteristicsCard(
                 Text("${stringResource(StringKeyDosha.NAVAMSA_PROBABLE_PROFESSIONS)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(characteristics.probableProfessions) { profession ->
-                        Surface(color = AppTheme.ChipBackground, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
+                        Surface(
+                            color = AppTheme.ChipBackground,
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor.copy(alpha = 0.5f))
+                        ) {
                             Text(
                                 profession,
                                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
@@ -987,8 +997,9 @@ private fun MarriageTimingCard(factors: MarriageTimingFactors, language: Languag
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(factors.favorableDashaPlanets) { planet ->
                         Surface(
-                            color = AppTheme.SuccessColor.copy(alpha = 0.2f),
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                            color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.3f))
                         ) {
                             Text(
                                 planet.getLocalizedName(language),
@@ -1052,7 +1063,11 @@ private fun PlanetPositionRow(label: String, sign: String, color: Color) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(label, fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary)
-        Surface(color = color.copy(alpha = 0.2f), shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
+        Surface(
+            color = color.copy(alpha = 0.15f),
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.3f))
+        ) {
             Text(
                 sign,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
@@ -1306,7 +1321,11 @@ private fun GovernmentServiceCard(analysis: GovernmentServiceAnalysis) {
                 Text("${stringResource(StringKeyDosha.DASHAMSA_RECOMMENDED_AREAS)}:", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12, color = AppTheme.TextMuted)
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     items(analysis.recommendedDepartments) { dept ->
-                        Surface(color = AppTheme.ChipBackground, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
+                        Surface(
+                            color = AppTheme.ChipBackground,
+                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor.copy(alpha = 0.5f))
+                        ) {
                             Text(
                                 dept,
                                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
