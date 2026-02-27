@@ -83,9 +83,16 @@ import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaSandhiAnalyzer
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicFontSizes
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -297,22 +304,27 @@ private fun OverviewSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
 
 @Composable
 private fun VolatilityScoreCard(score: Int) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    val scoreColor = getVolatilityColor(score)
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = scoreColor),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+                .padding(NeoVedicTokens.ScreenPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = stringResource(StringKeyDosha.SANDHI_VOLATILITY),
-                style = MaterialTheme.typography.titleSmall,
+                fontSize = NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                fontFamily = SpaceGroteskFamily
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -340,25 +352,29 @@ private fun VolatilityScoreCard(score: Int) {
                     val scoreText = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(score) else score.toString()
                     Text(
                         text = scoreText + stringResource(StringKeyUIExtra.PERCENT),
-                        style = MaterialTheme.typography.headlineMedium,
+                        fontSize = NeoVedicFontSizes.S28,
                         fontWeight = FontWeight.Bold,
-                        color = getVolatilityColor(score)
+                        color = getVolatilityColor(score),
+                        fontFamily = CinzelDecorativeFamily
                     )
                     Text(
                         text = getVolatilityLabel(score),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = AppTheme.TextMuted
+                        fontSize = NeoVedicFontSizes.S11,
+                        color = AppTheme.TextMuted,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = stringResource(StringKeyDosha.SANDHI_VOLATILITY_DESC),
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = NeoVedicFontSizes.S13,
                 color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontFamily = PoppinsFontFamily,
+                lineHeight = 20.sp
             )
         }
     }
@@ -401,10 +417,11 @@ private fun StatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -414,15 +431,17 @@ private fun StatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontSize = NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
-                color = color
+                color = color,
+                fontFamily = SpaceGroteskFamily
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
-                color = AppTheme.TextMuted
+                fontSize = NeoVedicFontSizes.S11,
+                color = AppTheme.TextMuted,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -430,10 +449,11 @@ private fun StatCard(
 
 @Composable
 private fun GuidanceCard(guidance: String) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -441,25 +461,34 @@ private fun GuidanceCard(guidance: String) {
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Icon(
-                imageVector = Icons.Outlined.TipsAndUpdates,
-                contentDescription = null,
-                tint = AppTheme.AccentGold,
-                modifier = Modifier.size(24.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(AppTheme.AccentGold.copy(alpha = 0.15f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.TipsAndUpdates,
+                    contentDescription = null,
+                    tint = AppTheme.AccentGold,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
             Column {
                 Text(
                     text = stringResource(StringKeyDosha.SANDHI_GUIDANCE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    fontFamily = CinzelDecorativeFamily
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = guidance,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = NeoVedicFontSizes.S13,
                     color = AppTheme.TextSecondary,
-                    lineHeight = 22.sp
+                    lineHeight = 20.sp,
+                    fontFamily = PoppinsFontFamily
                 )
             }
         }
@@ -470,13 +499,13 @@ private fun GuidanceCard(guidance: String) {
 private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
     val language = LocalLanguage.current
     val monthDayYearFormatter = sandhiMonthDayYearFormatter()
+    val intensityColor = getSandhiIntensityColor(sandhi.intensity)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = getSandhiIntensityColor(sandhi.intensity).copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = intensityColor.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, intensityColor.copy(alpha = 0.2f))
     ) {
         Column(
             modifier = Modifier
@@ -490,14 +519,15 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
                 Icon(
                     imageVector = Icons.Outlined.Warning,
                     contentDescription = null,
-                    tint = getSandhiIntensityColor(sandhi.intensity),
+                    tint = intensityColor,
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
                     text = stringResource(StringKeyDosha.SANDHI_CURRENT_ACTIVE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
-                    color = getSandhiIntensityColor(sandhi.intensity)
+                    color = intensityColor,
+                    fontFamily = SpaceGroteskFamily
                 )
             }
 
@@ -505,9 +535,10 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
 
             Text(
                 text = sandhi.sandhi.fromPlanet.getLocalizedName(language) + stringResource(StringKeyUIExtra.ARROW) + sandhi.sandhi.toPlanet.getLocalizedName(language),
-                style = MaterialTheme.typography.bodyLarge,
+                fontSize = NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.Medium,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                fontFamily = CinzelDecorativeFamily
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -518,13 +549,15 @@ private fun CurrentStatusCard(sandhi: DashaSandhiAnalyzer.SandhiAnalysis) {
             ) {
                 Text(
                     text = "${stringResource(StringKeyDosha.SANDHI_INTENSITY)} ${sandhi.intensity.displayName}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary
+                    fontSize = NeoVedicFontSizes.S12,
+                    color = AppTheme.TextSecondary,
+                    fontFamily = PoppinsFontFamily
                 )
                 Text(
                     text = "${stringResource(StringKeyDosha.SANDHI_ENDS)} ${sandhi.sandhi.sandhiEndDate.format(monthDayYearFormatter)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary
+                    fontSize = NeoVedicFontSizes.S12,
+                    color = AppTheme.TextSecondary,
+                    fontFamily = PoppinsFontFamily
                 )
             }
         }
@@ -583,7 +616,6 @@ private fun CurrentSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAna
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun SandhiDetailCard(
     sandhi: DashaSandhiAnalyzer.SandhiAnalysis,
@@ -592,13 +624,15 @@ private fun SandhiDetailCard(
     val language = LocalLanguage.current
     val monthDayYearFormatter = sandhiMonthDayYearFormatter()
     var expanded by remember { mutableStateOf(isExpanded) }
+    val intensityColor = getSandhiIntensityColor(sandhi.intensity)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Header
@@ -618,19 +652,21 @@ private fun SandhiDetailCard(
                         modifier = Modifier
                             .size(12.dp)
                             .clip(CircleShape)
-                            .background(getSandhiIntensityColor(sandhi.intensity))
+                            .background(intensityColor)
                     )
                     Column {
                         Text(
                             text = sandhi.sandhi.fromPlanet.getLocalizedName(language) + stringResource(StringKeyUIExtra.ARROW) + sandhi.sandhi.toPlanet.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             text = sandhi.transitionType.name.replace("_", " "),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            fontSize = NeoVedicFontSizes.S12,
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -639,15 +675,16 @@ private fun SandhiDetailCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                        color = getSandhiIntensityColor(sandhi.intensity).copy(alpha = 0.15f)
+                        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                        color = intensityColor.copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = sandhi.intensity.displayName,
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = getSandhiIntensityColor(sandhi.intensity),
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            fontSize = NeoVedicFontSizes.S10,
+                            fontWeight = FontWeight.Bold,
+                            color = intensityColor,
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            fontFamily = SpaceGroteskFamily
                         )
                     }
                     Icon(
@@ -666,13 +703,15 @@ private fun SandhiDetailCard(
             ) {
                 Text(
                     text = "${stringResource(StringKeyDosha.UI_START)} ${sandhi.sandhi.sandhiStartDate.format(monthDayYearFormatter)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary
+                    fontSize = NeoVedicFontSizes.S11,
+                    color = AppTheme.TextSecondary,
+                    fontFamily = SpaceGroteskFamily
                 )
                 Text(
                     text = "${stringResource(StringKeyDosha.UI_END)} ${sandhi.sandhi.sandhiEndDate.format(monthDayYearFormatter)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary
+                    fontSize = NeoVedicFontSizes.S11,
+                    color = AppTheme.TextSecondary,
+                    fontFamily = SpaceGroteskFamily
                 )
             }
 
@@ -689,9 +728,10 @@ private fun SandhiDetailCard(
                     // Predictions
                     Text(
                         text = stringResource(StringKeyDosha.SANDHI_PREDICTIONS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        fontFamily = CinzelDecorativeFamily
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -705,9 +745,10 @@ private fun SandhiDetailCard(
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = stringResource(StringKeyDosha.SANDHI_IMPACTS),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         FlowRow(
@@ -725,9 +766,10 @@ private fun SandhiDetailCard(
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = stringResource(StringKeyDosha.SANDHI_REMEDIES),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         sandhi.remedies.take(3).forEach { remedy ->
@@ -752,22 +794,25 @@ private fun KeyDateItem(keyDate: DashaSandhiAnalyzer.KeyDatePrediction) {
     ) {
         Text(
             text = keyDate.date.format(monthDayFormatter),
-            style = MaterialTheme.typography.bodySmall,
+            fontSize = NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium,
             color = AppTheme.AccentPrimary,
-            modifier = Modifier.width(50.dp)
+            modifier = Modifier.width(50.dp),
+            fontFamily = SpaceGroteskFamily
         )
         Column {
             Text(
                 text = keyDate.event,
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = NeoVedicFontSizes.S13,
                 fontWeight = FontWeight.Medium,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                fontFamily = PoppinsFontFamily
             )
             Text(
                 text = keyDate.significance,
-                style = MaterialTheme.typography.labelSmall,
-                color = AppTheme.TextMuted
+                fontSize = NeoVedicFontSizes.S11,
+                color = AppTheme.TextMuted,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -775,9 +820,10 @@ private fun KeyDateItem(keyDate: DashaSandhiAnalyzer.KeyDatePrediction) {
 
 @Composable
 private fun LifeAreaChip(impact: DashaSandhiAnalyzer.LifeAreaImpact) {
+    val impactColor = getImpactColor(impact.impactLevel)
     Surface(
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = getImpactColor(impact.impactLevel).copy(alpha = 0.15f)
+        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+        color = impactColor.copy(alpha = 0.15f)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -788,13 +834,14 @@ private fun LifeAreaChip(impact: DashaSandhiAnalyzer.LifeAreaImpact) {
                 modifier = Modifier
                     .size(8.dp)
                     .clip(CircleShape)
-                    .background(getImpactColor(impact.impactLevel))
+                    .background(impactColor)
             )
             Text(
                 text = impact.area,
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Medium,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -804,7 +851,7 @@ private fun LifeAreaChip(impact: DashaSandhiAnalyzer.LifeAreaImpact) {
 private fun RemedyItem(remedy: DashaSandhiAnalyzer.SandhiRemedy) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -814,16 +861,18 @@ private fun RemedyItem(remedy: DashaSandhiAnalyzer.SandhiRemedy) {
             ) {
                 Text(
                     text = remedy.type.name.replace("_", " "),
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.AccentPrimary
+                    fontSize = NeoVedicFontSizes.S11,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.AccentPrimary,
+                    fontFamily = SpaceGroteskFamily
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = remedy.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextSecondary
+                fontSize = NeoVedicFontSizes.S12,
+                color = AppTheme.TextSecondary,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -835,14 +884,15 @@ private fun UpcomingSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAn
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
     ) {
         if (analysis.upcomingSandhis.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(
                     modifier = Modifier
@@ -852,9 +902,10 @@ private fun UpcomingSandhiSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAn
                 ) {
                     Text(
                         text = stringResource(StringKeyDosha.SANDHI_NO_UPCOMING),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
@@ -872,14 +923,15 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = NeoVedicTokens.ScreenPadding),
+        verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceMD)
     ) {
         if (analysis.sandhiCalendar.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(
                     modifier = Modifier
@@ -896,9 +948,10 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(StringKeyDosha.SANDHI_NO_CALENDAR),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
@@ -911,10 +964,11 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
             groupedByMonth.forEach { (month, entries) ->
                 Text(
                     text = month,
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    fontFamily = SpaceGroteskFamily
                 )
 
                 entries.forEach { entry ->
@@ -929,12 +983,13 @@ private fun CalendarSection(analysis: DashaSandhiAnalyzer.CompleteSandhiAnalysis
 private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
     val dayFormatter = sandhiDayFormatter()
     val weekdayFormatter = sandhiWeekdayFormatter()
-    Card(
+    val intensityColor = getSandhiIntensityColor(entry.intensity)
+
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = getSandhiIntensityColor(entry.intensity).copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = intensityColor.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, intensityColor.copy(alpha = 0.2f))
     ) {
         Row(
             modifier = Modifier
@@ -946,7 +1001,7 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
             // Date badge
             val language = LocalLanguage.current
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = AppTheme.CardBackground
             ) {
                 Column(
@@ -956,14 +1011,16 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
                     val dayStr = entry.date.format(dayFormatter)
                     Text(
                         text = if (language == Language.NEPALI) com.astro.storm.core.common.BikramSambatConverter.toNepaliNumerals(dayStr.toInt()) else dayStr,
-                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                        color = AppTheme.TextPrimary,
+                        fontFamily = SpaceGroteskFamily
                     )
                     Text(
                         text = entry.date.format(weekdayFormatter),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = AppTheme.TextMuted
+                        fontSize = NeoVedicFontSizes.S11,
+                        color = AppTheme.TextMuted,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
@@ -972,30 +1029,33 @@ private fun CalendarEntryCard(entry: DashaSandhiAnalyzer.SandhiCalendarEntry) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = entry.sandhiType,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextPrimary,
+                    fontFamily = PoppinsFontFamily
                 )
                 Text(
                     text = entry.fromPlanet.displayName + stringResource(StringKeyUIExtra.ARROW) + entry.toPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
+                    fontFamily = PoppinsFontFamily
                 )
             }
 
             // Intensity badge
             Surface(
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                color = getSandhiIntensityColor(entry.intensity).copy(alpha = 0.2f)
+                shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                color = intensityColor.copy(alpha = 0.2f)
             ) {
                 Text(
                     text = entry.intensity.displayName,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Medium,
-                    color = getSandhiIntensityColor(entry.intensity),
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    fontSize = NeoVedicFontSizes.S10,
+                    fontWeight = FontWeight.Bold,
+                    color = intensityColor,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    fontFamily = SpaceGroteskFamily
                 )
             }
         }
@@ -1027,31 +1087,11 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Schedule,
-                contentDescription = null,
-                tint = AppTheme.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKeyDosha.SANDHI_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
+        NeoVedicEmptyState(
+            title = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+            subtitle = stringResource(StringKeyDosha.SANDHI_NO_CHART_DESC),
+            icon = Icons.Outlined.Schedule
+        )
     }
 }
 

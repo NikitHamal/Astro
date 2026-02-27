@@ -108,20 +108,22 @@ fun SettingsTab(
             }
         }
 
-        // Export Section - Only PDF export is available
+        // Export Section
         if (currentChart != null) {
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 SettingsSectionHeader(titleKey = StringKey.SETTINGS_EXPORT)
             }
 
-            item {
-                SettingsItem(
-                    icon = Icons.Outlined.PictureAsPdf,
-                    titleKey = StringKey.SETTINGS_EXPORT_PDF,
-                    subtitleKey = StringKey.SETTINGS_EXPORT_PDF_DESC,
-                    onClick = { onExportChart(ExportFormat.PDF) }
-                )
+            ExportFormat.entries.forEach { format ->
+                item {
+                    SettingsItem(
+                        icon = format.icon,
+                        titleKey = format.titleKey,
+                        subtitleKey = format.descriptionKey,
+                        onClick = { onExportChart(format) }
+                    )
+                }
             }
         }
 
@@ -1114,10 +1116,6 @@ private fun FeatureBadge(textKey: StringKey) {
 
 /**
  * Export formats supported by AstroStorm
- *
- * Note: The Settings UI only exposes PDF export for user-facing functionality.
- * Other formats (IMAGE, JSON, CSV) are used internally by the app
- * for programmatic export operations in Navigation.kt and ChartViewModel.
  */
 enum class ExportFormat(
     val titleKey: StringKey,

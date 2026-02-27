@@ -1,10 +1,25 @@
 package com.astro.storm.ui.screen
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -14,12 +29,31 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import com.astro.storm.ui.components.common.ModernPillTabRow
-import com.astro.storm.ui.components.common.NeoVedicPageHeader
-import com.astro.storm.ui.components.common.TabItem
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.Description
+import androidx.compose.material.icons.outlined.Error
+import androidx.compose.material.icons.outlined.HealthAndSafety
+import androidx.compose.material.icons.outlined.SelfImprovement
+import androidx.compose.material.icons.outlined.Stars
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,26 +62,37 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.storm.core.common.Language
-import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.common.StringKey
-import com.astro.storm.core.common.StringKeyDosha
-import com.astro.storm.core.common.StringKeyUICommon
-import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyAnalysis
-import com.astro.storm.data.localization.stringResource
-import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.core.common.StringKeyDosha
+import com.astro.storm.core.common.StringKeyMatch
+import com.astro.storm.core.common.StringKeyUICommon
+import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator
-import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaAnalysis
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.AyurSpan
-import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaPeriod
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigAntardasha
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaAnalysis
+import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.DrigDashaPeriod
 import com.astro.storm.ephemeris.jaimini.DrigDashaCalculator.SthiraKarakaInfo
+import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
+import com.astro.storm.ui.components.common.NeoVedicPageHeader
+import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicFontSizes
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.DateTimeException
@@ -55,7 +100,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
-import androidx.compose.ui.text.style.TextOverflow
 import java.util.Locale
 
 private fun drigLocale(language: Language): Locale =
@@ -216,7 +260,7 @@ private fun OverviewTab(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Longevity Card
@@ -248,15 +292,16 @@ private fun OverviewTab(
 
         // Interpretation
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                color = AppTheme.CardBackground,
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
+                        .padding(NeoVedicTokens.ScreenPadding)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -265,14 +310,15 @@ private fun OverviewTab(
                             imageVector = Icons.Outlined.Description,
                             contentDescription = null,
                             tint = AppTheme.AccentPrimary,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = stringResource(StringKeyDosha.UI_INTERPRETATION),
-                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                     }
 
@@ -285,9 +331,10 @@ private fun OverviewTab(
                         ) + " (${analysis.longevitySpan.minYears}-${analysis.longevitySpan.maxYears} " + stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_YEARS) + "). " +
                                 stringResource(com.astro.storm.core.common.StringKeyDosha.DRIG_CURRENT_DASHA) + " is ruled by ${analysis.currentDasha?.signLord?.getLocalizedName(language) ?: stringResource(com.astro.storm.core.common.StringKeyMatch.MISC_UNKNOWN)}, " +
                                 stringResource(com.astro.storm.core.common.StringKeyUICommon.FOR) + " ${analysis.currentDasha?.interpretation ?: stringResource(com.astro.storm.core.common.StringKeyAnalysis.DASHA_KW_GENERAL)}.",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
-                        lineHeight = 22.sp
+                        lineHeight = 22.sp,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
             }
@@ -306,12 +353,13 @@ private fun LongevityCard(
         AyurSpan.PURNAYU -> AppTheme.SuccessColor
     }
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = spanColor.copy(alpha = 0.1f)
-        )
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = spanColor),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = spanColor.copy(alpha = 0.05f),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, spanColor.copy(alpha = 0.2f))
     ) {
         Column(
             modifier = Modifier
@@ -321,7 +369,7 @@ private fun LongevityCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(72.dp)
                     .clip(CircleShape)
                     .background(
                         Brush.radialGradient(
@@ -338,7 +386,7 @@ private fun LongevityCard(
                     imageVector = Icons.Outlined.HealthAndSafety,
                     contentDescription = null,
                     tint = spanColor,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(36.dp)
                 )
             }
 
@@ -346,34 +394,41 @@ private fun LongevityCard(
 
             Text(
                 text = stringResource(StringKeyDosha.DRIG_LONGEVITY_CLASSIFICATION),
-                style = MaterialTheme.typography.labelMedium,
-                color = AppTheme.TextMuted
+                fontSize = NeoVedicFontSizes.S12,
+                color = AppTheme.TextMuted,
+                fontWeight = FontWeight.Medium,
+                fontFamily = SpaceGroteskFamily,
+                letterSpacing = 1.sp
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = longevitySpan.name.replace("_", " "),
-                style = MaterialTheme.typography.headlineSmall,
+                fontSize = NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
-                color = spanColor
+                color = spanColor,
+                fontFamily = CinzelDecorativeFamily
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = "${longevitySpan.minYears}-${longevitySpan.maxYears} " + stringResource(StringKeyDosha.DRIG_YEARS),
-                style = MaterialTheme.typography.titleMedium,
-                color = AppTheme.TextSecondary
+                fontSize = NeoVedicFontSizes.S15,
+                color = AppTheme.TextSecondary,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = PoppinsFontFamily
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
                 text = longevitySpan.description,
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -393,15 +448,16 @@ private fun CurrentPeriodCard(
 
     val signColor = getSignColor(period.sign)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)
+                .padding(NeoVedicTokens.ScreenPadding)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -414,13 +470,13 @@ private fun CurrentPeriodCard(
                     Box(
                         modifier = Modifier
                             .size(48.dp)
-                            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                             .background(signColor.copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = period.sign.getLocalizedName(language).take(2),
-                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.Bold,
                             color = signColor
                         )
@@ -431,21 +487,23 @@ private fun CurrentPeriodCard(
                     Column {
                         Text(
                             text = stringResource(StringKeyDosha.DRIG_CURRENT_DASHA),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = AppTheme.TextMuted
+                            fontSize = NeoVedicFontSizes.S12,
+                            color = AppTheme.TextMuted,
+                            fontFamily = SpaceGroteskFamily
                         )
                         Text(
                             text = period.sign.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleLarge,
+                            fontSize = NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                     }
                 }
 
                 // Period Badge
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
                     color = if (period.isMarakaPeriod)
                         AppTheme.WarningColor.copy(alpha = 0.15f)
                     else
@@ -456,13 +514,14 @@ private fun CurrentPeriodCard(
                             stringResource(StringKeyDosha.DRIG_MARAKA)
                         else
                             stringResource(StringKeyDosha.DRIG_NORMAL),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.SemiBold,
                         color = if (period.isMarakaPeriod)
                             AppTheme.WarningColor
                         else
                             AppTheme.SuccessColor,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                        fontFamily = SpaceGroteskFamily
                     )
                 }
             }
@@ -476,19 +535,22 @@ private fun CurrentPeriodCard(
             ) {
                 Text(
                     text = period.startDate.format(dateFormatter),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppTheme.TextMuted
+                    fontSize = NeoVedicFontSizes.S11,
+                    color = AppTheme.TextMuted,
+                    fontFamily = SpaceGroteskFamily
                 )
                 Text(
                     text = "${period.durationYears} " + stringResource(StringKeyDosha.DRIG_YEARS),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.SemiBold,
-                    color = signColor
+                    color = signColor,
+                    fontFamily = SpaceGroteskFamily
                 )
                 Text(
                     text = period.endDate.format(dateFormatter),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppTheme.TextMuted
+                    fontSize = NeoVedicFontSizes.S11,
+                    color = AppTheme.TextMuted,
+                    fontFamily = SpaceGroteskFamily
                 )
             }
 
@@ -496,11 +558,11 @@ private fun CurrentPeriodCard(
 
             // Progress Bar
             LinearProgressIndicator(
-                progress = progress,
+                progress = { progress },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(8.dp)
-                    .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = signColor,
                 trackColor = AppTheme.DividerColor
             )
@@ -517,10 +579,11 @@ private fun CurrentPeriodCard(
                     stringResource(StringKeyDosha.DRIG_YEARS_REMAINING, remainingYears, remainingMonths)
                 else
                     stringResource(StringKeyDosha.DRIG_MONTHS_REMAINING, remainingMonths),
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = NeoVedicFontSizes.S11,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -550,10 +613,11 @@ private fun KeySignsCard(
     maheshwaraSign: ZodiacSign,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -562,9 +626,10 @@ private fun KeySignsCard(
         ) {
             Text(
                 text = stringResource(StringKeyDosha.DRIG_TRIMURTI_SIGNS),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                fontFamily = CinzelDecorativeFamily
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -634,23 +699,26 @@ private fun TrimurtiSignItem(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.labelMedium,
+            fontSize = NeoVedicFontSizes.S11,
             fontWeight = FontWeight.Bold,
-            color = color
+            color = color,
+            fontFamily = SpaceGroteskFamily
         )
 
         Text(
             text = sign.getLocalizedName(language),
-            style = MaterialTheme.typography.bodySmall,
+            fontSize = NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
-            color = AppTheme.TextPrimary
+            color = AppTheme.TextPrimary,
+            fontFamily = PoppinsFontFamily
         )
 
         Text(
             text = description,
-            style = MaterialTheme.typography.labelSmall,
+            fontSize = NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            fontFamily = PoppinsFontFamily
         )
     }
 }
@@ -665,16 +733,17 @@ private fun DashaPeriodTab(
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+        contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
             Text(
                 text = stringResource(StringKeyDosha.DRIG_DASHA_SEQUENCE),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
+                fontFamily = CinzelDecorativeFamily
             )
         }
 
@@ -708,22 +777,20 @@ private fun DashaPeriodCard(
     else
         Color.Transparent
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = if (isCurrentPeriod) 2.dp else 0.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             )
             .clickable { onExpandClick() },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isCurrentPeriod)
-                AppTheme.AccentPrimary.copy(alpha = 0.05f)
-            else
-                AppTheme.CardBackground
-        )
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        color = if (isCurrentPeriod)
+            AppTheme.AccentPrimary.copy(alpha = 0.05f)
+        else
+            AppTheme.CardBackground
     ) {
         Column(
             modifier = Modifier
@@ -737,15 +804,16 @@ private fun DashaPeriodCard(
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                         .background(signColor.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = period.sign.getLocalizedName(language).take(2),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
-                        color = signColor
+                        color = signColor,
+                        fontFamily = SpaceGroteskFamily
                     )
                 }
 
@@ -757,22 +825,25 @@ private fun DashaPeriodCard(
                     ) {
                         Text(
                             text = period.sign.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
 
                         if (isCurrentPeriod) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Surface(
-                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                                 color = AppTheme.AccentPrimary.copy(alpha = 0.2f)
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.UI_CURRENT),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    text = stringResource(StringKeyDosha.UI_CURRENT).uppercase(),
+                                    fontSize = NeoVedicFontSizes.S9,
                                     color = AppTheme.AccentPrimary,
-                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = SpaceGroteskFamily
                                 )
                             }
                         }
@@ -780,8 +851,9 @@ private fun DashaPeriodCard(
 
                     Text(
                         text = "${period.startDate.format(dateFormatter)} - ${period.endDate.format(dateFormatter)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted
+                        fontSize = NeoVedicFontSizes.S11,
+                        color = AppTheme.TextMuted,
+                        fontFamily = PoppinsFontFamily
                     )
                 }
 
@@ -791,23 +863,26 @@ private fun DashaPeriodCard(
                 ) {
                     if (period.isMarakaPeriod) {
                         Surface(
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.WarningColor.copy(alpha = 0.15f)
                         ) {
                             Text(
-                                text = stringResource(StringKeyDosha.DRIG_MARAKA),
-                                style = MaterialTheme.typography.labelSmall,
+                                text = stringResource(StringKeyDosha.DRIG_MARAKA).uppercase(),
+                                fontSize = NeoVedicFontSizes.S9,
                                 color = AppTheme.WarningColor,
-                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = SpaceGroteskFamily
                             )
                         }
                     }
 
                     Text(
                         text = "${period.durationYears}y",
-                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.SemiBold,
-                        color = signColor
+                        color = signColor,
+                        fontFamily = SpaceGroteskFamily
                     )
 
                     Icon(
@@ -839,9 +914,10 @@ private fun DashaPeriodCard(
 
                     Text(
                         text = stringResource(StringKeyDosha.DRIG_ANTARDASHAS),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextMuted
+                        color = AppTheme.TextMuted,
+                        fontFamily = SpaceGroteskFamily
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -878,9 +954,10 @@ private fun AntardashaRow(
         ) {
             Text(
                 text = antardasha.sign.getLocalizedName(language).take(1),
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = NeoVedicFontSizes.S11,
                 fontWeight = FontWeight.Bold,
-                color = signColor
+                color = signColor,
+                fontFamily = SpaceGroteskFamily
             )
         }
 
@@ -888,16 +965,18 @@ private fun AntardashaRow(
 
         Text(
             text = antardasha.sign.getLocalizedName(language),
-            style = MaterialTheme.typography.bodySmall,
+            fontSize = NeoVedicFontSizes.S13,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextSecondary,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
+            fontFamily = PoppinsFontFamily
         )
 
         Text(
             text = "${antardasha.startDate.format(dateFormatter)} - ${antardasha.endDate.format(dateFormatter)}",
-            style = MaterialTheme.typography.labelSmall,
-            color = AppTheme.TextMuted
+            fontSize = NeoVedicFontSizes.S11,
+            color = AppTheme.TextMuted,
+            fontFamily = SpaceGroteskFamily
         )
     }
 }
@@ -1216,8 +1295,9 @@ private fun LoadingStateDD(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.DRIG_CALCULATING),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextMuted
+                fontSize = NeoVedicFontSizes.S14,
+                color = AppTheme.TextMuted,
+                fontFamily = PoppinsFontFamily
             )
         }
     }
@@ -1229,24 +1309,11 @@ private fun ErrorStateDD(message: String, modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Error,
-                contentDescription = null,
-                tint = AppTheme.ErrorColor,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
+        NeoVedicEmptyState(
+            title = stringResource(StringKeyDosha.ERROR_CALCULATION),
+            subtitle = message,
+            icon = Icons.Outlined.Error
+        )
     }
 }
 

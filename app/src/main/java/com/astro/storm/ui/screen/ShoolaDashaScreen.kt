@@ -74,22 +74,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.Language
-import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
+import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.StringKeyUICommon
-import com.astro.storm.core.common.StringKeyAdvanced
 import com.astro.storm.core.common.getLocalizedName
-import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
-import com.astro.storm.ephemeris.shoola.*
-import com.astro.storm.ephemeris.shoola.ShoolaDashaCalculator
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.stringResource
+import com.astro.storm.ephemeris.shoola.DashaDirection
+import com.astro.storm.ephemeris.shoola.HealthVulnerabilityPeriod
+import com.astro.storm.ephemeris.shoola.LongevityAssessment
+import com.astro.storm.ephemeris.shoola.LongevityCategory
+import com.astro.storm.ephemeris.shoola.PeriodNature
+import com.astro.storm.ephemeris.shoola.RemedyType
+import com.astro.storm.ephemeris.shoola.ShoolaDashaResult
+import com.astro.storm.ephemeris.shoola.ShoolaDashaPeriod
+import com.astro.storm.ephemeris.shoola.ShoolaRemedy
+import com.astro.storm.ephemeris.shoola.TriMurtiAnalysis
+import com.astro.storm.ephemeris.shoola.getSeverityColor
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicFontSizes
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.ShoolaDashaUiState
 import com.astro.storm.ui.viewmodel.ShoolaDashaViewModel
 import java.time.format.DateTimeFormatter
@@ -151,7 +167,18 @@ fun ShoolaDashaScreen(
                 message = state.message,
                 modifier = Modifier.padding(paddingValues)
             )
-            is ShoolaDashaUiState.Idle -> ShoolaEmptyContent(modifier = Modifier.padding(paddingValues))
+            is ShoolaDashaUiState.Idle -> {
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NeoVedicEmptyState(
+                        title = stringResource(StringKeyAdvanced.SHOOLA_TITLE),
+                        subtitle = stringResource(StringKey.NO_PROFILE_MESSAGE),
+                        icon = Icons.Outlined.HealthAndSafety
+                    )
+                }
+            }
             is ShoolaDashaUiState.Success -> {
                 LazyColumn(
                     modifier = Modifier
@@ -277,22 +304,24 @@ private fun LongevityStatusCard(
     val displayName = if (language == Language.NEPALI)
         longevity.category.displayNameNe else longevity.category.displayName
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = statusColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = statusColor),
+        color = statusColor.copy(alpha = 0.05f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, statusColor.copy(alpha = 0.2f))
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding),
+                .padding(NeoVedicTokens.ScreenPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Box(
                 modifier = Modifier
                     .size(72.dp)
-                    .clip(CircleShape)
-                    .background(statusColor.copy(alpha = 0.15f)),
+                    .background(statusColor.copy(alpha = 0.15f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -302,31 +331,39 @@ private fun LongevityStatusCard(
                     modifier = Modifier.size(40.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(com.astro.storm.ui.theme.NeoVedicTokens.SpaceMD))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
             Text(
                 text = stringResource(StringKeyAdvanced.SHOOLA_LONGEVITY_CATEGORY),
-                style = MaterialTheme.typography.labelMedium,
-                color = AppTheme.TextMuted
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S12,
+                color = AppTheme.TextMuted,
+                fontWeight = FontWeight.Medium,
+                letterSpacing = 1.sp
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = displayName,
-                style = MaterialTheme.typography.titleLarge,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(StringKeyAdvanced.SHOOLA_LONGEVITY_RANGE) + ": " + longevity.category.yearsRange,
-                style = MaterialTheme.typography.titleMedium,
-                color = AppTheme.TextSecondary
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S14,
+                color = AppTheme.TextSecondary,
+                fontWeight = FontWeight.SemiBold
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = if (language == Language.NEPALI) longevity.interpretationNe else longevity.interpretation,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                lineHeight = 22.sp
             )
         }
     }
@@ -337,30 +374,39 @@ private fun TriMurtiCard(
     triMurti: TriMurtiAnalysis,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Psychology,
-                    contentDescription = null,
-                    tint = AppTheme.AccentGold,
-                    modifier = Modifier.size(20.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(AppTheme.AccentGold.copy(alpha = 0.15f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Psychology,
+                        contentDescription = null,
+                        tint = AppTheme.AccentGold,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
                 Text(
                     text = stringResource(StringKeyAdvanced.SHOOLA_TRI_MURTI),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = NeoVedicFontSizes.S16,
+                    fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Brahma
             triMurti.brahma?.let { brahma ->
@@ -376,7 +422,7 @@ private fun TriMurtiCard(
 
             HorizontalDivider(
                 color = AppTheme.DividerColor,
-                modifier = Modifier.padding(vertical = 12.dp)
+                modifier = Modifier.padding(vertical = 14.dp)
             )
 
             // Rudra
@@ -391,7 +437,7 @@ private fun TriMurtiCard(
 
             HorizontalDivider(
                 color = AppTheme.DividerColor,
-                modifier = Modifier.padding(vertical = 12.dp)
+                modifier = Modifier.padding(vertical = 14.dp)
             )
 
             // Maheshwara
@@ -426,37 +472,42 @@ private fun TriMurtiRow(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S14,
+                fontWeight = FontWeight.Bold,
                 color = color
             )
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = NeoVedicFontSizes.S11,
                 color = AppTheme.TextMuted
             )
         }
         Column(horizontalAlignment = Alignment.End) {
             Text(
                 text = planet,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S14,
+                fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
             sign?.let {
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = AppTheme.TextMuted
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = NeoVedicFontSizes.S12,
+                    color = AppTheme.TextSecondary
                 )
             }
             strength?.let {
+                Spacer(modifier = Modifier.height(4.dp))
                 LinearProgressIndicator(
                     progress = { it.toFloat() },
                     modifier = Modifier
                         .width(60.dp)
                         .height(4.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                     color = color,
                     trackColor = color.copy(alpha = 0.2f),
                     strokeCap = StrokeCap.Round
@@ -481,10 +532,11 @@ private fun CurrentPeriodCard(
 
     val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = natureColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = natureColor.copy(alpha = 0.05f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, natureColor.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -495,32 +547,37 @@ private fun CurrentPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyAdvanced.SHOOLA_CURRENT_PERIOD),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = AppTheme.TextMuted
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
+                        color = AppTheme.TextMuted,
+                        fontWeight = FontWeight.Medium,
+                        letterSpacing = 1.sp
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "${period.sign.displayName} ${stringResource(StringKeyAdvanced.SHOOLA_MAHADASHA)}",
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = NeoVedicFontSizes.S18,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
                     color = natureColor.copy(alpha = 0.15f)
                 ) {
                     Text(
-                        text = if (language == Language.NEPALI) period.nature.displayNameNe else period.nature.displayName,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold,
+                        text = (if (language == Language.NEPALI) period.nature.displayNameNe else period.nature.displayName).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S10,
+                        fontWeight = FontWeight.Bold,
                         color = natureColor,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Progress bar
             Column {
@@ -528,37 +585,40 @@ private fun CurrentPeriodCard(
                     progress = { period.progress.toFloat() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(8.dp)
-                        .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                     color = natureColor,
                     trackColor = natureColor.copy(alpha = 0.2f),
                     strokeCap = StrokeCap.Round
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(6.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = period.startDate.format(dateFormatter),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = "${(period.progress * 100).toInt()}%",
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
+                        fontWeight = FontWeight.Bold,
                         color = natureColor
                     )
                     Text(
                         text = period.endDate.format(dateFormatter),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Period details
             Row(
@@ -568,26 +628,32 @@ private fun CurrentPeriodCard(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = stringResource(StringKeyAdvanced.SHOOLA_SIGN_LORD),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = period.signLord.displayName,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S14,
+                        fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = stringResource(StringKeyAdvanced.SHOOLA_HEALTH_SEVERITY),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = if (language == Language.NEPALI) period.healthSeverity.displayNameNe else period.healthSeverity.displayName,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S14,
+                        fontWeight = FontWeight.Bold,
                         color = getSeverityColor(period.healthSeverity)
                     )
                 }
@@ -705,21 +771,18 @@ private fun ShoolaPeriodCard(
         else -> stringResource(StringKeyAdvanced.SHOOLA_FUTURE)
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { expanded = !expanded }
             .animateContentSize(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (period.isCurrent)
-                natureColor.copy(alpha = 0.08f) else AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (period.isCurrent) natureColor.copy(alpha = 0.05f) else AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = if (period.isCurrent) androidx.compose.foundation.BorderStroke(1.dp, natureColor.copy(alpha = 0.3f)) else null
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { expanded = !expanded },
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -736,22 +799,25 @@ private fun ShoolaPeriodCard(
                     ) {
                         Text(
                             text = period.sign.displayName.take(2),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = NeoVedicFontSizes.S17,
                             fontWeight = FontWeight.Bold,
-                            color = natureColor
+                            color = natureColor,
+                            fontFamily = SpaceGroteskFamily
                         )
                     }
                     Column {
                         Text(
                             text = "${period.sign.displayName} Dasha",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextPrimary
+                            fontSize = NeoVedicFontSizes.S16,
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.TextPrimary,
+                            fontFamily = CinzelDecorativeFamily
                         )
                         Text(
                             text = "${period.startDate.format(dateFormatter)} - ${period.endDate.format(dateFormatter)}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextMuted
+                            fontSize = NeoVedicFontSizes.S12,
+                            color = AppTheme.TextMuted,
+                            fontFamily = PoppinsFontFamily
                         )
                     }
                 }
@@ -760,16 +826,17 @@ private fun ShoolaPeriodCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
                         color = if (period.isCurrent) natureColor.copy(alpha = 0.2f)
                         else AppTheme.ChipBackground
                     ) {
                         Text(
-                            text = statusLabel,
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
+                            text = statusLabel.uppercase(),
+                            fontSize = NeoVedicFontSizes.S10,
+                            fontWeight = FontWeight.Bold,
                             color = if (period.isCurrent) natureColor else AppTheme.TextMuted,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            fontFamily = SpaceGroteskFamily
                         )
                     }
                     Icon(
@@ -785,9 +852,9 @@ private fun ShoolaPeriodCard(
                 enter = expandVertically() + fadeIn(),
                 exit = shrinkVertically() + fadeOut()
             ) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
+                Column(modifier = Modifier.padding(top = 16.dp)) {
                     HorizontalDivider(color = AppTheme.DividerColor)
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     // Nature and Health Severity
                     Row(
@@ -797,40 +864,46 @@ private fun ShoolaPeriodCard(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = stringResource(StringKeyAdvanced.SHOOLA_PERIOD_NATURE),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted
+                                fontSize = NeoVedicFontSizes.S11,
+                                color = AppTheme.TextMuted,
+                                fontFamily = SpaceGroteskFamily
                             )
                             Surface(
-                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                                 color = natureColor.copy(alpha = 0.15f),
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
                                 Text(
                                     text = if (language == Language.NEPALI) period.nature.displayNameNe
                                     else period.nature.displayName,
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = NeoVedicFontSizes.S12,
                                     color = natureColor,
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    fontWeight = FontWeight.Medium,
+                                    fontFamily = PoppinsFontFamily
                                 )
                             }
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = stringResource(StringKeyAdvanced.SHOOLA_HEALTH_SEVERITY),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.TextMuted
+                                fontSize = NeoVedicFontSizes.S11,
+                                color = AppTheme.TextMuted,
+                                fontFamily = SpaceGroteskFamily
                             )
                             Surface(
-                                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                                 color = getSeverityColor(period.healthSeverity).copy(alpha = 0.15f),
                                 modifier = Modifier.padding(top = 4.dp)
                             ) {
                                 Text(
                                     text = if (language == Language.NEPALI) period.healthSeverity.displayNameNe
                                     else period.healthSeverity.displayName,
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = NeoVedicFontSizes.S12,
                                     color = getSeverityColor(period.healthSeverity),
-                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    fontWeight = FontWeight.Medium,
+                                    fontFamily = PoppinsFontFamily
                                 )
                             }
                         }
@@ -841,9 +914,10 @@ private fun ShoolaPeriodCard(
                     // Interpretation
                     Text(
                         text = if (language == Language.NEPALI) period.interpretationNe else period.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
-                        lineHeight = 20.sp
+                        lineHeight = 20.sp,
+                        fontFamily = PoppinsFontFamily
                     )
 
                     // Significant planets
@@ -851,9 +925,10 @@ private fun ShoolaPeriodCard(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(StringKeyAdvanced.SHOOLA_SIGNIFICANT_PLANETS),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.TextMuted
+                            fontSize = NeoVedicFontSizes.S11,
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.TextMuted,
+                            fontFamily = SpaceGroteskFamily
                         )
                         LazyRow(
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -861,14 +936,15 @@ private fun ShoolaPeriodCard(
                         ) {
                             items(period.significantPlanets) { planet ->
                                 Surface(
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
                                     color = AppTheme.ChipBackground
                                 ) {
                                     Text(
                                         text = planet.displayName,
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontSize = NeoVedicFontSizes.S11,
                                         color = AppTheme.TextSecondary,
-                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                        fontFamily = PoppinsFontFamily
                                     )
                                 }
                             }
@@ -1217,6 +1293,65 @@ private fun ShoolaRemedyCard(
         RemedyType.YANTRA -> AppTheme.WarningColor
         RemedyType.LIFESTYLE -> AppTheme.LifeAreaHealth
     }
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                    color = typeColor.copy(alpha = 0.15f)
+                ) {
+                    Text(
+                        text = if (language == Language.NEPALI) remedy.remedyType.displayNameNe
+                        else remedy.remedyType.displayName,
+                        fontSize = NeoVedicFontSizes.S10,
+                        color = typeColor,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = SpaceGroteskFamily
+                    )
+                }
+                remedy.targetPlanet?.let { planet ->
+                    Text(
+                        text = planet.displayName,
+                        fontSize = NeoVedicFontSizes.S13,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary,
+                        fontFamily = PoppinsFontFamily
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = if (language == Language.NEPALI) remedy.descriptionNe else remedy.description,
+                fontSize = NeoVedicFontSizes.S13,
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextPrimary,
+                fontFamily = PoppinsFontFamily
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = if (language == Language.NEPALI) remedy.instructionNe else remedy.instruction,
+                fontSize = NeoVedicFontSizes.S12,
+                color = AppTheme.TextSecondary,
+                lineHeight = 20.sp,
+                fontFamily = PoppinsFontFamily
+            )
+        }
+    }
+}
 
     Card(
         modifier = Modifier.fillMaxWidth(),

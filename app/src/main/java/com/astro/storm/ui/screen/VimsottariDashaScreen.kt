@@ -1,8 +1,17 @@
 package com.astro.storm.ui.screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +26,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
@@ -34,8 +44,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -46,32 +54,41 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import com.astro.storm.core.common.Language
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyDosha
 import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.getLocalizedName
+import com.astro.storm.core.model.Planet
+import com.astro.storm.core.model.VedicChart
 import com.astro.storm.data.localization.DateFormat
 import com.astro.storm.data.localization.LocalDateSystem
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.data.localization.formatDate
 import com.astro.storm.data.localization.formatDurationYearsMonths
 import com.astro.storm.data.localization.stringResource
-import com.astro.storm.core.model.Planet
-import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.DashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.vedicCornerMarkers
+import com.astro.storm.ui.screen.chartdetail.ChartDetailColors
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicFontSizes
 import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.DashaUiState
 import com.astro.storm.ui.viewmodel.DashaViewModel
 import java.time.LocalDate
@@ -140,11 +157,16 @@ fun VimsottariDashaScreen(
             }
 
             is DashaUiState.Idle -> {
-                EmptyChartScreen(
-                    title = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
-                    message = stringResource(StringKey.NO_PROFILE_MESSAGE),
-                    onBack = onBack
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize().padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NeoVedicEmptyState(
+                        title = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
+                        subtitle = stringResource(StringKey.NO_PROFILE_MESSAGE),
+                        icon = Icons.Outlined.Timeline
+                    )
+                }
             }
 
             is DashaUiState.Success -> {
@@ -257,35 +279,65 @@ private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
 
         item {
             Surface(
-                shape = MaterialTheme.shapes.large,
-                color = AppTheme.CardBackground
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .vedicCornerMarkers(color = AppTheme.AccentTeal),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                color = AppTheme.CardBackground,
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(20.dp)) {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_PERIODS_SEQUENCE),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = NeoVedicFontSizes.S17,
+                        fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     sequence.forEach { (planet, years) ->
+                        val planetColor = ChartDetailColors.getPlanetColor(planet)
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                                .padding(vertical = 6.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .background(planetColor.copy(alpha = 0.2f), CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = planet.symbol,
+                                    fontSize = NeoVedicFontSizes.S11,
+                                    fontWeight = FontWeight.Bold,
+                                    color = planetColor
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(12.dp))
                             Text(
                                 text = planet.getLocalizedName(language),
                                 modifier = Modifier.weight(1f),
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = NeoVedicFontSizes.S14,
                                 color = AppTheme.TextPrimary
                             )
-                            Text(
-                                text = formatDurationYearsMonths(years.toDouble()),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextSecondary
-                            )
+                            Surface(
+                                shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                                color = AppTheme.CardBackgroundElevated,
+                                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor)
+                            ) {
+                                Text(
+                                    text = formatDurationYearsMonths(years.toDouble()),
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = NeoVedicFontSizes.S11,
+                                    color = AppTheme.TextSecondary
+                                )
+                            }
                         }
                     }
                 }
@@ -294,31 +346,38 @@ private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
 
         item {
             Surface(
-                shape = MaterialTheme.shapes.large,
-                color = AppTheme.CardBackground
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                color = AppTheme.CardBackground,
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(20.dp)) {
                     Text(
                         text = stringResource(StringKeyMatch.DASHA_HIERARCHY),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = NeoVedicFontSizes.S17,
+                        fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     HierarchyRow(
                         level = "1",
                         name = stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA),
-                        desc = stringResource(StringKeyMatch.DASHA_MAJOR_PERIOD_YEARS)
+                        desc = stringResource(StringKeyMatch.DASHA_MAJOR_PERIOD_YEARS),
+                        color = AppTheme.AccentPrimary
                     )
                     HierarchyRow(
                         level = "2",
                         name = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
-                        desc = stringResource(StringKeyMatch.DASHA_SUB_PERIOD_MONTHS)
+                        desc = stringResource(StringKeyMatch.DASHA_SUB_PERIOD_MONTHS),
+                        color = AppTheme.AccentTeal
                     )
                     HierarchyRow(
                         level = "3",
                         name = stringResource(StringKeyMatch.DASHA_LEVEL_PRATYANTARDASHA),
-                        desc = stringResource(StringKeyMatch.DASHA_SUB_SUB_PERIOD_WEEKS)
+                        desc = stringResource(StringKeyMatch.DASHA_SUB_SUB_PERIOD_WEEKS),
+                        color = AppTheme.AccentGold
                     )
                 }
             }
@@ -327,28 +386,46 @@ private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
         nextMahadasha?.let { next ->
             item {
                 Surface(
-                    shape = MaterialTheme.shapes.large,
-                    color = AppTheme.CardBackground
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    color = AppTheme.CardBackground,
+                    border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Text(
-                            text = stringResource(StringKeyMatch.DASHA_NEXT_PERIOD),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = AppTheme.TextSecondary
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = next.planet.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = AppTheme.TextPrimary,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "${formatDate(next.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(next.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextSecondary
-                        )
+                    Row(
+                        modifier = Modifier.padding(20.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(StringKeyMatch.DASHA_NEXT_PERIOD).uppercase(),
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = NeoVedicFontSizes.S11,
+                                fontWeight = FontWeight.SemiBold,
+                                color = AppTheme.TextMuted,
+                                letterSpacing = 1.sp
+                            )
+                            Spacer(modifier = Modifier.height(6.dp))
+                            Text(
+                                text = next.planet.getLocalizedName(language),
+                                fontFamily = CinzelDecorativeFamily,
+                                fontSize = NeoVedicFontSizes.S18,
+                                color = AppTheme.TextPrimary,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        Surface(
+                            shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                            color = AppTheme.AccentPrimary.copy(alpha = 0.1f)
+                        ) {
+                            Text(
+                                text = "${formatDate(next.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(next.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = NeoVedicFontSizes.S12,
+                                color = AppTheme.AccentPrimary,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
                     }
                 }
             }
@@ -369,33 +446,55 @@ private fun ActiveDashaCard(
     val praty = timeline.currentPratyantardasha
 
     Surface(
-        shape = MaterialTheme.shapes.large,
-        color = AppTheme.CardBackground
+        modifier = Modifier
+            .fillMaxWidth()
+            .vedicCornerMarkers(color = AppTheme.AccentPrimary),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Outlined.Timeline,
-                    contentDescription = null,
-                    tint = AppTheme.AccentPrimary,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(StringKeyMatch.DASHA_CURRENT_DASHA_PERIOD),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = AppTheme.TextPrimary
-                )
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .background(AppTheme.AccentPrimary.copy(alpha = 0.12f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Timeline,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text(
+                        text = stringResource(StringKeyMatch.DASHA_CURRENT_DASHA_PERIOD),
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = NeoVedicFontSizes.S17,
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = stringResource(StringKey.DASHA_CURRENT_DESCRIPTION),
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = NeoVedicFontSizes.S11,
+                        color = AppTheme.TextMuted
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             maha?.let {
                 ActiveLevelRow(
                     label = stringResource(StringKeyMatch.DASHA_LEVEL_MAHADASHA),
                     planet = it.planet,
                     dateRange = "${formatDate(it.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(it.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
-                    progress = it.getProgressPercent(now).toFloat() / 100f
+                    progress = it.getProgressPercent(now).toFloat() / 100f,
+                    color = AppTheme.AccentPrimary
                 )
             }
 
@@ -404,7 +503,8 @@ private fun ActiveDashaCard(
                     label = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHA),
                     planet = it.planet,
                     dateRange = "${formatDate(it.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(it.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
-                    progress = it.getProgressPercent(now).toFloat() / 100f
+                    progress = it.getProgressPercent(now).toFloat() / 100f,
+                    color = AppTheme.AccentTeal
                 )
             }
 
@@ -413,7 +513,8 @@ private fun ActiveDashaCard(
                     label = stringResource(StringKeyMatch.DASHA_LEVEL_PRATYANTARDASHA),
                     planet = it.planet,
                     dateRange = "${formatDate(it.startDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)} - ${formatDate(it.endDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)}",
-                    progress = calculateProgress(it.startDate.toLocalDate(), it.endDate.toLocalDate(), now.toLocalDate())
+                    progress = calculateProgress(it.startDate.toLocalDate(), it.endDate.toLocalDate(), now.toLocalDate()),
+                    color = AppTheme.AccentGold
                 )
             }
         }
@@ -425,64 +526,96 @@ private fun ActiveLevelRow(
     label: String,
     planet: Planet,
     dateRange: String,
-    progress: Float
+    progress: Float,
+    color: Color
 ) {
     val language = LocalLanguage.current
 
-    Column(modifier = Modifier.padding(bottom = 10.dp)) {
+    Column(modifier = Modifier.padding(bottom = 16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = AppTheme.TextSecondary
+                text = label.uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S10,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextSecondary,
+                letterSpacing = 1.sp
             )
             Text(
                 text = planet.getLocalizedName(language),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = NeoVedicFontSizes.S14,
                 color = AppTheme.TextPrimary,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.SemiBold
             )
         }
-        Text(
-            text = dateRange,
-            style = MaterialTheme.typography.bodySmall,
-            color = AppTheme.TextSecondary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
-        Spacer(modifier = Modifier.height(6.dp))
-        LinearProgressIndicator(
-            progress = { progress.coerceIn(0f, 1f) },
+        Spacer(modifier = Modifier.height(4.dp))
+        Row(
             modifier = Modifier.fillMaxWidth(),
-            color = AppTheme.AccentPrimary
-        )
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            LinearProgressIndicator(
+                progress = { progress.coerceIn(0f, 1f) },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
+                color = color,
+                trackColor = AppTheme.DividerColor
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = dateRange,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S10,
+                color = AppTheme.TextMuted
+            )
+        }
     }
 }
 
 @Composable
-private fun HierarchyRow(level: String, name: String, desc: String) {
+private fun HierarchyRow(level: String, name: String, desc: String, color: Color) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
-                .size(24.dp)
-                .background(AppTheme.AccentPrimary.copy(alpha = 0.15f), shape = MaterialTheme.shapes.small),
+                .size(32.dp)
+                .background(color.copy(alpha = 0.15f), shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = level, style = MaterialTheme.typography.labelSmall, color = AppTheme.AccentPrimary)
+            Text(
+                text = level,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S14,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
         }
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(16.dp))
         Column {
-            Text(text = name, style = MaterialTheme.typography.bodyMedium, color = AppTheme.TextPrimary)
-            Text(text = desc, style = MaterialTheme.typography.bodySmall, color = AppTheme.TextSecondary)
+            Text(
+                text = name,
+                fontFamily = PoppinsFontFamily,
+                fontSize = NeoVedicFontSizes.S15,
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextPrimary
+            )
+            Text(
+                text = desc,
+                fontFamily = PoppinsFontFamily,
+                fontSize = NeoVedicFontSizes.S12,
+                color = AppTheme.TextSecondary
+            )
         }
     }
 }
@@ -501,19 +634,24 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
     ) {
         item {
             Surface(
-                shape = MaterialTheme.shapes.large,
-                color = AppTheme.CardBackground
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                color = AppTheme.CardBackground,
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(StringKeyDosha.DASHA_TITLE_VIMSOTTARI),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = NeoVedicFontSizes.S17,
+                        fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = "120-year cycle with Mahadasha -> Antardasha -> Pratyantardasha.",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -536,10 +674,20 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
                 animationSpec = tween(220),
                 label = "vimsottari_expand_rotation"
             )
+            val planetColor = ChartDetailColors.getPlanetColor(mahadasha.planet)
 
             Surface(
-                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-                color = if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.08f) else AppTheme.CardBackground
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .vedicCornerMarkers(
+                        color = if (isCurrent) AppTheme.AccentPrimary else Color.Transparent
+                    ),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                color = if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.05f) else AppTheme.CardBackground,
+                border = androidx.compose.foundation.BorderStroke(
+                    NeoVedicTokens.BorderWidth,
+                    if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.5f) else AppTheme.BorderColor
+                )
             ) {
                 Column(
                     modifier = Modifier
@@ -559,21 +707,54 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
                         .padding(16.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = mahadasha.planet.getLocalizedName(language),
-                            modifier = Modifier.weight(1f),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = AppTheme.TextPrimary,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        if (isCurrent) {
+                         Box(
+                            modifier = Modifier
+                                .size(40.dp)
+                                .background(planetColor.copy(alpha = 0.2f), CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Text(
-                                text = stringResource(StringKeyMatch.MISC_CURRENT),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = AppTheme.AccentPrimary,
-                                modifier = Modifier.padding(end = 10.dp)
+                                text = mahadasha.planet.symbol,
+                                fontSize = NeoVedicFontSizes.S16,
+                                fontWeight = FontWeight.Bold,
+                                color = planetColor
                             )
                         }
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = mahadasha.planet.getLocalizedName(language),
+                                    fontFamily = CinzelDecorativeFamily,
+                                    fontSize = NeoVedicFontSizes.S16,
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.TextPrimary
+                                )
+                                if (isCurrent) {
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Surface(
+                                        shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                                        color = AppTheme.AccentPrimary.copy(alpha = 0.15f)
+                                    ) {
+                                        Text(
+                                            text = stringResource(StringKeyMatch.MISC_CURRENT).uppercase(),
+                                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                            fontFamily = SpaceGroteskFamily,
+                                            fontSize = NeoVedicFontSizes.S9,
+                                            fontWeight = FontWeight.Bold,
+                                            color = AppTheme.AccentPrimary
+                                        )
+                                    }
+                                }
+                            }
+                            Text(
+                                text = "${formatDurationYearsMonths(mahadasha.durationYears)} | ${formatDate(mahadasha.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(mahadasha.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = NeoVedicFontSizes.S11,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                        
                         Icon(
                             imageVector = Icons.Filled.ExpandMore,
                             contentDescription = null,
@@ -582,64 +763,123 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "${formatDurationYearsMonths(mahadasha.durationYears)} | ${formatDate(mahadasha.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(mahadasha.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextSecondary
-                    )
-
                     if (isCurrent) {
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
                         LinearProgressIndicator(
                             progress = { mahadasha.getProgressPercent(now).toFloat() / 100f },
-                            modifier = Modifier.fillMaxWidth(),
-                            color = AppTheme.AccentPrimary
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(6.dp)
+                                .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
+                            color = AppTheme.AccentPrimary,
+                            trackColor = AppTheme.DividerColor
                         )
                     }
 
                     if (isExpanded) {
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         HorizontalDivider(color = AppTheme.DividerColor)
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
                         mahadasha.antardashas.forEach { antardasha ->
                             val isCurrentAntardasha = antardasha == currentAntardasha
-                            Text(
-                                text = antardasha.planet.getLocalizedName(language),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = AppTheme.TextPrimary,
-                                fontWeight = if (isCurrentAntardasha) FontWeight.SemiBold else FontWeight.Normal
-                            )
-                            Text(
-                                text = "${formatDate(antardasha.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(antardasha.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.TextSecondary
-                            )
-
-                            if (isCurrentAntardasha) {
-                                Spacer(modifier = Modifier.height(4.dp))
-                                LinearProgressIndicator(
-                                    progress = { antardasha.getProgressPercent(now).toFloat() / 100f },
-                                    modifier = Modifier.fillMaxWidth(),
-                                    color = AppTheme.AccentTeal
-                                )
-
-                                if (antardasha.pratyantardashas.isNotEmpty()) {
-                                    Spacer(modifier = Modifier.height(6.dp))
-                                    antardasha.pratyantardashas.forEach { praty ->
-                                        val isCurrentPraty = praty == currentPratyantardasha
-                                        Text(
-                                            text = "- ${praty.planet.getLocalizedName(language)} | ${formatDate(praty.startDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)} - ${formatDate(praty.endDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)}${if (isCurrentPraty) " [current]" else ""}",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = if (isCurrentPraty) AppTheme.AccentGold else AppTheme.TextSecondary,
-                                            modifier = Modifier.padding(start = 8.dp, bottom = 2.dp)
+                            val adPlanetColor = ChartDetailColors.getPlanetColor(antardasha.planet)
+                            
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 12.dp),
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .padding(top = 2.dp)
+                                        .size(8.dp)
+                                        .background(
+                                            color = if (isCurrentAntardasha) AppTheme.AccentTeal else AppTheme.DividerColor, 
+                                            shape = CircleShape
                                         )
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            text = antardasha.planet.getLocalizedName(language),
+                                            fontFamily = PoppinsFontFamily,
+                                            fontSize = NeoVedicFontSizes.S14,
+                                            fontWeight = if (isCurrentAntardasha) FontWeight.Bold else FontWeight.Medium,
+                                            color = if (isCurrentAntardasha) AppTheme.TextPrimary else AppTheme.TextSecondary
+                                        )
+                                        
+                                        Text(
+                                            text = "${formatDate(antardasha.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(antardasha.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
+                                            fontFamily = SpaceGroteskFamily,
+                                            fontSize = NeoVedicFontSizes.S11,
+                                            color = AppTheme.TextMuted
+                                        )
+                                    }
+
+                                    if (isCurrentAntardasha) {
+                                        Spacer(modifier = Modifier.height(6.dp))
+                                        LinearProgressIndicator(
+                                            progress = { antardasha.getProgressPercent(now).toFloat() / 100f },
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(4.dp)
+                                                .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
+                                            color = AppTheme.AccentTeal,
+                                            trackColor = AppTheme.DividerColor
+                                        )
+
+                                        if (antardasha.pratyantardashas.isNotEmpty()) {
+                                            Spacer(modifier = Modifier.height(12.dp))
+                                            antardasha.pratyantardashas.forEach { praty ->
+                                                val isCurrentPraty = praty == currentPratyantardasha
+                                                Row(
+                                                    modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
+                                                    verticalAlignment = Alignment.CenterVertically
+                                                ) {
+                                                     Box(
+                                                        modifier = Modifier
+                                                            .size(6.dp)
+                                                            .background(
+                                                                color = if (isCurrentPraty) AppTheme.AccentGold else AppTheme.DividerColor.copy(alpha = 0.5f), 
+                                                                shape = CircleShape
+                                                            )
+                                                    )
+                                                    Spacer(modifier = Modifier.width(8.dp))
+                                                    Text(
+                                                        text = "${praty.planet.getLocalizedName(language)} | ${formatDate(praty.startDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)} - ${formatDate(praty.endDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)}",
+                                                        fontFamily = SpaceGroteskFamily,
+                                                        fontSize = NeoVedicFontSizes.S10,
+                                                        color = if (isCurrentPraty) AppTheme.AccentGold else AppTheme.TextMuted
+                                                    )
+                                                    if (isCurrentPraty) {
+                                                        Spacer(modifier = Modifier.width(6.dp))
+                                                        Surface(
+                                                            shape = RoundedCornerShape(2.dp),
+                                                            color = AppTheme.AccentGold.copy(alpha = 0.15f)
+                                                        ) {
+                                                             Text(
+                                                                text = "NOW",
+                                                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                                                fontFamily = SpaceGroteskFamily,
+                                                                fontSize = 8.sp,
+                                                                fontWeight = FontWeight.Bold,
+                                                                color = AppTheme.AccentGold
+                                                            )
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
-
-                            Spacer(modifier = Modifier.height(8.dp))
                         }
                     }
                 }
@@ -682,7 +922,8 @@ private fun VimsottariInterpretationTab(timeline: DashaCalculator.DashaTimeline)
                     planetName = md.planet.getLocalizedName(language),
                     dateRange = "${formatDate(md.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(md.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
                     progress = md.getProgressPercent(now).toFloat() / 100f,
-                    summary = getMahadashaInterpretation(md.planet)
+                    summary = getMahadashaInterpretation(md.planet),
+                    color = AppTheme.AccentPrimary
                 )
             }
         }
@@ -694,7 +935,8 @@ private fun VimsottariInterpretationTab(timeline: DashaCalculator.DashaTimeline)
                     planetName = ad.planet.getLocalizedName(language),
                     dateRange = "${formatDate(ad.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(ad.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
                     progress = ad.getProgressPercent(now).toFloat() / 100f,
-                    summary = getAntardashaInterpretation(ad.planet)
+                    summary = getAntardashaInterpretation(ad.planet),
+                    color = AppTheme.AccentTeal
                 )
             }
         }
@@ -706,7 +948,8 @@ private fun VimsottariInterpretationTab(timeline: DashaCalculator.DashaTimeline)
                     planetName = pd.planet.getLocalizedName(language),
                     dateRange = "${formatDate(pd.startDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)} - ${formatDate(pd.endDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)}",
                     progress = calculateProgress(pd.startDate.toLocalDate(), pd.endDate.toLocalDate(), today),
-                    summary = getPratyantardashaInterpretation(pd.planet)
+                    summary = getPratyantardashaInterpretation(pd.planet),
+                    color = AppTheme.AccentGold
                 )
             }
         }
@@ -719,26 +962,84 @@ private fun PeriodInterpretationCard(
     planetName: String,
     dateRange: String,
     progress: Float,
-    summary: String
+    summary: String,
+    color: Color
 ) {
     Surface(
-        shape = MaterialTheme.shapes.large,
-        color = AppTheme.CardBackground
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = title, style = MaterialTheme.typography.titleSmall, color = AppTheme.TextSecondary)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(text = planetName, style = MaterialTheme.typography.titleMedium, color = AppTheme.TextPrimary, fontWeight = FontWeight.SemiBold)
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(text = dateRange, style = MaterialTheme.typography.bodySmall, color = AppTheme.TextSecondary)
-            Spacer(modifier = Modifier.height(10.dp))
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                 Text(
+                    text = title.uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = NeoVedicFontSizes.S10,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextSecondary,
+                    letterSpacing = 1.sp
+                )
+                 Surface(
+                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                    color = color.copy(alpha = 0.1f)
+                ) {
+                    Text(
+                        text = dateRange,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S10,
+                        fontWeight = FontWeight.Medium,
+                        color = color
+                    )
+                }
+            }
+           
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Text(
+                text = planetName,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = NeoVedicFontSizes.S20,
+                color = AppTheme.TextPrimary,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
             LinearProgressIndicator(
                 progress = { progress.coerceIn(0f, 1f) },
-                modifier = Modifier.fillMaxWidth(),
-                color = AppTheme.AccentPrimary
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
+                color = color,
+                trackColor = AppTheme.DividerColor
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(text = summary, style = MaterialTheme.typography.bodyMedium, color = AppTheme.TextPrimary)
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Row(verticalAlignment = Alignment.Top) {
+                 Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = null,
+                    tint = color,
+                    modifier = Modifier.size(18.dp).padding(top = 2.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = summary,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = NeoVedicFontSizes.S14,
+                    color = AppTheme.TextPrimary,
+                    lineHeight = 22.sp
+                )
+            }
         }
     }
 }
@@ -750,8 +1051,10 @@ private fun VimsottariInfoCard(
     subtitle: String
 ) {
     Surface(
-        shape = MaterialTheme.shapes.large,
-        color = AppTheme.CardBackground
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -761,17 +1064,33 @@ private fun VimsottariInfoCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(40.dp)
-                    .background(AppTheme.AccentPrimary.copy(alpha = 0.12f), shape = MaterialTheme.shapes.medium),
+                    .size(48.dp)
+                    .background(AppTheme.AccentPrimary.copy(alpha = 0.12f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                androidx.compose.material3.Icon(icon, contentDescription = null, tint = AppTheme.AccentPrimary)
+                androidx.compose.material3.Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = AppTheme.AccentPrimary,
+                    modifier = Modifier.size(24.dp)
+                )
             }
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = title, style = MaterialTheme.typography.titleMedium, color = AppTheme.TextPrimary)
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(text = subtitle, style = MaterialTheme.typography.bodySmall, color = AppTheme.TextSecondary)
+                Text(
+                    text = title,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = NeoVedicFontSizes.S16,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.TextPrimary
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitle,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = NeoVedicFontSizes.S13,
+                    color = AppTheme.TextMuted
+                )
             }
         }
     }

@@ -96,9 +96,16 @@ import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.ephemeris.YoginiDashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicFontSizes
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import com.astro.storm.ui.viewmodel.YoginiDashaUiState
 import com.astro.storm.ui.viewmodel.YoginiDashaViewModel
 import java.time.DateTimeException
@@ -181,7 +188,16 @@ fun YoginiDashaScreen(
                         )
                     }
                     is YoginiDashaUiState.Idle -> {
-                        YoginiDashaEmptyContent(onBack = onBack)
+                        Box(
+                            modifier = Modifier.fillMaxSize().padding(paddingValues),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NeoVedicEmptyState(
+                                title = stringResource(StringKeyDosha.YOGINI_DASHA_TITLE),
+                                subtitle = stringResource(StringKey.NO_PROFILE_MESSAGE),
+                                icon = Icons.Outlined.Timeline
+                            )
+                        }
                     }
                 }
             }
@@ -400,16 +416,12 @@ private fun CurrentYoginiPeriodCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
-                spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
-            ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+            .vedicCornerMarkers(color = AppTheme.AccentGold),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -439,15 +451,18 @@ private fun CurrentYoginiPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.YOGINI_DASHA_CURRENT),
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
+                        fontSize = NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
-                        color = AppTheme.TextPrimary
+                        fontFamily = CinzelDecorativeFamily,
+                        color = AppTheme.TextPrimary,
+                        letterSpacing = (-0.3).sp
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(StringKeyDosha.YOGINI_DASHA_SUBTITLE),
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
+                        fontSize = NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted,
+                        fontFamily = PoppinsFontFamily,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -492,7 +507,13 @@ private fun CurrentYoginiPeriodCard(
                     antardasha = currentAntardasha
                 )
             } else {
-                EmptyYoginiState()
+                Text(
+                    text = stringResource(StringKeyMatch.DASHA_NO_CURRENT_PERIOD),
+                    color = AppTheme.TextMuted,
+                    fontSize = NeoVedicFontSizes.S14,
+                    fontFamily = PoppinsFontFamily,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
             }
         }
     }
@@ -539,6 +560,7 @@ private fun YoginiPeriodRow(
                     text = yogini.planet.localizedAbbr(),
                     fontSize = if (isLarge) 17.sp else 14.sp,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = SpaceGroteskFamily,
                     color = Color.White
                 )
             }
@@ -546,15 +568,18 @@ private fun YoginiPeriodRow(
             Column {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = label,
+                        text = label.uppercase(),
                         fontSize = subFontSize,
                         color = AppTheme.TextMuted,
-                        fontWeight = FontWeight.Medium
+                        fontFamily = SpaceGroteskFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 1.sp
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = yogini.getLocalizedName(language),
                         fontSize = mainFontSize,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = if (isLarge) FontWeight.Bold else FontWeight.SemiBold,
                         color = yoginiColor
                     )
@@ -564,6 +589,7 @@ private fun YoginiPeriodRow(
                     text = "$startDateFormatted \u2013 $endDateFormatted",
                     fontSize = (subFontSize.value - 1).sp,
                     color = AppTheme.TextMuted,
+                    fontFamily = SpaceGroteskFamily,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -573,6 +599,7 @@ private fun YoginiPeriodRow(
                         text = remainingText,
                         fontSize = (subFontSize.value - 1).sp,
                         color = AppTheme.AccentTeal,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.Medium
                     )
                 }
@@ -589,6 +616,7 @@ private fun YoginiPeriodRow(
                 text = percentComplete.toString() + stringResource(StringKeyUIExtra.PERCENT),
                 fontSize = subFontSize,
                 fontWeight = FontWeight.Bold,
+                fontFamily = SpaceGroteskFamily,
                 color = yoginiColor
             )
             Spacer(modifier = Modifier.height(5.dp))
@@ -896,7 +924,7 @@ private fun TimelineHeaderCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
@@ -918,13 +946,15 @@ private fun TimelineHeaderCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.YOGINI_DASHA_TIMELINE),
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
-                        fontWeight = FontWeight.SemiBold,
+                        fontSize = NeoVedicFontSizes.S16,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = CinzelDecorativeFamily,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = "${result.mahadashas.size} ${stringResource(StringKey.DASHA_PERIOD)}",
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
+                        fontSize = NeoVedicFontSizes.S12,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -953,18 +983,20 @@ private fun YoginiMahadashaCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = yoginiColor.copy(alpha = 0.3f))
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = if (isCurrent) {
             yoginiColor.copy(alpha = 0.08f)
         } else {
             AppTheme.CardBackground
         },
-        tonalElevation = if (isCurrent) 3.dp else 1.dp
+        border = if (isCurrent) {
+            androidx.compose.foundation.BorderStroke(1.dp, yoginiColor.copy(alpha = 0.3f))
+        } else null
     ) {
         Column(
             modifier = Modifier
@@ -989,35 +1021,38 @@ private fun YoginiMahadashaCard(
                                     Modifier.border(2.5.dp, yoginiColor.copy(alpha = 0.4f), CircleShape)
                                 } else Modifier
                             ),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = mahadasha.yogini.planet.localizedAbbr(),
-                                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
-                                                fontWeight = FontWeight.Bold,
-                                                color = Color.White
-                                            )
-                                        }
-                        
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = mahadasha.yogini.planet.localizedAbbr(),
+                            fontSize = NeoVedicFontSizes.S17,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = SpaceGroteskFamily,
+                            color = Color.White
+                        )
+                    }
+
                     Spacer(modifier = Modifier.width(14.dp))
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
                                 text = mahadasha.yogini.getLocalizedName(language),
-                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
-                                fontWeight = FontWeight.SemiBold,
+                                fontSize = NeoVedicFontSizes.S15,
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = CinzelDecorativeFamily,
                                 color = AppTheme.TextPrimary
                             )
                             if (isCurrent) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Surface(
-                                    shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                                     color = yoginiColor.copy(alpha = 0.2f)
                                 ) {
                                     Text(
-                                        text = stringResource(StringKey.DASHA_ACTIVE),
-                                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
+                                        text = stringResource(StringKey.DASHA_ACTIVE).uppercase(),
+                                        fontSize = NeoVedicFontSizes.S9,
                                         fontWeight = FontWeight.Bold,
+                                        fontFamily = SpaceGroteskFamily,
                                         color = yoginiColor,
                                         modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp)
                                     )
@@ -1027,8 +1062,9 @@ private fun YoginiMahadashaCard(
                         Spacer(modifier = Modifier.height(3.dp))
                         Text(
                             text = formatYearsLocalized(mahadasha.durationYears, language) + stringResource(StringKeyUIExtra.BULLET_SPACE) + mahadasha.startDate.formatLocalized(DateFormat.YEAR_ONLY) + stringResource(StringKeyUIExtra.DASH_SPACE).trim() + mahadasha.endDate.formatLocalized(DateFormat.YEAR_ONLY),
-                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
+                            fontSize = NeoVedicFontSizes.S11,
                             color = AppTheme.TextMuted,
+                            fontFamily = SpaceGroteskFamily,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
@@ -1036,8 +1072,9 @@ private fun YoginiMahadashaCard(
                             Spacer(modifier = Modifier.height(3.dp))
                             Text(
                                 text = String.format("%.1f", mahadasha.getProgressPercent(asOfDate)) + stringResource(StringKeyUIExtra.PERCENT) + stringResource(StringKeyUIExtra.BULLET_SPACE) + formatRemainingYearsLocalized(mahadasha.getRemainingDays(asOfDate) / 365.25, language),
-                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
+                                fontSize = NeoVedicFontSizes.S10,
                                 color = AppTheme.AccentTeal,
+                                fontFamily = SpaceGroteskFamily,
                                 fontWeight = FontWeight.Medium
                             )
                         }
@@ -1068,20 +1105,22 @@ private fun YoginiMahadashaCard(
                     ) {
                         Text(
                             text = stringResource(StringKey.DASHA_ANTARDASHA),
-                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
+                            fontSize = NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextSecondary
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Surface(
-                            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.CardBackgroundElevated
                         ) {
                             Text(
                                 text = "${mahadasha.antardashas.size} ${stringResource(StringKey.DASHA_PERIOD)}",
-                                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
+                                fontSize = NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted,
                                 fontWeight = FontWeight.Medium,
+                                fontFamily = SpaceGroteskFamily,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
                         }
@@ -1118,7 +1157,7 @@ private fun YoginiAntardashaRow(
             .fillMaxWidth()
             .background(
                 color = if (isCurrent) yoginiColor.copy(alpha = 0.12f) else Color.Transparent,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             )
             .padding(horizontal = 10.dp, vertical = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -1139,8 +1178,9 @@ private fun YoginiAntardashaRow(
             ) {
                 Text(
                     text = antardasha.yogini.planet.localizedAbbr(),
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
+                    fontSize = NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.Bold,
+                    fontFamily = SpaceGroteskFamily,
                     color = Color.White
                 )
             }
@@ -1149,8 +1189,9 @@ private fun YoginiAntardashaRow(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = antardasha.yogini.getLocalizedName(language),
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S13,
+                        fontSize = NeoVedicFontSizes.S13,
                         fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Normal,
+                        fontFamily = PoppinsFontFamily,
                         color = when {
                             isCurrent -> yoginiColor
                             isPast -> AppTheme.TextMuted
@@ -1161,8 +1202,9 @@ private fun YoginiAntardashaRow(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = String.format("%.0f", antardasha.getProgressPercent(asOfDate)) + stringResource(StringKeyUIExtra.PERCENT),
-                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
+                            fontSize = NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.Bold,
+                            fontFamily = SpaceGroteskFamily,
                             color = yoginiColor.copy(alpha = 0.9f)
                         )
                     }
@@ -1173,8 +1215,9 @@ private fun YoginiAntardashaRow(
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = remaining,
-                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
+                            fontSize = NeoVedicFontSizes.S10,
                             color = AppTheme.AccentTeal,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Medium
                         )
                     }
@@ -1185,13 +1228,15 @@ private fun YoginiAntardashaRow(
         Column(horizontalAlignment = Alignment.End) {
             Text(
                 text = "${antardasha.startDate.formatLocalized(DateFormat.MONTH_YEAR)} \u2013 ${antardasha.endDate.formatLocalized(DateFormat.MONTH_YEAR)}",
-                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
+                fontSize = NeoVedicFontSizes.S11,
+                fontFamily = SpaceGroteskFamily,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = String.format("%.1f", antardasha.durationMonths) + " " + stringResource(StringKey.UNIT_MONTHS),
-                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
+                fontSize = NeoVedicFontSizes.S10,
+                fontFamily = SpaceGroteskFamily,
                 color = AppTheme.TextMuted.copy(alpha = 0.8f)
             )
         }
@@ -1216,12 +1261,12 @@ private fun YoginiDetailCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius))
+            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(color = yoginiColor.copy(alpha = 0.3f))
             ) { isExpanded = !isExpanded },
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(
@@ -1244,11 +1289,107 @@ private fun YoginiDetailCard(
                     ) {
                         Text(
                             text = yogini.planet.localizedAbbr(),
-                            fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S18,
+                            fontSize = NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
-                            color = yoginiColor
+                            color = yoginiColor,
+                            fontFamily = SpaceGroteskFamily
                         )
                     }
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Column {
+                        Text(
+                            text = yogini.getLocalizedName(language),
+                            fontSize = NeoVedicFontSizes.S16,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = CinzelDecorativeFamily,
+                            color = AppTheme.TextPrimary
+                        )
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = formatYearsLocalized(yogini.years, language),
+                                fontSize = NeoVedicFontSizes.S12,
+                                fontFamily = SpaceGroteskFamily,
+                                color = AppTheme.TextMuted
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Surface(
+                                shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
+                                color = natureColor.copy(alpha = 0.15f)
+                            ) {
+                                Text(
+                                    text = yogini.nature.getLocalizedName(language).uppercase(),
+                                    fontSize = NeoVedicFontSizes.S9,
+                                    fontWeight = FontWeight.Bold,
+                                    color = natureColor,
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                    fontFamily = SpaceGroteskFamily
+                                )
+                            }
+                        }
+                    }
+                }
+                Icon(
+                    Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .rotate(rotation)
+                )
+            }
+
+            AnimatedVisibility(visible = isExpanded) {
+                Column(modifier = Modifier.padding(top = 16.dp)) {
+                    HorizontalDivider(color = AppTheme.DividerColor, modifier = Modifier.padding(bottom = 14.dp))
+
+                    Text(
+                        text = stringResource(StringKeyDosha.YOGINI_GENERAL_EFFECTS),
+                        fontSize = NeoVedicFontSizes.S13,
+                        fontWeight = FontWeight.SemiBold,
+                        color = AppTheme.TextPrimary,
+                        fontFamily = SpaceGroteskFamily
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = yogini.getEffects(language),
+                        fontSize = NeoVedicFontSizes.S13,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 20.sp,
+                        fontFamily = PoppinsFontFamily
+                    )
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            Icons.Outlined.NotificationsActive,
+                            contentDescription = null,
+                            tint = AppTheme.AccentTeal,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(StringKeyDosha.YOGINI_RESULT_TYPE),
+                            fontSize = NeoVedicFontSizes.S13,
+                            fontWeight = FontWeight.SemiBold,
+                            color = AppTheme.AccentTeal,
+                            fontFamily = SpaceGroteskFamily
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = yogini.getResult(language),
+                        fontSize = NeoVedicFontSizes.S13,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 18.sp,
+                        fontFamily = PoppinsFontFamily
+                    )
+                }
+            }
+        }
+    }
+}
                     Spacer(modifier = Modifier.width(14.dp))
                     Column {
                         Text(

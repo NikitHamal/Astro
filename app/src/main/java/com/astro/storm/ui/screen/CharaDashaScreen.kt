@@ -9,7 +9,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -27,14 +26,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.PersonOff
@@ -43,18 +38,14 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.Timeline
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -76,19 +67,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.astro.storm.core.common.DateSystem
 import com.astro.storm.core.common.Language
-import com.astro.storm.data.localization.DateFormat
-import com.astro.storm.data.localization.LocalDateSystem
-import com.astro.storm.data.localization.LocalLanguage
-import com.astro.storm.data.localization.formatDate
-import com.astro.storm.data.localization.formatDateRange
-import com.astro.storm.data.localization.formatDurationYearsMonths
-import com.astro.storm.data.localization.formatRemainingDuration
-import com.astro.storm.data.localization.localized
-import com.astro.storm.data.localization.localizedName
-import com.astro.storm.data.localization.stringResource
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringKeyAnalysis
 import com.astro.storm.core.common.StringKeyDosha
@@ -96,11 +76,24 @@ import com.astro.storm.core.common.StringKeyMatch
 import com.astro.storm.core.common.getLocalizedName
 import com.astro.storm.core.model.VedicChart
 import com.astro.storm.core.model.ZodiacSign
+import com.astro.storm.data.localization.DateFormatter
+import com.astro.storm.data.localization.LocalDateSystem
+import com.astro.storm.data.localization.LocalLanguage
+import com.astro.storm.data.localization.formatDate
+import com.astro.storm.data.localization.formatDateRange
+import com.astro.storm.data.localization.stringResource
 import com.astro.storm.ephemeris.CharaDashaCalculator
 import com.astro.storm.ui.components.common.ModernPillTabRow
+import com.astro.storm.ui.components.common.NeoVedicEmptyState
 import com.astro.storm.ui.components.common.NeoVedicPageHeader
 import com.astro.storm.ui.components.common.TabItem
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 import com.astro.storm.ui.theme.AppTheme
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.NeoVedicFontSizes
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -402,16 +395,12 @@ private fun CurrentCharaDashaPeriodCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
-                spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
-            ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+            .vedicCornerMarkers(color = AppTheme.AccentGold),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(com.astro.storm.ui.theme.NeoVedicTokens.ScreenPadding)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             // Header
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -442,15 +431,17 @@ private fun CurrentCharaDashaPeriodCard(
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.CHARA_DASHA_CURRENT),
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
+                        fontSize = NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
+                        fontFamily = CinzelDecorativeFamily,
                         color = AppTheme.TextPrimary,
                         letterSpacing = (-0.3).sp
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = stringResource(StringKeyDosha.CHARA_DASHA_SUBTITLE),
-                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
+                        fontSize = NeoVedicFontSizes.S12,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted,
                         fontWeight = FontWeight.Medium
                     )
@@ -491,7 +482,8 @@ private fun CurrentCharaDashaPeriodCard(
                 Text(
                     text = stringResource(StringKeyMatch.DASHA_NO_CURRENT_PERIOD),
                     color = AppTheme.TextMuted,
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
+                    fontSize = NeoVedicFontSizes.S14,
+                    fontFamily = PoppinsFontFamily,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
@@ -520,23 +512,27 @@ private fun SignDashaRow(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = label,
-                    fontSize = if (isLarger) 13.sp else 12.sp,
+                    text = label.uppercase(),
+                    fontSize = if (isLarger) NeoVedicFontSizes.S11 else NeoVedicFontSizes.S10,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = 1.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = sign.getLocalizedName(language),
-                        fontSize = if (isLarger) 16.sp else 14.sp,
+                        fontSize = if (isLarger) NeoVedicFontSizes.S18 else NeoVedicFontSizes.S15,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = "(${lord.getLocalizedName(language)})",
-                        fontSize = if (isLarger) 13.sp else 12.sp,
+                        fontSize = if (isLarger) NeoVedicFontSizes.S13 else NeoVedicFontSizes.S12,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -544,13 +540,15 @@ private fun SignDashaRow(
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = remainingText,
-                    fontSize = if (isLarger) 13.sp else 12.sp,
+                    fontSize = if (isLarger) NeoVedicFontSizes.S13 else NeoVedicFontSizes.S12,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.AccentGold
                 )
                 Text(
                     text = formatDateRange(startDate, endDate),
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S11,
+                    fontSize = NeoVedicFontSizes.S11,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -562,7 +560,7 @@ private fun SignDashaRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(if (isLarger) 6.dp else 5.dp)
-                .clip(RoundedCornerShape(50)),
+                .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
             color = AppTheme.AccentGold,
             trackColor = AppTheme.AccentGold.copy(alpha = 0.15f)
         )
@@ -576,25 +574,756 @@ private fun CharaDashaSystemInfoCard(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    Icons.Outlined.Info,
-                    contentDescription = null,
-                    tint = AppTheme.AccentTeal,
-                    modifier = Modifier.size(20.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(AppTheme.AccentTeal.copy(alpha = 0.1f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.Info,
+                        contentDescription = null,
+                        tint = AppTheme.AccentTeal,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.CHARA_DASHA_ABOUT),
-                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S16,
-                    fontWeight = FontWeight.SemiBold,
+                    fontSize = NeoVedicFontSizes.S16,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = CinzelDecorativeFamily,
                     color = AppTheme.TextPrimary
                 )
             }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            InfoRow(
+                label = stringResource(StringKeyAnalysis.CHART_LAGNA),
+                value = result.lagnaSign.getLocalizedName(language)
+            )
+            InfoRow(
+                label = stringResource(StringKeyDosha.CHARA_DASHA_DIRECTION),
+                value = if (result.isOddLagna) {
+                    stringResource(StringKeyDosha.CHARA_DASHA_DIRECT)
+                } else {
+                    stringResource(StringKeyDosha.CHARA_DASHA_REVERSE)
+                }
+            )
+            InfoRow(
+                label = stringResource(StringKeyAnalysis.CHARA_DASHA_TYPE),
+                value = if (result.isOddLagna) {
+                    stringResource(StringKeyDosha.CHARA_DASHA_ODD_LAGNA)
+                } else {
+                    stringResource(StringKeyDosha.CHARA_DASHA_EVEN_LAGNA)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun InfoRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 6.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            fontSize = NeoVedicFontSizes.S13,
+            fontFamily = PoppinsFontFamily,
+            color = AppTheme.TextMuted
+        )
+        Text(
+            text = value,
+            fontSize = NeoVedicFontSizes.S13,
+            fontFamily = SpaceGroteskFamily,
+            fontWeight = FontWeight.Medium,
+            color = AppTheme.TextPrimary
+        )
+    }
+}
+
+@Composable
+private fun CharaDashaInterpretationCard(
+    mahadasha: CharaDashaCalculator.CharaMahadasha,
+    language: Language
+) {
+    var isExpanded by rememberSaveable { mutableStateOf(false) }
+    val rotationAngle by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        label = "rotation"
+    )
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(
+            modifier = Modifier
+                .animateContentSize()
+                .padding(16.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = rememberRipple()
+                    ) { isExpanded = !isExpanded },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(32.dp)
+                            .background(AppTheme.AccentPrimary.copy(alpha = 0.1f), CircleShape),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            Icons.Outlined.Star,
+                            contentDescription = null,
+                            tint = AppTheme.AccentPrimary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(StringKeyMatch.INTERPRETATION_TITLE),
+                        fontSize = NeoVedicFontSizes.S16,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = CinzelDecorativeFamily,
+                        color = AppTheme.TextPrimary
+                    )
+                }
+                Icon(
+                    Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .rotate(rotationAngle)
+                )
+            }
+
+            AnimatedVisibility(visible = isExpanded) {
+                Column(modifier = Modifier.padding(top = 12.dp)) {
+                    HorizontalDivider(
+                        color = AppTheme.DividerColor,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    InterpretationSection(
+                        title = stringResource(StringKeyMatch.INTERPRETATION_GENERAL),
+                        content = mahadasha.interpretation.generalEffects
+                    )
+
+                    InterpretationSection(
+                        title = stringResource(StringKeyMatch.INTERPRETATION_LORD_EFFECTS),
+                        content = mahadasha.interpretation.signLordEffects
+                    )
+
+                    if (mahadasha.interpretation.karakaActivation.isNotEmpty()) {
+                        InterpretationSection(
+                            title = stringResource(StringKeyAnalysis.KARAKA_ACTIVATION),
+                            items = mahadasha.interpretation.karakaActivation
+                        )
+                    }
+
+                    InterpretationSection(
+                        title = stringResource(StringKeyMatch.INTERPRETATION_FAVORABLE),
+                        items = mahadasha.interpretation.favorableAreas
+                    )
+
+                    InterpretationSection(
+                        title = stringResource(StringKeyMatch.INTERPRETATION_CHALLENGES),
+                        items = mahadasha.interpretation.challengingAreas
+                    )
+
+                    InterpretationSection(
+                        title = stringResource(StringKeyMatch.INTERPRETATION_RECOMMENDATIONS),
+                        items = mahadasha.interpretation.recommendations
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun InterpretationSection(
+    title: String,
+    content: String? = null,
+    items: List<String>? = null
+) {
+    Column(modifier = Modifier.padding(bottom = 12.dp)) {
+        Text(
+            text = title,
+            fontSize = NeoVedicFontSizes.S13,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = SpaceGroteskFamily,
+            color = AppTheme.AccentSecondary
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+
+        content?.let {
+            Text(
+                text = it,
+                fontSize = NeoVedicFontSizes.S13,
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
+            )
+        }
+
+        items?.forEach { item ->
+            Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                Text(
+                    text = "\u2022 ",
+                    fontSize = NeoVedicFontSizes.S13,
+                    color = AppTheme.AccentGold
+                )
+                Text(
+                    text = item,
+                    fontSize = NeoVedicFontSizes.S13,
+                    fontFamily = PoppinsFontFamily,
+                    color = AppTheme.TextSecondary,
+                    modifier = Modifier.weight(1f),
+                    lineHeight = 18.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun KarakamshaCard(
+    result: CharaDashaCalculator.CharaDashaResult,
+    language: Language
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(
+                            AppTheme.AccentGold.copy(alpha = 0.15f),
+                            CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = result.karakamsha.symbol,
+                        fontSize = NeoVedicFontSizes.S16,
+                        fontWeight = FontWeight.Bold,
+                        color = AppTheme.AccentGold
+                    )
+                }
+                Spacer(modifier = Modifier.width(10.dp))
+                Column {
+                    Text(
+                        text = stringResource(StringKeyDosha.KARAKAMSHA_TITLE),
+                        fontSize = NeoVedicFontSizes.S15,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = CinzelDecorativeFamily,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = result.karakamsha.getLocalizedName(language),
+                        fontSize = NeoVedicFontSizes.S12,
+                        fontFamily = PoppinsFontFamily,
+                        color = AppTheme.TextMuted
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = stringResource(StringKeyDosha.KARAKAMSHA_DESC),
+                fontSize = NeoVedicFontSizes.S12,
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextSecondary,
+                lineHeight = 16.sp
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = result.interpretation.karakamshaAnalysis,
+                fontSize = NeoVedicFontSizes.S13,
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextPrimary,
+                lineHeight = 18.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun AboutKarakasCard(language: Language) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(AppTheme.AccentTeal.copy(alpha = 0.1f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.Info,
+                        contentDescription = null,
+                        tint = AppTheme.AccentTeal,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(StringKeyDosha.KARAKA_ABOUT),
+                    fontSize = NeoVedicFontSizes.S16,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = CinzelDecorativeFamily,
+                    color = AppTheme.TextPrimary
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = stringResource(StringKeyDosha.KARAKA_ABOUT_DESC),
+                fontSize = NeoVedicFontSizes.S13,
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun KarakaCard(
+    karaka: CharaDashaCalculator.KarakaInfo,
+    language: Language
+) {
+    val (karakaKey, descKey) = when (karaka.karakaType) {
+        CharaDashaCalculator.KarakaType.ATMAKARAKA -> StringKeyDosha.KARAKA_AK to StringKeyDosha.KARAKA_AK_DESC
+        CharaDashaCalculator.KarakaType.AMATYAKARAKA -> StringKeyDosha.KARAKA_AMK to StringKeyDosha.KARAKA_AMK_DESC
+        CharaDashaCalculator.KarakaType.BHRATRIKARAKA -> StringKeyDosha.KARAKA_BK to StringKeyDosha.KARAKA_BK_DESC
+        CharaDashaCalculator.KarakaType.MATRIKARAKA -> StringKeyDosha.KARAKA_MK to StringKeyDosha.KARAKA_MK_DESC
+        CharaDashaCalculator.KarakaType.PITRIKARAKA -> StringKeyDosha.KARAKA_PIK to StringKeyDosha.KARAKA_PIK_DESC
+        CharaDashaCalculator.KarakaType.PUTRAKARAKA -> StringKeyDosha.KARAKA_PUK to StringKeyDosha.KARAKA_PUK_DESC
+        CharaDashaCalculator.KarakaType.GNATIKARAKA -> StringKeyDosha.KARAKA_GK to StringKeyDosha.KARAKA_GK_DESC
+        CharaDashaCalculator.KarakaType.DARAKARAKA -> StringKeyDosha.KARAKA_DK to StringKeyDosha.KARAKA_DK_DESC
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(
+                                AppTheme.getPlanetColor(karaka.planet).copy(alpha = 0.15f),
+                                CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = karaka.planet.symbol,
+                            fontSize = NeoVedicFontSizes.S18,
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.getPlanetColor(karaka.planet)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            text = stringResource(karakaKey),
+                            fontSize = NeoVedicFontSizes.S15,
+                            fontWeight = FontWeight.Bold,
+                            fontFamily = SpaceGroteskFamily,
+                            color = AppTheme.TextPrimary
+                        )
+                        Text(
+                            text = karaka.planet.getLocalizedName(language),
+                            fontSize = NeoVedicFontSizes.S12,
+                            fontFamily = PoppinsFontFamily,
+                            color = AppTheme.TextMuted
+                        )
+                    }
+                }
+
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = String.format("%.2f\u00B0", karaka.degreeInSign),
+                        fontSize = NeoVedicFontSizes.S13,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = SpaceGroteskFamily,
+                        color = AppTheme.AccentGold
+                    )
+                    Text(
+                        text = karaka.sign.getLocalizedName(language),
+                        fontSize = NeoVedicFontSizes.S11,
+                        fontFamily = PoppinsFontFamily,
+                        color = AppTheme.TextMuted
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = stringResource(descKey),
+                fontSize = NeoVedicFontSizes.S13,
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        AppTheme.CardBackgroundElevated,
+                        RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+                    )
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Navamsa:",
+                    fontSize = NeoVedicFontSizes.S12,
+                    fontFamily = PoppinsFontFamily,
+                    color = AppTheme.TextMuted
+                )
+                Text(
+                    text = karaka.navamsaSign.getLocalizedName(language),
+                    fontSize = NeoVedicFontSizes.S12,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = SpaceGroteskFamily,
+                    color = AppTheme.TextPrimary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CharaDashaTimelineOverviewCard(
+    result: CharaDashaCalculator.CharaDashaResult,
+    language: Language
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(AppTheme.AccentPrimary.copy(alpha = 0.1f), CircleShape),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        Icons.Outlined.Timeline,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(StringKeyDosha.CHARA_DASHA_TIMELINE),
+                    fontSize = NeoVedicFontSizes.S16,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = CinzelDecorativeFamily,
+                    color = AppTheme.TextPrimary
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = result.interpretation.systemOverview,
+                fontSize = NeoVedicFontSizes.S13,
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun CharaMahadashaCard(
+    mahadasha: CharaDashaCalculator.CharaMahadasha,
+    isCurrent: Boolean,
+    isExpanded: Boolean,
+    language: Language,
+    dateSystem: DateSystem,
+    onToggleExpand: (Boolean) -> Unit
+) {
+    val rotationAngle by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        label = "rotation"
+    )
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = if (isCurrent) {
+            AppTheme.AccentGold.copy(alpha = 0.05f)
+        } else {
+            AppTheme.CardBackground
+        },
+        border = androidx.compose.foundation.BorderStroke(
+            NeoVedicTokens.BorderWidth,
+            if (isCurrent) AppTheme.AccentGold.copy(alpha = 0.3f) else AppTheme.BorderColor
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .animateContentSize()
+                .padding(16.dp)
+                .clickable { onToggleExpand(!isExpanded) }
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(
+                                if (isCurrent) AppTheme.AccentGold.copy(alpha = 0.2f)
+                                else AppTheme.CardBackgroundElevated,
+                                CircleShape
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = mahadasha.sign.symbol,
+                            fontSize = NeoVedicFontSizes.S18,
+                            fontWeight = FontWeight.Bold,
+                            color = if (isCurrent) AppTheme.AccentGold else AppTheme.TextPrimary
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = mahadasha.sign.getLocalizedName(language),
+                                fontSize = NeoVedicFontSizes.S16,
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = CinzelDecorativeFamily,
+                                color = AppTheme.TextPrimary
+                            )
+                            if (isCurrent) {
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Surface(
+                                    color = AppTheme.AccentGold,
+                                    shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius)
+                                ) {
+                                    Text(
+                                        text = stringResource(StringKeyMatch.MISC_CURRENT).uppercase(),
+                                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                        fontSize = NeoVedicFontSizes.S9,
+                                        fontWeight = FontWeight.Bold,
+                                        fontFamily = SpaceGroteskFamily,
+                                        color = AppTheme.ScreenBackground
+                                    )
+                                }
+                            }
+                        }
+                        Text(
+                            text = "${mahadasha.signLord.getLocalizedName(language)} \u2022 ${mahadasha.durationYears} ${stringResource(StringKeyMatch.MISC_YEARS)}",
+                            fontSize = NeoVedicFontSizes.S12,
+                            fontFamily = PoppinsFontFamily,
+                            color = AppTheme.TextMuted
+                        )
+                    }
+                }
+
+                Icon(
+                    Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .rotate(rotationAngle)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = formatDateRange(mahadasha.startDate, mahadasha.endDate),
+                fontSize = NeoVedicFontSizes.S12,
+                fontFamily = SpaceGroteskFamily,
+                color = AppTheme.TextMuted
+            )
+
+            if (isCurrent) {
+                Spacer(modifier = Modifier.height(8.dp))
+                LinearProgressIndicator(
+                    progress = { mahadasha.getProgressPercent().toFloat() / 100f },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(5.dp)
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
+                    color = AppTheme.AccentGold,
+                    trackColor = AppTheme.AccentGold.copy(alpha = 0.15f)
+                )
+            }
+
+            AnimatedVisibility(visible = isExpanded) {
+                Column(modifier = Modifier.padding(top = 12.dp)) {
+                    HorizontalDivider(
+                        color = AppTheme.DividerColor,
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    )
+
+                    // Special significance
+                    if (mahadasha.specialSignificance.isNotEmpty()) {
+                        Text(
+                            text = mahadasha.specialSignificance,
+                            fontSize = NeoVedicFontSizes.S12,
+                            fontFamily = PoppinsFontFamily,
+                            color = AppTheme.TextMuted,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+                    }
+
+                    // General effects
+                    Text(
+                        text = mahadasha.interpretation.generalEffects,
+                        fontSize = NeoVedicFontSizes.S13,
+                        fontFamily = PoppinsFontFamily,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 18.sp,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    // Antardashas
+                    if (mahadasha.antardashas.isNotEmpty()) {
+                        Text(
+                            text = stringResource(StringKeyMatch.DASHA_LEVEL_ANTARDASHAS),
+                            fontSize = NeoVedicFontSizes.S13,
+                            fontWeight = FontWeight.SemiBold,
+                            fontFamily = SpaceGroteskFamily,
+                            color = AppTheme.AccentSecondary,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+
+                        mahadasha.antardashas.take(12).forEach { antar ->
+                            AntardashaRow(
+                                antardasha = antar,
+                                language = language,
+                                dateSystem = dateSystem
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AntardashaRow(
+    antardasha: CharaDashaCalculator.CharaAntardasha,
+    language: Language,
+    dateSystem: DateSystem
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .background(
+                AppTheme.CardBackgroundElevated,
+                RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+            )
+            .padding(horizontal = 10.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(24.dp)
+                    .background(
+                        AppTheme.AccentPrimary.copy(alpha = 0.15f),
+                        CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = antardasha.sign.symbol,
+                    fontSize = NeoVedicFontSizes.S12,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.AccentPrimary
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Column {
+                Text(
+                    text = antardasha.sign.getLocalizedName(language),
+                    fontSize = NeoVedicFontSizes.S13,
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = PoppinsFontFamily,
+                    color = AppTheme.TextPrimary
+                )
+                Text(
+                    text = formatDateRange(antardasha.startDate, antardasha.endDate),
+                    fontSize = NeoVedicFontSizes.S10,
+                    fontFamily = SpaceGroteskFamily,
+                    color = AppTheme.TextMuted
+                )
+            }
+        }
+
+        Text(
+            text = "${antardasha.durationMonths.toInt()}m",
+            fontSize = NeoVedicFontSizes.S12,
+            fontWeight = FontWeight.Medium,
+            fontFamily = SpaceGroteskFamily,
+            color = AppTheme.TextSecondary
+        )
+    }
+}
 
             Spacer(modifier = Modifier.height(12.dp))
 
