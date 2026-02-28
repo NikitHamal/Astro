@@ -378,16 +378,16 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     WEEKLY_OVERVIEW_FOOTER("Trust in your cosmic guidance and make the most of each day's unique energy.", "आफ्नो ब्रह्माण्डीय मार्गदर्शनमा विश्वास गर्नुहोस् र प्रत्येक दिनको अद्वितीय ऊर्जाको सदुपयोग गर्नुहोस्।"),
     
     // Weekly advice
-    ADVICE_JUPITER("embrace opportunities for learning and expansion. Your wisdom and optimism attract positive outcomes.", "सिकाई र विस्तारका अवसरहरूलाई अँगाल्नुहोस्। तपाईंको ज्ञान र आशावादले सकारात्मक परिणामहरू आकर्षित गर्दछ।"),
-    ADVICE_VENUS("focus on cultivating beauty, harmony, and meaningful relationships. Artistic pursuits are favored.", "सौन्दर्य, सामञ्जस्य, र अर्थपूर्ण सम्बन्धहरू विकास गर्नमा ध्यान दिनुहोस्। कलात्मक कार्यहरूलाई प्राथमिकता दिइन्छ।"),
-    ADVICE_SATURN("embrace discipline and patience. Hard work now builds lasting foundations for the future.", "अनुशासन र धैर्यलाई अँगाल्नुहोस्। अहिलेको कडा परिश्रमले भविष्यको लागि स्थायी आधार निर्माण गर्दछ।"),
-    ADVICE_MERCURY("prioritize communication, learning, and intellectual activities. Your mind is sharp.", "सञ्चार, सिकाई, र बौद्धिक गतिविधिहरूलाई प्राथमिकता दिनुहोस्। तपाईंको दिमाग तेज छ।"),
-    ADVICE_MARS("channel your energy into productive activities. Exercise and competition are favored.", "आफ्नो ऊर्जालाई उत्पादक गतिविधिहरूमा लगाउनुहोस्। व्यायाम र प्रतिस्पर्धालाई प्राथमिकता दिइन्छ।"),
-    ADVICE_SUN("let your light shine. Leadership roles and self-expression bring recognition.", "आफ्नो चमक फैलिन दिनुहोस्। नेतृत्वदायी भूमिका र आत्म-अभिव्यक्तिले पहिचान दिलाउँछ।"),
-    ADVICE_MOON("honor your emotions and intuition. Nurturing activities bring fulfillment.", "आफ्ना भावना र अन्तर्ज्ञानको सम्मान गर्नुहोस्। पोषण गर्ने गतिविधिहरूले सन्तुष्टि ल्याउँछ।"),
-    ADVICE_RAHU("embrace transformation while staying grounded. Unconventional approaches may succeed.", "आधारभूत मूल्यहरूमा रहँदै परिवर्तनलाई अँगाल्नुहोस्। अपरम्परागत दृष्टिकोणहरू सफल हुन सक्छन्।"),
-    ADVICE_KETU("focus on spiritual growth and letting go. Detachment brings peace.", "आध्यात्मिक वृद्धि र त्यागमा ध्यान दिनुहोस्। वैराग्यले शान्ति ल्याउँछ।"),
-    ADVICE_GENERAL("maintain balance and trust in divine timing.", "सन्तुलन कायम राख्नुहोस् र ईश्वरीय समयमा विश्वास गर्नुहोस्।"),
+    ADVICE_JUPITER("Embrace opportunities for learning and expansion. Your wisdom and optimism attract positive outcomes.", "सिकाई र विस्तारका अवसरहरूलाई अँगाल्नुहोस्। तपाईंको ज्ञान र आशावादले सकारात्मक परिणामहरू आकर्षित गर्दछ।"),
+    ADVICE_VENUS("Focus on cultivating beauty, harmony, and meaningful relationships. Artistic pursuits are favored.", "सौन्दर्य, सामञ्जस्य, र अर्थपूर्ण सम्बन्धहरू विकास गर्नमा ध्यान दिनुहोस्। कलात्मक कार्यहरूलाई प्राथमिकता दिइन्छ।"),
+    ADVICE_SATURN("Embrace discipline and patience. Hard work now builds lasting foundations for the future.", "अनुशासन र धैर्यलाई अँगाल्नुहोस्। अहिलेको कडा परिश्रमले भविष्यको लागि स्थायी आधार निर्माण गर्दछ।"),
+    ADVICE_MERCURY("Prioritize communication, learning, and intellectual activities. Your mind is sharp.", "सञ्चार, सिकाई, र बौद्धिक गतिविधिहरूलाई प्राथमिकता दिनुहोस्। तपाईंको दिमाग तेज छ।"),
+    ADVICE_MARS("Channel your energy into productive activities. Exercise and competition are favored.", "आफ्नो ऊर्जालाई उत्पादक गतिविधिहरूमा लगाउनुहोस्। व्यायाम र प्रतिस्पर्धालाई प्राथमिकता दिइन्छ।"),
+    ADVICE_SUN("Let your light shine. Leadership roles and self-expression bring recognition.", "आफ्नो चमक फैलिन दिनुहोस्। नेतृत्वदायी भूमिका र आत्म-अभिव्यक्तिले पहिचान दिलाउँछ।"),
+    ADVICE_MOON("Honor your emotions and intuition. Nurturing activities bring fulfillment.", "आफ्ना भावना र अन्तर्ज्ञानको सम्मान गर्नुहोस्। पोषण गर्ने गतिविधिहरूले सन्तुष्टि ल्याउँछ।"),
+    ADVICE_RAHU("Embrace transformation while staying grounded. Unconventional approaches may succeed.", "आधारभूत मूल्यहरूमा रहँदै परिवर्तनलाई अँगाल्नुहोस्। अपरम्परागत दृष्टिकोणहरू सफल हुन सक्छन्।"),
+    ADVICE_KETU("Focus on spiritual growth and letting go. Detachment brings peace.", "आध्यात्मिक वृद्धि र त्यागमा ध्यान दिनुहोस्। वैराग्यले शान्ति ल्याउँछ।"),
+    ADVICE_GENERAL("Maintain balance and trust in divine timing.", "सन्तुलन कायम राख्नुहोस् र ईश्वरीय समयमा विश्वास गर्नुहोस्।"),
     
     // Lucky elements labels
     LUCKY_NUMBER("Number", "अंक"),
