@@ -403,7 +403,7 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
                 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = stringResource(StringKeyAdvanced.ASHTAVARGA_BAV_TITLE),
+                        text = stringResource(StringKeyAshtavarga.BAV_LABEL),
                         fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
