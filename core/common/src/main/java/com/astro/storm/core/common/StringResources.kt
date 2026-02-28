@@ -32,7 +32,17 @@ object StringResources {
      * Get localized string with format arguments
      */
     fun get(key: StringKeyInterface, language: Language, vararg args: Any): String {
-        val template = get(key, language)
+        var template = get(key, language)
+        
+        // If template contains {0}, {1}, etc, use direct replacement
+        // This avoids String.format messing up literal % characters in args
+        if (template.contains(Regex("\\{\\d+\\}"))) {
+            args.forEachIndexed { index, arg ->
+                template = template.replace("{$index}", arg.toString())
+            }
+            return template
+        }
+        
         return try {
             String.format(template, *args)
         } catch (e: Exception) {
