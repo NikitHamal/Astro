@@ -1,6 +1,7 @@
 ﻿package com.astro.storm.ui.screen.main
 
 import androidx.compose.animation.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -16,12 +17,13 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.storm.R
 import com.astro.storm.data.localization.LocalLanguage
 import com.astro.storm.core.common.StringKey
 import com.astro.storm.core.common.StringResources
@@ -42,7 +44,7 @@ import kotlinx.coroutines.launch
  * Main Screen with Bottom Navigation
  *
  * Neo-Vedic "Ethereal Vedic Grid" design:
- * - Flat parchment top bar with ASTROSTORM logotype in Cinzel Decorative
+ * - Flat parchment top bar with AstroStorm logo + logotype
  * - Minimal bottom navigation with hairline top border
  * - Space Grotesk labels, Vedic Gold active indicator
  */
@@ -112,6 +114,7 @@ fun MainScreen(
     onNavigateToJaiminiKaraka: () -> Unit = {},
     onNavigateToDrigDasha: () -> Unit = {},
     onNavigateToSaptamsa: () -> Unit = {},
+    onNavigateToAbout: () -> Unit = {},
     onExportChart: (ExportFormat) -> Unit
 ) {
     val scope = rememberCoroutineScope()
@@ -296,7 +299,8 @@ fun MainScreen(
                                 viewModel.deleteChart(chartId)
                             },
                             onExportChart = onExportChart,
-                            onManageProfiles = { showProfileSwitcher = true }
+                            onManageProfiles = { showProfileSwitcher = true },
+                            onNavigateToAbout = onNavigateToAbout
                         )
                     }
                 }
@@ -341,7 +345,7 @@ fun MainScreen(
 
 // ============================================================================
 // NEO-VEDIC TOP BAR
-// Flat parchment surface with ASTROSTORM logotype + profile switcher
+// Flat parchment surface with app logo + logotype + profile switcher
 // Hairline bottom border, no elevation shadows
 // ============================================================================
 
@@ -378,15 +382,25 @@ private fun NeoVedicTopBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // ASTROSTORM logotype - Cinzel Decorative
-            Text(
-                text = "ASTROSTORM",
-                fontFamily = CinzelDecorativeFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
-                letterSpacing = 2.sp,
-                color = colors.TextPrimary
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "AstroStorm logo",
+                    modifier = Modifier.size(32.dp),
+                    contentScale = ContentScale.Fit
+                )
+                Text(
+                    text = "ASTROSTORM",
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
+                    letterSpacing = 2.sp,
+                    color = colors.TextPrimary
+                )
+            }
 
             // Profile switcher
             ProfileHeaderRow(

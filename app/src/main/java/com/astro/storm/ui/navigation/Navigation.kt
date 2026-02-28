@@ -293,6 +293,7 @@ sealed class Screen(val route: String) {
         fun createRoute(chartId: Long) = "saptamsa/$chartId"
     }
 
+    object About : Screen("about")
 }
 
 /**
@@ -501,6 +502,13 @@ fun AstroStormNavigation(
         composable(Screen.Muhurta.route) {
             MuhurtaScreen(
                 chart = currentChart,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        // About screen
+        composable(Screen.About.route) {
+            com.astro.storm.ui.screen.main.AboutScreen(
                 onBack = { navController.popBackStack() }
             )
         }

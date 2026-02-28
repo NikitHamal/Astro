@@ -64,7 +64,8 @@ fun SettingsTab(
     onEditProfile: (Long) -> Unit,
     onDeleteProfile: (Long) -> Unit,
     onExportChart: (ExportFormat) -> Unit,
-    onManageProfiles: () -> Unit
+    onManageProfiles: () -> Unit,
+    onNavigateToAbout: () -> Unit
 ) {
     val language = LocalLanguage.current
     val localizationManager = LocalLocalizationManager.current
@@ -161,7 +162,7 @@ fun SettingsTab(
                 titleKey = StringKey.SETTINGS_ABOUT_APP,
                 subtitleKey = StringKey.SETTINGS_VERSION,
                 subtitleArgs = arrayOf("1.0.0"),
-                onClick = { /* Show about dialog */ }
+                onClick = onNavigateToAbout
             )
         }
 
