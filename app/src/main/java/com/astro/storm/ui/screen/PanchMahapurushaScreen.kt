@@ -85,6 +85,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 
 /**
  * Panch Mahapurusha Yoga Screen
@@ -260,12 +265,11 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
     val hasYogas = analysis.hasAnyYoga
     val statusColor = if (hasYogas) AppTheme.AccentGold else AppTheme.TextMuted
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = statusColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = statusColor, 12.dp),
+        color = statusColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -296,7 +300,8 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
                      // Note: Handled dynamically, but title is "Yoga(s) Found!" or "No Yogas Formed"
                      if(analysis.yogaCount > 0) stringResource(StringKeyDosha.PANCHA_STATUS_FOUND) else stringResource(StringKeyDosha.PANCHA_NO_YOGAS)
                 } else stringResource(StringKeyDosha.PANCHA_NO_YOGAS),
-                style = MaterialTheme.typography.titleLarge,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
             )
@@ -309,7 +314,8 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
                 } else {
                     stringResource(StringKeyDosha.PANCHA_STATUS_NONE_DESC)
                 },
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center
             )
@@ -326,7 +332,8 @@ private fun StatusCard(analysis: PanchMahapurushaYogaCalculator.PanchMahapurusha
                         ) {
                             Text(
                                 text = yoga.type.displayName,
-                                style = MaterialTheme.typography.labelMedium,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 fontWeight = FontWeight.SemiBold,
                                 color = getYogaColor(yoga.type),
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
@@ -373,10 +380,11 @@ private fun StatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -386,14 +394,16 @@ private fun StatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
         }
@@ -402,10 +412,11 @@ private fun StatCard(
 
 @Composable
 private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.OverallInterpretation) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold, 12.dp),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -420,7 +431,8 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_INTERPRETATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -428,7 +440,8 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = interpretation.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -447,7 +460,8 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
                         )
                         Text(
                             text = insight,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -459,10 +473,11 @@ private fun InterpretationCard(interpretation: PanchMahapurushaYogaCalculator.Ov
 
 @Composable
 private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.CombinedYogaEffects) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold, 12.dp),
+        color = AppTheme.AccentGold.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -477,7 +492,8 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                 )
                 Text(
                     text = stringResource(StringKeyDosha.PANCHA_COMBINED),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -487,7 +503,8 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                 ) {
                     Text(
                         text = combined.rarity,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.AccentGold,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                     )
@@ -496,7 +513,8 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = combined.overallInterpretation,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -505,7 +523,8 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyDosha.PANCHA_SYNERGIES),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -518,7 +537,8 @@ private fun CombinedEffectsCard(combined: PanchMahapurushaYogaCalculator.Combine
                         Text("\u2728", fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12)
                         Text(
                             text = synergy,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -537,11 +557,12 @@ private fun YogasSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapurus
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.yogas.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -557,14 +578,16 @@ private fun YogasSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapurus
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DISPLAY),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DESC),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
@@ -584,12 +607,13 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
     var expanded by remember { mutableStateOf(true) }
     val yogaColor = getYogaColor(yoga.type)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -619,7 +643,8 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                     Column {
                         Text(
                             text = yoga.type.displayName,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
@@ -629,7 +654,8 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                                 yoga.planet.getLocalizedName(language),
                                 yoga.sign.getLocalizedName(language)
                             ) + ", " + stringResource(StringKeyUICommon.HOUSE) + " " + yoga.house.localized(),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -644,7 +670,8 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                     ) {
                         Text(
                             text = yoga.strength.toString() + stringResource(StringKeyUIExtra.PERCENT),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = yogaColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -679,7 +706,8 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                         ) {
                             Text(
                                 text = if (yoga.isExalted) stringResource(StringKeyUICommon.EXALTED) else stringResource(StringKeyUICommon.OWN_SIGN),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = if (yoga.isExalted) AppTheme.SuccessColor else AppTheme.AccentTeal,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
@@ -690,7 +718,8 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
                         ) {
                             Text(
                                 text = yoga.strengthLevel.displayName,
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
@@ -701,7 +730,8 @@ private fun YogaDetailCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga)
 
                     Text(
                         text = yoga.interpretation,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -733,10 +763,11 @@ private fun EffectsSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapur
 private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
     val yogaColor = getYogaColor(yoga.type)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -750,7 +781,8 @@ private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.PANCHA_EFFECTS_TITLE, yoga.type.displayName),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -772,7 +804,8 @@ private fun EffectsCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
             ) {
                 Text(
                     text = yoga.effects.houseSpecificEffect,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary,
                     modifier = Modifier.padding(12.dp)
                 )
@@ -791,14 +824,16 @@ private fun EffectRow(label: String, value: String) {
     ) {
         Text(
             text = label + stringResource(StringKeyUICommon.COLON),
-            style = MaterialTheme.typography.labelMedium,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextMuted,
             modifier = Modifier.width(90.dp)
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextSecondary
         )
     }
@@ -815,11 +850,12 @@ private fun TimingSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
         if (analysis.activationPeriods.isEmpty()) {
             EmptyYogasMessage()
         } else {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -833,7 +869,8 @@ private fun TimingSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
                         )
                         Text(
                             text = stringResource(StringKeyDosha.PANCHA_ACTIVATION_PERIODS),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -858,13 +895,15 @@ private fun TimingSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = period.periodType,
-                                        style = MaterialTheme.typography.bodyMedium,
+                                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                         fontWeight = FontWeight.Medium,
                                         color = AppTheme.TextPrimary
                                     )
                                     Text(
                                         text = period.description,
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                         color = AppTheme.TextMuted
                                     )
                                 }
@@ -880,7 +919,8 @@ private fun TimingSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapuru
                                 ) {
                                     Text(
                                         text = period.importance.name,
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                         fontWeight = FontWeight.SemiBold,
                                         color = when (period.importance) {
                                             PanchMahapurushaYogaCalculator.ActivationImportance.HIGH ->
@@ -923,10 +963,11 @@ private fun RemediesSection(analysis: PanchMahapurushaYogaCalculator.PanchMahapu
 private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
     val yogaColor = getYogaColor(yoga.type)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -941,7 +982,8 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.PANCHA_RECOMMENDATIONS_TITLE, yoga.type.displayName),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -967,7 +1009,8 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                             ) {
                                 Text(
                                     text = recommendation.category.getLocalizedName(LocalLanguage.current),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = yogaColor,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                                 )
@@ -976,18 +1019,21 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = recommendation.action,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = recommendation.benefit,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             text = stringResource(StringKeyDosha.PANCHA_TIMING_LABEL, recommendation.timing),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -999,10 +1045,11 @@ private fun RemedyCard(yoga: PanchMahapurushaYogaCalculator.MahapurushaYoga) {
 
 @Composable
 private fun EmptyYogasMessage() {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1012,14 +1059,16 @@ private fun EmptyYogasMessage() {
         ) {
             Text(
                 text = stringResource(StringKeyDosha.PANCHA_NO_YOGAS_DISPLAY),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.PANCHA_DETAILS_EMPTY_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1038,7 +1087,8 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.PANCHA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1064,14 +1114,16 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.PANCHA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1086,7 +1138,8 @@ private fun InfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.PANCHA_ABOUT_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1095,7 +1148,8 @@ private fun InfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.PANCHA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )

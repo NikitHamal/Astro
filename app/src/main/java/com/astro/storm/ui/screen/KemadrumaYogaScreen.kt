@@ -88,6 +88,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 
 /**
  * Kemadruma Yoga Screen - Displays Moon's isolation analysis
@@ -265,12 +270,11 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
     val isPositive = analysis.effectiveStatus == KemadrumaYogaCalculator.KemadrumaStatus.NOT_PRESENT ||
             analysis.effectiveStatus == KemadrumaYogaCalculator.KemadrumaStatus.FULLY_CANCELLED
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = statusColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = statusColor, 12.dp),
+        color = statusColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -298,7 +302,8 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
 
             Text(
                 text = analysis.effectiveStatus.displayName,
-                style = MaterialTheme.typography.titleLarge,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
             )
@@ -311,7 +316,8 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                 } else {
                     stringResource(StringKeyDosha.KEMA_NOT_FORMED)
                 },
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center
             )
@@ -335,7 +341,8 @@ private fun KemadrumaStatusCard(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                         )
                         Text(
                             text = stringResource(StringKeyDosha.KEMA_CANCELLATIONS_FOUND, analysis.cancellations.size),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
                         )
@@ -380,10 +387,11 @@ private fun KemadrumaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -393,14 +401,16 @@ private fun KemadrumaStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
         }
@@ -409,10 +419,11 @@ private fun KemadrumaStatCard(
 
 @Composable
 private fun InterpretationCard(interpretation: String) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -427,7 +438,8 @@ private fun InterpretationCard(interpretation: String) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.KEMA_INTERPRETATION_LABEL),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -435,7 +447,8 @@ private fun InterpretationCard(interpretation: String) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = interpretation,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -459,22 +472,25 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
         if (formation.formationStrength > 70) add(stringResource(StringKeyDosha.KEMA_FORMATION_STRENGTH, formation.formationStrength))
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.WarningColor.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.KEMA_FORMATION_DETAILS),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = formationDescription,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -493,7 +509,8 @@ private fun FormationDetailsCard(formation: KemadrumaYogaCalculator.KemadrumaFor
                         )
                         Text(
                             text = reason,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -515,11 +532,12 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Moon Position Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        ) {
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold, 12.dp),
+        color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -541,13 +559,15 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                     Column {
                         Text(
                             text = stringResource(StringKeyDosha.KEMA_MOON_POSITION),
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "${moonAnalysis.sign.getLocalizedName(language)} in ${stringResource(StringKey.CHART_HOUSE)} ${moonAnalysis.house}",
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -572,7 +592,8 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                 ) {
                     Text(
                         text = stringResource(StringKeyDosha.KEMA_MOON_STRENGTH),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     LinearProgressIndicator(
@@ -587,7 +608,8 @@ private fun MoonAnalysisSection(analysis: KemadrumaYogaCalculator.KemadrumaAnaly
                     Text(
                         text = moonAnalysis.brightness.name.replace("_", " ").lowercase()
                             .replaceFirstChar { it.uppercase() },
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.SemiBold,
                         color = getMoonBrightnessColor(moonAnalysis.brightness)
                     )
@@ -613,12 +635,14 @@ private fun MoonDetailRow(label: String, value: String) {
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             color = AppTheme.TextMuted
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary
         )
@@ -630,15 +654,17 @@ private fun SurroundingHousesCard(
     moonAnalysis: KemadrumaYogaCalculator.MoonAnalysis,
     formationDetails: KemadrumaYogaCalculator.KemadrumaFormation
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.KEMA_SURROUNDING_HOUSES),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -680,7 +706,8 @@ private fun SurroundingHousesCard(
                 ) {
                     Text(
                         text = stringResource(StringKeyDosha.KEMA_CONDITION_MET),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.WarningColor,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(12.dp)
@@ -714,7 +741,8 @@ private fun HouseStatusBox(
         ) {
             Text(
                 text = "${house}H",
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.Bold,
                 color = if (isKendra) AppTheme.PlanetMoon
                 else if (hasplanets) AppTheme.WarningColor
@@ -724,7 +752,8 @@ private fun HouseStatusBox(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
     }
@@ -740,11 +769,12 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         if (analysis.cancellations.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -760,7 +790,8 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = if (analysis.isKemadrumaFormed) stringResource(StringKeyDosha.KEMA_NO_CANCELLATIONS) else stringResource(StringKeyDosha.KEMA_NA),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -771,7 +802,8 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
                         } else {
                             "Kemadruma Yoga is not formed, so cancellations are not applicable."
                         },
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
@@ -784,7 +816,8 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
             // Individual cancellations
             Text(
                 text = stringResource(StringKeyDosha.KEMA_ACTIVE_CANCELLATIONS),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(vertical = 8.dp)
@@ -799,10 +832,11 @@ private fun CancellationsSection(analysis: KemadrumaYogaCalculator.KemadrumaAnal
 
 @Composable
 private fun TotalCancellationCard(score: Int) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.SuccessColor, 12.dp),
+        color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -830,7 +864,8 @@ private fun TotalCancellationCard(score: Int) {
                 )
                 Text(
                     text = "$score%",
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.SuccessColor
                 )
@@ -839,14 +874,16 @@ private fun TotalCancellationCard(score: Int) {
             Column {
                 Text(
                     text = stringResource(StringKeyDosha.KEMA_TOTAL_CANCELLATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.UI_NET_STRENGTH_FMT, score.toString()),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
             }
@@ -859,12 +896,13 @@ private fun BhangaCard(bhanga: KemadrumaYogaCalculator.KemadrumaBhanga) {
     val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -895,14 +933,16 @@ private fun BhangaCard(bhanga: KemadrumaYogaCalculator.KemadrumaBhanga) {
                     Column {
                         Text(
                             text = bhanga.type.name.replace("_", " "),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         bhanga.planet?.let { planet ->
                             Text(
                                 text = "Via ${planet.getLocalizedName(language)}",
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -918,7 +958,8 @@ private fun BhangaCard(bhanga: KemadrumaYogaCalculator.KemadrumaBhanga) {
                     ) {
                         Text(
                             text = "+${bhanga.strength}%",
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -942,7 +983,8 @@ private fun BhangaCard(bhanga: KemadrumaYogaCalculator.KemadrumaBhanga) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = bhanga.description,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -1014,12 +1056,13 @@ private fun ImpactCard(
 
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1050,13 +1093,15 @@ private fun ImpactCard(
                     Column {
                         Text(
                             text = title,
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = stringResource(StringKeyDosha.KEMA_IMPACT_LEVEL_LABEL, level.replace("_", " ")),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1071,7 +1116,8 @@ private fun ImpactCard(
                     ) {
                         Text(
                             text = level.replace("_", " "),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = getImpactLevelColor(level),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1097,7 +1143,8 @@ private fun ImpactCard(
                     if (recommendations.isNotEmpty()) {
                         Text(
                             text = stringResource(StringKeyDosha.KEMA_RECOMMENDATIONS_LABEL),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -1114,7 +1161,8 @@ private fun ImpactCard(
                                 )
                                 Text(
                                     text = recommendation,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1128,10 +1176,11 @@ private fun ImpactCard(
 
 @Composable
 private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.ActivationPeriod>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1146,7 +1195,8 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                 )
                 Text(
                     text = stringResource(StringKeyDosha.KEMADRUMA_ACTIVATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1171,13 +1221,15 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = "${period.planet.displayName} ${period.periodType}",
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
                                 text = period.reason,
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -1187,7 +1239,8 @@ private fun ActivationPeriodsCard(periods: List<KemadrumaYogaCalculator.Activati
                         ) {
                             Text(
                                 text = getIntensityLabel(period.intensity),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.SemiBold,
                                 color = getIntensityColorFromInt(period.intensity),
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1209,11 +1262,12 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.remedies.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -1229,14 +1283,16 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(StringKeyDosha.KEMA_NO_REMEDIES_NEEDED),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(StringKeyDosha.KEMADRUMA_FULLY_CANCELLED),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
@@ -1245,7 +1301,8 @@ private fun RemediesSection(analysis: KemadrumaYogaCalculator.KemadrumaAnalysis)
         } else {
             Text(
                 text = stringResource(StringKeyDosha.DOSHA_REMEDIES_SECTION_TITLE),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(vertical = 8.dp)
@@ -1268,12 +1325,13 @@ private fun RemedyCategoryCard(
 ) {
     var expanded by remember { mutableStateOf(true) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1295,7 +1353,8 @@ private fun RemedyCategoryCard(
                     )
                     Text(
                         text = category.name.replace("_", " "),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1305,7 +1364,8 @@ private fun RemedyCategoryCard(
                     ) {
                         Text(
                             text = "${remedies.size}",
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
@@ -1349,7 +1409,8 @@ private fun RemedyItem(remedy: KemadrumaYogaCalculator.KemadrumaRemedy) {
             ) {
                 Text(
                     text = remedy.description,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary,
                     modifier = Modifier.weight(1f)
@@ -1360,7 +1421,8 @@ private fun RemedyItem(remedy: KemadrumaYogaCalculator.KemadrumaRemedy) {
                 ) {
                     Text(
                         text = getPriorityLabelFromInt(remedy.priority),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Medium,
                         color = getPriorityColorFromInt(remedy.priority),
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -1371,7 +1433,8 @@ private fun RemedyItem(remedy: KemadrumaYogaCalculator.KemadrumaRemedy) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Timing: ${remedy.timing}",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1390,7 +1453,8 @@ private fun KemadrumaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.KEMA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1416,14 +1480,16 @@ private fun KemadrumaEmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.KEMA_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.KEMA_SELECT_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1438,7 +1504,8 @@ private fun KemadrumaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.KEMA_ABOUT_TITLE_MODAL),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1447,7 +1514,8 @@ private fun KemadrumaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.KEMA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )

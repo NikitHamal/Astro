@@ -141,6 +141,11 @@ import java.time.DateTimeException
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.roundToInt
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 
 private sealed interface MuhurtaUiState {
     data object Loading : MuhurtaUiState
@@ -457,13 +462,14 @@ private fun DateSelectorBar(
     val isToday = selectedDate == todayDate
     val interactionSource = remember { MutableInteractionSource() }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -504,14 +510,16 @@ private fun DateSelectorBar(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = selectedDate.format(MuhurtaFormatters.dateFormatter(currentLanguage())),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     if (isToday) {
                         Text(
                             text = stringResource(StringKeyMatch.MUHURTA_TODAY),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.AccentPrimary
                         )
                     }
@@ -565,7 +573,8 @@ private fun LoadingContent() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_CALCULATING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -595,14 +604,16 @@ private fun ErrorContent(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_ERROR),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 message,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -658,13 +669,14 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
     val scoreColor = remember(muhurta.overallScore) { getScoreColor(muhurta.overallScore) }
     val choghadiyaColor = remember(muhurta.choghadiya.choghadiya) { getChoghadiyaColor(muhurta.choghadiya.choghadiya) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Box(
             modifier = Modifier
@@ -690,11 +702,13 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             "${muhurta.overallScore}",
-                            style = MaterialTheme.typography.headlineLarge,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
-                        Text(stringResource(StringKeyMatch.MUHURTA_SCORE), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+                        Text(stringResource(StringKeyMatch.MUHURTA_SCORE), fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10, color = AppTheme.TextMuted)
                     }
                 }
 
@@ -702,7 +716,8 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
 
                 Text(
                     text = if (muhurta.isAuspicious) stringResource(StringKeyMatch.MUHURTA_AUSPICIOUS_TIME) else stringResource(StringKeyMatch.MUHURTA_AVERAGE_TIME),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.SemiBold,
                     color = if (muhurta.isAuspicious) AppTheme.SuccessColor else AppTheme.WarningColor
                 )
@@ -712,7 +727,8 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
                 Surface(color = choghadiyaColor.copy(alpha = 0.15f), shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
                     Text(
                         stringResource(StringKeyMatch.MUHURTA_CHOGHADIYA_SUFFIX, muhurta.choghadiya.choghadiya.getLocalizedName(currentLanguage())),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = choghadiyaColor,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -723,7 +739,8 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
 
                 Text(
                     stringResource(StringKeyMatch.MUHURTA_HORA_SUFFIX, muhurta.hora.lord.getLocalizedName(currentLanguage())),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
             }
@@ -733,12 +750,13 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
 
 @Composable
 private fun PanchangaCard(muhurta: MuhurtaDetails) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -751,7 +769,8 @@ private fun PanchangaCard(muhurta: MuhurtaDetails) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.MUHURTA_PANCHANGA),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -811,11 +830,13 @@ private fun PanchangaItem(
 ) {
     Surface(modifier = modifier, color = AppTheme.CardBackgroundElevated, shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text(label, style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted)
+            Text(label, fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10, color = AppTheme.TextMuted)
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 value,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = when (isPositive) {
                     true -> AppTheme.SuccessColor
@@ -843,12 +864,13 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
         AppTheme.SuccessColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -861,7 +883,8 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     StringResources.get(StringKeyMuhurta.PANCHAKA_TITLE, language),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -871,7 +894,8 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
 
             Text(
                 if (isPanchaka) StringResources.get(StringKeyMuhurta.PANCHAKA_ACTIVE, language, StringResources.get(panchaka.panchakaType.key, language)) else StringResources.get(StringKeyMuhurta.PANCHAKA_NONE, language),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.Bold,
                 color = severityColor
             )
@@ -881,21 +905,24 @@ private fun PanchakaCard(panchaka: PanchakaAnalyzer.PanchakaAnalysis) {
             if (isPanchaka) {
                 Text(
                     StringResources.get(StringKeyMuhurta.PANCHAKA_SEVERITY, language, panchaka.panchakaType.getSeverityDescription(language)),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 if (panchaka.avoidActivities.isNotEmpty()) {
                     Text(
                         StringResources.get(StringKeyMuhurta.PANCHAKA_AVOID, language, panchaka.avoidActivities.take(2).joinToString(", ")),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.ErrorColor
                     )
                 }
             } else {
                 Text(
                     StringResources.get(StringKeyMuhurta.PANCHAKA_FAVORABLE, language),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -908,12 +935,13 @@ private fun InauspiciousPeriodsCard(
     muhurta: MuhurtaDetails,
     highlightTime: LocalTime?
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.05f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.ErrorColor.copy(alpha = 0.05f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -926,7 +954,8 @@ private fun InauspiciousPeriodsCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.MUHURTA_INAUSPICIOUS_PERIODS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1029,7 +1058,8 @@ private fun InauspiciousPeriodRow(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             name,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = if (isActive) FontWeight.SemiBold else FontWeight.Normal,
                             color = AppTheme.TextPrimary
                         )
@@ -1041,7 +1071,8 @@ private fun InauspiciousPeriodRow(
                             ) {
                                 Text(
                                     stringResource(StringKeyMatch.MUHURTA_ACTIVE),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -1051,7 +1082,8 @@ private fun InauspiciousPeriodRow(
                     }
                     Text(
                         description,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1074,7 +1106,8 @@ private fun InauspiciousPeriodRow(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         "${startTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))} - ${endTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))}",
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextSecondary
                     )
@@ -1090,12 +1123,13 @@ private fun ChoghadiyaCard(
     nightChoghadiyaList: List<ChoghadiyaInfo>,
     highlightTime: LocalTime?
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1108,14 +1142,16 @@ private fun ChoghadiyaCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMuhurta.CHOGHADIYA_TITLE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     stringResource(StringKeyMatch.MUHURTA_PERIODS, dayChoghadiyaList.size + nightChoghadiyaList.size),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1124,7 +1160,8 @@ private fun ChoghadiyaCard(
 
             Text(
                 text = stringResource(StringKeyMuhurta.CHOGHADIYA_DAY_LABEL),
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextMuted
             )
@@ -1139,7 +1176,8 @@ private fun ChoghadiyaCard(
             Spacer(modifier = Modifier.height(14.dp))
             Text(
                 text = stringResource(StringKeyMuhurta.CHOGHADIYA_NIGHT_LABEL),
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextMuted
             )
@@ -1199,7 +1237,8 @@ private fun ChoghadiyaRow(
                 ) {
                     Text(
                         choghadiya.choghadiya.getLocalizedName(currentLanguage()).take(2),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Bold,
                         color = choghadiyaColor
                     )
@@ -1209,7 +1248,8 @@ private fun ChoghadiyaRow(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             choghadiya.choghadiya.getLocalizedName(currentLanguage()),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = if (isCurrent) FontWeight.SemiBold else FontWeight.Normal,
                             color = AppTheme.TextPrimary
                         )
@@ -1221,7 +1261,8 @@ private fun ChoghadiyaRow(
                             ) {
                                 Text(
                                     stringResource(StringKeyMatch.MUHURTA_NOW),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -1231,7 +1272,8 @@ private fun ChoghadiyaRow(
                     }
                     Text(
                         choghadiya.choghadiya.nature.getLocalizedName(currentLanguage()),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = choghadiyaColor
                     )
                 }
@@ -1239,7 +1281,8 @@ private fun ChoghadiyaRow(
 
             Text(
                 "${choghadiya.startTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))} - ${choghadiya.endTime.format(MuhurtaFormatters.timeFormatter(currentLanguage()))}",
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -1261,12 +1304,13 @@ private fun ActivitiesCard(
     val accentColor = if (isPositive) AppTheme.SuccessColor else AppTheme.ErrorColor
     val icon = if (isPositive) Icons.Filled.CheckCircle else Icons.Filled.Cancel
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = containerColor),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = containerColor,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1279,7 +1323,8 @@ private fun ActivitiesCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     title,
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1327,7 +1372,8 @@ private fun ActivityChip(
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 activity.getLocalizedName(currentLanguage()),
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = contentColor
             )
@@ -1337,12 +1383,13 @@ private fun ActivityChip(
 
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.InfoColor.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.InfoColor.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1355,7 +1402,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.MUHURTA_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1377,7 +1425,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                             Box(contentAlignment = Alignment.Center) {
                                 Text(
                                     "${index + 1}",
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.InfoColor
                                 )
@@ -1386,7 +1435,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             rec,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.weight(1f)
                         )
@@ -1481,12 +1531,13 @@ private fun ActivitySelectorCard(
 ) {
     val activities = remember { ActivityType.entries.toList() }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1499,7 +1550,8 @@ private fun ActivitySelectorCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.MUHURTA_SELECT_ACTIVITY),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1518,7 +1570,8 @@ private fun ActivitySelectorCard(
                         label = {
                             Text(
                                 activity.getLocalizedName(currentLanguage()),
-                                style = MaterialTheme.typography.labelMedium
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                             )
                         },
                         leadingIcon = {
@@ -1553,12 +1606,13 @@ private fun ActivitySelectorCard(
 private fun ActivityInfoCard(selectedActivity: ActivityType) {
     val icon = remember(selectedActivity) { getActivityIcon(selectedActivity) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackgroundElevated),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackgroundElevated,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1589,14 +1643,16 @@ private fun ActivityInfoCard(selectedActivity: ActivityType) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     selectedActivity.getLocalizedName(currentLanguage()),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     selectedActivity.getLocalizedDescription(currentLanguage()),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     lineHeight = MaterialTheme.typography.bodySmall.lineHeight * 1.2
                 )
@@ -1616,12 +1672,13 @@ private fun DateRangeCard(
     var showStartPicker by remember { mutableStateOf(false) }
     var showEndPicker by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1634,7 +1691,8 @@ private fun DateRangeCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.MUHURTA_DATE_RANGE_LABEL),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1707,13 +1765,15 @@ private fun DatePickerButton(
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
                 label,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 date.format(MuhurtaFormatters.shortDateFormatter(currentLanguage())),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
@@ -1796,14 +1856,16 @@ private fun SearchEmptyState() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_SEARCH_EMPTY),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextSecondary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_SEARCH_HELP),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1824,7 +1886,8 @@ private fun SearchingState() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_FINDING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1849,14 +1912,16 @@ private fun NoResultsState() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_NO_RESULTS),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextSecondary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_NO_RESULTS_HELP),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -1884,14 +1949,16 @@ private fun SearchErrorState(message: String) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyMatch.MUHURTA_SEARCH_ERROR),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextSecondary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 message,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1910,7 +1977,8 @@ private fun ResultsHeader(count: Int) {
     ) {
         Text(
             stringResource(StringKeyMatch.MUHURTA_RESULTS_TITLE),
-            style = MaterialTheme.typography.titleSmall,
+            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary
         )
@@ -1920,7 +1988,8 @@ private fun ResultsHeader(count: Int) {
         ) {
             Text(
                 stringResource(StringKeyMatch.MUHURTA_RESULTS_COUNT, count),
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.SuccessColor,
                 modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -1933,13 +2002,15 @@ private fun ResultsHeader(count: Int) {
 private fun SearchResultCard(result: MuhurtaSearchResult) {
     val scoreColor = remember(result.score) { getScoreColor(result.score) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .vedicCornerMarkers(color = scoreColor, 12.dp),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1950,7 +2021,8 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         result.dateTime.format(MuhurtaFormatters.shortDateFormatter(currentLanguage())),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1965,7 +2037,8 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             result.dateTime.format(MuhurtaFormatters.timeFormatter(currentLanguage())),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.AccentPrimary
                         )
@@ -1982,13 +2055,15 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
                     ) {
                         Text(
                             "${result.score}",
-                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                             fontWeight = FontWeight.Bold,
                             color = scoreColor
                         )
                         Text(
                             stringResource(StringKeyMatch.MUHURTA_SCORE),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = scoreColor.copy(alpha = 0.8f)
                         )
                     }
@@ -2037,7 +2112,8 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 reason,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -2061,7 +2137,8 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 warning,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -2089,13 +2166,15 @@ private fun ResultDetailChip(
         ) {
             Text(
                 label,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 value,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary,
                 maxLines = 1,

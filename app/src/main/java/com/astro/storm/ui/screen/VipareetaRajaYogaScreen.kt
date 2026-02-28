@@ -86,6 +86,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 
 /**
  * Vipareeta Raja Yoga Screen
@@ -251,10 +256,11 @@ private fun VipareetaStatusCard(analysis: VipareetaRajaYogaCalculator.VipareetaR
         else -> AppTheme.TextMuted
     }
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = statusColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = statusColor, 12.dp),
+        color = statusColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -284,14 +290,16 @@ private fun VipareetaStatusCard(analysis: VipareetaRajaYogaCalculator.VipareetaR
                     2 -> stringResource(StringKeyDosha.VIPAREETA_TWO_YOGAS)
                     else -> stringResource(StringKeyDosha.VIPAREETA_ALL_YOGAS)
                 },
-                style = MaterialTheme.typography.titleLarge,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "${stringResource(StringKeyDosha.VIPAREETA_STRENGTH)}: ${analysis.overallStrength.displayName}",
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary
             )
 
@@ -330,7 +338,8 @@ private fun YogaBadge(name: String, color: Color) {
     ) {
         Text(
             text = name,
-            style = MaterialTheme.typography.labelMedium,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.SemiBold,
             color = color,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
@@ -381,10 +390,11 @@ private fun VipareetaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -394,14 +404,16 @@ private fun VipareetaStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -411,10 +423,11 @@ private fun VipareetaStatCard(
 
 @Composable
 private fun VipareetaSummaryCard(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYogaAnalysis) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.LifeAreaSpiritual, 12.dp),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -429,7 +442,8 @@ private fun VipareetaSummaryCard(analysis: VipareetaRajaYogaCalculator.Vipareeta
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_INTERPRETATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -437,7 +451,8 @@ private fun VipareetaSummaryCard(analysis: VipareetaRajaYogaCalculator.Vipareeta
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = analysis.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -461,7 +476,8 @@ private fun VipareetaYogasSection(analysis: VipareetaRajaYogaCalculator.Vipareet
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.VIPAREETA_EXCHANGES_TITLE),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentGold
             )
@@ -479,14 +495,13 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
     val yogaColor = getYogaTypeColor(yoga.yogaType)
     val statusIcon = if (yoga.isFormed) Icons.Filled.CheckCircle else Icons.Filled.RemoveCircle
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (yoga.isFormed) AppTheme.CardBackground else AppTheme.CardBackground.copy(alpha = 0.6f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (yoga.isFormed) AppTheme.CardBackground else AppTheme.CardBackground.copy(alpha = 0.6f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -520,7 +535,8 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                         ) {
                             Text(
                                 text = yoga.yogaType.displayName,
-                                style = MaterialTheme.typography.titleMedium,
+                                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                                 fontWeight = FontWeight.SemiBold,
                                 color = if (yoga.isFormed) AppTheme.TextPrimary else AppTheme.TextMuted
                             )
@@ -533,7 +549,8 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                         }
                         Text(
                             text = stringResource(StringKeyDosha.VIPAREETA_DUSTHANA_LORD_FMT, yoga.yogaType.houseLord, yoga.dusthanaLord.getLocalizedName(language)),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -549,7 +566,8 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                         ) {
                             Text(
                                 text = yoga.strength.displayName,
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.SemiBold,
                                 color = yogaColor,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -584,7 +602,8 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                             ) {
                                 Text(
                                     text = "H${yoga.placedInHouse}",
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.TextSecondary,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -595,7 +614,8 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                             ) {
                                 Text(
                                     text = yoga.placedInSign.getLocalizedName(language),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.TextSecondary,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -615,7 +635,8 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                                         yoga.isRetrograde -> stringResource(StringKey.PLANET_RETROGRADE)
                                         else -> stringResource(StringKey.DIGNITY_NEUTRAL_STATUS)
                                     },
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = when {
                                         yoga.isExalted -> AppTheme.SuccessColor
                                         yoga.isDebilitated -> AppTheme.ErrorColor
@@ -630,7 +651,8 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
 
                     Text(
                         text = yoga.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -639,14 +661,16 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(StringKeyDosha.VIPAREETA_BENEFITS),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
                         )
                         yoga.benefitsAreas.take(3).forEach { benefit ->
                             Text(
                                 text = "\u2022 $benefit",
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -659,10 +683,11 @@ private fun VipareetaYogaCard(yoga: VipareetaRajaYogaCalculator.VipareetaYoga) {
 
 @Composable
 private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaExchange) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentGold.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -671,7 +696,8 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
             ) {
                 Text(
                     text = "${exchange.planet1.localizedAbbr()} \u2194 ${exchange.planet2.localizedAbbr()}",
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     color = AppTheme.AccentGold
                 )
                 Surface(
@@ -680,7 +706,8 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
                 ) {
                     Text(
                         text = "${com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house1}-${com.astro.storm.data.localization.stringResource(com.astro.storm.core.common.StringKeyUIExtra.HOUSE_PREFIX_SHORT)}${exchange.house2}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.AccentGold,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                     )
@@ -689,7 +716,8 @@ private fun DusthanaExchangeCard(exchange: VipareetaRajaYogaCalculator.DusthanaE
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = exchange.effect,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -706,11 +734,12 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.primaryBenefits.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -726,18 +755,20 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(StringKeyDosha.VIPAREETA_NO_BENEFITS),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
                 }
             }
         } else {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -751,7 +782,8 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
                         )
                         Text(
                             text = stringResource(StringKeyDosha.VIPAREETA_PRIMARY_BENEFITS),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -779,7 +811,8 @@ private fun BenefitsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaY
                                 )
                                 Text(
                                     text = benefit,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -800,11 +833,12 @@ private fun VipareetaTimingSection(analysis: VipareetaRajaYogaCalculator.Viparee
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.activationTimeline.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -820,18 +854,20 @@ private fun VipareetaTimingSection(analysis: VipareetaRajaYogaCalculator.Viparee
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(StringKeyDosha.VIPAREETA_NO_TIMING),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
                 }
             }
         } else {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -845,7 +881,8 @@ private fun VipareetaTimingSection(analysis: VipareetaRajaYogaCalculator.Viparee
                         )
                         Text(
                             text = stringResource(StringKeyDosha.VIPAREETA_ACTIVATION_PERIODS),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -894,7 +931,8 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                     )
                     Text(
                         text = StringResources.get(com.astro.storm.core.common.StringKeyMatch.DASHA_LEVEL_MAHADASHA, language) + " - ${period.planet.getLocalizedName(language)}",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
@@ -906,7 +944,8 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                     ) {
                         Text(
                             text = stringResource(type.nameKey).split(" ").first(),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = yogaColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -916,7 +955,8 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = period.description,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
             if (period.expectedEffects.isNotEmpty()) {
@@ -931,7 +971,8 @@ private fun ActivationPeriodRow(period: VipareetaRajaYogaCalculator.ActivationPe
                         ) {
                             Text(
                                 text = effect,
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                             )
@@ -953,15 +994,17 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
     ) {
         // Enhancement Factors
         if (analysis.enhancementFactors.isNotEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.SuccessColor.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(StringKeyDosha.VIPAREETA_ENHANCEMENT),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.SuccessColor
                     )
@@ -974,7 +1017,8 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                             Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                             Text(
                                 text = factor,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -985,15 +1029,17 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
 
         // Cancellation Factors
         if (analysis.cancellationFactors.isNotEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.WarningColor.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(StringKeyDosha.VIPAREETA_CANCELLATION),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.WarningColor
                     )
@@ -1006,7 +1052,8 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                             Text("\u26A0", color = AppTheme.WarningColor)
                             Text(
                                 text = factor,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1017,11 +1064,12 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
 
         // Empty state
         if (analysis.enhancementFactors.isEmpty() && analysis.cancellationFactors.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -1030,7 +1078,8 @@ private fun FactorsSection(analysis: VipareetaRajaYogaCalculator.VipareetaRajaYo
                 ) {
                     Text(
                         text = stringResource(StringKeyDosha.VIPAREETA_NO_FACTORS),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
@@ -1051,7 +1100,8 @@ private fun VipareetaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.VIPAREETA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1077,14 +1127,16 @@ private fun VipareetaEmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.VIPAREETA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1099,7 +1151,8 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.VIPAREETA_ABOUT_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1108,7 +1161,8 @@ private fun VipareetaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.VIPAREETA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )

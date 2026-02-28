@@ -71,6 +71,11 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 import kotlin.math.roundToInt
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 
 /**
  * VarshaphalaScreen - Annual Horoscope (Tajika System)
@@ -234,7 +239,8 @@ private fun YearRatingBadge(rating: Float) {
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 String.format("%.1f", rating),
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -260,12 +266,13 @@ private fun YearSelector(
         }
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column {
             Row(
@@ -289,13 +296,15 @@ private fun YearSelector(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_YEAR_RANGE, currentYear, currentYear + 1),
-                        style = MaterialTheme.typography.headlineMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         stringResource(StringKeyMatch.VARSHAPHALA_YEAR_OF_LIFE, currentYear - birthYear + 1),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -328,7 +337,8 @@ private fun YearSelector(
                         label = {
                             Text(
                                 year.toString(),
-                                style = MaterialTheme.typography.labelMedium,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
                             )
                         },
@@ -367,14 +377,16 @@ private fun EmptyState() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyAnalysis.VARSHAPHALA_NO_CHART),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 stringResource(StringKeyAnalysis.VARSHAPHALA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -412,14 +424,16 @@ private fun LoadingState() {
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 stringResource(StringKey.VARSHAPHALA_COMPUTING),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 stringResource(StringKey.VARSHAPHALA_COMPUTING_DESC),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -445,14 +459,16 @@ private fun ErrorState(message: String, onRetry: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKey.VARSHAPHALA_ERROR),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.ErrorColor
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 message,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center
             )
@@ -497,12 +513,13 @@ private fun SolarReturnCard(result: VarshaphalaResult) {
     val dateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_FULL), locale)
     val timeFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_TIME_FULL), locale)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -536,13 +553,15 @@ private fun SolarReturnCard(result: VarshaphalaResult) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(StringKey.VARSHAPHALA_SOLAR_RETURN),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_SUN_RETURNS),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -550,7 +569,8 @@ private fun SolarReturnCard(result: VarshaphalaResult) {
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_AGE_FORMAT, result.age),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentPrimary
                     )
@@ -565,19 +585,22 @@ private fun SolarReturnCard(result: VarshaphalaResult) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_RETURN_DATE),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         result.solarReturnChart.solarReturnTime.format(dateFormatter),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         result.solarReturnChart.solarReturnTime.format(timeFormatter),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -622,19 +645,22 @@ private fun InfoChip(
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
                 label,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
             Text(
                 value,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             subValue?.let {
                 Text(
                     it,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -644,12 +670,14 @@ private fun InfoChip(
 
 @Composable
 private fun YearLordMunthaCard(result: VarshaphalaResult) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .vedicCornerMarkers(color = AppTheme.AccentGold, 12.dp),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // Year Lord Section
@@ -676,7 +704,8 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                     ) {
                         Text(
                             result.yearLord.symbol,
-                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                             fontWeight = FontWeight.Bold,
                             color = getPlanetColor(result.yearLord)
                         )
@@ -687,12 +716,14 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                     Column {
                         Text(
                             stringResource(StringKey.VARSHAPHALA_YEAR_LORD),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             result.yearLord.getLocalizedName(currentLanguage()),
-                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
@@ -701,7 +732,8 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 stringResource(StringKeyAnalysis.VARSHAPHALA_IN_HOUSE, result.yearLordHouse),
-                                style = MaterialTheme.typography.labelMedium,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -713,7 +745,8 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
 
             Text(
                 result.yearLordDignity,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -760,12 +793,14 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                         Column {
                             Text(
                                 stringResource(StringKey.VARSHAPHALA_MUNTHA),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                             Text(
                                 result.muntha.sign.getLocalizedName(currentLanguage()),
-                                style = MaterialTheme.typography.titleLarge,
+                                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.TextPrimary
                             )
@@ -775,7 +810,8 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                                     result.muntha.house,
                                     result.muntha.degree
                                 ),
-                                style = MaterialTheme.typography.labelMedium,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -783,13 +819,15 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                         Column(horizontalAlignment = Alignment.End) {
                             Text(
                                 stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_PREFIX, result.muntha.lord.getLocalizedName(currentLanguage())),
-                                style = MaterialTheme.typography.labelMedium,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = getPlanetColor(result.muntha.lord),
                                 fontWeight = FontWeight.Medium
                             )
                             Text(
                                 stringResource(StringKeyAnalysis.VARSHAPHALA_IN_HOUSE, result.muntha.lordHouse),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -805,7 +843,8 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
                             ) {
                                 Text(
                                     theme,
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.AccentGold,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -817,7 +856,8 @@ private fun YearLordMunthaCard(result: VarshaphalaResult) {
 
                     Text(
                         result.muntha.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -835,7 +875,8 @@ private fun StrengthBadge(strength: String, language: com.astro.storm.core.commo
     ) {
         Text(
             strength,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             fontWeight = FontWeight.SemiBold,
             color = getStrengthColor(strength, language),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
@@ -847,13 +888,15 @@ private fun StrengthBadge(strength: String, language: com.astro.storm.core.commo
 private fun AnnualChartVisualization(result: VarshaphalaResult) {
     var isExpanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
+            .vedicCornerMarkers(color = AppTheme.AccentPrimary, 12.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -871,7 +914,8 @@ private fun AnnualChartVisualization(result: VarshaphalaResult) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         stringResource(StringKey.VARSHAPHALA_TAJIKA_CHART),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1100,7 +1144,8 @@ private fun ChartLegendItem(label: String, color: Color) {
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
     }
@@ -1110,13 +1155,14 @@ private fun ChartLegendItem(label: String, color: Color) {
 private fun PanchaVargiyaBalaCard(result: VarshaphalaResult) {
     var isExpanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1135,13 +1181,15 @@ private fun PanchaVargiyaBalaCard(result: VarshaphalaResult) {
                     Column {
                         Text(
                             stringResource(StringKey.VARSHAPHALA_PANCHA_VARGIYA),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_FIVEFOLD_STRENGTH),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1176,7 +1224,8 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
     ) {
         Text(
             bala.planet.symbol,
-            style = MaterialTheme.typography.titleMedium,
+            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
             fontWeight = FontWeight.Bold,
             color = getPlanetColor(bala.planet),
             modifier = Modifier.width(32.dp)
@@ -1184,7 +1233,8 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
 
         Text(
             bala.planet.getLocalizedName(currentLanguage()),
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             color = AppTheme.TextPrimary,
             modifier = Modifier.width(80.dp)
         )
@@ -1203,7 +1253,8 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
 
         Text(
             String.format("%.1f", bala.total),
-            style = MaterialTheme.typography.labelMedium,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             modifier = Modifier.width(36.dp)
@@ -1215,7 +1266,8 @@ private fun PlanetBalaRow(bala: PanchaVargiyaBala) {
         ) {
             Text(
                 bala.category.take(3),
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = getStrengthColor(bala.category, currentLanguage()),
                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
             )
@@ -1228,13 +1280,14 @@ private fun TriPatakiChakraCard(result: VarshaphalaResult) {
     var isExpanded by remember { mutableStateOf(false) }
     val chakra = result.triPatakiChakra
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1253,13 +1306,15 @@ private fun TriPatakiChakraCard(result: VarshaphalaResult) {
                     Column {
                         Text(
                             stringResource(StringKey.VARSHAPHALA_TRI_PATAKI),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_THREE_FLAG),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1280,7 +1335,8 @@ private fun TriPatakiChakraCard(result: VarshaphalaResult) {
             ) {
                 Text(
                     chakra.dominantInfluence,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.AccentPrimary,
                     modifier = Modifier.padding(12.dp)
                 )
@@ -1298,7 +1354,8 @@ private fun TriPatakiChakraCard(result: VarshaphalaResult) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         chakra.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -1318,7 +1375,8 @@ private fun TriPatakiSectorRow(sector: TriPatakiSector) {
     ) {
         Text(
             sector.name,
-            style = MaterialTheme.typography.labelMedium,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary
         )
@@ -1330,7 +1388,8 @@ private fun TriPatakiSectorRow(sector: TriPatakiSector) {
                 sector.planets.forEach { planet ->
                     Text(
                         planet.symbol,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = getPlanetColor(planet),
                         fontWeight = FontWeight.Bold
                     )
@@ -1339,14 +1398,16 @@ private fun TriPatakiSectorRow(sector: TriPatakiSector) {
         } else {
             Text(
                 stringResource(StringKeyAnalysis.VARSHAPHALA_NO_PLANETS),
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
         }
 
         Text(
             sector.influence,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextSecondary
         )
     }
@@ -1354,12 +1415,13 @@ private fun TriPatakiSectorRow(sector: TriPatakiSector) {
 
 @Composable
 private fun MajorThemesCard(result: VarshaphalaResult) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1372,7 +1434,8 @@ private fun MajorThemesCard(result: VarshaphalaResult) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     stringResource(StringKey.VARSHAPHALA_MAJOR_THEMES),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1395,7 +1458,8 @@ private fun MajorThemesCard(result: VarshaphalaResult) {
                         Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                             Text(
                                 "${index + 1}",
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.Bold,
                                 color = AppTheme.AccentGold
                             )
@@ -1404,7 +1468,8 @@ private fun MajorThemesCard(result: VarshaphalaResult) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         theme,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextPrimary,
                         lineHeight = 20.sp
                     )
@@ -1416,12 +1481,13 @@ private fun MajorThemesCard(result: VarshaphalaResult) {
 
 @Composable
 private fun MonthsCard(result: VarshaphalaResult) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1434,7 +1500,8 @@ private fun MonthsCard(result: VarshaphalaResult) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     stringResource(StringKey.VARSHAPHALA_MONTHLY_OUTLOOK),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1446,7 +1513,8 @@ private fun MonthsCard(result: VarshaphalaResult) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(StringKey.VARSHAPHALA_FAVORABLE),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.SuccessColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -1458,7 +1526,8 @@ private fun MonthsCard(result: VarshaphalaResult) {
                             ) {
                                 Text(
                                     getMonthName(month),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.SuccessColor,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -1472,7 +1541,8 @@ private fun MonthsCard(result: VarshaphalaResult) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_CHALLENGING),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.WarningColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -1484,7 +1554,8 @@ private fun MonthsCard(result: VarshaphalaResult) {
                             ) {
                                 Text(
                                     getMonthName(month),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.WarningColor,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -1504,13 +1575,14 @@ private fun KeyDatesCard(result: VarshaphalaResult) {
     val dateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_FULL), locale)
     val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT), locale)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1529,13 +1601,15 @@ private fun KeyDatesCard(result: VarshaphalaResult) {
                     Column {
                         Text(
                             stringResource(StringKey.VARSHAPHALA_KEY_DATES),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_IMPORTANT_DATES, result.keyDates.size),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1575,19 +1649,22 @@ private fun KeyDatesCard(result: VarshaphalaResult) {
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     keyDate.event,
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                                     fontWeight = FontWeight.Medium,
                                     color = AppTheme.TextPrimary
                                 )
                                 Text(
                                     keyDate.description,
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.TextSecondary
                                 )
                             }
                             Text(
                                 keyDate.date.format(dateFormatter),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -1601,12 +1678,13 @@ private fun KeyDatesCard(result: VarshaphalaResult) {
 
 @Composable
 private fun OverallPredictionCard(result: VarshaphalaResult) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1619,7 +1697,8 @@ private fun OverallPredictionCard(result: VarshaphalaResult) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     stringResource(StringKey.VARSHAPHALA_OVERALL_PREDICTION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1629,7 +1708,8 @@ private fun OverallPredictionCard(result: VarshaphalaResult) {
 
             Text(
                 result.overallPrediction,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -1665,17 +1745,19 @@ private fun TajikaAspectsHeader(aspects: List<TajikaAspectResult>) {
     val positive = aspects.count { it.type.isPositive }
     val challenging = aspects.size - positive
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 stringResource(StringKey.VARSHAPHALA_TAJIKA_SUMMARY),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -1689,13 +1771,15 @@ private fun TajikaAspectsHeader(aspects: List<TajikaAspectResult>) {
                 ) {
                     Text(
                         "$positive",
-                        style = MaterialTheme.typography.headlineMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.SuccessColor
                     )
                     Text(
                         stringResource(StringKey.VARSHAPHALA_FAVORABLE),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1706,13 +1790,15 @@ private fun TajikaAspectsHeader(aspects: List<TajikaAspectResult>) {
                 ) {
                     Text(
                         "$challenging",
-                        style = MaterialTheme.typography.headlineMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.WarningColor
                     )
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_CHALLENGING),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1723,13 +1809,15 @@ private fun TajikaAspectsHeader(aspects: List<TajikaAspectResult>) {
                 ) {
                     Text(
                         "${aspects.size}",
-                        style = MaterialTheme.typography.headlineMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentPrimary
                     )
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_TOTAL),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1743,12 +1831,14 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
     val language = currentLanguage()
     val color = if (aspect.type.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .vedicCornerMarkers(color = AppTheme.PlanetSun, 12.dp),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1759,18 +1849,21 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         aspect.planet1.symbol,
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = getPlanetColor(aspect.planet1)
                     )
                     Text(
                         " \u2194 ",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         aspect.planet2.symbol,
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = getPlanetColor(aspect.planet2)
                     )
@@ -1783,7 +1876,8 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
                     ) {
                         Text(
                             aspect.type.getDisplayName(language),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = color,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
@@ -1793,7 +1887,8 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
 
                 Text(
                     stringResource(StringKeyAnalysis.VARSHA_SIGN_DEGREE_FORMAT, aspect.aspectAngle, aspect.orb),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1802,7 +1897,8 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
 
             Text(
                 aspect.effectDescription,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary
             )
 
@@ -1814,12 +1910,14 @@ private fun TajikaAspectCard(aspect: TajikaAspectResult) {
             ) {
                 Text(
                     stringResource(StringKeyAnalysis.VARSHAPHALA_HOUSES_PREFIX) + aspect.relatedHouses.joinToString(", "),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     aspect.strength.getDisplayName(language),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     fontWeight = FontWeight.Medium,
                     color = getAspectStrengthColor(aspect.strength)
                 )
@@ -1850,12 +1948,13 @@ private fun SahamsTab(result: VarshaphalaResult) {
 
 @Composable
 private fun SahamsHeader() {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1868,7 +1967,8 @@ private fun SahamsHeader() {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     stringResource(StringKey.VARSHAPHALA_SAHAMS_TITLE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1878,7 +1978,8 @@ private fun SahamsHeader() {
 
             Text(
                 stringResource(StringKey.VARSHAPHALA_SAHAMS_DESC),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -1889,14 +1990,13 @@ private fun SahamsHeader() {
 private fun SahamCard(saham: SahamResult) {
     val isActive = saham.isActive
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (isActive) AppTheme.CardBackground else AppTheme.CardBackground.copy(alpha = 0.7f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (isActive) AppTheme.CardBackground else AppTheme.CardBackground.copy(alpha = 0.7f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1907,13 +2007,15 @@ private fun SahamCard(saham: SahamResult) {
                 Column {
                     Text(
                         saham.name,
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         saham.sanskritName,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1925,7 +2027,8 @@ private fun SahamCard(saham: SahamResult) {
                     ) {
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_ACTIVE),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
@@ -1959,7 +2062,8 @@ private fun SahamCard(saham: SahamResult) {
 
             Text(
                 saham.interpretation,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -1989,12 +2093,13 @@ private fun DashaTab(result: VarshaphalaResult) {
 
 @Composable
 private fun DashaHeader() {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -2007,7 +2112,8 @@ private fun DashaHeader() {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     stringResource(StringKey.VARSHAPHALA_MUDDA_DASHA),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -2017,7 +2123,8 @@ private fun DashaHeader() {
 
             Text(
                 stringResource(StringKey.VARSHAPHALA_MUDDA_DASHA_DESC),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -2030,17 +2137,15 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
     val shortDateFormatter = DateTimeFormatter.ofPattern(stringResource(StringKeyAnalysis.VARSHA_FORMAT_DATE_SHORT), locale)
     var isExpanded by remember { mutableStateOf(period.isCurrent) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(
-            containerColor = if (period.isCurrent)
+        color = if (period.isCurrent)
                 AppTheme.AccentPrimary.copy(alpha = 0.1f)
-            else AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            else AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
         border = if (period.isCurrent) androidx.compose.foundation.BorderStroke(
             1.dp, AppTheme.AccentPrimary.copy(alpha = 0.5f)
         ) else null
@@ -2060,7 +2165,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                 ) {
                     Text(
                         period.planet.symbol,
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = getPlanetColor(period.planet)
                     )
@@ -2072,7 +2178,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             period.planet.getLocalizedName(currentLanguage()),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -2084,7 +2191,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                             ) {
                                 Text(
                                     stringResource(StringKeyAnalysis.VARSHAPHALA_CURRENT),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
@@ -2094,7 +2202,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                     }
                     Text(
                         "${period.startDate.format(shortDateFormatter)} - ${period.endDate.format(shortDateFormatter)}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -2102,7 +2211,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_DAYS_FORMAT, period.days),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
@@ -2137,7 +2247,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                             ) {
                                 Text(
                                     keyword,
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = getPlanetColor(period.planet),
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -2149,7 +2260,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
 
                     Text(
                         period.prediction,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -2158,7 +2270,8 @@ private fun MuddaDashaPeriodCard(period: MuddaDashaPeriod) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_RULES_HOUSES, period.houseRuled.joinToString(", ")),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -2188,13 +2301,14 @@ private fun HousesTab(result: VarshaphalaResult) {
 private fun HousePredictionCard(prediction: HousePrediction) {
     var isExpanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -2210,7 +2324,8 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                 ) {
                     Text(
                         "${prediction.house}",
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentPrimary
                     )
@@ -2221,13 +2336,15 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_HOUSE_SIGN, prediction.house, prediction.signOnCusp.getLocalizedName(currentLanguage())),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_LORD_IN_HOUSE, prediction.houseLord.getLocalizedName(currentLanguage()), prediction.lordPosition),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -2254,13 +2371,15 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                 Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text(
                         stringResource(StringKeyAnalysis.VARSHAPHALA_PLANETS),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     prediction.planetsInHouse.forEach { planet ->
                         Text(
                             planet.symbol,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Bold,
                             color = getPlanetColor(planet)
                         )
@@ -2282,7 +2401,8 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                             ) {
                                 Text(
                                     keyword,
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.TextSecondary,
                                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                                 )
@@ -2294,7 +2414,8 @@ private fun HousePredictionCard(prediction: HousePrediction) {
 
                     Text(
                         prediction.prediction,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -2303,7 +2424,8 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_SPECIFIC_INDICATIONS),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -2315,12 +2437,14 @@ private fun HousePredictionCard(prediction: HousePrediction) {
                             ) {
                                 Text(
                                     "\u2022 ",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.AccentPrimary
                                 )
                                 Text(
                                     event,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -2441,13 +2565,14 @@ private fun getMonthName(month: Int): String {
 private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
     var isExpanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -2466,7 +2591,8 @@ private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
                     Column {
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_TAJIKA_YOGAS),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -2475,7 +2601,8 @@ private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
                                 stringResource(StringKeyAnalysis.VARSHAPHALA_NO_MAJOR_YOGAS) 
                             else 
                                 stringResource(StringKeyAnalysis.VARSHAPHALA_YOGAS_ACTIVE_FMT, analysis.yogasFound.size),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -2493,7 +2620,8 @@ private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
                  topYoga?.let { yoga ->
                      Text(
                          "${yoga.yogaType.displayName} (${String.format("%.0f", yoga.strength)})",
-                         style = MaterialTheme.typography.bodySmall,
+                         fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                          color = AppTheme.AccentPrimary
                      )
                  }
@@ -2505,7 +2633,8 @@ private fun TajikaYogasCard(analysis: TajikaYogaCalculator.TajikaYogaAnalysis) {
                     if (analysis.yogasFound.isEmpty()) {
                         Text(
                             stringResource(StringKeyAnalysis.VARSHAPHALA_NO_YOGAS_DESC),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextSecondary,
                             fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                         )
@@ -2536,7 +2665,8 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
         ) {
             Text(
                 yoga.yogaType.displayName,
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.Bold,
                 color = if (yoga.strength >= 7) AppTheme.SuccessColor else AppTheme.TextPrimary
             )
@@ -2546,7 +2676,8 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
             ) {
                  Text(
                      "${stringResource(StringKeyAnalysis.VARSHAPHALA_STRENGTH_SHORT)} ${String.format("%.1f", yoga.strength)}",
-                     style = MaterialTheme.typography.labelSmall,
+                     fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                      modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                      color = AppTheme.TextSecondary
                  )
@@ -2555,13 +2686,15 @@ private fun TajikaYogaItem(yoga: TajikaYogaCalculator.TajikaYoga) {
         Spacer(modifier = Modifier.height(4.dp))
         Text(
              "${yoga.primaryPlanet.symbol} ${yoga.aspect.displayName} ${yoga.secondaryPlanet.symbol}",   
-             style = MaterialTheme.typography.bodySmall,
+             fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
              color = AppTheme.TextMuted
         )
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             yoga.interpretation,
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             color = AppTheme.TextSecondary,
             lineHeight = 18.sp
         )

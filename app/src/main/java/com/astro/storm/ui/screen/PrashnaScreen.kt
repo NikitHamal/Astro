@@ -143,6 +143,11 @@ import com.astro.storm.data.localization.DateFormat
 import com.astro.storm.data.localization.formatLocalized
 import com.astro.storm.data.localization.localized
 import com.astro.storm.data.localization.localizedName
+import com.astro.storm.ui.theme.NeoVedicTokens
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 
 /**
  * UI State for Prashna Screen
@@ -343,82 +348,14 @@ private fun PrashnaInputContent(
 
 @Composable
 private fun PrashnaHeaderCard() {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentTeal.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
-    ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(
-                                AppTheme.AccentTeal.copy(alpha = 0.3f),
-                                AppTheme.AccentTeal.copy(alpha = 0.1f)
-                            )
-                        )
-                    ),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    Icons.AutoMirrored.Filled.HelpOutline,
-                    contentDescription = null,
-                    tint = AppTheme.AccentTeal,
-                    modifier = Modifier.size(36.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                stringResource(StringKeyAnalysis.PRASHNA_HORARY),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.AccentTeal
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                stringResource(StringKeyAnalysis.PRASHNA_INTRO),
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
-private fun QuestionInputCard(
-    question: String,
-    onQuestionChange: (String) -> Unit,
-    onSubmit: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .vedicCornerMarkers(color = verdictColor, 12.dp),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -431,7 +368,8 @@ private fun QuestionInputCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_YOUR_QUESTION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -474,7 +412,8 @@ private fun QuestionInputCard(
 
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_QUESTION_HELP),
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
         }
@@ -489,12 +428,13 @@ private fun CategorySelectorCard(
 ) {
     val categories = remember { PrashnaCategory.entries.toList() }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -507,7 +447,8 @@ private fun CategorySelectorCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_CATEGORY),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -527,7 +468,8 @@ private fun CategorySelectorCard(
                         label = {
                             Text(
                                 category.getLocalizedName(currentLanguage()),
-                                style = MaterialTheme.typography.labelMedium
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12
                             )
                         },
                         leadingIcon = {
@@ -577,13 +519,15 @@ private fun CategorySelectorCard(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             selectedCategory.getLocalizedName(currentLanguage()),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             selectedCategory.getLocalizedDescription(currentLanguage()),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -595,12 +539,13 @@ private fun CategorySelectorCard(
 
 @Composable
 private fun LocationInfoCard(locationName: String) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackgroundElevated),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackgroundElevated,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -626,12 +571,14 @@ private fun LocationInfoCard(locationName: String) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_LOCATION),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     locationName,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -653,7 +600,8 @@ private fun LocationInfoCard(locationName: String) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_TIME_NOW),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.InfoColor
                     )
@@ -690,7 +638,8 @@ private fun AnalyzeButton(
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             stringResource(StringKeyAnalysis.PRASHNA_ANALYZE),
-            style = MaterialTheme.typography.titleMedium,
+            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
             fontWeight = FontWeight.SemiBold,
             color = if (enabled) AppTheme.ButtonText else AppTheme.ButtonText.copy(alpha = 0.5f)
         )
@@ -706,13 +655,14 @@ private fun PrashnaInstructionsCard() {
         label = "expand_rotation"
     )
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -730,7 +680,8 @@ private fun PrashnaInstructionsCard() {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_ABOUT),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -772,7 +723,8 @@ private fun PrashnaInstructionsCard() {
                                 Box(contentAlignment = Alignment.Center) {
                                     Text(
                                         (index + 1).localized(),
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                         fontWeight = FontWeight.Bold,
                                         color = AppTheme.InfoColor
                                     )
@@ -781,7 +733,8 @@ private fun PrashnaInstructionsCard() {
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
                                 instruction,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary,
                                 modifier = Modifier.weight(1f)
                             )
@@ -812,14 +765,16 @@ private fun PrashnaLoadingContent() {
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_ANALYZING),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_CALCULATING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -850,14 +805,16 @@ private fun PrashnaErrorContent(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_ANALYSIS_FAILED),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 message,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -933,13 +890,14 @@ private fun VerdictCard(result: PrashnaResult) {
     val verdictColor = getVerdictColor(result.judgment.verdict)
     val verdictIcon = getVerdictIcon(result.judgment.verdict)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Box(
             modifier = Modifier
@@ -976,7 +934,8 @@ private fun VerdictCard(result: PrashnaResult) {
 
                 Text(
                     result.judgment.verdict.getLocalizedName(currentLanguage()),
-                    style = MaterialTheme.typography.titleLarge,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                     fontWeight = FontWeight.Bold,
                     color = verdictColor,
                     textAlign = TextAlign.Center
@@ -997,7 +956,8 @@ private fun VerdictCard(result: PrashnaResult) {
 
                 Text(
                     result.judgment.primaryReason,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     textAlign = TextAlign.Center
                 )
@@ -1025,7 +985,8 @@ private fun ConfidenceBadge(confidence: Int) {
     ) {
         Text(
             stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, confidence.localized()),
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             fontWeight = FontWeight.Medium,
             color = color,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -1041,7 +1002,8 @@ private fun CertaintyBadge(certainty: CertaintyLevel) {
     ) {
         Text(
             certainty.getLocalizedName(currentLanguage()),
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             fontWeight = FontWeight.Medium,
             color = AppTheme.InfoColor,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -1092,18 +1054,21 @@ private fun ScoreIndicator(score: Int) {
         ) {
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_UNFAVORABLE),
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_SCORE, score.localized()),
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 fontWeight = FontWeight.Medium,
                 color = scoreColor
             )
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_FAVORABLE),
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
         }
@@ -1112,12 +1077,13 @@ private fun ScoreIndicator(score: Int) {
 
 @Composable
 private fun QuestionSummaryCard(result: PrashnaResult) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1130,7 +1096,8 @@ private fun QuestionSummaryCard(result: PrashnaResult) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_QUESTION_DETAILS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1145,7 +1112,8 @@ private fun QuestionSummaryCard(result: PrashnaResult) {
                 Column(modifier = Modifier.padding(12.dp)) {
                     Text(
                         "\"${result.question}\"",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
@@ -1198,7 +1166,8 @@ private fun InfoChip(
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 label,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -1211,12 +1180,13 @@ private fun InfoChip(
 private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
     val strengthColor = getMoonStrengthColor(moonAnalysis.moonStrength)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1229,7 +1199,8 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_MOON_ANALYSIS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1240,7 +1211,8 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                 ) {
                     Text(
                         moonAnalysis.moonStrength.getLocalizedName(currentLanguage()),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Medium,
                         color = strengthColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1331,7 +1303,8 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             stringResource(StringKeyAnalysis.PRASHNA_MOON_VOID),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.WarningColor
                         )
                     }
@@ -1342,7 +1315,8 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
 
             Text(
                 moonAnalysis.interpretation,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -1363,13 +1337,15 @@ private fun MoonDetailItem(
         Column(modifier = Modifier.padding(10.dp)) {
             Text(
                 label,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 value,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary,
                 maxLines = 1,
@@ -1390,12 +1366,13 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
     val houseLabel = stringResource(StringKey.VARSHAPHALA_HOUSE)
     val planetsInLagnaLabel = stringResource(StringKeyAnalysis.PRASHNA_PLANETS_IN_LAGNA)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1408,7 +1385,8 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_LAGNA_ANALYSIS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1472,7 +1450,8 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
                         Text(
                             stringResource(StringKeyAnalysis.PRASHNA_PLANETS_IN_LAGNA_TEMPLATE)
                                 .format(lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(language) }),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.InfoColor
                         )
                     }
@@ -1483,7 +1462,8 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
 
             Text(
                 lagnaAnalysis.interpretation,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -1492,14 +1472,13 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
 
 @Composable
 private fun TimingPredictionCard(timing: TimingPrediction) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentTeal.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1512,7 +1491,8 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_TIMING),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1531,14 +1511,16 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
                 ) {
                     Text(
                         timing.estimatedTime,
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentTeal
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_ESTIMATED_TIMEFRAME),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1566,7 +1548,8 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
 
             Text(
                 timing.explanation,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -1575,12 +1558,13 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
 
 @Composable
 private fun SpecialYogasCard(yogas: List<PrashnaYoga>) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1593,7 +1577,8 @@ private fun SpecialYogasCard(yogas: List<PrashnaYoga>) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_SPECIAL_YOGAS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1637,7 +1622,8 @@ private fun YogaItem(yoga: PrashnaYoga) {
                 ) {
                     Text(
                         yoga.name,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1654,13 +1640,15 @@ private fun YogaItem(yoga: PrashnaYoga) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     yoga.description,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     yoga.interpretation,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1670,12 +1658,13 @@ private fun YogaItem(yoga: PrashnaYoga) {
 
 @Composable
 private fun FactorsCard(judgment: PrashnaJudgment) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Supporting Factors
@@ -1690,7 +1679,8 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_SUPPORTING_FACTORS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1710,7 +1700,8 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 factor,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1739,7 +1730,8 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_CHALLENGES),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1759,7 +1751,8 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 factor,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1772,14 +1765,13 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
 
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.InfoColor.copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.InfoColor.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1792,7 +1784,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1814,7 +1807,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                             Box(contentAlignment = Alignment.Center) {
                                 Text(
                                     (index + 1).localized(),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.InfoColor
                                 )
@@ -1823,7 +1817,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             rec,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.weight(1f)
                         )

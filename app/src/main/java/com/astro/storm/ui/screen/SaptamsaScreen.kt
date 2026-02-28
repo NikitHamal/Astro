@@ -54,6 +54,10 @@ import com.astro.storm.core.common.StringKeyInterface
 import com.astro.storm.core.common.StringKeySaptamsa
 import com.astro.storm.core.common.StringResources
 import androidx.compose.ui.text.style.TextOverflow
+import com.astro.storm.ui.theme.CinzelDecorativeFamily
+import com.astro.storm.ui.theme.SpaceGroteskFamily
+import com.astro.storm.ui.theme.PoppinsFontFamily
+import com.astro.storm.ui.components.common.vedicCornerMarkers
 
 /**
  * SaptamsaScreen - D7 (Saptamsa) Children/Progeny Analysis Screen
@@ -187,11 +191,12 @@ private fun OverviewTabSS(
 
         // Overall Interpretation
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
-            ) {
+                shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -209,7 +214,8 @@ private fun OverviewTabSS(
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = StringResources.get(StringKeySaptamsa.INTERPRETATION, language),
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
@@ -220,7 +226,8 @@ private fun OverviewTabSS(
                     Text(
                         text = StringResources.get(StringKeySaptamsa.RANGE, language, analysis.childCountEstimate.estimatedRange.first, analysis.childCountEstimate.estimatedRange.last) + ". " +
                                 StringResources.get(StringKeySaptamsa.SUMMARY_FERTILITY_STATUS, language, StringResources.get(analysis.fertilityAnalysis.fertilityStatus.key, language)),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -242,12 +249,11 @@ private fun ChildCountSummaryCard(
         else -> AppTheme.WarningColor
     }
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = countColor.copy(alpha = 0.1f)
-        )
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = countColor, 12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = countColor.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -267,7 +273,8 @@ private fun ChildCountSummaryCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = StringResources.get(StringKeySaptamsa.ESTIMATED_CHILDREN, language),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -296,13 +303,15 @@ private fun ChildCountSummaryCard(
                 ) {
                     Text(
                         text = "$displayCount",
-                        style = MaterialTheme.typography.headlineLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S24,
                         fontWeight = FontWeight.Bold,
                         color = countColor
                     )
                     Text(
                         text = if (displayCount == 1) StringResources.get(StringKeySaptamsa.CHILD, language) else StringResources.get(StringKeySaptamsa.CHILDREN, language),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = countColor.copy(alpha = 0.8f)
                     )
                 }
@@ -313,7 +322,8 @@ private fun ChildCountSummaryCard(
             // Range indicator
             Text(
                 text = StringResources.get(StringKeySaptamsa.RANGE, language, estimate.estimatedRange.first, estimate.estimatedRange.last),
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
 
@@ -362,7 +372,8 @@ private fun StrengthIndicator(
             )
             Text(
                 text = "${(strength * 100).toInt()}%",
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -372,7 +383,8 @@ private fun StrengthIndicator(
 
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
     }
@@ -383,10 +395,11 @@ private fun D7LagnaCard(
     analysis: SaptamsaAnalysis,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -405,7 +418,8 @@ private fun D7LagnaCard(
                 ) {
                     Text(
                         text = analysis.d7LagnaAnalysis.lagnaSign.getLocalizedName(language).take(2),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentPrimary
                     )
@@ -416,12 +430,14 @@ private fun D7LagnaCard(
                 Column {
                     Text(
                         text = StringResources.get(StringKeySaptamsa.D7_LAGNA_TITLE, language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = analysis.d7LagnaAnalysis.lagnaSign.getLocalizedName(language),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -440,12 +456,14 @@ private fun D7LagnaCard(
                 Column {
                     Text(
                         text = StringResources.get(StringKeySaptamsa.LAGNA_LORD, language),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = analysis.d7LagnaAnalysis.lagnaLord.getLocalizedName(language),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = getPlanetColorSS(analysis.d7LagnaAnalysis.lagnaLord)
                     )
@@ -454,12 +472,14 @@ private fun D7LagnaCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = StringResources.get(StringKeySaptamsa.LORD_POSITION, language),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = (analysis.d7LagnaAnalysis.lagnaLordPosition?.sign ?: ZodiacSign.ARIES).getLocalizedName(language),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -474,10 +494,11 @@ private fun FifthHouseCard(
     analysis: SaptamsaAnalysis,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -496,7 +517,8 @@ private fun FifthHouseCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = StringResources.get(StringKeySaptamsa.FIFTH_HOUSE_ANALYSIS, language),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -527,7 +549,8 @@ private fun FifthHouseCard(
             if (analysis.fifthHouseAnalysis.planetsInFifth.isNotEmpty()) {
                 Text(
                     text = StringResources.get(StringKeySaptamsa.PLANETS_IN_FIFTH, language),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
 
@@ -554,12 +577,14 @@ private fun InfoItem(
     Column {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = color
         )
@@ -579,7 +604,8 @@ private fun PlanetChip(
     ) {
         Text(
             text = planet.getLocalizedName(language),
-            style = MaterialTheme.typography.labelMedium,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.SemiBold,
             color = planetColor,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
@@ -633,10 +659,11 @@ private fun ChildIndicationCard(
         else -> AppTheme.AccentTeal
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -660,7 +687,8 @@ private fun ChildIndicationCard(
                     ) {
                         Text(
                             text = "$childNumber",
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                             fontWeight = FontWeight.Bold,
                             color = genderColor
                         )
@@ -671,13 +699,15 @@ private fun ChildIndicationCard(
                     Column {
                         Text(
                             text = StringResources.get(StringKeySaptamsa.CHILD_NUMBER, language, childNumber),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = StringResources.get(indication.gender.key, language),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = genderColor
                         )
                     }
@@ -690,7 +720,8 @@ private fun ChildIndicationCard(
                 ) {
                     Text(
                         text = "${(indication.genderConfidence * 100).toInt()}%",
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Bold,
                         color = getStrengthColor(indication.genderConfidence),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -710,12 +741,14 @@ private fun ChildIndicationCard(
                 Column {
                     Text(
                         text = StringResources.get(StringKeySaptamsa.SIGNIFICATOR, language),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = indication.indicatingPlanet.getLocalizedName(language),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = getPlanetColorSS(indication.indicatingPlanet)
                     )
@@ -724,12 +757,14 @@ private fun ChildIndicationCard(
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = StringResources.get(StringKeySaptamsa.RELATIONSHIP, language),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = StringResources.get(indication.relationshipQuality.key, language),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -741,7 +776,8 @@ private fun ChildIndicationCard(
             // Description
             Text(
                 text = indication.characteristics.firstOrNull()?.let { StringResources.get(it, language) } ?: StringResources.get(StringKeySaptamsa.ERROR_NO_SPECIFIC_DESC, language),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -751,7 +787,8 @@ private fun ChildIndicationCard(
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = StringResources.get(StringKeySaptamsa.CHARACTERISTICS_LABEL, language),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
                 )
@@ -766,7 +803,8 @@ private fun ChildIndicationCard(
                         ) {
                             Text(
                                 text = StringResources.get(trait, language),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextSecondary,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
@@ -786,7 +824,8 @@ private fun ChildIndicationCard(
                 indication.timingIndicators.forEach { timing ->
                     Text(
                         text = "\u2022 $timing",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
                     )
@@ -804,7 +843,8 @@ private fun ChildIndicationCard(
                 indication.careerIndications.forEach { career ->
                     Text(
                         text = "\u2022 ${StringResources.get(career, language)}",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
                     )
@@ -822,7 +862,8 @@ private fun ChildIndicationCard(
                 indication.healthIndications.forEach { health ->
                     Text(
                         text = "\u2022 ${StringResources.get(health, language)}",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.padding(start = 8.dp, top = 2.dp)
                     )
@@ -860,7 +901,8 @@ private fun FertilityTab(
             item {
                 Text(
                     text = StringResources.get(StringKeySaptamsa.FAVORABLE_PERIODS, language),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -891,12 +933,11 @@ private fun FertilityOverviewCard(
         else -> AppTheme.WarningColor
     }
 
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = overallColor.copy(alpha = 0.1f)
-        )
+    Surface(
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = overallColor, 12.dp),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = overallColor.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -911,13 +952,15 @@ private fun FertilityOverviewCard(
                 Column {
                     Text(
                         text = StringResources.get(StringKeySaptamsa.OVERALL_FERTILITY_SCORE, language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = StringResources.get(fertility.fertilityStatus.key, language),
-                        style = MaterialTheme.typography.headlineSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S19,
                         fontWeight = FontWeight.Bold,
                         color = overallColor
                     )
@@ -933,7 +976,8 @@ private fun FertilityOverviewCard(
                 ) {
                     Text(
                         text = "${(fertility.overallScore * 100).toInt()}%",
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = overallColor
                     )
@@ -993,12 +1037,14 @@ private fun FertilityFactorItem(
         Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
         Text(
             text = "${(score * 100).toInt()}%",
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.Bold,
             color = scoreColor
         )
@@ -1009,10 +1055,11 @@ private fun FertilityFactorItem(
 private fun FavorablePeriodCard(
     period: String
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1029,7 +1076,8 @@ private fun FavorablePeriodCard(
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = period,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextPrimary
             )
         }
@@ -1041,10 +1089,11 @@ private fun RecommendationsCard(
     recommendations: List<String>,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1063,7 +1112,8 @@ private fun RecommendationsCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = StringResources.get(StringKeySaptamsa.RECOMMENDATIONS, language),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -1086,7 +1136,8 @@ private fun RecommendationsCard(
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = rec,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -1137,14 +1188,16 @@ private fun YogasTabSS(
             }
 
             items(analysis.challengingYogas) { challenge ->
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
-                ) {
+                    color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
                     Text(
                         text = StringResources.get(challenge, language),
                         modifier = Modifier.padding(16.dp),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -1164,10 +1217,11 @@ private fun SanthanaYogaCard(
     else
         AppTheme.WarningColor
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1205,13 +1259,15 @@ private fun SanthanaYogaCard(
                     Column {
                         Text(
                             text = StringResources.get(yoga.nameKey, language),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = StringResources.get(StringKeySaptamsa.YOGA_STRENGTH, language, (yoga.strength * 100).toInt()),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1223,7 +1279,8 @@ private fun SanthanaYogaCard(
                 ) {
                     Text(
                         text = if (isPositive) StringResources.get(StringKeySaptamsa.YOGA_POSITIVE, language) else StringResources.get(StringKeySaptamsa.YOGA_CAUTION, language),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.SemiBold,
                         color = yogaColor,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -1235,7 +1292,8 @@ private fun SanthanaYogaCard(
 
             Text(
                 text = StringResources.get(yoga.effectKey, language),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -1249,12 +1307,11 @@ private fun SectionHeaderSS(
     subtitle: String,
     icon: ImageVector
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-        )
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1272,13 +1329,15 @@ private fun SectionHeaderSS(
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1288,10 +1347,11 @@ private fun SectionHeaderSS(
 
 @Composable
 private fun EmptyStateSS(message: String) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1308,7 +1368,8 @@ private fun EmptyStateSS(message: String) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = message,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1328,7 +1389,8 @@ private fun LoadingStateSS(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = StringResources.get(StringKeySaptamsa.ANALYZING_SAPTAMSA, language),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1354,7 +1416,8 @@ private fun ErrorStateSS(message: String, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = message,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
