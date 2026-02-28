@@ -16,6 +16,7 @@ import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -165,9 +166,9 @@ private fun NadiAmshaContent(
     onTabSelected: (Int) -> Unit
 ) {
     val tabs = listOf(
-        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_OVERVIEW), AppTheme.AccentGold),
-        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_POSITIONS), AppTheme.AccentTeal),
-        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_RECTIFICATION), AppTheme.AccentPrimary)
+        TabItem(title = stringResource(StringKeyAdvanced.NADI_TAB_OVERVIEW), accentColor = AppTheme.AccentGold),
+        TabItem(title = stringResource(StringKeyAdvanced.NADI_TAB_POSITIONS), accentColor = AppTheme.AccentTeal),
+        TabItem(title = stringResource(StringKeyAdvanced.NADI_TAB_RECTIFICATION), accentColor = AppTheme.AccentPrimary)
     )
 
     Column(
