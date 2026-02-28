@@ -79,6 +79,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import com.astro.vajra.ui.theme.AppColors
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -1385,7 +1386,7 @@ private fun PlanetDetailCardSS(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = StringResources.get(StringKeyAshtavarga.AVG_SCORE, language),
+                        text = stringResource(StringKeyAshtavarga.AVG_SCORE),
                         fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = colors.TextMuted
@@ -1421,7 +1422,7 @@ private fun LoadingStateSS(modifier: Modifier = Modifier, language: Language) {
             CircularProgressIndicator(color = AppTheme.current.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = StringResources.get(StringKeyAnalysis.LOADING_ANALYSIS, language),
+                text = stringResource(StringKeyAnalysis.LOADING_ANALYSIS),
                 fontFamily = PoppinsFontFamily,
                 color = AppTheme.current.TextMuted
             )
@@ -1462,13 +1463,14 @@ private fun SectionHeaderSS(title: String, language: Language) {
     )
 }
 
-private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.vajra.ui.theme.AppColors): Color {
+private fun getQualityColorSS(quality: TransitQuality, colors: AppColors): Color {
     return when (quality) {
         TransitQuality.EXCELLENT -> colors.SuccessColor
         TransitQuality.GOOD -> colors.AccentTeal
         TransitQuality.AVERAGE -> colors.AccentGold
         TransitQuality.CHALLENGING -> colors.WarningColor
         TransitQuality.DIFFICULT -> colors.ErrorColor
+        else -> colors.TextMuted
     }
 }
 

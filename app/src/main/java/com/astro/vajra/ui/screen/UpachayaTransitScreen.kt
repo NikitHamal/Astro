@@ -1292,7 +1292,7 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
                     shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        transit.expectedDate,
+                        transit.expectedDate.toString(),
                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
                         fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
@@ -1307,5 +1307,5 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
 // Helper to get house name (1st House, 2nd House etc.)
 @Composable
 private fun getHouseName(house: Int, language: Language): String {
-    return stringResource(StringKeyDosha.HOUSE_LABEL_FMT, house)
+    return stringResource(StringKeyDosha.HOUSE_LABEL, house)
 }
