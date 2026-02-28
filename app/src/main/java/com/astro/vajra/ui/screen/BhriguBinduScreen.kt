@@ -1405,7 +1405,7 @@ private fun RemedyCard(remedy: BhriguBinduCalculator.RemedialMeasure) {
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                remedy.description,
+                remedy.remedy,
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextPrimary
             )
