@@ -1,4 +1,4 @@
-﻿# AstroStorm Neo-Vedic UI Revamp Master Plan
+﻿# AstroVajra Neo-Vedic UI Revamp Master Plan
 
 Last updated: 2026-02-15
 
@@ -7,7 +7,7 @@ This is the single source of truth for the Neo-Vedic redesign rollout.
 It defines inventory, standards, wave sequencing, quality gates, and live progress.
 
 ## Current State (Measured)
-Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
+Scope baseline from `app/src/main/java/com/astro/vajra/ui/screen`:
 
 - Total screen files: `76`
 - `ScreenTopBar(` usages: `0` (target met)
@@ -28,13 +28,13 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
   - `scripts/ui_typography_nav_report.ps1`
 
 ### Phase 1 - Shared System Hardening (Completed)
-- Expanded `NeoVedicPageHeader` in `app/src/main/java/com/astro/storm/ui/components/common/NeoVedicPrimitives.kt` to support:
+- Expanded `NeoVedicPageHeader` in `app/src/main/java/com/astro/vajra/ui/components/common/NeoVedicPrimitives.kt` to support:
   - `actions: RowScope.() -> Unit`
   - `subtitleContent: ColumnScope.() -> Unit`
-- Deprecated `ScreenTopBar` and internally routed it to `NeoVedicPageHeader` in `app/src/main/java/com/astro/storm/ui/components/CommonComponents.kt`.
-- Added additional Neo-Vedic layout tokens in `app/src/main/java/com/astro/storm/ui/theme/DesignTokens.kt`.
-- Added semantic type aliases in `app/src/main/java/com/astro/storm/ui/theme/Type.kt` via `NeoVedicTypeScale`.
-- Added standardized feature tab wrapper `NeoVedicFeatureTabs` in `app/src/main/java/com/astro/storm/ui/components/common/ModernTabRow.kt`.
+- Deprecated `ScreenTopBar` and internally routed it to `NeoVedicPageHeader` in `app/src/main/java/com/astro/vajra/ui/components/CommonComponents.kt`.
+- Added additional Neo-Vedic layout tokens in `app/src/main/java/com/astro/vajra/ui/theme/DesignTokens.kt`.
+- Added semantic type aliases in `app/src/main/java/com/astro/vajra/ui/theme/Type.kt` via `NeoVedicTypeScale`.
+- Added standardized feature tab wrapper `NeoVedicFeatureTabs` in `app/src/main/java/com/astro/vajra/ui/components/common/ModernTabRow.kt`.
 
 ### Phase 2 - Header Standardization (Completed)
 - Migrated screen calls from `ScreenTopBar(` to `NeoVedicPageHeader(` across `ui/screen`.
@@ -50,17 +50,17 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 ## Public API and Type Changes
 
 ### Components
-- `app/src/main/java/com/astro/storm/ui/components/common/NeoVedicPrimitives.kt`
+- `app/src/main/java/com/astro/vajra/ui/components/common/NeoVedicPrimitives.kt`
   - `NeoVedicPageHeader` is the standard header primitive.
-- `app/src/main/java/com/astro/storm/ui/components/CommonComponents.kt`
+- `app/src/main/java/com/astro/vajra/ui/components/CommonComponents.kt`
   - `ScreenTopBar` is deprecated and scheduled for removal in Phase 5.
-- `app/src/main/java/com/astro/storm/ui/components/common/ModernTabRow.kt`
+- `app/src/main/java/com/astro/vajra/ui/components/common/ModernTabRow.kt`
   - `NeoVedicFeatureTabs` added as standard feature-tab entrypoint.
 
 ### Theme
-- `app/src/main/java/com/astro/storm/ui/theme/Type.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Type.kt`
   - `NeoVedicTypeScale` added for semantic typography use.
-- `app/src/main/java/com/astro/storm/ui/theme/DesignTokens.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/DesignTokens.kt`
   - Additional layout tokens added for standardized spacing/padding rhythms.
 
 ## Wave Execution Plan
@@ -151,10 +151,10 @@ Scope baseline from `app/src/main/java/com/astro/storm/ui/screen`:
 - `powershell -ExecutionPolicy Bypass -File scripts/ui_typography_nav_report.ps1`
 
 ### One-off quick checks
-- `rg -n "ScreenTopBar\(" app/src/main/java/com/astro/storm/ui/screen`
-- `rg -n "FilterChip\(|ScrollableTabRow\(|\bTabRow\(|\bTab\(" app/src/main/java/com/astro/storm/ui/screen`
-- `rg -n "fontSize\s*=\s*[0-9]+\.?[0-9]*\.sp" app/src/main/java/com/astro/storm/ui/screen`
-- `rg -n "Color\(0x" app/src/main/java/com/astro/storm/ui/screen`
+- `rg -n "ScreenTopBar\(" app/src/main/java/com/astro/vajra/ui/screen`
+- `rg -n "FilterChip\(|ScrollableTabRow\(|\bTabRow\(|\bTab\(" app/src/main/java/com/astro/vajra/ui/screen`
+- `rg -n "fontSize\s*=\s*[0-9]+\.?[0-9]*\.sp" app/src/main/java/com/astro/vajra/ui/screen`
+- `rg -n "Color\(0x" app/src/main/java/com/astro/vajra/ui/screen`
 
 ## Known Gaps
 - `ui_consistency_check.ps1` token coverage is `71/76` because it scans all `.kt` files under `ui/screen`, including utility/mapping files (`ChartDetailColors.kt`, `ChartDetailUtils.kt`, `MatchmakingReportUtils.kt`, `EphemerisUiMapper.kt`) that are not composable screens.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
-SCREEN_DIR="app/src/main/java/com/astro/storm/ui/screen"
+SCREEN_DIR="app/src/main/java/com/astro/vajra/ui/screen"
 
 echo "Running UI consistency checks..."
 

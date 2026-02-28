@@ -29,15 +29,15 @@ Fully eliminate recurring `length=13; index=13` failures in chart create/edit fl
 - UNCONFIRMED: exact low-level source of `StringIndexOutOfBoundsException(length=13,index=13)` in prior runtime path (guarded via timezone sanitization/fallback).
 
 ## Working Set (files/ids/commands):
-- `app/src/main/java/com/astro/storm/util/TimezoneSanitizer.kt`
-- `app/src/main/java/com/astro/storm/data/repository/ChartRepository.kt`
-- `app/src/main/java/com/astro/storm/ephemeris/SwissEphemerisEngine.kt`
-- `app/src/main/java/com/astro/storm/ephemeris/TransitAnalyzer.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/transits/TransitsScreenRedesigned.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/ChartInputScreen.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/main/MainScreen.kt`
-- `app/src/main/java/com/astro/storm/ui/navigation/Navigation.kt`
-- `app/src/main/java/com/astro/storm/ui/viewmodel/ChartViewModel.kt`
+- `app/src/main/java/com/astro/vajra/util/TimezoneSanitizer.kt`
+- `app/src/main/java/com/astro/vajra/data/repository/ChartRepository.kt`
+- `app/src/main/java/com/astro/vajra/ephemeris/SwissEphemerisEngine.kt`
+- `app/src/main/java/com/astro/vajra/ephemeris/TransitAnalyzer.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/transits/TransitsScreenRedesigned.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/ChartInputScreen.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/main/MainScreen.kt`
+- `app/src/main/java/com/astro/vajra/ui/navigation/Navigation.kt`
+- `app/src/main/java/com/astro/vajra/ui/viewmodel/ChartViewModel.kt`
 - `CONTINUITY.md`
 - Commands:
   - `git status --short`

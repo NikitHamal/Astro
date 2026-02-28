@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.astro.storm.core.model"
+    namespace = "com.astro.vajra.core.model"
     compileSdk = 34
 
     defaultConfig {

@@ -1,4 +1,4 @@
-# AstroStorm Agent Knowledge Base
+# AstroVajra Agent Knowledge Base
 
 ## Learnings
 - PWA cache strategy: switching local assets from cache-first to stale-while-revalidate improves update visibility.
@@ -23,9 +23,9 @@
 - Normalize timezone IDs when mapping DB entities to domain models to harden old data compatibility.
 
 ## App Structure
-- Input/edit flow: `app/src/main/java/com/astro/storm/ui/screen/ChartInputScreen.kt`
-- Settings/preferences: `app/src/main/java/com/astro/storm/ui/screen/main/SettingsTab.kt`
-- Calculation core: `app/src/main/java/com/astro/storm/ephemeris/`
+- Input/edit flow: `app/src/main/java/com/astro/vajra/ui/screen/ChartInputScreen.kt`
+- Settings/preferences: `app/src/main/java/com/astro/vajra/ui/screen/main/SettingsTab.kt`
+- Calculation core: `app/src/main/java/com/astro/vajra/ephemeris/`
 
 ## Known Issues
 - Exact original stack origin for `length=13; index=13` remains UNCONFIRMED due missing runtime trace; defensive timezone sanitization/fallback now guards this path.

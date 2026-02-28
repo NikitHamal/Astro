@@ -1,7 +1,7 @@
-# AstroStorm - Advanced Vedic Astrology App Instructions.
+# AstroVajra - Advanced Vedic Astrology App Instructions.
 
 ## Overview
-AstroStorm is a high-precision Vedic Astrology application designed for Android using Jetpack Compose. It features advanced calculation engines (Swiss Ephemeris), comprehensive divisional chart analysis, and specialized timing systems like Shoola Dasha and Nadi Amsha.
+AstroVajra is a high-precision Vedic Astrology application designed for Android using Jetpack Compose. It features advanced calculation engines (Swiss Ephemeris), comprehensive divisional chart analysis, and specialized timing systems like Shoola Dasha and Nadi Amsha.
 
 ## Architecture
 - **Language**: Kotlin
@@ -42,8 +42,8 @@ AstroStorm is a high-precision Vedic Astrology application designed for Android 
 - Normalize/sanitize timezone values at data boundaries (`ChartRepository`) so runtime screens consume canonical timezone IDs.
 
 ## App Structure
-- Core calculation engines: `app/src/main/java/com/astro/storm/ephemeris/**`
-- Primary chart input screen: `app/src/main/java/com/astro/storm/ui/screen/ChartInputScreen.kt`
+- Core calculation engines: `app/src/main/java/com/astro/vajra/ephemeris/**`
+- Primary chart input screen: `app/src/main/java/com/astro/vajra/ui/screen/ChartInputScreen.kt`
 
 ## Known Issues
 - Runtime stack source for the reported `length=13; index=13` error is UNCONFIRMED without crash logs; defensive timezone sanitization + fallback and transit error handling are applied.

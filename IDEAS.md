@@ -1,6 +1,6 @@
-# AstroStorm - Future Development Roadmap (Pending Items)
+# AstroVajra - Future Development Roadmap (Pending Items)
 
-This document outlines the remaining practical and impactful next steps for the AstroStorm Vedic astrology application. These ideas are based on authentic Vedic astrology principles and are intended to enhance the app's structural accuracy and predictive depth.
+This document outlines the remaining practical and impactful next steps for the AstroVajra Vedic astrology application. These ideas are based on authentic Vedic astrology principles and are intended to enhance the app's structural accuracy and predictive depth.
 
 ---
 
@@ -88,4 +88,4 @@ All implementations should follow authentic Vedic astrology principles from:
 
 ---
 
-*This document serves as a living roadmap for AstroStorm development. Features should be implemented with proper Vedic astrology validation and user testing.*
+*This document serves as a living roadmap for AstroVajra development. Features should be implemented with proper Vedic astrology validation and user testing.*

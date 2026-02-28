@@ -1,6 +1,6 @@
 import re
 
-file_path = "app/src/main/java/com/astro/storm/ui/screen/PredictionsScreen.kt"
+file_path = "app/src/main/java/com/astro/vajra/ui/screen/PredictionsScreen.kt"
 with open(file_path, 'r', encoding='utf-8') as f:
     content = f.read()
 
@@ -53,15 +53,15 @@ content = content.replace("""    Card(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {""", """    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .vedicCornerMarkers(color = AppTheme.AccentPrimary),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         shadowElevation = 0.dp
     ) {""", 1) # Only for LifePathCard (first match)
 
@@ -71,15 +71,15 @@ content = content.replace("""    Card(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {""", """    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .vedicCornerMarkers(color = AppTheme.AccentPrimary),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         shadowElevation = 0.dp
     ) {""", 1) # Next match is CurrentPeriodCard
 
@@ -89,14 +89,14 @@ content = content.replace("""    Card(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {""", """    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         shadowElevation = 0.dp
     ) {""")
 
@@ -113,7 +113,7 @@ content = content.replace("""    Card(
             )
             .clickable { expanded = !expanded },
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {""", """    Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -126,8 +126,8 @@ content = content.replace("""    Card(
             )
             .clickable { expanded = !expanded },
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         shadowElevation = 0.dp
     ) {""")
 
@@ -135,12 +135,12 @@ content = content.replace("""    Card(
 content = content.replace("""    Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {""", """    Surface(
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor),
         shadowElevation = 0.dp
     ) {""")
 

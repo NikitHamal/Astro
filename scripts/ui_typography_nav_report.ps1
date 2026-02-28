@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$screenDir = "app/src/main/java/com/astro/storm/ui/screen"
+$screenDir = "app/src/main/java/com/astro/vajra/ui/screen"
 
 Write-Output "Running UI typography/nav consistency report..."
 

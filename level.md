@@ -1,4 +1,4 @@
-# AstroStorm - Next Level Roadmap: Achieving Divine Precision
+# AstroVajra - Next Level Roadmap: Achieving Divine Precision
 
 **Analysis Date:** February 5, 2026  
 **Scope:** Comprehensive codebase analysis (344+ Kotlin files)  
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-AstroStorm is already a sophisticated Vedic Astrology application with **professional-grade calculation engines**, **comprehensive feature coverage**, and **optional AI integration** (Stormy agent). To achieve the "next level" - divinely accurate predictions that work offline through complete Vedic calculations and comprehensive templates - we must close critical gaps in:
+AstroVajra is already a sophisticated Vedic Astrology application with **professional-grade calculation engines**, **comprehensive feature coverage**, and **optional AI integration** (Stormy agent). To achieve the "next level" - divinely accurate predictions that work offline through complete Vedic calculations and comprehensive templates - we must close critical gaps in:
 
 1. **Template Database** (Need 5,000+ templates for comprehensive offline predictions)
 2. **Nadi Amsha Depth** (Calculation complete, need prediction templates & rectification)
@@ -42,7 +42,7 @@ All 6 Shadbala components are calculating and integrated:
 | **Chesta Bala (Motional)** | ✅ **IMPLEMENTED** | ShadbalaCalculator.kt | Integrated (lines 870-881) |
 | **Naisargika Bala (Natural)** | ✅ **IMPLEMENTED** | ShadbalaCalculator.kt | Integrated (lines 282-292) |
 
-**Implementation Location:** `app/src/main/java/com/astro/storm/ephemeris/ShadbalaCalculator.kt` (981 lines)
+**Implementation Location:** `app/src/main/java/com/astro/vajra/ephemeris/ShadbalaCalculator.kt` (981 lines)
 
 All components are properly calculated with Rupas (60 = 1 Rupa) conversion and strength categorization.
 
@@ -760,7 +760,7 @@ Key Features:
 ### 5.1 File Structure for Remaining Components
 
 ```
-app/src/main/java/com/astro/storm/
+app/src/main/java/com/astro/vajra/
 ├── ephemeris/
 │   ├── nadi/
 │   │   ├── NadiDatabase.kt ⭐ NEW
@@ -998,7 +998,7 @@ class TemplateSelector {
 
 ### Current State Summary
 
-**AstroStorm is already exceptional:**
+**AstroVajra is already exceptional:**
 - ✅ Professional calculation engines (Swiss Ephemeris)
 - ✅ Comprehensive feature set (8.7/10)
 - ✅ Modern architecture (MVVM, Compose, Hilt)
@@ -1028,7 +1028,7 @@ class TemplateSelector {
 
 ### The Vision (Revised for Current State)
 
-**AstroStorm Divine Level =**
+**AstroVajra Divine Level =**
 - **Fully Offline Calculations & Predictions**: All Vedic math + 5,000+ templates work offline
 - **Mathematically Complete**: All 6 Shadbala components ✅, all classical techniques
 - **Degree-Based Precision**: Nadi-level (D-150) accuracy, not just sign-based
@@ -1175,7 +1175,7 @@ class TemplateSelector {
 
 ## Final Words (Updated February 2026)
 
-**AstroStorm has made tremendous progress toward divine precision.** The foundation is rock-solid with professional-grade calculations and modern architecture. 
+**AstroVajra has made tremendous progress toward divine precision.** The foundation is rock-solid with professional-grade calculations and modern architecture. 
 
 **MAJOR ACHIEVEMENTS COMPLETED:**
 1. ✅ **Shadbala System** - All 6 components fully implemented

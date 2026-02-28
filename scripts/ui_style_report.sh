@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-UI_DIR="app/src/main/java/com/astro/storm/ui"
+UI_DIR="app/src/main/java/com/astro/vajra/ui"
 SCREEN_DIR="$UI_DIR/screen"
 
 echo "UI Style Report"

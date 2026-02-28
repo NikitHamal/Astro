@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AstroStorm"
+rootProject.name = "AstroVajra"
 include(":app")
 include(":core:model")
 include(":core:common")

@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Continue"
 
-$screenDir = "app/src/main/java/com/astro/storm/ui/screen"
+$screenDir = "app/src/main/java/com/astro/vajra/ui/screen"
 
 Write-Output "Running UI consistency checks..."
 

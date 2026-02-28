@@ -10,11 +10,11 @@ plugins {
 }
 
 android {
-    namespace = "com.astro.storm"
+    namespace = "com.astro.vajra"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.astro.storm"
+        applicationId = "com.astro.vajra"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

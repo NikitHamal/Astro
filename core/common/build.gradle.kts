@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.astro.storm.core.common"
+    namespace = "com.astro.vajra.core.common"
     compileSdk = 34
 
     defaultConfig {

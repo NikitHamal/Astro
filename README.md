@@ -1,16 +1,16 @@
-# AstroStorm Onboarding Guide
+# AstroVajra Onboarding Guide
 
 
 ## Overview
 
 
-**AstroStorm** is a comprehensive Android application for Vedic astrology analysis, built with Kotlin and Jetpack Compose. The application serves astrology enthusiasts, practitioners, and students by providing professional-grade astrological calculations, interpretations, and insights.
+**AstroVajra** is a comprehensive Android application for Vedic astrology analysis, built with Kotlin and Jetpack Compose. The application serves astrology enthusiasts, practitioners, and students by providing professional-grade astrological calculations, interpretations, and insights.
 
 
 ### Purpose and User Value
 
 
-AstroStorm enables users to:
+AstroVajra enables users to:
 
 
 - **Generate and analyze Vedic birth charts** with detailed planetary positions, house cusps, and Nakshatra placements
@@ -61,7 +61,7 @@ astro/
 │       └── android.yml              # CI/CD pipeline for automated builds
 ├── app/
 │   ├── build.gradle.kts             # App-level build configuration
-│   └── src/main/java/com/astro/storm/
+│   └── src/main/java/com/astro/vajra/
 │       ├── data/
 │       │   ├── ai/                  # AI agent and provider abstractions
 │       │   │   ├── agent/           # Stormy AI agent implementation
@@ -148,13 +148,13 @@ astro/
 #### 1. Navigation System (Importance: 81.60)
 
 
-**Entry Point:** `app/src/main/java/com/astro/storm/ui/navigation/Navigation.kt`
+**Entry Point:** `app/src/main/java/com/astro/vajra/ui/navigation/Navigation.kt`
 
 
-The `AstroStormNavigation` composable defines the complete navigation graph with 40+ screens. The `Screen` sealed class provides type-safe route definitions with helper functions for parameter passing.
+The `AstroVajraNavigation` composable defines the complete navigation graph with 40+ screens. The `Screen` sealed class provides type-safe route definitions with helper functions for parameter passing.
 
 
-**Main Screen:** `app/src/main/java/com/astro/storm/ui/screen/main/MainScreen.kt`
+**Main Screen:** `app/src/main/java/com/astro/vajra/ui/screen/main/MainScreen.kt`
 
 
 The bottom navigation hub with four tabs:
@@ -167,7 +167,7 @@ The bottom navigation hub with four tabs:
 #### 2. Ephemeris Calculation Engine (Importance: 30.54)
 
 
-**Location:** `app/src/main/java/com/astro/storm/ephemeris/`
+**Location:** `app/src/main/java/com/astro/vajra/ephemeris/`
 
 
 The calculation engine contains 20+ specialized calculators organized by function:
@@ -237,7 +237,7 @@ The agent supports autonomous multi-step reasoning with up to 15 tool iterations
 #### 4. Chart Visualization (Importance: 40.26 + 24.09)
 
 
-**Chart Rendering:** `app/src/main/java/com/astro/storm/ui/chart/ChartRenderer.kt`
+**Chart Rendering:** `app/src/main/java/com/astro/vajra/ui/chart/ChartRenderer.kt`
 
 
 Draws North Indian and South Indian style charts with:
@@ -248,7 +248,7 @@ Draws North Indian and South Indian style charts with:
 - Three color schemes (Light, Dark, Print)
 
 
-**Chart Export:** `app/src/main/java/com/astro/storm/util/ChartExporter.kt`
+**Chart Export:** `app/src/main/java/com/astro/vajra/util/ChartExporter.kt`
 
 
 Generates professional reports in multiple formats:
@@ -275,7 +275,7 @@ All managers expose reactive `StateFlow` objects for UI observation.
 #### 6. Localization System (Importance: 81.60 + 28.13)
 
 
-**Location:** `app/src/main/java/com/astro/storm/data/localization/`
+**Location:** `app/src/main/java/com/astro/vajra/data/localization/`
 
 
 String resources are organized by domain:
@@ -384,7 +384,7 @@ String resources are organized by domain:
 **SavedChart** / **ChartEntity**
 - Room database entity for persisting charts
 - Convertible to/from `VedicChart` via extension functions
-- Location: `app/src/main/java/com/astro/storm/data/database/`
+- Location: `app/src/main/java/com/astro/vajra/data/database/`
 
 
 **InsightFeature**
@@ -397,7 +397,7 @@ String resources are organized by domain:
 ### Navigation & UI
 
 
-**AstroStormNavigation**
+**AstroVajraNavigation**
 - Main `@Composable` navigation graph setup
 - Defines 40+ screen routes with parameters
 - Location: `ui/navigation/Navigation.kt:284-1087`
@@ -703,4 +703,4 @@ String resources are organized by domain:
 - Not directly exposed in main codebase
 
 
-This glossary covers the essential domain-specific terminology needed to navigate the AstroStorm codebase effectively. Engineers should familiarize themselves with these terms when starting work on the project, as they form the common vocabulary used throughout discussions, code reviews, and documentation.
+This glossary covers the essential domain-specific terminology needed to navigate the AstroVajra codebase effectively. Engineers should familiarize themselves with these terms when starting work on the project, as they form the common vocabulary used throughout discussions, code reviews, and documentation.

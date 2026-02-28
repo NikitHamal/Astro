@@ -1,8 +1,8 @@
-# AstroStorm Neo-Vedic Design System Report
+# AstroVajra Neo-Vedic Design System Report
 
 ## Document intent and scope
 
-This document captures the current Neo-Vedic design system implementation in AstroStorm, with a special focus on the primary user-facing flows you mentioned:
+This document captures the current Neo-Vedic design system implementation in AstroVajra, with a special focus on the primary user-facing flows you mentioned:
 
 - Home tab
 - Insights tab
@@ -35,11 +35,11 @@ The visual identity aims for:
 
 Primary source files:
 
-- `app/src/main/java/com/astro/storm/ui/theme/Color.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/AppTheme.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/Theme.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/Type.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/DesignTokens.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Color.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/AppTheme.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Theme.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Type.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/DesignTokens.kt`
 
 ---
 
@@ -120,7 +120,7 @@ Also updates system bars at runtime:
 - nav bar color from theme nav background
 - icon luminance toggled by dark/light
 
-Applied from app root in `MainActivity.kt` via `AstroStormTheme(darkTheme = useDarkTheme)`.
+Applied from app root in `MainActivity.kt` via `AstroVajraTheme(darkTheme = useDarkTheme)`.
 
 ### 4) Spacing, shape, border, elevation tokens
 
@@ -229,7 +229,7 @@ From `MainScreen.kt`:
 
 ## Home tab (major reference implementation)
 
-File: `app/src/main/java/com/astro/storm/ui/screen/main/HomeTab.kt`
+File: `app/src/main/java/com/astro/vajra/ui/screen/main/HomeTab.kt`
 
 High-level structure:
 
@@ -260,7 +260,7 @@ System significance:
 
 ## Insights tab (second major reference implementation)
 
-File: `app/src/main/java/com/astro/storm/ui/screen/main/InsightsTab.kt`
+File: `app/src/main/java/com/astro/vajra/ui/screen/main/InsightsTab.kt`
 
 Architecture and states:
 
@@ -294,11 +294,11 @@ System significance:
 
 ## Birth Chart screen
 
-Entry: `app/src/main/java/com/astro/storm/ui/screen/BirthChartScreen.kt`
+Entry: `app/src/main/java/com/astro/vajra/ui/screen/BirthChartScreen.kt`
 
 Delegated main content:
 
-- `ChartTabContent` in `app/src/main/java/com/astro/storm/ui/screen/chartdetail/tabs/ChartTabContent.kt`
+- `ChartTabContent` in `app/src/main/java/com/astro/vajra/ui/screen/chartdetail/tabs/ChartTabContent.kt`
 
 Design behavior:
 
@@ -316,7 +316,7 @@ Implementation note:
 
 ## Yogas screen
 
-File: `app/src/main/java/com/astro/storm/ui/screen/yogas/YogasScreenRedesigned.kt`
+File: `app/src/main/java/com/astro/vajra/ui/screen/yogas/YogasScreenRedesigned.kt`
 
 Design characteristics:
 
@@ -337,7 +337,7 @@ System significance:
 
 ## Predictions screen
 
-File: `app/src/main/java/com/astro/storm/ui/screen/PredictionsScreen.kt`
+File: `app/src/main/java/com/astro/vajra/ui/screen/PredictionsScreen.kt`
 
 Interaction model:
 
@@ -371,8 +371,8 @@ Data implementation note:
 
 ## Matchmaking screen
 
-File: `app/src/main/java/com/astro/storm/ui/screen/matchmaking/MatchmakingScreen.kt`
-Support components: `app/src/main/java/com/astro/storm/ui/screen/matchmaking/MatchmakingComponents.kt`
+File: `app/src/main/java/com/astro/vajra/ui/screen/matchmaking/MatchmakingScreen.kt`
+Support components: `app/src/main/java/com/astro/vajra/ui/screen/matchmaking/MatchmakingComponents.kt`
 
 Design characteristics:
 
@@ -517,35 +517,35 @@ If you want this design system to become fully locked and scalable, prioritize:
 
 Theme and tokens:
 
-- `app/src/main/java/com/astro/storm/ui/theme/Color.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/AppTheme.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/Theme.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/Type.kt`
-- `app/src/main/java/com/astro/storm/ui/theme/DesignTokens.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Color.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/AppTheme.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Theme.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Type.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/DesignTokens.kt`
 
 Core primitives and common components:
 
-- `app/src/main/java/com/astro/storm/ui/components/common/NeoVedicPrimitives.kt`
-- `app/src/main/java/com/astro/storm/ui/components/common/ModernTabRow.kt`
-- `app/src/main/java/com/astro/storm/ui/components/common/ModernCards.kt`
+- `app/src/main/java/com/astro/vajra/ui/components/common/NeoVedicPrimitives.kt`
+- `app/src/main/java/com/astro/vajra/ui/components/common/ModernTabRow.kt`
+- `app/src/main/java/com/astro/vajra/ui/components/common/ModernCards.kt`
 
 Main shell:
 
-- `app/src/main/java/com/astro/storm/ui/screen/main/MainScreen.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/main/MainScreen.kt`
 
 Primary screens analyzed in this report:
 
-- `app/src/main/java/com/astro/storm/ui/screen/main/HomeTab.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/main/InsightsTab.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/BirthChartScreen.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/chartdetail/tabs/ChartTabContent.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/yogas/YogasScreenRedesigned.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/PredictionsScreen.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/matchmaking/MatchmakingScreen.kt`
-- `app/src/main/java/com/astro/storm/ui/screen/matchmaking/MatchmakingComponents.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/main/HomeTab.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/main/InsightsTab.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/BirthChartScreen.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/chartdetail/tabs/ChartTabContent.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/yogas/YogasScreenRedesigned.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/PredictionsScreen.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/matchmaking/MatchmakingScreen.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/matchmaking/MatchmakingComponents.kt`
 
 ---
 
 ## Final takeaway
 
-AstroStorm already has a real, production-scale Neo-Vedic design system - not just a visual idea. It has token foundations, reusable primitives, broad multi-screen adoption, and strong thematic consistency. The remaining work is mostly governance and consolidation (unifying duplicated patterns, finishing semantic migration, and enforcing token-only usage) rather than inventing the system from scratch.
+AstroVajra already has a real, production-scale Neo-Vedic design system - not just a visual idea. It has token foundations, reusable primitives, broad multi-screen adoption, and strong thematic consistency. The remaining work is mostly governance and consolidation (unifying duplicated patterns, finishing semantic migration, and enforcing token-only usage) rather than inventing the system from scratch.

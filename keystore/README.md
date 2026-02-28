@@ -1,6 +1,6 @@
 # Keystore Information
 
-This directory contains the release keystore for signing the AstroStorm APK.
+This directory contains the release keystore for signing the AstroVajra APK.
 
 ## Keystore Details
 - **Keystore File**: release.jks
@@ -25,5 +25,5 @@ keytool -genkeypair -v \
   -alias astrostorm \
   -storepass astrostorm2024 \
   -keypass astrostorm2024 \
-  -dname "CN=AstroStorm, OU=Development, O=AstroStorm, L=Unknown, ST=Unknown, C=US"
+  -dname "CN=AstroVajra, OU=Development, O=AstroVajra, L=Unknown, ST=Unknown, C=US"
 ```

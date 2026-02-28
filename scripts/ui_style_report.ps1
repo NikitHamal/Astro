@@ -1,6 +1,6 @@
 $ErrorActionPreference = "Stop"
 
-$uiDir = "app/src/main/java/com/astro/storm/ui"
+$uiDir = "app/src/main/java/com/astro/vajra/ui"
 $screenDir = "$uiDir/screen"
 
 Write-Output "UI Style Report"

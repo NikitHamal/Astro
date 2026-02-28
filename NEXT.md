@@ -1,4 +1,4 @@
-# AstroStorm: The Path to Vedic Mastery (Next Serious Steps)
+# AstroVajra: The Path to Vedic Mastery (Next Serious Steps)
 
 After a deep review of the codebase, it is clear that the foundation is rock-solid with Swiss Ephemeris integration and 50+ core calculators. To move from a "calculation tool" to a "Vedic Oracle," the following 12 steps represent the next frontier of "code magic" and authentic Vedic depth.
 
