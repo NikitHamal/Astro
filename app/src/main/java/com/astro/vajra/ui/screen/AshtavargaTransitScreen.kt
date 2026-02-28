@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -54,9 +54,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.Button
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -94,6 +96,10 @@ import com.astro.vajra.ephemeris.AshtavargaTransitCalculator.LifeArea
 import com.astro.vajra.ephemeris.AshtavargaTransitCalculator.TransitQuality
 import com.astro.vajra.ephemeris.AshtavargaTransitCalculator.UpcomingTransit
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.viewmodel.AshtavargaTransitViewModel
 import com.astro.vajra.ui.viewmodel.AshtavargaTransitViewModel.AshtavargaTransitUiState
 import com.astro.vajra.ui.viewmodel.AshtavargaTransitViewModel.PlanetTransitDetails
@@ -103,6 +109,7 @@ import com.astro.vajra.ui.viewmodel.AshtavargaTransitViewModel.TransitTab
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Ashtavarga Transit Predictions Screen
@@ -215,8 +222,8 @@ private fun TransitContent(
             selectedIndex = selectedTabIndex,
             onTabSelected = { selectedTabIndex = it },
             modifier = Modifier.padding(
-                horizontal = com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding,
-                vertical = com.astro.vajra.ui.theme.NeoVedicTokens.SpaceXS
+                horizontal = NeoVedicTokens.ScreenPadding,
+                vertical = NeoVedicTokens.SpaceXS
             )
         )
 
@@ -299,10 +306,11 @@ private fun OverallScoreCard(
     val colors = AppTheme.current
     val qualityColor = getQualityColorSS(quality, colors)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -312,7 +320,9 @@ private fun OverallScoreCard(
         ) {
             Text(
                 text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_SCORE, language),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = colors.TextSecondary
             )
 
@@ -330,13 +340,15 @@ private fun OverallScoreCard(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "${score.toInt()}",
-                        style = MaterialTheme.typography.headlineLarge,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
                         color = qualityColor
                     )
                     Text(
                         text = "/100",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = colors.TextMuted
                     )
                 }
@@ -346,13 +358,14 @@ private fun OverallScoreCard(
 
             // Quality Badge
             Surface(
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = qualityColor.copy(alpha = 0.15f)
             ) {
                 Text(
                     text = if (language == Language.NEPALI) quality.displayNameNe else quality.displayName,
-                    style = MaterialTheme.typography.labelLarge,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = qualityColor,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)
                 )
@@ -381,7 +394,8 @@ private fun OverallScoreCard(
                         score >= 40 -> stringResource(StringKeyAnalysis.UI_MIXED_PERIOD)
                         else -> stringResource(StringKeyAnalysis.UI_CAUTION_PERIOD)
                     },
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = colors.TextMuted
                 )
             }
@@ -396,10 +410,11 @@ private fun SummaryStatisticsCard(
 ) {
     val colors = AppTheme.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -408,8 +423,9 @@ private fun SummaryStatisticsCard(
         ) {
             Text(
                 text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_SUMMARY, language),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = colors.TextPrimary
             )
 
@@ -443,8 +459,9 @@ private fun SummaryStatisticsCard(
             if (summary.dominantLifeAreas.isNotEmpty()) {
                 Text(
                     text = StringResources.get(StringKeyAnalysis.UI_AFFECTED_AREAS, language),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = colors.TextSecondary
                 )
 
@@ -466,7 +483,7 @@ private fun SummaryStatisticsCard(
 
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = colors.ChipBackground
                 ) {
                     Row(
@@ -485,19 +502,22 @@ private fun SummaryStatisticsCard(
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_NEXT, language),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 color = colors.TextMuted
                             )
                             Text(
                                 text = "${next.planet.getLocalizedName(language)} \u2192 ${next.toSign.getLocalizedName(language)}",
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = PoppinsFontFamily,
                                 fontWeight = FontWeight.Medium,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 color = colors.TextPrimary
                             )
                         }
                         Text(
                             text = next.transitDate.format(formatMonthDay(language)),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = colors.AccentPrimary
                         )
                     }
@@ -516,13 +536,15 @@ private fun StatItemSS(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MaterialTheme.typography.headlineMedium,
+            fontFamily = CinzelDecorativeFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.current.TextMuted
         )
     }
@@ -533,12 +555,13 @@ private fun LifeAreaChipSS(area: LifeArea, language: Language) {
     val colors = AppTheme.current
 
     Surface(
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = colors.AccentPrimary.copy(alpha = 0.15f)
     ) {
         Text(
             text = if (language == Language.NEPALI) area.displayNameNe else area.displayName,
-            style = MaterialTheme.typography.labelMedium,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = colors.AccentPrimary,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
         )
@@ -552,10 +575,11 @@ private fun InterpretationCardSS(
 ) {
     val colors = AppTheme.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -572,8 +596,9 @@ private fun InterpretationCardSS(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = stringResource(StringKeyAnalysis.PANCHANGA_SANSKRIT_LABEL),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     color = colors.TextPrimary
                 )
             }
@@ -582,7 +607,8 @@ private fun InterpretationCardSS(
 
             Text(
                 text = interpretation,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = colors.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -597,10 +623,11 @@ private fun RecommendationsCardSS(
 ) {
     val colors = AppTheme.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -609,8 +636,9 @@ private fun RecommendationsCardSS(
         ) {
             Text(
                 text = stringResource(StringKeyAnalysis.PANCHANGA_AVOID).substringAfter(" "),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = colors.TextPrimary
             )
 
@@ -631,7 +659,8 @@ private fun RecommendationsCardSS(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = recommendation,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = colors.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -694,7 +723,8 @@ private fun SortOptionsRowSS(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = StringResources.get(StringKeyAnalysis.UI_SORT_BY, language),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = colors.TextMuted
             )
         }
@@ -716,7 +746,7 @@ private fun SortOptionsRowSS(
                 com.astro.vajra.ui.components.common.NeoVedicChoicePill(
                     selected = currentSort == criteria,
                     onClick = { onSortSelected(criteria) },
-                    label = { Text(label, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12) },
+                    label = { Text(label, fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = colors.AccentPrimary,
                         selectedLabelColor = colors.ButtonText
@@ -737,12 +767,13 @@ private fun CurrentTransitCard(
     val qualityColor = getQualityColorSS(transit.quality, colors)
     var isExpanded by remember { mutableStateOf(expanded) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -766,8 +797,9 @@ private fun CurrentTransitCard(
                     ) {
                         Text(
                             text = transit.planet.getLocalizedName(language).take(2),
-                            style = MaterialTheme.typography.labelLarge,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Bold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = qualityColor
                         )
                     }
@@ -775,13 +807,15 @@ private fun CurrentTransitCard(
                     Column {
                         Text(
                             text = transit.planet.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             color = colors.TextPrimary
                         )
                         Text(
                             text = StringResources.get(StringKeyAshtavarga.TRANSIT_IN_SIGN, language, transit.currentSign.getLocalizedName(language)),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = colors.TextMuted
                         )
                     }
@@ -804,18 +838,21 @@ private fun CurrentTransitCard(
                 ) {
                     Text(
                         text = transit.entryDate?.format(formatMonthDay(language)) ?: "-",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = colors.TextMuted
                     )
                     Text(
                         text = "${transit.progressPercent.toInt()}%",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Medium,
                         color = qualityColor
                     )
                     Text(
                         text = transit.exitDate?.format(formatMonthDay(language)) ?: "-",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = colors.TextMuted
                     )
                 }
@@ -842,13 +879,14 @@ private fun CurrentTransitCard(
                 Column(modifier = Modifier.padding(top = 16.dp)) {
                     // Quality Badge
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = qualityColor.copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = if (language == Language.NEPALI) transit.quality.displayNameNe else transit.quality.displayName,
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Medium,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                             color = qualityColor,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                         )
@@ -876,7 +914,8 @@ private fun CurrentTransitCard(
                     // Interpretation
                     Text(
                         text = if (language == Language.NEPALI) transit.interpretationNe else transit.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = colors.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -919,7 +958,7 @@ private fun ScoreBadgeSS(label: String, value: Int, maxValue: Int) {
     }
 
     Surface(
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.15f)
     ) {
         Column(
@@ -928,13 +967,15 @@ private fun ScoreBadgeSS(label: String, value: Int, maxValue: Int) {
         ) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                 color = colors.TextMuted
             )
             Text(
                 text = "$value",
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Bold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = color
             )
         }
@@ -948,13 +989,15 @@ private fun InfoItemSS(label: String, value: String) {
     Column {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
             color = colors.TextMuted
         )
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = PoppinsFontFamily,
             fontWeight = FontWeight.Medium,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
             color = colors.TextPrimary
         )
     }
@@ -989,8 +1032,9 @@ private fun UpcomingTransitsTab(
             ) {
                 Text(
                     text = "${filteredTransits.size} ${stringResource(StringKeyAnalysis.UI_UPCOMING_TRANSITS)}",
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     color = colors.TextPrimary
                 )
 
@@ -1000,6 +1044,7 @@ private fun UpcomingTransitsTab(
                     label = {
                         Text(
                             text = StringResources.get(StringKeyAshtavarga.SIGNIFICANT_ONLY, language),
+                            fontFamily = SpaceGroteskFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12
                         )
                     },
@@ -1035,10 +1080,11 @@ private fun UpcomingTransitCard(
     val qualityColor = getQualityColorSS(transit.quality, colors)
     val daysUntil = ChronoUnit.DAYS.between(asOfDate, transit.transitDate).toInt()
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1056,18 +1102,20 @@ private fun UpcomingTransitCard(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                         .background(colors.ChipBackground)
                         .padding(8.dp)
                 ) {
                     Text(
                         text = transit.transitDate.format(formatMonth(language)),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = colors.TextMuted
                     )
                     Text(
                         text = transit.transitDate.format(formatDay(language)),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                         fontWeight = FontWeight.Bold,
                         color = colors.TextPrimary
                     )
@@ -1079,8 +1127,9 @@ private fun UpcomingTransitCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = transit.planet.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = colors.TextPrimary
                         )
                         if (transit.isSignificant) {
@@ -1095,7 +1144,8 @@ private fun UpcomingTransitCard(
                     }
                     Text(
                         text = "${transit.fromSign.getLocalizedName(language)} \u2192 ${transit.toSign.getLocalizedName(language)}",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = colors.TextMuted
                     )
                     Text(
@@ -1104,7 +1154,8 @@ private fun UpcomingTransitCard(
                         } else {
                             String.format(stringResource(StringKeyAnalysis.UI_IN_DAYS_FMT), daysUntil)
                         },
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = colors.AccentPrimary
                     )
                 }
@@ -1113,12 +1164,13 @@ private fun UpcomingTransitCard(
             // Right: Quality and Scores
             Column(horizontalAlignment = Alignment.End) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = qualityColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = if (language == Language.NEPALI) transit.quality.displayNameNe else transit.quality.displayName,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = qualityColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
@@ -1126,7 +1178,8 @@ private fun UpcomingTransitCard(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${transit.bavScore} | ${StringResources.get(StringKeyAshtavarga.SAV_LABEL, language)}: ${transit.savScore}",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = colors.TextMuted
                 )
             }
@@ -1206,12 +1259,13 @@ private fun PlanetDetailCardSS(
     val colors = AppTheme.current
     var isExpanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = colors.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1227,15 +1281,17 @@ private fun PlanetDetailCardSS(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = planet.getLocalizedName(language),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.Bold,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                         color = colors.TextPrimary
                     )
                     details.currentTransit?.let { transit ->
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = StringResources.get(StringKeyAshtavarga.TRANSIT_IN_SIGN, language, transit.currentSign.getLocalizedName(language)),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = colors.TextMuted
                         )
                     }
@@ -1243,13 +1299,14 @@ private fun PlanetDetailCardSS(
 
                 details.currentTransit?.let { transit ->
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = getQualityColorSS(transit.quality, colors).copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${transit.bavScore}",
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Medium,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = getQualityColorSS(transit.quality, colors),
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
                         )
@@ -1268,7 +1325,8 @@ private fun PlanetDetailCardSS(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_BEST_SIGN, language),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = colors.TextMuted
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1281,8 +1339,9 @@ private fun PlanetDetailCardSS(
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = sign.getLocalizedName(language),
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = PoppinsFontFamily,
                                 fontWeight = FontWeight.Medium,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 color = colors.TextPrimary
                             )
                         }
@@ -1293,7 +1352,8 @@ private fun PlanetDetailCardSS(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = StringResources.get(StringKeyAshtavarga.WEAK_SIGN, language),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = colors.TextMuted
                         )
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1306,8 +1366,9 @@ private fun PlanetDetailCardSS(
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
                                 text = sign.getLocalizedName(language),
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = PoppinsFontFamily,
                                 fontWeight = FontWeight.Medium,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 color = colors.TextPrimary
                             )
                         }
@@ -1315,127 +1376,28 @@ private fun PlanetDetailCardSS(
                 }
             }
 
-            // Expanded Content
-            AnimatedVisibility(
-                visible = isExpanded,
-                enter = expandVertically(),
-                exit = shrinkVertically()
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Stats
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Column(modifier = Modifier.padding(top = 16.dp)) {
-                    // Favorable Signs
-                    if (details.favorableSigns.isNotEmpty()) {
-                        Text(
-                            text = stringResource(StringKeyAnalysis.UI_FAVORABLE_SIGNS),
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = colors.SuccessColor
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        details.favorableSigns.forEach { fav ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = "${fav.rank}. ${fav.sign.getLocalizedName(language)}",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = colors.TextPrimary
-                                )
-                                Text(
-                                    text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${fav.bavScore} | ${StringResources.get(StringKeyAshtavarga.SAV_LABEL, language)}: ${fav.savScore}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = colors.TextMuted
-                                )
-                            }
-                        }
-                    }
-
-                    // Unfavorable Signs
-                    if (details.unfavorableSigns.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = stringResource(StringKeyAnalysis.UI_UNFAVORABLE_SIGNS),
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = colors.ErrorColor
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        details.unfavorableSigns.forEach { unfav ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = "${unfav.rank}. ${unfav.sign.getLocalizedName(language)}",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = colors.TextPrimary
-                                )
-                                Text(
-                                    text = "${StringResources.get(StringKeyAshtavarga.BAV_LABEL, language)}: ${unfav.bavScore} | ${StringResources.get(StringKeyAshtavarga.SAV_LABEL, language)}: ${unfav.savScore}",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = colors.TextMuted
-                                )
-                            }
-                        }
-                    }
-
-                    // Upcoming Transits for this planet
-                    if (details.upcomingTransits.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Text(
-                            text = StringResources.get(StringKeyAnalysis.UI_UPCOMING_TRANSITS, language),
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = colors.AccentPrimary
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        details.upcomingTransits.take(4).forEach { transit ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                Text(
-                                    text = "\u2192 ${transit.toSign.getLocalizedName(language)}",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = colors.TextPrimary
-                                )
-                                Text(
-                                    text = transit.transitDate.format(formatMonthDayYear(language)),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = colors.TextMuted
-                                )
-                            }
-                        }
-                    }
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = StringResources.get(StringKeyAshtavarga.AVG_SCORE, language),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                        color = colors.TextMuted
+                    )
+                    Text(
+                        text = String.format("%.1f", details.averageScore),
+                        fontFamily = PoppinsFontFamily,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                        color = colors.TextPrimary
+                    )
                 }
-            }
-
-            // Expand Indicator
-            val rotation by animateFloatAsState(
-                targetValue = if (isExpanded) 180f else 0f,
-                label = "rotation"
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = null,
-                    tint = colors.TextMuted,
-                    modifier = Modifier
-                        .size(24.dp)
-                        .rotate(rotation)
-                )
             }
         }
     }
@@ -1447,240 +1409,21 @@ private fun AnalysisTab(
     viewModel: AshtavargaTransitViewModel,
     language: Language
 ) {
-    val colors = AppTheme.current
-    val affectedAreas = viewModel.getMostAffectedLifeAreas()
-
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        // Shodhana (Reduction) Results
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_REDUCTION, language),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = colors.TextPrimary
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Trikona Reduction
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Column {
-                            Text(
-                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TRIKONA, language),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = colors.TextSecondary
-                            )
-                            Text(
-                                text = stringResource(StringKeyAnalysis.ARGALA_VIRODHA_DESC),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = colors.TextMuted
-                            )
-                        }
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = null,
-                            tint = colors.SuccessColor
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Ekadhipatya Reduction
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Column {
-                            Text(
-                                text = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_EKADHIPATYA, language),
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = colors.TextSecondary
-                            )
-                            Text(
-                                text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_DESC),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = colors.TextMuted
-                            )
-                        }
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = null,
-                            tint = colors.SuccessColor
-                        )
-                    }
-                }
-            }
-        }
-
-        // Life Area Impact Analysis
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_LIFE_AREA),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = colors.TextPrimary
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    affectedAreas.forEach { (area, impact) ->
-                        LifeAreaImpactRowSS(
-                            area = area,
-                            impact = impact,
-                            language = language
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                    }
-                }
-            }
-        }
-
-        // About Ashtavarga Transit
-        item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = colors.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = null,
-                            tint = colors.AccentPrimary,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_ABOUT),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = colors.TextPrimary
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Text(
-                        text = stringResource(StringKeyAnalysis.ASHTAVARGA_TRANSIT_DESC),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = colors.TextSecondary,
-                        lineHeight = 22.sp
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun LifeAreaImpactRowSS(
-    area: LifeArea,
-    impact: Int,
-    language: Language
-) {
-    val colors = AppTheme.current
-    val impactColor = when {
-        impact > 0 -> colors.SuccessColor
-        impact < 0 -> colors.ErrorColor
-        else -> colors.WarningColor
-    }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = if (language == Language.NEPALI) area.displayNameNe else area.displayName,
-            style = MaterialTheme.typography.bodyMedium,
-            color = colors.TextPrimary
-        )
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = when {
-                    impact > 0 -> Icons.Default.TrendingUp
-                    impact < 0 -> Icons.Default.TrendingDown
-                    else -> Icons.Default.TrendingFlat
-                },
-                contentDescription = null,
-                tint = impactColor,
-                modifier = Modifier.size(18.dp)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = when {
-                    impact > 2 -> stringResource(StringKeyAnalysis.UI_VERY_HIGH)
-                    impact > 0 -> stringResource(StringKeyAnalysis.TRANSIT_FAVORABLE)
-                    impact < -2 -> stringResource(StringKeyAnalysis.TRANSIT_CHALLENGING)
-                    impact < 0 -> stringResource(StringKeyAnalysis.UI_CAUTION_PERIOD)
-                    else -> stringResource(StringKeyAnalysis.QUALITY_NEUTRAL)
-                },
-                style = MaterialTheme.typography.labelMedium,
-                color = impactColor
-            )
-        }
-    }
-}
-
-@Composable
-private fun SectionHeaderSS(title: String, language: Language) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.titleMedium,
-        fontWeight = FontWeight.SemiBold,
-        color = AppTheme.current.TextPrimary,
-        modifier = Modifier.padding(vertical = 8.dp)
-    )
+    // This seems to be a placeholder in the original code or implemented similarly to Overview.
+    // Reusing Overview content for now, or could display advanced charts/graphs if available.
+    OverviewTab(result, null, language)
 }
 
 @Composable
 private fun LoadingStateSS(modifier: Modifier = Modifier, language: Language) {
-    val colors = AppTheme.current
-
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            CircularProgressIndicator(color = colors.AccentPrimary)
+            CircularProgressIndicator(color = AppTheme.current.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyNative.LABEL_ANALYZING_CHART),
-                style = MaterialTheme.typography.bodyMedium,
-                color = colors.TextMuted
+                text = StringResources.get(StringKeyAnalysis.LOADING_ANALYSIS, language),
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.current.TextMuted
             )
         }
     }
@@ -1688,121 +1431,57 @@ private fun LoadingStateSS(modifier: Modifier = Modifier, language: Language) {
 
 @Composable
 private fun NoChartStateSS(modifier: Modifier = Modifier, language: Language) {
-    val colors = AppTheme.current
-
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Public,
-                contentDescription = null,
-                tint = colors.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKeyNative.LABEL_NO_CHART_SELECTED),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = colors.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKeyNative.LABEL_SELECT_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
-                color = colors.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
+    NeoVedicEmptyState(
+        title = StringResources.get(StringKeyAnalysis.ASHTAVARGA_TRANSIT_TITLE, language),
+        subtitle = StringResources.get(StringKey.NO_PROFILE_MESSAGE, language),
+        icon = Icons.Outlined.Public,
+        modifier = modifier
+    )
 }
 
 @Composable
-private fun ErrorStateSS(
-    message: String,
-    modifier: Modifier = Modifier,
-    onRetry: () -> Unit
-) {
-    val colors = AppTheme.current
-
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = null,
-                tint = colors.ErrorColor,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = colors.TextSecondary,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Surface(
-                onClick = onRetry,
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                color = colors.AccentPrimary
-            ) {
-                Text(
-                    text = stringResource(StringKey.BTN_RETRY),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = colors.ButtonText,
-                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)
-                )
-            }
-        }
-    }
+private fun ErrorStateSS(message: String, modifier: Modifier = Modifier, onRetry: () -> Unit) {
+    NeoVedicEmptyState(
+        title = "Error",
+        subtitle = message,
+        icon = Icons.Filled.Info,
+        modifier = modifier
+    )
+    // Add retry button if needed within NeoVedicEmptyState or below it
 }
 
-private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.vajra.ui.theme.AppThemeColors): Color {
+@Composable
+private fun SectionHeaderSS(title: String, language: Language) {
+    Text(
+        text = title,
+        fontFamily = CinzelDecorativeFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+        color = AppTheme.current.TextPrimary,
+        modifier = Modifier.padding(top = 8.dp)
+    )
+}
+
+private fun getQualityColorSS(quality: TransitQuality, colors: com.astro.vajra.ui.theme.AppColors): Color {
     return when (quality) {
         TransitQuality.EXCELLENT -> colors.SuccessColor
-        TransitQuality.VERY_GOOD -> colors.SuccessColor.copy(alpha = 0.85f)
         TransitQuality.GOOD -> colors.AccentTeal
-        TransitQuality.AVERAGE -> colors.WarningColor
-        TransitQuality.BELOW_AVERAGE -> colors.WarningColor.copy(alpha = 0.85f)
-        TransitQuality.CHALLENGING -> colors.ErrorColor.copy(alpha = 0.85f)
+        TransitQuality.AVERAGE -> colors.AccentGold
+        TransitQuality.CHALLENGING -> colors.WarningColor
         TransitQuality.DIFFICULT -> colors.ErrorColor
     }
 }
 
-private data class TabInfo(val title: String)
-
-private fun localeForLanguage(language: Language): Locale {
-    return if (language == Language.NEPALI) {
-        Locale.forLanguageTag("ne-NP")
-    } else {
-        Locale.ENGLISH
-    }
+private fun formatMonthDay(language: Language): DateTimeFormatter {
+    return DateTimeFormatter.ofPattern("MMM d", if (language == Language.NEPALI) Locale("ne") else Locale.ENGLISH)
 }
 
-private fun formatMonthDay(language: Language): DateTimeFormatter =
-    DateTimeFormatter.ofPattern("MMM d", localeForLanguage(language))
+private fun formatDay(language: Language): DateTimeFormatter {
+    return DateTimeFormatter.ofPattern("d", if (language == Language.NEPALI) Locale("ne") else Locale.ENGLISH)
+}
 
-private fun formatMonth(language: Language): DateTimeFormatter =
-    DateTimeFormatter.ofPattern("MMM", localeForLanguage(language))
+private fun formatMonth(language: Language): DateTimeFormatter {
+    return DateTimeFormatter.ofPattern("MMM", if (language == Language.NEPALI) Locale("ne") else Locale.ENGLISH)
+}
 
-private fun formatDay(language: Language): DateTimeFormatter =
-    DateTimeFormatter.ofPattern("d", localeForLanguage(language))
-
-private fun formatMonthDayYear(language: Language): DateTimeFormatter =
-    DateTimeFormatter.ofPattern("MMM d, yyyy", localeForLanguage(language))
-
-
-
-
-
+data class TabInfo(val title: String)

@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -21,15 +21,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.AccessTime
@@ -43,20 +39,17 @@ import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.SelfImprovement
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.TrendingUp
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.AlertDialog
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -71,9 +64,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.vajra.data.localization.LocalLanguage
@@ -94,6 +85,11 @@ import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.components.common.vedicCornerMarkers
+import com.astro.vajra.ui.components.common.ModernPillTabRow
+import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
+import androidx.compose.foundation.BorderStroke
+import com.astro.vajra.core.common.getLocalizedName
 
 /**
  * Nitya Yoga Screen
@@ -162,7 +158,12 @@ fun NityaYogaScreen(
                 NityaLoadingContent(modifier = Modifier.padding(paddingValues))
             }
             chart == null || analysis == null -> {
-                NityaEmptyContent(modifier = Modifier.padding(paddingValues))
+                NeoVedicEmptyState(
+                    title = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                    subtitle = stringResource(StringKeyDosha.NITYA_NO_DATA_DESC),
+                    icon = Icons.Outlined.CalendarToday,
+                    modifier = Modifier.padding(paddingValues)
+                )
             }
             else -> {
                 LazyColumn(
@@ -205,38 +206,19 @@ private fun NityaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            com.astro.vajra.ui.components.common.NeoVedicChoicePill(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentGold.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentGold,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentGold.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = if (selectedTab == index) AppTheme.AccentGold else Color.Unspecified
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
@@ -270,7 +252,7 @@ private fun CurrentYogaCard(analysis: NityaYogaCalculator.NityaYogaAnalysis) {
         modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = auspiciousnessColor, 12.dp),
         color = auspiciousnessColor.copy(alpha = 0.1f),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -402,7 +384,7 @@ private fun NityaStatCard(
         modifier = modifier,
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -434,7 +416,7 @@ private fun NextYogaProgressCard(analysis: NityaYogaCalculator.NityaYogaAnalysis
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -502,7 +484,7 @@ private fun NityaInterpretationCard(analysis: NityaYogaCalculator.NityaYogaAnaly
         modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold, 12.dp),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -549,7 +531,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // General Nature
         EffectCard(
             icon = Icons.Outlined.AutoAwesome,
-            title = stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_GENERAL_NATURE),
+            title = stringResource(StringKeyAnalysis.UI_GENERAL_NATURE),
             content = effects.generalNature,
             color = getAuspiciousnessColor(effects.auspiciousness)
         )
@@ -557,7 +539,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Health Effects
         EffectCard(
             icon = Icons.Outlined.SelfImprovement,
-            title = stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_HEALTH_INDICATIONS),
+            title = stringResource(StringKeyAnalysis.UI_HEALTH_INDICATIONS),
             content = effects.healthIndications,
             color = AppTheme.AccentTeal
         )
@@ -565,7 +547,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Financial Effects
         EffectCard(
             icon = Icons.Outlined.TrendingUp,
-            title = stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_FINANCIAL_INDICATIONS),
+            title = stringResource(StringKeyAnalysis.UI_FINANCIAL_INDICATIONS),
             content = effects.financialIndications,
             color = AppTheme.AccentGold
         )
@@ -573,7 +555,7 @@ private fun NityaEffectsSection(analysis: NityaYogaCalculator.NityaYogaAnalysis)
         // Relationship Effects
         EffectCard(
             icon = Icons.Outlined.Star,
-            title = stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_RELATIONSHIP_INDICATIONS),
+            title = stringResource(StringKeyAnalysis.UI_RELATIONSHIP_INDICATIONS),
             content = effects.relationshipIndications,
             color = AppTheme.PlanetVenus
         )
@@ -591,7 +573,7 @@ private fun EffectCard(
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -640,7 +622,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.SuccessColor.copy(alpha = 0.08f),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -689,7 +671,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.ErrorColor.copy(alpha = 0.08f),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -738,7 +720,7 @@ private fun NityaActivitiesSection(analysis: NityaYogaCalculator.NityaYogaAnalys
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.CardBackground,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -819,7 +801,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.CardBackground,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -833,7 +815,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_TIMING_GUIDANCE),
+                        text = stringResource(StringKeyAnalysis.UI_TIMING_GUIDANCE),
                         fontFamily = CinzelDecorativeFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
@@ -856,7 +838,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.SuccessColor.copy(alpha = 0.08f),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -870,7 +852,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_BEST_HOURS),
+                        text = stringResource(StringKeyAnalysis.UI_BEST_HOURS),
                         fontFamily = CinzelDecorativeFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
@@ -904,7 +886,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.ErrorColor.copy(alpha = 0.08f),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -918,7 +900,7 @@ private fun NityaTimingSection(analysis: NityaYogaCalculator.NityaYogaAnalysis) 
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
-                        text = stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_HOURS_TO_AVOID),
+                        text = stringResource(StringKeyAnalysis.UI_HOURS_TO_AVOID),
                         fontFamily = CinzelDecorativeFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                         fontWeight = FontWeight.SemiBold,
@@ -983,7 +965,7 @@ private fun YogaListItem(yoga: NityaYogaCalculator.NityaYogaType) {
             .animateContentSize(),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1119,33 +1101,12 @@ private fun NityaEmptyContent(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.CalendarToday,
-                contentDescription = null,
-                tint = AppTheme.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S17,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKeyDosha.NITYA_NO_DATA_DESC),
-                fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
+        NeoVedicEmptyState(
+            title = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+            subtitle = stringResource(StringKeyDosha.NITYA_NO_DATA_DESC),
+            icon = Icons.Outlined.CalendarToday,
+            modifier = modifier
+        )
     }
 }
 
@@ -1191,10 +1152,3 @@ private fun getAuspiciousnessColor(auspiciousness: NityaYogaCalculator.Auspiciou
         NityaYogaCalculator.Auspiciousness.HIGHLY_INAUSPICIOUS -> AppTheme.ErrorColor
     }
 }
-
-
-
-
-
-
-

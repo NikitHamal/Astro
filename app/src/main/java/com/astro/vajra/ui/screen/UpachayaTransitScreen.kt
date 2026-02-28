@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -14,9 +14,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import androidx.compose.material3.IconButton
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,10 +52,15 @@ import com.astro.vajra.ephemeris.HouseTransitAnalysis
 import com.astro.vajra.ephemeris.UpachayaAlert
 import com.astro.vajra.ephemeris.UpcomingUpachayaTransit
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Upachaya Transit Screen
@@ -114,8 +121,15 @@ fun UpachayaTransitScreen(
                 title = stringResource(StringKeyDosha.UPACHAYA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.UPACHAYA_SCREEN_SUBTITLE),
                 onBack = onBack,
-                actionIcon = Icons.Outlined.Info,
-                onAction = { showInfoDialog = true }
+                actions = {
+                    IconButton(onClick = { showInfoDialog = true }) {
+                        Icon(
+                            Icons.Outlined.Info,
+                            contentDescription = stringResource(StringKeyDosha.UPACHAYA_SCREEN_ABOUT),
+                            tint = AppTheme.TextSecondary
+                        )
+                    }
+                }
             )
         },
         containerColor = AppTheme.ScreenBackground
@@ -127,24 +141,28 @@ fun UpachayaTransitScreen(
                 message = stringResource(StringKeyDosha.SCREEN_ERROR_CALCULATION)
             )
             else -> {
-                Column(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
+                        .background(AppTheme.ScreenBackground),
+                    contentPadding = PaddingValues(bottom = 32.dp)
                 ) {
                     // Tab Row
-                    TabSelector(
-                        tabs = tabs,
-                        selectedIndex = selectedTab,
-                        onTabSelected = { selectedTab = it }
-                    )
+                    item {
+                        TabSelector(
+                            tabs = tabs,
+                            selectedIndex = selectedTab,
+                            onTabSelected = { selectedTab = it }
+                        )
+                    }
 
                     // Content based on selected tab
                     when (selectedTab) {
-                        0 -> OverviewTab(analysisResult!!, language)
-                        1 -> HouseAnalysisTab(analysisResult!!, language)
-                        2 -> TransitDetailsTab(analysisResult!!, language)
-                        3 -> UpcomingTransitsTab(upcomingTransits, language)
+                        0 -> item { OverviewTab(analysisResult!!, language) }
+                        1 -> item { HouseAnalysisTab(analysisResult!!, language) }
+                        2 -> item { TransitDetailsTab(analysisResult!!, language) }
+                        3 -> item { UpcomingTransitsTab(upcomingTransits, language) }
                     }
                 }
             }
@@ -158,6 +176,7 @@ fun UpachayaTransitScreen(
             title = {
                 Text(
                     stringResource(StringKeyDosha.UPACHAYA_SCREEN_ABOUT),
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary,
                     maxLines = 1,
@@ -168,25 +187,26 @@ fun UpachayaTransitScreen(
                 Column {
                     Text(
                         stringResource(StringKeyDosha.UPACHAYA_SCREEN_ABOUT_DESC),
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
                     Spacer(modifier = Modifier.height(12.dp))
-                    Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = AppTheme.InfoColor.copy(alpha = 0.1f)
-                        ),
+                    Surface(
+                        color = AppTheme.InfoColor.copy(alpha = 0.1f),
                         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
                                 stringResource(StringKeyDosha.UPACHAYA_ACTIVE_TRANSITS),
+                                fontFamily = SpaceGroteskFamily,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
                                 "${getHouseName(3, language)}, ${getHouseName(6, language)}, ${getHouseName(10, language)}, ${getHouseName(11, language)}",
+                                fontFamily = PoppinsFontFamily,
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
@@ -198,7 +218,8 @@ fun UpachayaTransitScreen(
                 TextButton(onClick = { showInfoDialog = false }) {
                     Text(
                         stringResource(StringKey.BTN_CLOSE),
-                        color = AppTheme.AccentPrimary
+                        color = AppTheme.AccentPrimary,
+                        fontFamily = SpaceGroteskFamily
                     )
                 }
             },
@@ -221,6 +242,7 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyDosha.SCREEN_CALCULATING),
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -235,16 +257,11 @@ private fun ErrorContent(paddingValues: PaddingValues, message: String) {
             .padding(paddingValues),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                Icons.Outlined.ErrorOutline,
-                contentDescription = null,
-                tint = AppTheme.ErrorColor,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(message, color = AppTheme.TextMuted)
-        }
+        NeoVedicEmptyState(
+            title = stringResource(StringKeyDosha.UPACHAYA_SCREEN_TITLE),
+            subtitle = message,
+            icon = Icons.Outlined.ErrorOutline
+        )
     }
 }
 
@@ -280,7 +297,7 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
     ) {
         Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(20.dp))
         Spacer(modifier = Modifier.width(8.dp))
-        Text(title, fontWeight = FontWeight.SemiBold, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15, color = AppTheme.TextPrimary)
+        Text(title, fontWeight = FontWeight.SemiBold, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15, color = AppTheme.TextPrimary, fontFamily = CinzelDecorativeFamily)
     }
 }
 
@@ -289,54 +306,45 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
 // ============================================
 @Composable
 private fun OverviewTab(analysis: UpachayaTransitAnalysis, language: Language) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Overall Assessment Card
-        item {
-            OverallAssessmentCard(analysis, language)
-        }
+        OverallAssessmentCard(analysis, language)
 
         // Reference Points
-        item {
-            ReferencePointsCard(analysis, language)
-        }
+        ReferencePointsCard(analysis, language)
 
         // Active Alerts
         if (analysis.alerts.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = stringResource(StringKeyDosha.UPACHAYA_ACTIVE_ALERTS),
-                    icon = Icons.Filled.Notifications,
-                    tint = AppTheme.AccentGold
-                )
-            }
-            items(analysis.alerts) { alert ->
+            SectionHeader(
+                title = stringResource(StringKeyDosha.UPACHAYA_ACTIVE_ALERTS),
+                icon = Icons.Filled.Notifications,
+                tint = AppTheme.AccentGold
+            )
+            analysis.alerts.forEach { alert ->
                 AlertCard(alert, language)
             }
         }
 
         // Most Significant Transits
         if (analysis.mostSignificantTransits.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = stringResource(StringKeyDosha.UPACHAYA_SIGNIFICANT_TRANSITS),
-                    icon = Icons.Filled.Star,
-                    tint = AppTheme.AccentPrimary
-                )
-            }
-            items(analysis.mostSignificantTransits) { transit ->
+            SectionHeader(
+                title = stringResource(StringKeyDosha.UPACHAYA_SIGNIFICANT_TRANSITS),
+                icon = Icons.Filled.Star,
+                tint = AppTheme.AccentPrimary
+            )
+            analysis.mostSignificantTransits.forEach { transit ->
                 SignificantTransitCard(transit, language)
             }
         }
 
         // Recommendations
         if (analysis.recommendations.isNotEmpty()) {
-            item {
-                RecommendationsCard(analysis.recommendations)
-            }
+            RecommendationsCard(analysis.recommendations)
         }
     }
 }
@@ -368,10 +376,11 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
         )
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, iconColor.copy(alpha = 0.3f))
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -394,11 +403,13 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
                     Text(
                         stringResource(StringKeyDosha.UPACHAYA_TRANSIT_ASSESSMENT),
                         fontWeight = FontWeight.Bold,
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         "${stringResource(StringKeyDosha.QUALITY_LABEL)}: ${assessment.level.getLocalizedName(language)}",
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = iconColor,
                         fontWeight = FontWeight.Medium
@@ -415,12 +426,14 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
             ) {
                 Text(
                     stringResource(StringKeyDosha.UPACHAYA_SIGNIFICANCE),
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     "${assessment.score.toInt()}%",
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Bold,
                     color = iconColor
@@ -441,6 +454,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
 
             Text(
                 assessment.summary,
+                fontFamily = PoppinsFontFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
@@ -465,6 +479,7 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         assessment.keyPeriod,
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
@@ -476,15 +491,17 @@ private fun OverallAssessmentCard(analysis: UpachayaTransitAnalysis, language: L
 
 @Composable
 private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 stringResource(StringKeyDosha.UPACHAYA_REFERENCE_POINTS),
                 fontWeight = FontWeight.SemiBold,
+                fontFamily = CinzelDecorativeFamily,
                 color = AppTheme.TextPrimary
             )
 
@@ -510,9 +527,10 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(stringResource(StringKeyDosha.UPACHAYA_MOON_SIGN), fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.UPACHAYA_MOON_SIGN), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                     Text(
                         analysis.moonSign.getLocalizedName(language),
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -535,9 +553,10 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(stringResource(StringKeyDosha.UPACHAYA_LAGNA), fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.UPACHAYA_LAGNA), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                     Text(
                         analysis.lagnaSign.getLocalizedName(language),
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -555,14 +574,16 @@ private fun ReferencePointsCard(analysis: UpachayaTransitAnalysis, language: Lan
                         Text(
                             "${analysis.activeUpachayaTransits.size}",
                             fontWeight = FontWeight.Bold,
+                            fontFamily = SpaceGroteskFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.SuccessColor
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(stringResource(StringKeyDosha.UPACHAYA_ACTIVE), fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
+                    Text(stringResource(StringKeyDosha.UPACHAYA_ACTIVE), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                     Text(
                         stringResource(StringKeyDosha.UPACHAYA_SCREEN_TITLE),
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
@@ -598,9 +619,9 @@ private fun AlertCard(alert: UpachayaAlert, language: Language) {
         )
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
+        color = backgroundColor,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -617,6 +638,7 @@ private fun AlertCard(alert: UpachayaAlert, language: Language) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     alert.message,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextPrimary,
                     lineHeight = 18.sp
@@ -630,6 +652,7 @@ private fun AlertCard(alert: UpachayaAlert, language: Language) {
                     Text(
                         stringResource(com.astro.vajra.core.common.StringKeySaham.ACTIVATED),
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Bold,
                         color = iconColor
@@ -649,10 +672,11 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
         TransitQuality.NEUTRAL -> AppTheme.TextMuted
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -668,6 +692,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                 Text(
                     transit.planet.displayName.take(2),
                     fontWeight = FontWeight.Bold,
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.getPlanetColor(transit.planet)
                 )
@@ -684,6 +709,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                     Text(
                         transit.planet.getLocalizedName(language),
                         fontWeight = FontWeight.SemiBold,
+                        fontFamily = CinzelDecorativeFamily,
                         color = AppTheme.TextPrimary
                     )
                     Surface(
@@ -693,6 +719,7 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                         Text(
                             transit.transitQuality.getLocalizedName(language),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            fontFamily = SpaceGroteskFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                             fontWeight = FontWeight.Medium,
                             color = qualityColor
@@ -701,11 +728,13 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
                 }
                 Text(
                     "${transit.transitSign.getLocalizedName(language)} \u2022 ${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.FROM_LABEL)} ${transit.reference.getLocalizedName(language)}",
+                    fontFamily = PoppinsFontFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     "${stringResource(StringKeyDosha.UPACHAYA_SIGNIFICANCE)}: ${transit.significance.toInt()}%",
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = qualityColor,
                     fontWeight = FontWeight.Medium
@@ -717,10 +746,11 @@ private fun SignificantTransitCard(transit: UpachayaTransit, language: Language)
 
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -734,6 +764,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 Text(
                     stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
                     fontWeight = FontWeight.Bold,
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
@@ -750,7 +781,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text(rec, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary, lineHeight = 18.sp)
+                    Text(rec, fontFamily = PoppinsFontFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary, lineHeight = 18.sp)
                 }
             }
         }
@@ -769,23 +800,23 @@ private fun HouseAnalysisTab(analysis: UpachayaTransitAnalysis, language: Langua
     ) {
         // Introduction Card
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
-                ),
+                color = AppTheme.AccentPrimary.copy(alpha = 0.08f),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
                         stringResource(StringKeyDosha.UPACHAYA_ABOUT),
                         fontWeight = FontWeight.Bold,
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         stringResource(StringKeyDosha.UPACHAYA_TRANSIT_ABOUT_DESC),
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
@@ -819,14 +850,13 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
         else -> Icons.Filled.Home
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (analysis.strength != HouseStrength.INACTIVE)
+        color = if (analysis.strength != HouseStrength.INACTIVE)
                 strengthColor.copy(alpha = 0.05f)
-            else AppTheme.CardBackground
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            else AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -854,10 +884,12 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                         Text(
                             "${getHouseName(analysis.house, language)} ${stringResource(StringKeyDosha.HOUSE_LABEL)}",
                             fontWeight = FontWeight.SemiBold,
+                            fontFamily = CinzelDecorativeFamily,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             analysis.houseTheme,
+                            fontFamily = PoppinsFontFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -871,6 +903,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                     Text(
                         analysis.strength.getLocalizedName(language),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.Medium,
                         color = strengthColor
@@ -884,6 +917,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
             if (analysis.transitingPlanets.isNotEmpty()) {
                 Text(
                     stringResource(StringKeyDosha.PLANETS_TITLE),
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
@@ -897,6 +931,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                             Text(
                                 planet.getLocalizedName(language),
                                 modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                fontFamily = PoppinsFontFamily,
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.getPlanetColor(planet)
@@ -918,6 +953,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             effect,
+                            fontFamily = PoppinsFontFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             lineHeight = 18.sp
@@ -930,6 +966,7 @@ private fun HouseAnalysisCard(analysis: HouseTransitAnalysis, language: Language
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 analysis.timing,
+                fontFamily = PoppinsFontFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                 color = AppTheme.TextMuted,
                 fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
@@ -959,7 +996,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                 com.astro.vajra.ui.components.common.NeoVedicChoicePill(
                     selected = selectedReference == TransitReference.MOON,
                     onClick = { selectedReference = TransitReference.MOON },
-                    label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_MOON)) },
+                    label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_MOON), fontFamily = SpaceGroteskFamily) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.PlanetMoon.copy(alpha = 0.2f),
                         selectedLabelColor = AppTheme.PlanetMoon
@@ -969,7 +1006,7 @@ private fun TransitDetailsTab(analysis: UpachayaTransitAnalysis, language: Langu
                 com.astro.vajra.ui.components.common.NeoVedicChoicePill(
                     selected = selectedReference == TransitReference.LAGNA,
                     onClick = { selectedReference = TransitReference.LAGNA },
-                    label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_LAGNA)) },
+                    label = { Text(stringResource(StringKeyDosha.UPACHAYA_FROM_LAGNA), fontFamily = SpaceGroteskFamily) },
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
                         selectedLabelColor = AppTheme.AccentPrimary
@@ -998,12 +1035,13 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
     else
         AppTheme.CardBackground
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = cardColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = cardColor,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1022,6 +1060,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                         Text(
                             transit.planet.displayName.take(2),
                             fontWeight = FontWeight.Bold,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.getPlanetColor(transit.planet)
                         )
@@ -1030,11 +1069,13 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                     Column {
                         Text(
                             transit.planet.getLocalizedName(language),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             "${transit.transitSign.getLocalizedName(language)} ${String.format("%.1f", transit.transitDegree)}\u00B0",
+                            fontFamily = SpaceGroteskFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -1045,12 +1086,14 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                     Text(
                         "${getHouseName(transit.houseFromReference, language)} ${stringResource(StringKeyDosha.HOUSE_LABEL)}",
                         fontWeight = FontWeight.Medium,
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         color = if (transit.isInUpachaya) AppTheme.SuccessColor else AppTheme.TextSecondary
                     )
                     if (transit.isInUpachaya) {
                         Text(
                             stringResource(StringKeyDosha.UPACHAYA_SCREEN_TITLE).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.SuccessColor
@@ -1075,6 +1118,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             transit.approximateDuration,
+                            fontFamily = PoppinsFontFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -1086,6 +1130,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.TextPrimary
                         )
@@ -1099,6 +1144,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
+                                    fontFamily = PoppinsFontFamily,
                                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
@@ -1113,6 +1159,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
                             fontWeight = FontWeight.Medium,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                             color = AppTheme.SuccessColor
                         )
@@ -1131,6 +1178,7 @@ private fun TransitDetailCard(transit: UpachayaTransit, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     rec,
+                                    fontFamily = PoppinsFontFamily,
                                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
@@ -1158,12 +1206,14 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
             Text(
                 stringResource(StringKeyDosha.UPACHAYA_UPCOMING_TRANSITS),
                 fontWeight = FontWeight.Bold,
+                fontFamily = CinzelDecorativeFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
                 stringResource(StringKeyDosha.UPACHAYA_TRANSIT_SUBTITLE),
+                fontFamily = PoppinsFontFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -1178,6 +1228,7 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
                 Text(
                     "${getHouseName(house, language)} ${stringResource(StringKeyDosha.UPACHAYA_TRANSITS_LABEL)}",
                     fontWeight = FontWeight.SemiBold,
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                     color = AppTheme.TextPrimary,
                     modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
@@ -1193,10 +1244,11 @@ private fun UpcomingTransitsTab(upcomingTransits: List<UpcomingUpachayaTransit>,
 
 @Composable
 private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1212,6 +1264,7 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
                 Text(
                     transit.planet.displayName.take(2),
                     fontWeight = FontWeight.Bold,
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.getPlanetColor(transit.planet)
                 )
@@ -1223,24 +1276,27 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
                 Text(
                     "${transit.planet.getLocalizedName(language)} \u2192 ${transit.targetSign.getLocalizedName(language)}",
                     fontWeight = FontWeight.SemiBold,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     transit.significance,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary,
                     lineHeight = 16.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Surface(
-                    color = AppTheme.SuccessColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                    shape = RoundedCornerShape(4.dp)
                 ) {
                     Text(
-                        transit.recommendation,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
-                        color = AppTheme.SuccessColor
+                        transit.expectedDate,
+                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                        color = AppTheme.AccentPrimary
                     )
                 }
             }
@@ -1248,28 +1304,8 @@ private fun UpcomingTransitCard(transit: UpcomingUpachayaTransit, language: Lang
     }
 }
 
-// Helper function
+// Helper to get house name (1st House, 2nd House etc.)
+@Composable
 private fun getHouseName(house: Int, language: Language): String {
-    val key = when (house) {
-        1 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_1
-        2 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_2
-        3 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_3
-        4 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_4
-        5 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_5
-        6 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_6
-        7 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_7
-        8 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_8
-        9 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_9
-        10 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_10
-        11 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_11
-        12 -> com.astro.vajra.core.common.StringKeyDosha.HOUSE_SIG_12
-        else -> null
-    }
-    return key?.let { com.astro.vajra.core.common.StringResources.get(it, language) } ?: "House $house"
+    return stringResource(StringKeyDosha.HOUSE_LABEL_FMT, house)
 }
-
-
-
-
-
-
