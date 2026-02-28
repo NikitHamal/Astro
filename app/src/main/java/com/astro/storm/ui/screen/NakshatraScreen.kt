@@ -1128,12 +1128,14 @@ private fun NakshatraCompatibilityTab(
                     TarabalaSummaryChip(
                         label = stringResource(StringKeyDosha.NAKSHATRA_COMPATIBLE_WITH),
                         count = analysis.compatibility.favorableNakshatras.size,
-                        color = AppTheme.SuccessColor
+                        color = AppTheme.SuccessColor,
+                        modifier = Modifier.weight(1f).padding(end = 8.dp)
                     )
                     TarabalaSummaryChip(
                         label = stringResource(StringKeyDosha.NAKSHATRA_INCOMPATIBLE_WITH),
                         count = analysis.compatibility.unfavorableNakshatras.size,
-                        color = AppTheme.WarningColor
+                        color = AppTheme.WarningColor,
+                        modifier = Modifier.weight(1f).padding(start = 8.dp)
                     )
                 }
             }

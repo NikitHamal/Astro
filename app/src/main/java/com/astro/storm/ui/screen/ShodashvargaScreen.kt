@@ -755,7 +755,8 @@ private fun PlanetDetailCard(
                     StrengthMetric(
                         label = stringResource(StringKeyDosha.SHADVARGA_BALA),
                         value = strength.shadvargaBala,
-                        maxValue = 6.0
+                        maxValue = 6.0,
+                        modifier = Modifier.weight(1f)
                     )
                     VerticalDivider(
                         modifier = Modifier.height(50.dp),
@@ -764,12 +765,19 @@ private fun PlanetDetailCard(
                     StrengthMetric(
                         label = stringResource(StringKeyDosha.DASHAVARGA_BALA),
                         value = strength.dashavargaBala,
-                        maxValue = 10.0
+                        maxValue = 10.0,
+                        modifier = Modifier.weight(1f)
                     )
-                    VerticalDivider(
-                        modifier = Modifier.height(50.dp),
-                        color = AppTheme.BorderColor
-                    )
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider(color = AppTheme.BorderColor.copy(alpha = 0.5f))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     StrengthMetric(
                         label = stringResource(StringKeyDosha.SHODASHVARGA_BALA),
                         value = strength.shodashvargaBala,

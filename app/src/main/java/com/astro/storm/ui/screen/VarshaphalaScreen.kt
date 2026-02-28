@@ -1073,8 +1073,19 @@ private fun SouthIndianChart(
                 val planetIndex = planetPositions.filter { it.value.house == pos.house }
                     .keys.toList().indexOf(planet)
 
-                val offsetX = (planetIndex % 2) * 24.dp.toPx() - 12.dp.toPx()
-                val offsetY = (planetIndex / 2) * 18.dp.toPx()
+                // Arrange planets in a circle around the center of the cell
+                val totalPlanetsInHouse = planetPositions.count { it.value.house == pos.house }
+                
+                // Offset calculation (circular distribution if multiple planets)
+                val offsetX = if (totalPlanetsInHouse == 1) 0f else {
+                    val angle = (planetIndex.toFloat() / totalPlanetsInHouse) * 2 * Math.PI
+                    (Math.cos(angle) * 16.dp.toPx()).toFloat()
+                }
+                
+                val offsetY = if (totalPlanetsInHouse == 1) 0f else {
+                    val angle = (planetIndex.toFloat() / totalPlanetsInHouse) * 2 * Math.PI
+                    (Math.sin(angle) * 16.dp.toPx()).toFloat()
+                }
 
                 val planetPos = Offset(
                     basePosition.x + offsetX,
