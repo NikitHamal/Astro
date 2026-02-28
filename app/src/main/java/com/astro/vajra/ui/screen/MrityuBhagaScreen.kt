@@ -1184,7 +1184,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                     }
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        stringResource(StringKeyDosha.MRITYU_BHAGA_PRECAUTIONS_DESC),
+                        stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
                         fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
@@ -1210,14 +1210,13 @@ private fun MrityuBhagaInfoDialog(onDismiss: () -> Unit) {
                 overflow = TextOverflow.Ellipsis,
             )
         },
-        text = {
-            Text(
-                stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
-                fontFamily = PoppinsFontFamily,
-                color = AppTheme.TextSecondary,
-                lineHeight = 22.sp
-            )
-        },
+            text = {
+                Text(
+                    stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT_DESC), // Using fallback valid string
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 22.sp
+                )
+            },
         confirmButton = {
             TextButton(onClick = onDismiss) {
                 Text(

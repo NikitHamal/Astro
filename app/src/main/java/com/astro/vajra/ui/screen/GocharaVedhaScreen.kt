@@ -161,6 +161,9 @@ fun GocharaVedhaScreen(
                     }
                 }
             )
+                    }
+                }
+            )
         }
     ) { paddingValues ->
         when {
