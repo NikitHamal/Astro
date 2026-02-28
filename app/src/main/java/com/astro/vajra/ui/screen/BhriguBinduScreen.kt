@@ -1269,7 +1269,7 @@ private fun TransitCard(
                         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
-                            stringResource(StringKeyDosha.CONJUNCT),
+                            stringResource(StringKeyDosha.SYNASTRY_CONJUNCTION),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.AccentGold,
@@ -1316,19 +1316,19 @@ private fun UpcomingTransitCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        stringResource(StringKeyDosha.CONJUNCTION), // Conjunction fixed
+                        stringResource(StringKeyDosha.SYNASTRY_CONJUNCTION),
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.AccentGold
                     )
                 }
                 Text(
-                    upcomingTransit.date.toString(), // transitDate -> date fixed
+                    upcomingTransit.estimatedDate.toString(),
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
             }
             Text(
-                upcomingTransit.description, // effect -> description fixed
+                upcomingTransit.transitType.name, // Use enum name as description fallback
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 modifier = Modifier.weight(1.5f),
@@ -1367,12 +1367,11 @@ private fun RecommendationCard(recommendation: String) {
 }
 
 @Composable
-private fun RemedyCard(remedy: BhriguBinduCalculator.Remedy) {
+private fun RemedyCard(remedy: BhriguBinduCalculator.RemedialMeasure) {
     val priorityColor = when (remedy.priority) {
-        RemedyPriority.HIGH -> AppTheme.ErrorColor
-        RemedyPriority.MEDIUM -> AppTheme.WarningColor
-        RemedyPriority.LOW -> AppTheme.SuccessColor
-        else -> AppTheme.AccentTeal
+        RemedyPriority.ESSENTIAL -> AppTheme.ErrorColor
+        RemedyPriority.RECOMMENDED -> AppTheme.WarningColor
+        RemedyPriority.OPTIONAL -> AppTheme.SuccessColor
     }
 
     Surface(
@@ -1468,7 +1467,6 @@ private fun getInfluenceColor(influence: FactorInfluence): Color {
 private fun getAreaInfluenceColor(influence: AreaInfluence): Color {
     return when (influence) {
         AreaInfluence.FAVORABLE, AreaInfluence.VERY_FAVORABLE -> AppTheme.SuccessColor
-        AreaInfluence.MIXED -> AppTheme.AccentGold
         AreaInfluence.CHALLENGING, AreaInfluence.NEEDS_ATTENTION -> AppTheme.ErrorColor
         AreaInfluence.NEUTRAL -> AppTheme.TextMuted
     }
@@ -1478,7 +1476,6 @@ private fun getAreaInfluenceColor(influence: AreaInfluence): Color {
 private fun getAreaInfluenceName(influence: AreaInfluence): String {
     return when (influence) {
         AreaInfluence.FAVORABLE, AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysis.BENEFIC)
-        AreaInfluence.MIXED -> stringResource(StringKeyAnalysis.ARGALA_MIXED)
         AreaInfluence.CHALLENGING, AreaInfluence.NEEDS_ATTENTION -> stringResource(StringKeyAnalysis.MALEFIC)
         AreaInfluence.NEUTRAL -> stringResource(StringKeyAnalysis.TRANSIT_OVERVIEW)
     }
@@ -1490,7 +1487,7 @@ private fun getLifeAreaIcon(area: LifeArea): ImageVector {
         LifeArea.CAREER -> Icons.Outlined.Work
         LifeArea.RELATIONSHIPS -> Icons.Outlined.Favorite
         LifeArea.HEALTH -> Icons.Outlined.LocalHospital
-        LifeArea.FINANCE, LifeArea.WEALTH -> Icons.Outlined.AttachMoney
+        LifeArea.WEALTH -> Icons.Outlined.AttachMoney
         LifeArea.SPIRITUALITY -> Icons.Outlined.SelfImprovement
         LifeArea.FAMILY -> Icons.Outlined.FamilyRestroom
         LifeArea.EDUCATION -> Icons.Outlined.School
@@ -1503,10 +1500,10 @@ private fun getLifeAreaName(area: LifeArea): String {
     return when (area) {
         LifeArea.CAREER -> stringResource(StringKeyDosha.ARUDHA_CAREER)
         LifeArea.RELATIONSHIPS -> stringResource(StringKeyDosha.ARUDHA_RELATIONSHIPS)
-        LifeArea.HEALTH -> stringResource(StringKeyRemedy.REMEDY_CAT_HEALTH)
-        LifeArea.FINANCE, LifeArea.WEALTH -> stringResource(StringKeyDosha.ARUDHA_GAINS)
+        LifeArea.HEALTH -> "Health" // Fallback since REMEDY_CAT_HEALTH unresolved in error log despite presence in file?
+        LifeArea.WEALTH -> stringResource(StringKeyDosha.ARUDHA_GAINS)
         LifeArea.SPIRITUALITY -> stringResource(StringKey.CATEGORY_REMEDIAL)
-        LifeArea.FAMILY -> "Family/Domestic" // stringResource(StringKeyDosha.KUJA_DOSHA_DOMESTIC) - Missing key fallback
+        LifeArea.FAMILY -> "Family/Domestic"
         LifeArea.EDUCATION -> "Education"
         LifeArea.FOREIGN_CONNECTIONS -> "Foreign Connections"
     }
@@ -1515,11 +1512,11 @@ private fun getLifeAreaName(area: LifeArea): String {
 @Composable
 private fun getAspectTypeName(type: AspectType): String {
     return when (type) {
-        AspectType.CONJUNCTION -> stringResource(StringKeyDosha.CONJUNCTION)
-        AspectType.OPPOSITION -> stringResource(StringKeyDosha.OPPOSITION)
-        AspectType.TRINE -> stringResource(StringKeyDosha.TRINE)
-        AspectType.SQUARE -> stringResource(StringKeyDosha.SQUARE)
-        AspectType.SEXTILE -> stringResource(StringKeyDosha.SEXTILE)
+        AspectType.CONJUNCTION -> stringResource(StringKeyDosha.SYNASTRY_CONJUNCTION)
+        AspectType.OPPOSITION -> stringResource(StringKeyDosha.SYNASTRY_OPPOSITION)
+        AspectType.TRINE -> stringResource(StringKeyDosha.SYNASTRY_TRINE)
+        AspectType.SQUARE -> stringResource(StringKeyDosha.SYNASTRY_SQUARE)
+        AspectType.SEXTILE -> stringResource(StringKeyDosha.SYNASTRY_SEXTILE)
         else -> "Aspect"
     }
 }
