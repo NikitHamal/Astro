@@ -871,6 +871,7 @@ private fun KakshaErrorContent(message: String, modifier: Modifier = Modifier, o
     }
 }
 
+@Composable
 private fun getQualityColor(quality: KakshaQuality): Color {
     return when (quality) {
         KakshaQuality.EXCELLENT -> com.astro.vajra.ui.theme.SuccessDark

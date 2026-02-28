@@ -1386,13 +1386,13 @@ private fun PlanetDetailCardSS(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(StringKeyAshtavarga.AVG_SCORE),
+                        text = stringResource(StringKeyMatch.MATCH_AVERAGE),
                         fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = colors.TextMuted
                     )
                     Text(
-                        text = String.format("%.1f", details.averageScore),
+                        text = String.format("%.1f", details.averageBavScore),
                         fontFamily = PoppinsFontFamily,
                         fontWeight = FontWeight.Medium,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
@@ -1422,7 +1422,7 @@ private fun LoadingStateSS(modifier: Modifier = Modifier, language: Language) {
             CircularProgressIndicator(color = AppTheme.current.AccentPrimary)
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = stringResource(StringKeyAnalysis.LOADING_ANALYSIS),
+                text = stringResource(StringKeyAdvanced.COMMON_LOADING),
                 fontFamily = PoppinsFontFamily,
                 color = AppTheme.current.TextMuted
             )
