@@ -318,7 +318,7 @@ private fun TransitScoreCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhad
             Text(
                 text = "${analysis.overallTransitScore}",
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
+                fontSize = 32.sp, // S32 fixed
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )

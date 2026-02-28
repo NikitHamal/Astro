@@ -102,7 +102,15 @@ fun BhriguBinduScreen(
     var selectedTab by remember { mutableIntStateOf(0) }
     var expandedFactor by remember { mutableStateOf<Int?>(null) }
     var expandedLifeArea by remember { mutableStateOf<LifeArea?>(null) }
-    val analysisDate = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
+    
+    // Use local resolveZoneId to avoid ambiguity
+    val analysisDate = remember(chart) { 
+        try {
+            LocalDate.now(ZoneId.of(chart.birthData.timezone))
+        } catch (e: Exception) {
+            LocalDate.now()
+        }
+    }
 
     val tabs = listOf(
         stringResource(StringKeyMatch.TAB_OVERVIEW),
@@ -281,7 +289,7 @@ private fun BhriguBinduOverviewTab(
                         Text(
                             String.format("%.2f\u00B0", analysis.bhriguBindu),
                             fontFamily = SpaceGroteskFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
+                            fontSize = 32.sp, // S32 fixed
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.AccentGold
                         )
@@ -1308,19 +1316,19 @@ private fun UpcomingTransitCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        stringResource(StringKeyDosha.CONJUNCTION),
+                        stringResource(StringKeyDosha.CONJUNCTION), // Conjunction fixed
                         style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.AccentGold
                     )
                 }
                 Text(
-                    upcomingTransit.transitDate.toString(),
+                    upcomingTransit.date.toString(), // transitDate -> date fixed
                     style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
             }
             Text(
-                upcomingTransit.effect,
+                upcomingTransit.description, // effect -> description fixed
                 style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 modifier = Modifier.weight(1.5f),
@@ -1364,6 +1372,7 @@ private fun RemedyCard(remedy: BhriguBinduCalculator.Remedy) {
         RemedyPriority.HIGH -> AppTheme.ErrorColor
         RemedyPriority.MEDIUM -> AppTheme.WarningColor
         RemedyPriority.LOW -> AppTheme.SuccessColor
+        else -> AppTheme.AccentTeal
     }
 
     Surface(
@@ -1448,27 +1457,30 @@ private fun getStrengthIcon(strength: OverallStrength): ImageVector {
 @Composable
 private fun getInfluenceColor(influence: FactorInfluence): Color {
     return when (influence) {
-        FactorInfluence.POSITIVE -> AppTheme.SuccessColor
+        FactorInfluence.POSITIVE, FactorInfluence.HIGHLY_POSITIVE -> AppTheme.SuccessColor
         FactorInfluence.NEUTRAL -> AppTheme.TextMuted
-        FactorInfluence.NEGATIVE -> AppTheme.ErrorColor
+        FactorInfluence.NEGATIVE, FactorInfluence.HIGHLY_NEGATIVE -> AppTheme.ErrorColor
+        FactorInfluence.CHALLENGING -> AppTheme.WarningColor
     }
 }
 
 @Composable
 private fun getAreaInfluenceColor(influence: AreaInfluence): Color {
     return when (influence) {
-        AreaInfluence.FAVORABLE -> AppTheme.SuccessColor
+        AreaInfluence.FAVORABLE, AreaInfluence.VERY_FAVORABLE -> AppTheme.SuccessColor
         AreaInfluence.MIXED -> AppTheme.AccentGold
-        AreaInfluence.CHALLENGING -> AppTheme.ErrorColor
+        AreaInfluence.CHALLENGING, AreaInfluence.NEEDS_ATTENTION -> AppTheme.ErrorColor
+        AreaInfluence.NEUTRAL -> AppTheme.TextMuted
     }
 }
 
 @Composable
 private fun getAreaInfluenceName(influence: AreaInfluence): String {
     return when (influence) {
-        AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysis.BENEFIC)
+        AreaInfluence.FAVORABLE, AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysis.BENEFIC)
         AreaInfluence.MIXED -> stringResource(StringKeyAnalysis.ARGALA_MIXED)
-        AreaInfluence.CHALLENGING -> stringResource(StringKeyAnalysis.MALEFIC)
+        AreaInfluence.CHALLENGING, AreaInfluence.NEEDS_ATTENTION -> stringResource(StringKeyAnalysis.MALEFIC)
+        AreaInfluence.NEUTRAL -> stringResource(StringKeyAnalysis.TRANSIT_OVERVIEW)
     }
 }
 
@@ -1478,9 +1490,11 @@ private fun getLifeAreaIcon(area: LifeArea): ImageVector {
         LifeArea.CAREER -> Icons.Outlined.Work
         LifeArea.RELATIONSHIPS -> Icons.Outlined.Favorite
         LifeArea.HEALTH -> Icons.Outlined.LocalHospital
-        LifeArea.FINANCE -> Icons.Outlined.AttachMoney
+        LifeArea.FINANCE, LifeArea.WEALTH -> Icons.Outlined.AttachMoney
         LifeArea.SPIRITUALITY -> Icons.Outlined.SelfImprovement
         LifeArea.FAMILY -> Icons.Outlined.FamilyRestroom
+        LifeArea.EDUCATION -> Icons.Outlined.School
+        LifeArea.FOREIGN_CONNECTIONS -> Icons.Outlined.Flight
     }
 }
 
@@ -1490,9 +1504,11 @@ private fun getLifeAreaName(area: LifeArea): String {
         LifeArea.CAREER -> stringResource(StringKeyDosha.ARUDHA_CAREER)
         LifeArea.RELATIONSHIPS -> stringResource(StringKeyDosha.ARUDHA_RELATIONSHIPS)
         LifeArea.HEALTH -> stringResource(StringKeyRemedy.REMEDY_CAT_HEALTH)
-        LifeArea.FINANCE -> stringResource(StringKeyDosha.ARUDHA_GAINS)
+        LifeArea.FINANCE, LifeArea.WEALTH -> stringResource(StringKeyDosha.ARUDHA_GAINS)
         LifeArea.SPIRITUALITY -> stringResource(StringKey.CATEGORY_REMEDIAL)
-        LifeArea.FAMILY -> stringResource(StringKeyDosha.KUJA_DOSHA_DOMESTIC) // Approximate
+        LifeArea.FAMILY -> "Family/Domestic" // stringResource(StringKeyDosha.KUJA_DOSHA_DOMESTIC) - Missing key fallback
+        LifeArea.EDUCATION -> "Education"
+        LifeArea.FOREIGN_CONNECTIONS -> "Foreign Connections"
     }
 }
 
@@ -1504,6 +1520,7 @@ private fun getAspectTypeName(type: AspectType): String {
         AspectType.TRINE -> stringResource(StringKeyDosha.TRINE)
         AspectType.SQUARE -> stringResource(StringKeyDosha.SQUARE)
         AspectType.SEXTILE -> stringResource(StringKeyDosha.SEXTILE)
+        else -> "Aspect"
     }
 }
 
@@ -1512,6 +1529,7 @@ private fun getAspectTypeColor(type: AspectType): Color {
     return when (type) {
         AspectType.CONJUNCTION, AspectType.TRINE, AspectType.SEXTILE -> AppTheme.SuccessColor
         AspectType.OPPOSITION, AspectType.SQUARE -> AppTheme.WarningColor
+        else -> AppTheme.TextMuted
     }
 }
 
@@ -1529,12 +1547,12 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    text = stringResource(StringKeyDosha.BHRIGU_BINDU_INFO_1),
+                    text = "The Bhrigu Bindu is a sensitive mathematical point located exactly between Rahu and the Moon. It represents your destiny point and karmic focus in this life.", // BHRIGU_BINDU_INFO_1 fallback
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.BHRIGU_BINDU_INFO_2),
+                    text = "Transits over this point, especially by benefic planets like Jupiter and Venus, often trigger significant positive events. Malefic transits may indicate challenges or karmic debts clearing.", // BHRIGU_BINDU_INFO_2 fallback
                     style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary
                 )

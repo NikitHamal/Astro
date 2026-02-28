@@ -300,8 +300,7 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
             Text(
                 text = "${analysis.overallStrength}%",
-                fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
+                style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = strengthColor
             )

@@ -277,7 +277,7 @@ private fun OverallScoreCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
             Text(
                 text = String.format("%.0f", analysis.overallScore),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
+                fontSize = 32.sp, // S32 fixed
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )

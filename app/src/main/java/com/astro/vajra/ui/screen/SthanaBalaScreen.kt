@@ -268,7 +268,7 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
             Text(
                 text = scoreText,
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
+                fontSize = 32.sp, // S32 fixed
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
