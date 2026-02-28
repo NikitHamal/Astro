@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -48,10 +48,18 @@ import com.astro.vajra.ephemeris.PushkaraNavamsaResult
 import com.astro.vajra.ephemeris.PushkaraBhagaResult
 import com.astro.vajra.ephemeris.AssessmentLevel
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.components.common.ModernPillTabRow
+import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Mrityu Bhaga Analysis Screen
@@ -127,23 +135,27 @@ fun MrityuBhagaScreen(
                 message = stringResource(StringKeyDosha.SCREEN_ERROR_CALCULATION)
             )
             else -> {
-                Column(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
+                        .background(AppTheme.ScreenBackground),
+                    contentPadding = PaddingValues(bottom = 32.dp)
                 ) {
                     // Tab Row
-                    TabSelector(
-                        tabs = tabs,
-                        selectedIndex = selectedTab,
-                        onTabSelected = { selectedTab = it }
-                    )
+                    item {
+                        MrityuBhagaTabSelector(
+                            tabs = tabs,
+                            selectedTab = selectedTab,
+                            onTabSelected = { selectedTab = it }
+                        )
+                    }
 
                     // Content based on selected tab
                     when (selectedTab) {
-                        0 -> OverviewTab(analysisResult!!, language)
-                        1 -> SignDegreesTab(analysisResult!!, language)
-                        2 -> RemediesTab(analysisResult!!, language)
+                        0 -> item { OverviewTab(analysisResult!!, language) }
+                        1 -> item { SignDegreesTab(analysisResult!!, language) }
+                        2 -> item { RemediesTab(analysisResult!!, language) }
                     }
                 }
             }
@@ -152,35 +164,7 @@ fun MrityuBhagaScreen(
 
     // Info Dialog
     if (showInfoDialog) {
-        AlertDialog(
-            onDismissRequest = { showInfoDialog = false },
-            title = {
-                Text(
-                    stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT),
-                    fontWeight = FontWeight.Bold,
-                    color = AppTheme.TextPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            },
-            text = {
-                Text(
-                    stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
-                    color = AppTheme.TextSecondary,
-                    lineHeight = 22.sp
-                )
-            },
-            confirmButton = {
-                TextButton(onClick = { showInfoDialog = false }) {
-                    Text(
-                        stringResource(StringKey.BTN_CLOSE),
-                        color = AppTheme.AccentPrimary
-                    )
-                }
-            },
-            containerColor = AppTheme.CardBackground,
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        )
+        MrityuBhagaInfoDialog(onDismiss = { showInfoDialog = false })
     }
 }
 
@@ -197,6 +181,8 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyDosha.SCREEN_CALCULATING),
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -211,76 +197,59 @@ private fun ErrorContent(paddingValues: PaddingValues, message: String) {
             .padding(paddingValues),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                Icons.Outlined.ErrorOutline,
-                contentDescription = null,
-                tint = AppTheme.ErrorColor,
-                modifier = Modifier.size(48.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(message, color = AppTheme.TextMuted)
-        }
+        NeoVedicEmptyState(
+            title = stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_TITLE),
+            subtitle = message,
+            icon = Icons.Outlined.ErrorOutline
+        )
     }
 }
 
 @Composable
-private fun TabSelector(
+private fun MrityuBhagaTabSelector(
     tabs: List<String>,
-    selectedIndex: Int,
+    selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            com.astro.vajra.ui.components.common.NeoVedicChoicePill(
-                selected = selectedIndex == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                        fontWeight = if (selectedIndex == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
 private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Overall Assessment Card
-        item {
-            OverallAssessmentCard(analysis)
-        }
+        OverallAssessmentCard(analysis)
 
         // Critical Placements (Mrityu Bhaga)
         val criticalMrityu = analysis.mrityuBhagaAnalysis.filter { it.isInMrityuBhaga }
         if (criticalMrityu.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = stringResource(StringKeyDosha.MRITYU_BHAGA_PLANETS_AFFECTED),
-                    icon = Icons.Filled.Warning,
-                    tint = AppTheme.WarningColor
-                )
-            }
-            items(criticalMrityu) { result ->
+            SectionHeader(
+                title = stringResource(StringKeyDosha.MRITYU_BHAGA_PLANETS_AFFECTED),
+                icon = Icons.Filled.Warning,
+                tint = AppTheme.WarningColor
+            )
+            criticalMrityu.forEach { result ->
                 MrityuBhagaPlanetCard(result, language)
             }
         }
@@ -288,14 +257,12 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         // Gandanta Placements
         val gandantaPlanets = analysis.gandantaAnalysis.filter { it.isInGandanta }
         if (gandantaPlanets.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = stringResource(StringKeyDosha.MRITYU_BHAGA_GANDANTA_PLACEMENTS),
-                    icon = Icons.Filled.Waves,
-                    tint = AppTheme.ErrorColor
-                )
-            }
-            items(gandantaPlanets) { result ->
+            SectionHeader(
+                title = stringResource(StringKeyDosha.MRITYU_BHAGA_GANDANTA_PLACEMENTS),
+                icon = Icons.Filled.Waves,
+                tint = AppTheme.ErrorColor
+            )
+            gandantaPlanets.forEach { result ->
                 GandantaPlanetCard(result, language)
             }
         }
@@ -305,54 +272,52 @@ private fun OverviewTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         val pushkaraBhaga = analysis.pushkaraBhagaAnalysis.filter { it.isInPushkaraBhaga }
 
         if (pushkaraNavamsa.isNotEmpty() || pushkaraBhaga.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = stringResource(StringKeyDosha.MRITYU_BHAGA_AUSPICIOUS_PLACEMENTS),
-                    icon = Icons.Filled.Star,
-                    tint = AppTheme.SuccessColor
-                )
-            }
-            items(pushkaraNavamsa) { result ->
+            SectionHeader(
+                title = stringResource(StringKeyDosha.MRITYU_BHAGA_AUSPICIOUS_PLACEMENTS),
+                icon = Icons.Filled.Star,
+                tint = AppTheme.SuccessColor
+            )
+            pushkaraNavamsa.forEach { result ->
                 PushkaraNavamsaCard(result, language)
             }
-            items(pushkaraBhaga) { result ->
+            pushkaraBhaga.forEach { result ->
                 PushkaraBhagaCard(result, language)
             }
         }
 
         // No Critical Placements Message
         if (criticalMrityu.isEmpty() && gandantaPlanets.isEmpty()) {
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
-                    ),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
+            ) {
+                Row(
+                    modifier = Modifier.padding(20.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier.padding(20.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            Icons.Filled.CheckCircle,
-                            contentDescription = null,
-                            tint = AppTheme.SuccessColor,
-                            modifier = Modifier.size(32.dp)
+                    Icon(
+                        Icons.Filled.CheckCircle,
+                        contentDescription = null,
+                        tint = AppTheme.SuccessColor,
+                        modifier = Modifier.size(32.dp)
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Column {
+                        Text(
+                            stringResource(StringKeyDosha.MRITYU_BHAGA_NO_PLANETS),
+                            fontFamily = CinzelDecorativeFamily,
+                            fontWeight = FontWeight.SemiBold,
+                            color = AppTheme.TextPrimary,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16
                         )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Column {
-                            Text(
-                                stringResource(StringKeyDosha.MRITYU_BHAGA_NO_PLANETS),
-                                fontWeight = FontWeight.SemiBold,
-                                color = AppTheme.TextPrimary
-                            )
-                            Text(
-                                stringResource(StringKeyDosha.MRITYU_BHAGA_NO_CRITICAL),
-                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                                color = AppTheme.TextMuted
-                            )
-                        }
+                        Text(
+                            stringResource(StringKeyDosha.MRITYU_BHAGA_NO_CRITICAL),
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                            color = AppTheme.TextMuted
+                        )
                     }
                 }
             }
@@ -392,10 +357,11 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
         )
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, iconColor.copy(alpha = 0.3f))
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -409,8 +375,9 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
                 Column {
                     Text(
                         stringResource(StringKeyDosha.MRITYU_BHAGA_OVERALL_ASSESSMENT),
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.Bold,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                         color = AppTheme.TextPrimary
                     )
                     Text(
@@ -421,7 +388,8 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
                             AssessmentLevel.GENERALLY_POSITIVE -> stringResource(StringKeyDosha.MRITYU_BHAGA_LEVEL_GENERALLY_POSITIVE)
                             AssessmentLevel.HIGHLY_AUSPICIOUS -> stringResource(StringKeyDosha.MRITYU_BHAGA_LEVEL_HIGHLY_AUSPICIOUS)
                         },
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = iconColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -432,6 +400,7 @@ private fun OverallAssessmentCard(analysis: SensitiveDegreesAnalysis) {
 
             Text(
                 assessment.summary,
+                fontFamily = PoppinsFontFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
@@ -463,12 +432,14 @@ private fun StatItem(label: String, value: String, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             value,
+            fontFamily = SpaceGroteskFamily,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             label,
+            fontFamily = PoppinsFontFamily,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextMuted
         )
@@ -492,8 +463,9 @@ private fun SectionHeader(title: String, icon: androidx.compose.ui.graphics.vect
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             title,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.SemiBold,
-            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
             color = AppTheme.TextPrimary
         )
     }
@@ -511,12 +483,14 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
         MrityuBhagaSeverity.SAFE -> AppTheme.SuccessColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .animateContentSize()
             .clickable { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -534,6 +508,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     ) {
                         Text(
                             result.planet.displayName.take(2),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Bold,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.getPlanetColor(result.planet)
@@ -543,11 +518,13 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     Column {
                         Text(
                             result.planet.getLocalizedName(language),
+                            fontFamily = PoppinsFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.actualDegree)}\u00B0",
+                            fontFamily = SpaceGroteskFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
@@ -562,6 +539,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     Text(
                         result.severity.getLocalizedName(language),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.Medium,
                         color = severityColor
@@ -577,11 +555,13 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
             ) {
                 Text(
                     stringResource(StringKeyDosha.MRITYU_BHAGA_SENSITIVE_DEGREE),
+                    fontFamily = PoppinsFontFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     "${String.format("%.1f", result.mrityuBhagaDegree)}\u00B0",
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
@@ -593,11 +573,13 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
             ) {
                 Text(
                     stringResource(StringKeyDosha.MRITYU_BHAGA_ORB),
+                    fontFamily = PoppinsFontFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     "${String.format("%.2f", result.distanceFromMrityuBhaga)}\u00B0",
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = severityColor
@@ -613,8 +595,9 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                     if (result.effects.isNotEmpty()) {
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Medium,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -627,6 +610,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
+                                    fontFamily = PoppinsFontFamily,
                                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
@@ -639,8 +623,9 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             stringResource(StringKeyDosha.MRITYU_BHAGA_LIFE_AREAS),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Medium,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -653,6 +638,7 @@ private fun MrityuBhagaPlanetCard(result: MrityuBhagaResult, language: Language)
                                     Text(
                                         area,
                                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                                        fontFamily = PoppinsFontFamily,
                                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                                         color = AppTheme.TextSecondary
                                     )
@@ -684,12 +670,14 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
         GandantaType.SHIVA_GANDANTA -> stringResource(StringKeyDosha.MRITYU_BHAGA_GANDANTA_SHIVA)
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .animateContentSize()
             .clickable { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -716,11 +704,13 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                     Column {
                         Text(
                             result.planet.getLocalizedName(language),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             gandantaTypeName,
+                            fontFamily = SpaceGroteskFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = severityColor,
                             fontWeight = FontWeight.Medium
@@ -735,6 +725,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                     Text(
                         result.severity.getLocalizedName(language),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.Medium,
                         color = severityColor
@@ -745,11 +736,13 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 stringResource(StringKeyDosha.MRITYU_BHAGA_JUNCTION_DESC, result.waterSign.getLocalizedName(language), result.fireSign.getLocalizedName(language)),
+                fontFamily = PoppinsFontFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
             Text(
                 stringResource(StringKeyDosha.MRITYU_BHAGA_DISTANCE_JUNCTION, String.format("%.2f", result.distanceFromJunction) + "\u00B0"),
+                fontFamily = SpaceGroteskFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = severityColor
             )
@@ -762,8 +755,9 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                     if (result.effects.isNotEmpty()) {
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Medium,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -776,6 +770,7 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
+                                    fontFamily = PoppinsFontFamily,
                                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
@@ -791,12 +786,11 @@ private fun GandantaPlanetCard(result: GandantaResult, language: Language) {
 
 @Composable
 private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.SuccessColor.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -812,11 +806,13 @@ private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Languag
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     "${result.planet.getLocalizedName(language)} " + stringResource(StringKeyFinder.LABEL_PUSH_NAV_IN),
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     "${result.sign.getLocalizedName(language)} ${String.format("%.1f", result.degree)}\u00B0",
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
@@ -824,6 +820,7 @@ private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Languag
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         result.benefits.first(),
+                        fontFamily = PoppinsFontFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         color = AppTheme.SuccessColor
                     )
@@ -835,12 +832,11 @@ private fun PushkaraNavamsaCard(result: PushkaraNavamsaResult, language: Languag
 
 @Composable
 private fun PushkaraBhagaCard(result: PushkaraBhagaResult, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentGold.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentGold.copy(alpha = 0.2f))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -856,11 +852,13 @@ private fun PushkaraBhagaCard(result: PushkaraBhagaResult, language: Language) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     "${result.planet.getLocalizedName(language)} " + stringResource(StringKeyFinder.LABEL_PUSH_BHAGA_IN),
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     StringResources.get(StringKeyFinder.LABEL_NOURISHING_DEGREE, language, String.format("%.1f", result.pushkaraBhagaDegree), String.format("%.2f", result.distance)),
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
@@ -879,6 +877,7 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
         item {
             Text(
                 stringResource(StringKeyDosha.MRITYU_BHAGA_ALL_SIGNS),
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary,
@@ -890,10 +889,11 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
         val planetGroups = analysis.mrityuBhagaAnalysis.groupBy { it.planet }
 
         items(planetGroups.entries.toList()) { (planet, results) ->
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -906,6 +906,7 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
                         ) {
                             Text(
                                 planet.displayName.take(2),
+                                fontFamily = CinzelDecorativeFamily,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.getPlanetColor(planet)
@@ -914,6 +915,7 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             planet.getLocalizedName(language),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -931,18 +933,21 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
                         ) {
                             Text(
                                 result.sign.getLocalizedName(language),
+                                fontFamily = PoppinsFontFamily,
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                                 color = if (isInMrityu) AppTheme.WarningColor else AppTheme.TextSecondary
                             )
                             Row {
                                 Text(
                                     StringResources.get(StringKeyFinder.LABEL_MB_DEGREE, language, String.format("%.0f", result.mrityuBhagaDegree)),
+                                    fontFamily = SpaceGroteskFamily,
                                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextMuted
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
                                     StringResources.get(StringKeyFinder.LABEL_ACTUAL_DEGREE, language, String.format("%.1f", result.actualDegree)),
+                                    fontFamily = SpaceGroteskFamily,
                                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = if (isInMrityu) AppTheme.WarningColor else AppTheme.TextSecondary,
                                     fontWeight = if (isInMrityu) FontWeight.Medium else FontWeight.Normal
@@ -965,10 +970,11 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
     ) {
         // General Recommendations
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -981,6 +987,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Bold,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.TextPrimary
@@ -1003,6 +1010,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(
                                 recommendation,
+                                fontFamily = PoppinsFontFamily,
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 color = AppTheme.TextSecondary,
                                 lineHeight = 20.sp
@@ -1016,107 +1024,115 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         // Planet-specific remedies
         val criticalPlanets = analysis.mrityuBhagaAnalysis.filter { it.isInMrityuBhaga }
 
-                if (criticalPlanets.isNotEmpty()) {
-                    item {
-                        Text(
-                            stringResource(StringKeyFinder.LABEL_PLANET_SPEC_REM),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
-                            color = AppTheme.TextPrimary,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                    }
-        
-                    items(criticalPlanets) { result ->
-                        if (result.remedies.isNotEmpty()) {
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Box(
-                                            modifier = Modifier
-                                                .size(36.dp)
-                                                .clip(CircleShape)
-                                                .background(AppTheme.getPlanetColor(result.planet).copy(alpha = 0.2f)),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                result.planet.displayName.take(2),
-                                                fontWeight = FontWeight.Bold,
-                                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
-                                                color = AppTheme.getPlanetColor(result.planet)
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.width(12.dp))
-                                        Text(
-                                            StringResources.get(StringKeyFinder.LABEL_PLANET_REM, language, result.planet.getLocalizedName(language)),
-                                            fontWeight = FontWeight.SemiBold,
-                                            color = AppTheme.TextPrimary
-                                        )
-                                    }
-        
-                                    Spacer(modifier = Modifier.height(12.dp))
-        
-                                    result.remedies.forEach { remedy ->
-                                        Row(
-                                            modifier = Modifier.padding(vertical = 3.dp),
-                                            verticalAlignment = Alignment.Top
-                                        ) {
-                                            Text("\u2022", color = AppTheme.AccentPrimary, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14)
-                                            Spacer(modifier = Modifier.width(8.dp))
-                                            Text(
-                                                remedy,
-                                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                                                color = AppTheme.TextSecondary,
-                                                lineHeight = 18.sp
-                                            )
-                                        }
-                                    }
+        if (criticalPlanets.isNotEmpty()) {
+            item {
+                Text(
+                    stringResource(StringKeyFinder.LABEL_PLANET_SPEC_REM),
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                    color = AppTheme.TextPrimary,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            items(criticalPlanets) { result ->
+                if (result.remedies.isNotEmpty()) {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = AppTheme.CardBackground,
+                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(36.dp)
+                                        .clip(CircleShape)
+                                        .background(AppTheme.getPlanetColor(result.planet).copy(alpha = 0.2f)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        result.planet.displayName.take(2),
+                                        fontFamily = CinzelDecorativeFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                                        color = AppTheme.getPlanetColor(result.planet)
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text(
+                                    StringResources.get(StringKeyFinder.LABEL_PLANET_REM, language, result.planet.getLocalizedName(language)),
+                                    fontFamily = CinzelDecorativeFamily,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = AppTheme.TextPrimary
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            result.remedies.forEach { remedy ->
+                                Row(
+                                    modifier = Modifier.padding(vertical = 3.dp),
+                                    verticalAlignment = Alignment.Top
+                                ) {
+                                    Text("\u2022", color = AppTheme.AccentPrimary, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14)
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        remedy,
+                                        fontFamily = PoppinsFontFamily,
+                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                                        color = AppTheme.TextSecondary,
+                                        lineHeight = 18.sp
+                                    )
                                 }
                             }
                         }
                     }
                 }
-        
-                // Gandanta remedies
-                val gandantaPlanets = analysis.gandantaAnalysis.filter { it.isInGandanta }
-        
-                if (gandantaPlanets.isNotEmpty()) {
-                    item {
-                        Text(
-                            stringResource(StringKeyFinder.LABEL_GAND_REM),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
-                            color = AppTheme.TextPrimary,
-                            modifier = Modifier.padding(top = 8.dp)
-                        )
-                    }
-        
-                    items(gandantaPlanets) { result ->
-                        if (result.remedies.isNotEmpty()) {
-                            Card(
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            Icons.Filled.Waves,
-                                            contentDescription = null,
-                                            tint = AppTheme.AccentTeal,
-                                            modifier = Modifier.size(24.dp)
-                                        )
-                                        Spacer(modifier = Modifier.width(12.dp))
-                                        Text(
-                                            "${result.planet.getLocalizedName(language)} - ${result.gandantaType.name.replace("_", " ")}",
-                                            fontWeight = FontWeight.SemiBold,
-                                            color = AppTheme.TextPrimary
-                                        )
-                                    }
+            }
+        }
+
+        // Gandanta remedies
+        val gandantaPlanets = analysis.gandantaAnalysis.filter { it.isInGandanta }
+
+        if (gandantaPlanets.isNotEmpty()) {
+            item {
+                Text(
+                    stringResource(StringKeyFinder.LABEL_GAND_REM),
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                    color = AppTheme.TextPrimary,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+
+            items(gandantaPlanets) { result ->
+                if (result.remedies.isNotEmpty()) {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = AppTheme.CardBackground,
+                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    Icons.Filled.Waves,
+                                    contentDescription = null,
+                                    tint = AppTheme.AccentTeal,
+                                    modifier = Modifier.size(24.dp)
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Text(
+                                    "${result.planet.getLocalizedName(language)} - ${result.gandantaType.name.replace("_", " ")}",
+                                    fontFamily = CinzelDecorativeFamily,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = AppTheme.TextPrimary
+                                )
+                            }
                             Spacer(modifier = Modifier.height(12.dp))
 
                             result.remedies.forEach { remedy ->
@@ -1128,6 +1144,7 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
                                         remedy,
+                                        fontFamily = PoppinsFontFamily,
                                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                                         color = AppTheme.TextSecondary,
                                         lineHeight = 18.sp
@@ -1142,12 +1159,11 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
 
         // Precautionary Measures
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.InfoColor.copy(alpha = 0.08f)
-                ),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.InfoColor.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.InfoColor.copy(alpha = 0.2f))
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1160,51 +1176,58 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             stringResource(StringKeyDosha.MRITYU_BHAGA_PRECAUTIONS),
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Bold,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.TextPrimary
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    val precautions = listOf(
-                        stringResource(StringKeyFinder.PREC_DASHA),
-                        stringResource(StringKeyFinder.PREC_TRANSIT),
-                        stringResource(StringKeyFinder.PREC_SPIRITUAL),
-                        stringResource(StringKeyFinder.PREC_AWARENESS)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        stringResource(StringKeyDosha.MRITYU_BHAGA_PRECAUTIONS_DESC),
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 20.sp
                     )
-
-                    precautions.forEach { precaution ->
-                        Row(
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            verticalAlignment = Alignment.Top
-                        ) {
-                            Icon(
-                                Icons.Outlined.Info,
-                                contentDescription = null,
-                                tint = AppTheme.InfoColor,
-                                modifier = Modifier.size(14.dp)
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(
-                                precaution,
-                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                                color = AppTheme.TextSecondary,
-                                lineHeight = 18.sp
-                            )
-                        }
-                    }
                 }
             }
         }
     }
 }
 
-
-
-
-
-
-
-
+@Composable
+private fun MrityuBhagaInfoDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT),
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
+                color = AppTheme.TextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        },
+        text = {
+            Text(
+                stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextSecondary,
+                lineHeight = 22.sp
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    stringResource(StringKey.BTN_CLOSE),
+                    fontFamily = SpaceGroteskFamily,
+                    color = AppTheme.AccentPrimary
+                )
+            }
+        },
+        containerColor = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+    )
+}

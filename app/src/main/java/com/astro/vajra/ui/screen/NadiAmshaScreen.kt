@@ -1,6 +1,7 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -32,12 +33,18 @@ import com.astro.vajra.ephemeris.NadiAmshaCalculator
 import com.astro.vajra.ephemeris.NadiAmshaCalculator.NadiAmshaResult
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.viewmodel.NadiAmshaUiState
 import com.astro.vajra.ui.viewmodel.NadiAmshaViewModel
 import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 private val nadiTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
@@ -93,8 +100,15 @@ fun NadiAmshaScreen(
                     }
                 }
                 is NadiAmshaUiState.Error -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Text(state.message, color = AppTheme.ErrorColor)
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        NeoVedicEmptyState(
+                            title = stringResource(StringKeyAdvanced.NADI_TITLE),
+                            subtitle = state.message,
+                            icon = Icons.Filled.ErrorOutline
+                        )
                     }
                 }
                 is NadiAmshaUiState.Success -> {
@@ -114,17 +128,32 @@ fun NadiAmshaScreen(
             title = {
                 Text(
                     stringResource(StringKeyAdvanced.NADI_INFO_TITLE),
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold,
+                    color = AppTheme.TextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             },
-            text = { Text(stringResource(StringKeyAdvanced.NADI_INFO_DESC)) },
+            text = { 
+                Text(
+                    stringResource(StringKeyAdvanced.NADI_INFO_DESC),
+                    fontFamily = PoppinsFontFamily,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 22.sp
+                ) 
+            },
             confirmButton = {
                 TextButton(onClick = { showInfoDialog = false }) {
-                    Text(stringResource(StringKey.BTN_CLOSE))
+                    Text(
+                        stringResource(StringKey.BTN_CLOSE),
+                        fontFamily = SpaceGroteskFamily,
+                        color = AppTheme.AccentPrimary
+                    )
                 }
             },
-            containerColor = AppTheme.CardBackground
+            containerColor = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
         )
     }
 }
@@ -136,17 +165,21 @@ private fun NadiAmshaContent(
     onTabSelected: (Int) -> Unit
 ) {
     val tabs = listOf(
-        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_OVERVIEW), Icons.Filled.Dashboard),
-        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_POSITIONS), Icons.Filled.List),
-        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_RECTIFICATION), Icons.Filled.Build)
+        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_OVERVIEW), AppTheme.AccentGold),
+        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_POSITIONS), AppTheme.AccentTeal),
+        TabItem(stringResource(StringKeyAdvanced.NADI_TAB_RECTIFICATION), AppTheme.AccentPrimary)
     )
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(AppTheme.ScreenBackground)
+    ) {
         ModernPillTabRow(
             tabs = tabs,
             selectedIndex = selectedTab,
             onTabSelected = onTabSelected,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
         )
 
         LazyColumn(
@@ -177,10 +210,11 @@ private fun NadiAmshaContent(
 
 @Composable
 private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -194,11 +228,13 @@ private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
                 Column {
                     Text(
                         stringResource(StringKeyAdvanced.NADI_LORD),
+                        fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         nadi.nadiLord.getLocalizedName(LocalLanguage.current),
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
@@ -217,23 +253,37 @@ private fun NadiLagnaCard(nadi: NadiAmshaCalculator.NadiPosition) {
 @Composable
 private fun NadiInfoItem(label: String, value: String) {
     Column {
-        Text(label, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
-        Text(value, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14, fontWeight = FontWeight.SemiBold, color = AppTheme.TextPrimary)
+        Text(
+            label,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+            color = AppTheme.TextMuted
+        )
+        Text(
+            value,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+            fontWeight = FontWeight.SemiBold,
+            color = AppTheme.TextPrimary
+        )
     }
 }
 
 @Composable
 private fun NadiSummaryCard(result: NadiAmshaResult) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 stringResource(StringKeyAdvanced.NADI_TAB_OVERVIEW),
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
+                color = AppTheme.TextPrimary,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16
             )
             Spacer(modifier = Modifier.height(8.dp))
             // Example summary logic
@@ -243,6 +293,7 @@ private fun NadiSummaryCard(result: NadiAmshaResult) {
                     result.ascendantNadi.nadiLord.getLocalizedName(LocalLanguage.current),
                     result.ascendantNadi.energyType.displayName
                 ),
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 lineHeight = 20.sp
@@ -253,10 +304,11 @@ private fun NadiSummaryCard(result: NadiAmshaResult) {
 
 @Composable
 private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -265,11 +317,13 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
             Box(
                 modifier = Modifier
                     .size(40.dp)
-                    .background(AppTheme.getPlanetColor(position.planet!!).copy(alpha = 0.2f), RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
+                    .background(AppTheme.getPlanetColor(position.planet!!).copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     position.planet.symbol,
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                     color = AppTheme.getPlanetColor(position.planet)
                 )
@@ -278,6 +332,7 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     position.planet.getLocalizedName(LocalLanguage.current),
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -287,12 +342,14 @@ private fun NadiPlanetItem(position: NadiAmshaCalculator.NadiPosition) {
                         position.nadiNumber,
                         position.nadiSign.getLocalizedName(LocalLanguage.current)
                     ),
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
             Text(
                 position.nadiLord.getLocalizedName(LocalLanguage.current),
+                fontFamily = PoppinsFontFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextMuted,
                 fontWeight = FontWeight.Medium
@@ -306,12 +363,14 @@ private fun RectificationHeader(chart: VedicChart) {
     Column {
         Text(
             stringResource(StringKeyAdvanced.NADI_RECTIFICATION_TITLE),
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.Bold,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
             color = AppTheme.TextPrimary
         )
         Text(
             "${stringResource(StringKeyAdvanced.NADI_CURRENT_TIME)}: ${chart.birthData.dateTime.format(nadiTimeFormatter)}",
+            fontFamily = SpaceGroteskFamily,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextMuted
         )
@@ -321,10 +380,11 @@ private fun RectificationHeader(chart: VedicChart) {
 
 @Composable
 private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.RectificationCandidate) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -341,22 +401,25 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
                 val sign = if(candidate.timeAdjustmentMinutes > 0) "+" else ""
                 Text(
                     "${sign}${candidate.timeAdjustmentMinutes} ${stringResource(StringKeyAdvanced.MIN_LABEL)}  (${candidate.adjustedTime.format(nadiTimeFormatter)})",
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     candidate.description,
+                    fontFamily = PoppinsFontFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
             Surface(
                 color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     "${candidate.confidence}%",
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    fontFamily = SpaceGroteskFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentPrimary
@@ -365,8 +428,3 @@ private fun RectificationCandidateCard(candidate: NadiAmshaCalculator.Rectificat
         }
     }
 }
-
-
-
-
-

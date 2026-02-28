@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,13 +24,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Block
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -44,19 +41,19 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.AlertDialog
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -83,16 +80,17 @@ import com.astro.vajra.core.common.StringKeyDosha
 import com.astro.vajra.core.common.StringKeyUICommon
 import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.stringResource
-import android.content.Context
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.GocharaVedhaCalculator
 import com.astro.vajra.ui.screen.chartdetail.ChartDetailColors
 import com.astro.vajra.ui.theme.AppTheme
-import androidx.compose.ui.platform.LocalContext
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -153,8 +151,15 @@ fun GocharaVedhaScreen(
                 title = stringResource(StringKeyDosha.GOCHARA_SCREEN_TITLE),
                 subtitle = stringResource(StringKeyDosha.GOCHARA_SUBTITLE),
                 onBack = onBack,
-                actionIcon = Icons.Outlined.Info,
-                onAction = { showInfoDialog = true }
+                actions = {
+                    IconButton(onClick = { showInfoDialog = true }) {
+                        Icon(
+                            Icons.Outlined.Info,
+                            contentDescription = stringResource(StringKeyUICommon.INFO),
+                            tint = AppTheme.TextSecondary
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -163,7 +168,12 @@ fun GocharaVedhaScreen(
                 LoadingContentVedha(modifier = Modifier.padding(paddingValues))
             }
             chart == null || vedhaAnalysis == null -> {
-                EmptyContentVedha(modifier = Modifier.padding(paddingValues))
+                NeoVedicEmptyState(
+                    title = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
+                    subtitle = stringResource(StringKeyDosha.GOCHARA_NO_CHART_DESC),
+                    icon = Icons.Outlined.Public,
+                    modifier = Modifier.padding(paddingValues)
+                )
             }
             else -> {
                 LazyColumn(
@@ -218,8 +228,8 @@ private fun VedhaTabSelector(
         selectedIndex = selectedTab,
         onTabSelected = onTabSelected,
         modifier = Modifier.padding(
-            horizontal = com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding,
-            vertical = com.astro.vajra.ui.theme.NeoVedicTokens.SpaceXS
+            horizontal = NeoVedicTokens.ScreenPadding,
+            vertical = NeoVedicTokens.SpaceXS
         )
     )
 }
@@ -265,10 +275,11 @@ private fun TransitScoreCard(
     favorable: Int,
     obstructed: Int
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -278,8 +289,9 @@ private fun TransitScoreCard(
         ) {
             Text(
                 text = stringResource(StringKeyDosha.GOCHARA_SCORE),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary
             )
 
@@ -306,13 +318,15 @@ private fun TransitScoreCard(
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "$score%",
-                        style = MaterialTheme.typography.headlineMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = 32.sp,
                         fontWeight = FontWeight.Bold,
                         color = getTransitScoreColor(score)
                     )
                     Text(
                         text = getTransitScoreLabel(score),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -336,14 +350,16 @@ private fun TransitScoreCard(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "$favorable",
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Bold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.SuccessColor
                         )
                     }
                     Text(
                         text = stringResource(StringKeyDosha.GOCHARA_FAVORABLE),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -358,14 +374,16 @@ private fun TransitScoreCard(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "$obstructed",
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Bold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.ErrorColor
                         )
                     }
                     Text(
                         text = stringResource(StringKeyDosha.GOCHARA_OBSTRUCTED),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -376,10 +394,11 @@ private fun TransitScoreCard(
 
 @Composable
 private fun MoonSignCard(moonSign: String) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -404,13 +423,15 @@ private fun MoonSignCard(moonSign: String) {
             Column {
                 Text(
                     text = stringResource(StringKeyDosha.GOCHARA_MOON_SIGN),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     text = moonSign,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -425,7 +446,7 @@ private fun VedhaQuickStatsRow(analysis: GocharaVedhaCalculator.CompleteVedhaAna
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         VedhaStatCard(
-            title = stringResource(StringKeyDosha.SANDHI_ACTIVE), // Reuse "Active" or define GOCHARA_ACTIVE
+            title = stringResource(StringKeyDosha.SANDHI_ACTIVE),
             value = "${analysis.activeVedhas.size}",
             subtitle = stringResource(StringKeyDosha.GOCHARA_VEDHAS),
             color = if (analysis.activeVedhas.isNotEmpty()) AppTheme.WarningColor else AppTheme.SuccessColor,
@@ -449,10 +470,11 @@ private fun VedhaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -462,18 +484,21 @@ private fun VedhaStatCard(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Bold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                 color = color
             )
             Text(
                 text = subtitle,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -482,10 +507,11 @@ private fun VedhaStatCard(
 
 @Composable
 private fun KeyInsightsCard(insights: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -500,8 +526,9 @@ private fun KeyInsightsCard(insights: List<String>) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_KEY_INSIGHTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -518,7 +545,8 @@ private fun KeyInsightsCard(insights: List<String>) {
                     )
                     Text(
                         text = insight,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -530,10 +558,11 @@ private fun KeyInsightsCard(insights: List<String>) {
 
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -548,8 +577,9 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -566,7 +596,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     )
                     Text(
                         text = recommendation,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp
                     )
@@ -579,8 +610,6 @@ private fun RecommendationsCard(recommendations: List<String>) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun TransitsSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalysis) {
-    val language = LocalLanguage.current
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -589,8 +618,9 @@ private fun TransitsSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalys
     ) {
         Text(
             text = stringResource(StringKeyDosha.GOCHARA_CURRENT_TRANSITS),
-            style = MaterialTheme.typography.titleSmall,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.SemiBold,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(vertical = 8.dp)
         )
@@ -607,12 +637,13 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
     var expanded by remember { mutableStateOf(false) }
     val planetColor = ChartDetailColors.getPlanetColor(transit.planet)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -644,13 +675,15 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     Column {
                         Text(
                             text = transit.planet.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "in ${transit.transitSign.getLocalizedName(language)} (${transit.houseFromMoon}H from Moon)",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -661,13 +694,14 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                 ) {
                     // Effectiveness badge
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = getEffectivenessColor(transit.effectiveStrength).copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = "${transit.effectiveStrength.score * 20}%",
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.SemiBold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = getEffectivenessColor(transit.effectiveStrength),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -694,19 +728,21 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                 )
                 Text(
                     text = if (transit.isNaturallyFavorable) stringResource(StringKeyDosha.GOCHARA_NATURALLY_FAVORABLE) else stringResource(StringKeyDosha.GOCHARA_NATURALLY_UNFAVORABLE),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 if (transit.hasVedha) {
                     Text(text = "\u2022", color = AppTheme.TextMuted)
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.ErrorColor.copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = stringResource(StringKeyDosha.GOCHARA_VEDHA_LABEL),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Bold,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.ErrorColor,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                         )
@@ -727,15 +763,17 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                     // Transit effects
                     Text(
                         text = stringResource(StringKeyDosha.GOCHARA_TRANSIT_EFFECTS),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     transit.significations.forEach { effect ->
                         Text(
                             text = "\u2022 $effect",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.padding(vertical = 2.dp)
                         )
@@ -746,30 +784,34 @@ private fun TransitCard(transit: GocharaVedhaCalculator.PlanetTransitVedha) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Surface(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.ErrorColor.copy(alpha = 0.08f)
                         ) {
                             Column(modifier = Modifier.padding(12.dp)) {
                                 Text(
                                     text = stringResource(StringKeyDosha.GOCHARA_VEDHA_OBSTRUCTION),
-                                    style = MaterialTheme.typography.labelMedium,
+                                    fontFamily = CinzelDecorativeFamily,
                                     fontWeight = FontWeight.SemiBold,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                     color = AppTheme.ErrorColor
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Text(
                                     text = "${stringResource(StringKeyDosha.GOCHARA_FROM)} ${transit.vedhaSourcePlanets.joinToString { it.getLocalizedName(language) }}",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                                 Text(
                                     text = "${stringResource(StringKeyDosha.GOCHARA_SEVERITY)} ${transit.vedhaSeverity.displayName}",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                                 Text(
                                     text = "Reduction: ${transit.vedhaSeverity.reductionPercent}%",
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -792,10 +834,11 @@ private fun ActiveVedhasSection(analysis: GocharaVedhaCalculator.CompleteVedhaAn
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.activeVedhas.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
             ) {
                 Column(
                     modifier = Modifier
@@ -812,14 +855,16 @@ private fun ActiveVedhasSection(analysis: GocharaVedhaCalculator.CompleteVedhaAn
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(StringKeyDosha.GOCHARA_NO_VEDHAS_TITLE),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                         color = AppTheme.SuccessColor
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(StringKeyDosha.GOCHARA_NO_VEDHAS_DESC),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
@@ -828,8 +873,9 @@ private fun ActiveVedhasSection(analysis: GocharaVedhaCalculator.CompleteVedhaAn
         } else {
             Text(
                 text = stringResource(StringKeyDosha.GOCHARA_ACTIVE_OBSTRUCTIONS),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(vertical = 8.dp)
             )
@@ -845,12 +891,11 @@ private fun ActiveVedhasSection(analysis: GocharaVedhaCalculator.CompleteVedhaAn
 private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction) {
     val language = LocalLanguage.current
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = getVedhaSeverityColor(vedha.severity).copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = getVedhaSeverityColor(vedha.severity).copy(alpha = 0.08f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, getVedhaSeverityColor(vedha.severity).copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -861,25 +906,28 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = "${vedha.obstructedPlanet.getLocalizedName(language)} obstructed by ${vedha.obstructingPlanet.getLocalizedName(language)}",
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Vedha from ${vedha.obstructingHouse}H to ${vedha.obstructedHouse}H",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = getVedhaSeverityColor(vedha.severity).copy(alpha = 0.2f)
                 ) {
                     Text(
                         text = vedha.severity.displayName,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = getVedhaSeverityColor(vedha.severity),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
@@ -895,7 +943,8 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
             ) {
                 Text(
                     text = stringResource(StringKeyDosha.GOCHARA_EFFECT_REDUCTION),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
                 LinearProgressIndicator(
@@ -903,14 +952,15 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
                     modifier = Modifier
                         .weight(1f)
                         .height(6.dp)
-                        .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                     color = getVedhaSeverityColor(vedha.severity),
                     trackColor = AppTheme.DividerColor
                 )
                 Text(
                     text = "${vedha.severity.reductionPercent}%",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = getVedhaSeverityColor(vedha.severity)
                 )
             }
@@ -920,7 +970,8 @@ private fun VedhaInteractionCard(vedha: GocharaVedhaCalculator.VedhaInteraction)
             // Description
             Text(
                 text = vedha.interpretation,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -938,10 +989,11 @@ private fun ForecastSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalys
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Weekly overview would go here
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(
                 modifier = Modifier
@@ -958,14 +1010,16 @@ private fun ForecastSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalys
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(StringKeyDosha.GOCHARA_FORECAST_ANALYSIS),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "${stringResource(StringKeyAnalysis.EXPORT_GENERATED)} ${analysis.analysisDate.format(gocharaFullDateFormatter(language))}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     textAlign = TextAlign.Center
                 )
@@ -993,8 +1047,9 @@ private fun ForecastSection(analysis: GocharaVedhaCalculator.CompleteVedhaAnalys
         // Transit summary for each planet
         Text(
             text = stringResource(StringKeyDosha.GOCHARA_PLANET_SUMMARY),
-            style = MaterialTheme.typography.titleSmall,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.SemiBold,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(vertical = 8.dp)
         )
@@ -1014,13 +1069,15 @@ private fun ForecastStatItem(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MaterialTheme.typography.headlineSmall,
+            fontFamily = SpaceGroteskFamily,
             fontWeight = FontWeight.Bold,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
             color = color
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextMuted
         )
     }
@@ -1031,10 +1088,11 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
     val language = LocalLanguage.current
     val planetColor = ChartDetailColors.getPlanetColor(transit.planet)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1052,8 +1110,9 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
             ) {
                 Text(
                     text = transit.planet.symbol,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.Bold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     color = planetColor
                 )
             }
@@ -1061,13 +1120,15 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = transit.planet.getLocalizedName(language),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = "${transit.transitSign.getLocalizedName(language)} \u2022 ${transit.houseFromMoon}H",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1075,13 +1136,15 @@ private fun PlanetTransitSummaryCard(transit: GocharaVedhaCalculator.PlanetTrans
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     text = "${transit.effectiveStrength.score * 20}%",
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Bold,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = getEffectivenessColor(transit.effectiveStrength)
                 )
                 Text(
                     text = transit.effectiveStrength.name.replace("_", " "),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1100,7 +1163,8 @@ private fun LoadingContentVedha(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.GOCHARA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1108,48 +1172,15 @@ private fun LoadingContentVedha(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EmptyContentVedha(modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Public,
-                contentDescription = null,
-                tint = AppTheme.TextMuted,
-                modifier = Modifier.size(64.dp)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = AppTheme.TextPrimary
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(StringKeyDosha.GOCHARA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextMuted,
-                textAlign = TextAlign.Center
-            )
-        }
-    }
-}
-
-@Composable
 private fun VedhaInfoDialog(onDismiss: () -> Unit) {
-    androidx.compose.material3.AlertDialog(
+    AlertDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
                 text = stringResource(StringKeyDosha.GOCHARA_ABOUT_TITLE),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -1157,14 +1188,15 @@ private fun VedhaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.GOCHARA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
         },
         confirmButton = {
-            androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
@@ -1216,8 +1248,3 @@ private fun getEffectivenessColor(effectiveness: GocharaVedhaCalculator.TransitE
         GocharaVedhaCalculator.TransitEffectiveness.UNFAVORABLE -> AppTheme.ErrorColor
     }
 }
-
-
-
-
-
