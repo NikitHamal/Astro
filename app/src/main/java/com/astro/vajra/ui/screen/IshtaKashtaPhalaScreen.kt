@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -38,8 +38,6 @@ import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.TrendingDown
 import androidx.compose.material.icons.outlined.TrendingUp
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -77,10 +75,15 @@ import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.IshtaKashtaPhalaCalculator
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Ishta Kashta Phala Screen
@@ -203,6 +206,7 @@ private fun IshtaKashtaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
+                        fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -243,10 +247,11 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
     val categoryColor = getPhalaColor(analysis.overallCategory)
     val isBenefic = analysis.overallNetScore > 0
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = categoryColor.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = categoryColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -271,14 +276,16 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = analysis.overallCategory.displayName,
-                style = MaterialTheme.typography.titleLarge,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
                 color = categoryColor
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = analysis.overallCategory.description,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center
             )
@@ -290,14 +297,18 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_ISHTA),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_ISHTA).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.SuccessColor,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_KASHTA),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_KASHTA).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.ErrorColor,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -327,12 +338,14 @@ private fun OverallDispositionCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
             ) {
                 Text(
                     text = String.format("%.1f", analysis.overallIshtaScore),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     text = String.format("%.1f", analysis.overallKashtaScore),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -374,10 +387,11 @@ private fun IshtaKashtaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -387,14 +401,16 @@ private fun IshtaKashtaStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -404,10 +420,11 @@ private fun IshtaKashtaStatCard(
 
 @Composable
 private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKashtaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -422,7 +439,8 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_INTERPRETATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -430,7 +448,8 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = analysis.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -443,6 +462,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                 Surface(
                     shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                    border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f)),
                     modifier = Modifier.weight(1f)
                 ) {
                     Column(
@@ -451,13 +471,15 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                     ) {
                         Text(
                             text = analysis.mostBeneficPlanet.symbol,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                             color = AppTheme.SuccessColor
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_MOST_BENEFIC),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = AppTheme.TextMuted,
+                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_MOST_BENEFIC).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                            color = AppTheme.SuccessColor,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -465,6 +487,7 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                 Surface(
                     shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.ErrorColor.copy(alpha = 0.1f),
+                    border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.ErrorColor.copy(alpha = 0.2f)),
                     modifier = Modifier.weight(1f)
                 ) {
                     Column(
@@ -473,13 +496,15 @@ private fun IshtaKashtaSummaryCard(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                     ) {
                         Text(
                             text = analysis.mostMaleficPlanet.symbol,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                             color = AppTheme.ErrorColor
                         )
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_MOST_MALEFIC),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = AppTheme.TextMuted,
+                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_MOST_MALEFIC).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                            color = AppTheme.ErrorColor,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -509,12 +534,13 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
     var expanded by remember { mutableStateOf(false) }
     val categoryColor = getPhalaColor(phala.category)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -537,6 +563,7 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     ) {
                         Text(
                             text = phala.planet.symbol,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                             color = categoryColor
                         )
@@ -548,7 +575,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                         ) {
                             Text(
                                 text = phala.planet.displayName,
-                                style = MaterialTheme.typography.titleMedium,
+                                fontFamily = CinzelDecorativeFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
@@ -559,7 +587,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 ) {
                                     Text(
                                         text = "\u2191",
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = SpaceGroteskFamily,
+                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                         color = AppTheme.SuccessColor,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
                                     )
@@ -572,7 +601,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 ) {
                                     Text(
                                         text = "\u2193",
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = SpaceGroteskFamily,
+                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                         color = AppTheme.ErrorColor,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
                                     )
@@ -585,7 +615,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 ) {
                                     Text(
                                         text = "R",
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = SpaceGroteskFamily,
+                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                         color = AppTheme.AccentPrimary,
                                         modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
                                     )
@@ -594,7 +625,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                         }
                         Text(
                             text = "${phala.sign.getLocalizedName(language)} \u2022 H${phala.house}",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -609,7 +641,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     ) {
                         Text(
                             text = phala.getFormattedNet(),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = categoryColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -632,7 +665,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
             ) {
                 Text(
                     text = "I: ${phala.getFormattedIshta()}",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.SuccessColor
                 )
                 Box(
@@ -652,7 +686,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                 }
                 Text(
                     text = "K: ${phala.getFormattedKashta()}",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.ErrorColor
                 )
             }
@@ -681,13 +716,15 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_UCCHA_BALA),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_UCCHA_BALA).uppercase(),
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.TextMuted
                                 )
                                 Text(
                                     text = String.format("%.1f", phala.ucchaBala),
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                     fontWeight = FontWeight.SemiBold,
                                     color = AppTheme.TextPrimary
                                 )
@@ -703,13 +740,15 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_CHESTA_BALA),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    text = stringResource(StringKeyDosha.ISHTA_KASHTA_CHESTA_BALA).uppercase(),
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.TextMuted
                                 )
                                 Text(
                                     text = String.format("%.1f", phala.chestaBala),
-                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                     fontWeight = FontWeight.SemiBold,
                                     color = AppTheme.TextPrimary
                                 )
@@ -720,7 +759,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = phala.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -728,8 +768,9 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                     if (phala.affectedAreas.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_AFFECTS),
-                            style = MaterialTheme.typography.labelSmall,
+                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_AFFECTS).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -744,7 +785,8 @@ private fun PlanetPhalaCard(phala: IshtaKashtaPhalaCalculator.PlanetaryPhala) {
                                 ) {
                                     Text(
                                         text = area.displayName,
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = PoppinsFontFamily,
+                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                         color = categoryColor,
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                                     )
@@ -766,10 +808,11 @@ private fun LifeAreaImpactSection(analysis: IshtaKashtaPhalaCalculator.IshtaKash
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -784,7 +827,8 @@ private fun LifeAreaImpactSection(analysis: IshtaKashtaPhalaCalculator.IshtaKash
                     )
                     Text(
                         text = stringResource(StringKeyDosha.ISHTA_KASHTA_LIFE_AREAS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -817,7 +861,8 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
             .padding(vertical = 4.dp)
             .clickable { expanded = !expanded },
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackgroundElevated
+        color = AppTheme.CardBackgroundElevated,
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -832,7 +877,8 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
             ) {
                 Text(
                     text = impact.area.displayName,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary,
                     modifier = Modifier.weight(1f)
@@ -847,7 +893,8 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
                     ) {
                         Text(
                             text = String.format("%+.1f", impact.netScore),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = scoreColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -878,20 +925,23 @@ private fun LifeAreaImpactRow(impact: IshtaKashtaPhalaCalculator.LifeAreaImpact)
                 Column(modifier = Modifier.padding(top = 8.dp)) {
                     Text(
                         text = impact.prediction,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                     if (impact.dominantPlanets.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Text(
-                                text = stringResource(StringKeyDosha.ISHTA_KASHTA_INFLUENCED_BY),
-                                style = MaterialTheme.typography.labelSmall,
+                                text = stringResource(StringKeyDosha.ISHTA_KASHTA_INFLUENCED_BY).uppercase(),
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                             impact.dominantPlanets.take(3).forEach { planet ->
                                 Text(
                                     text = planet.symbol,
+                                    fontFamily = CinzelDecorativeFamily,
                                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                     color = scoreColor
                                 )
@@ -912,10 +962,11 @@ private fun PeriodPredictionSection(analysis: IshtaKashtaPhalaCalculator.IshtaKa
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -930,7 +981,8 @@ private fun PeriodPredictionSection(analysis: IshtaKashtaPhalaCalculator.IshtaKa
                     )
                     Text(
                         text = stringResource(StringKeyDosha.ISHTA_KASHTA_PERIOD_PREDICTIONS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -963,7 +1015,8 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
             .padding(vertical = 4.dp)
             .clickable { expanded = !expanded },
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackgroundElevated
+        color = AppTheme.CardBackgroundElevated,
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -982,19 +1035,22 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                 ) {
                     Text(
                         text = period.planet.symbol,
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                         color = trendColor
                     )
                     Column {
                         Text(
                             text = period.periodName,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = period.overallTendency,
-                            style = MaterialTheme.typography.labelSmall,
+                            text = period.overallTendency.uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1013,15 +1069,17 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
 
                     if (period.expectedBenefits.isNotEmpty()) {
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_BENEFITS),
-                            style = MaterialTheme.typography.labelSmall,
+                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_BENEFITS).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
                         )
                         period.expectedBenefits.forEach { benefit ->
                             Text(
                                 text = "\u2022 $benefit",
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1030,15 +1088,17 @@ private fun PeriodPredictionCard(period: IshtaKashtaPhalaCalculator.PhalaPeriod)
                     if (period.expectedChallenges.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_CHALLENGES),
-                            style = MaterialTheme.typography.labelSmall,
+                            text = stringResource(StringKeyDosha.ISHTA_KASHTA_CHALLENGES).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.WarningColor
                         )
                         period.expectedChallenges.forEach { challenge ->
                             Text(
                                 text = "\u2022 $challenge",
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1057,10 +1117,11 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -1075,7 +1136,8 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                     )
                     Text(
                         text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1088,7 +1150,8 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
                         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                        color = AppTheme.AccentGold.copy(alpha = 0.08f)
+                        color = AppTheme.AccentGold.copy(alpha = 0.08f),
+                        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentGold.copy(alpha = 0.2f))
                     ) {
                         Row(
                             modifier = Modifier.padding(12.dp),
@@ -1103,14 +1166,16 @@ private fun RecommendationsSection(analysis: IshtaKashtaPhalaCalculator.IshtaKas
                             ) {
                                 Text(
                                     text = "${index + 1}",
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.AccentGold
                                 )
                             }
                             Text(
                                 text = recommendation,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary,
                                 modifier = Modifier.weight(1f)
                             )
@@ -1146,7 +1211,8 @@ private fun IshtaKashtaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.ISHTA_KASHTA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1172,14 +1238,16 @@ private fun IshtaKashtaEmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.ISHTA_KASHTA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1194,7 +1262,8 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.ISHTA_KASHTA_ABOUT_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1203,23 +1272,17 @@ private fun IshtaKashtaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.ISHTA_KASHTA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-
-
-
-
-

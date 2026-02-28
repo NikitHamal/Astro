@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -74,6 +74,9 @@ import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.SthanaBalaCalculator
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.components.common.NeoVedicEmptyState
@@ -253,21 +256,26 @@ private fun SthanaBalaScoreCard(analysis: SthanaBalaCalculator.SthanaBalaAnalysi
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(StringKeyShadbala.STHANA_TOTAL),
-                style = MaterialTheme.typography.labelMedium,
+                text = stringResource(StringKeyShadbala.STHANA_TOTAL).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                letterSpacing = 1.sp,
+                fontWeight = FontWeight.Medium,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(8.dp))
             val scoreText = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(analysis.overallScore.toInt()) else String.format("%.0f", analysis.overallScore)
             Text(
                 text = scoreText,
-                style = MaterialTheme.typography.displaySmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
             Text(
                 text = stringResource(StringKeyUIExtra.SLASH) + "100",
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -309,19 +317,23 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKeyShadbala.STHANA_STRONG),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyShadbala.STHANA_STRONG).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.SuccessColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.strongestPlanet.localizedAbbr(),
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.SuccessColor
                 )
                 Text(
                     text = analysis.strongestPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -330,7 +342,8 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                     val perc = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
                         text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.SuccessColor
                     )
                 }
@@ -351,19 +364,23 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKeyShadbala.STHANA_WEAK),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyShadbala.STHANA_WEAK).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.ErrorColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.weakestPlanet.localizedAbbr(),
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.ErrorColor
                 )
                 Text(
                     text = analysis.weakestPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -372,7 +389,8 @@ private fun SthanaBalaStrongestWeakestRow(analysis: SthanaBalaCalculator.SthanaB
                     val perc = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
                         text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.ErrorColor
                     )
                 }
@@ -407,7 +425,8 @@ private fun SthanaBalaInsightsCard(analysis: SthanaBalaCalculator.SthanaBalaAnal
                 )
                 Text(
                     text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -421,7 +440,8 @@ private fun SthanaBalaInsightsCard(analysis: SthanaBalaCalculator.SthanaBalaAnal
                     Text(text = stringResource(StringKeyUICommon.BULLET), color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -446,7 +466,8 @@ private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaB
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(StringKeyUICommon.REMEDIES),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
             )
@@ -459,7 +480,8 @@ private fun SthanaBalaRecommendationsCard(analysis: SthanaBalaCalculator.SthanaB
                     Text(text = stringResource(StringKeyUIExtra.ARROW), color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
                     Text(
                         text = rec,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -480,10 +502,12 @@ private fun SthanaBalaComponentsSection(analysis: SthanaBalaCalculator.SthanaBal
         verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.CardSpacing)
     ) {
         Text(
-            text = stringResource(StringKeyShadbala.STHANA_TAB_COMPONENTS),
-            style = MaterialTheme.typography.titleSmall,
+            text = stringResource(StringKeyShadbala.STHANA_TAB_COMPONENTS).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+            letterSpacing = 2.sp,
             fontWeight = FontWeight.SemiBold,
-            color = AppTheme.TextPrimary,
+            color = AppTheme.TextMuted,
             modifier = Modifier.padding(bottom = 4.dp)
         )
 
@@ -520,26 +544,30 @@ private fun ComponentCard(component: SthanaBalaCalculator.ComponentAnalysis) {
                 Column {
                     Text(
                         text = component.name,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = component.interpretation,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = String.format("%.1f", component.virupas),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = scoreColor
                     )
                     Text(
                         text = "/ ${String.format("%.0f", component.maxVirupas)}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -621,6 +649,7 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                     ) {
                         Text(
                             text = planetBala.planet.localizedAbbr(),
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S22,
                             color = scoreColor
                         )
@@ -628,13 +657,15 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                     Column {
                         Text(
                             text = planetBala.planet.displayName,
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "${planetBala.strengthRating} \u2022 ${planetBala.ucchaBala.dignityType.displayName}",
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = scoreColor
                         )
                     }
@@ -645,14 +676,16 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                     val perc = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(planetBala.percentageOfRequired.toInt()) else String.format("%.0f", planetBala.percentageOfRequired)
                     Text(
                         text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = scoreColor
                     )
                     val rupas = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(String.format("%.1f", planetBala.totalRupas)) else String.format("%.1f", planetBala.totalRupas)
                     Text(
                         text = "$rupas ${stringResource(StringKeyShadbala.COMMON_RUPAS)}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -677,7 +710,8 @@ private fun PlanetSthanaBalaCard(planetBala: SthanaBalaCalculator.PlanetSthanaBa
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = planetBala.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -708,12 +742,14 @@ private fun ComponentBreakdownRow(name: String, value: Double, max: Double) {
     ) {
         Text(
             text = name,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextSecondary
         )
         Text(
             text = "${String.format("%.1f", value)} / ${String.format("%.0f", max)}",
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary
         )
@@ -731,7 +767,8 @@ private fun SthanaBalaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyShadbala.STHANA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -758,7 +795,8 @@ private fun SthanaBalaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyShadbala.STHANA_INFO_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -768,14 +806,16 @@ private fun SthanaBalaInfoDialog(onDismiss: () -> Unit) {
             Column {
                 Text(
                     text = stringResource(StringKeyShadbala.STHANA_INFO_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyShadbala.STHANA_VEDIC_REF),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
@@ -783,15 +823,9 @@ private fun SthanaBalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-
-
-
-

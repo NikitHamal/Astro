@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -51,11 +51,19 @@ import com.astro.vajra.ephemeris.BhriguBinduCalculator.OverallStrength
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.RemedyCategory
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.RemedyPriority
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.components.common.ModernPillTabRow
+import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
 import kotlin.math.roundToInt
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Bhrigu Bindu Analysis Screen
@@ -207,32 +215,23 @@ private fun BhriguBinduTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            val isSelected = selectedTab == index
-            com.astro.vajra.ui.components.common.NeoVedicChoicePill(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
@@ -243,11 +242,12 @@ private fun BhriguBinduOverviewTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Main BB Position Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        ) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
             Column(
                 modifier = Modifier.padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -280,7 +280,8 @@ private fun BhriguBinduOverviewTab(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             String.format("%.2f\u00B0", analysis.bhriguBindu),
-                            style = MaterialTheme.typography.headlineLarge,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.AccentGold
                         )
@@ -346,11 +347,12 @@ private fun BhriguBinduOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Nakshatra details card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        ) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardElevated,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     stringResource(StringKeyDosha.BHRIGU_BINDU_NAKSHATRA),
@@ -380,11 +382,9 @@ private fun BhriguBinduOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Strength assessment card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = getStrengthBackgroundColor(analysis.strengthAssessment.overallStrength)
-            ),
+            color = getStrengthBackgroundColor(analysis.strengthAssessment.overallStrength),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
@@ -403,7 +403,8 @@ private fun BhriguBinduOverviewTab(
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             getStrengthText(analysis.strengthAssessment.overallStrength),
-                            style = MaterialTheme.typography.headlineSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                             fontWeight = FontWeight.Bold,
                             color = getStrengthColor(analysis.strengthAssessment.overallStrength)
                         )
@@ -441,11 +442,12 @@ private fun BhriguBinduOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Lords card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        ) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     stringResource(StringKeyAnalysis.LORDS),
@@ -472,9 +474,9 @@ private fun BhriguBinduOverviewTab(
         // Conjunct planets (if any)
         if (analysis.conjunctPlanets.isNotEmpty()) {
             Spacer(modifier = Modifier.height(16.dp))
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
+                color = AppTheme.CardElevated,
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -517,9 +519,9 @@ private fun BhriguBinduAnalysisTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Karmic Significance
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
+            color = AppTheme.AccentGold.copy(alpha = 0.08f),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
@@ -553,11 +555,12 @@ private fun BhriguBinduAnalysisTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // General Meaning
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        ) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     stringResource(StringKeyDosha.POSITION_INTERPRETATION),
@@ -642,9 +645,9 @@ private fun BhriguBinduTransitsTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         if (analysis.transitAnalysis == null) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
@@ -706,9 +709,9 @@ private fun BhriguBinduTransitsTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Transit Interpretation
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)),
+            color = AppTheme.AccentTeal.copy(alpha = 0.08f),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -778,9 +781,9 @@ private fun BhriguBinduRemediesTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Auspicious Days
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
+            color = AppTheme.AccentGold.copy(alpha = 0.08f),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -987,7 +990,7 @@ private fun StrengthFactorCard(
         label = "rotation"
     )
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(
@@ -995,8 +998,9 @@ private fun StrengthFactorCard(
                 indication = null,
                 onClick = onToggle
             ),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1061,7 +1065,7 @@ private fun LifeAreaCard(
         label = "rotation"
     )
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(
@@ -1069,7 +1073,7 @@ private fun LifeAreaCard(
                 indication = null,
                 onClick = onToggle
             ),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
+        color = AppTheme.CardElevated,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1144,9 +1148,9 @@ private fun AspectingPlanetCard(
     aspectingPlanet: BhriguBinduCalculator.AspectingPlanet,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -1207,14 +1211,12 @@ private fun TransitCard(
     transit: BhriguBinduCalculator.TransitingPlanet,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (transit.isConjunct)
+        color = if (transit.isConjunct)
                 AppTheme.AccentGold.copy(alpha = 0.08f)
             else
-                AppTheme.CardBackground
-        ),
+                AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1287,9 +1289,9 @@ private fun UpcomingTransitCard(
     upcomingTransit: BhriguBinduCalculator.UpcomingTransit,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
+        color = AppTheme.CardElevated,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -1306,24 +1308,24 @@ private fun UpcomingTransitCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        getTransitTypeName(upcomingTransit.transitType),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted
+                        stringResource(StringKeyDosha.CONJUNCTION),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = AppTheme.AccentGold
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    upcomingTransit.estimatedDate.toString(),
+                    upcomingTransit.transitDate.toString(),
                     style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary
+                    color = AppTheme.TextMuted
                 )
             }
-
-            Icon(
-                Icons.Filled.Event,
-                contentDescription = null,
-                tint = getTransitSignificanceColor(upcomingTransit.significance),
-                modifier = Modifier.size(24.dp)
+            Text(
+                upcomingTransit.effect,
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextSecondary,
+                modifier = Modifier.weight(1.5f),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
@@ -1331,46 +1333,44 @@ private fun UpcomingTransitCard(
 
 @Composable
 private fun RecommendationCard(recommendation: String) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)),
+        color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(12.dp),
             verticalAlignment = Alignment.Top
         ) {
             Icon(
-                Icons.Filled.Lightbulb,
+                Icons.Outlined.Lightbulb,
                 contentDescription = null,
-                tint = AppTheme.AccentTeal,
-                modifier = Modifier.size(20.dp)
+                tint = AppTheme.AccentGold,
+                modifier = Modifier.size(16.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 recommendation,
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextSecondary,
-                lineHeight = 20.sp
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextSecondary
             )
         }
     }
 }
 
 @Composable
-private fun RemedyCard(
-    remedy: BhriguBinduCalculator.RemedialMeasure
-) {
-    Card(
+private fun RemedyCard(remedy: BhriguBinduCalculator.Remedy) {
+    val priorityColor = when (remedy.priority) {
+        RemedyPriority.HIGH -> AppTheme.ErrorColor
+        RemedyPriority.MEDIUM -> AppTheme.WarningColor
+        RemedyPriority.LOW -> AppTheme.SuccessColor
+    }
+
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = when (remedy.priority) {
-                RemedyPriority.ESSENTIAL -> AppTheme.WarningColor.copy(alpha = 0.08f)
-                RemedyPriority.RECOMMENDED -> AppTheme.AccentGold.copy(alpha = 0.08f)
-                RemedyPriority.OPTIONAL -> AppTheme.CardBackground
-            }
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardElevated,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(1.dp, priorityColor.copy(alpha = 0.3f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1378,40 +1378,140 @@ private fun RemedyCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        getRemedyCategoryIcon(remedy.category),
-                        contentDescription = null,
-                        tint = getRemedyPriorityColor(remedy.priority),
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    remedy.category.name.replace("_", " "),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = AppTheme.TextMuted
+                )
+                Surface(
+                    color = priorityColor.copy(alpha = 0.1f),
+                    shape = RoundedCornerShape(4.dp)
+                ) {
                     Text(
-                        getRemedyCategoryName(remedy.category),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = getRemedyPriorityColor(remedy.priority)
+                        remedy.priority.name,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = priorityColor
                     )
                 }
             }
-
             Spacer(modifier = Modifier.height(8.dp))
-
             Text(
-                remedy.remedy,
+                remedy.description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextPrimary,
-                lineHeight = 20.sp
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                remedy.timing,
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextMuted
+                color = AppTheme.TextPrimary
             )
         }
+    }
+}
+
+// ============================================
+// Helper Functions
+// ============================================
+
+@Composable
+private fun getStrengthColor(strength: OverallStrength): Color {
+    return when (strength) {
+        OverallStrength.EXCELLENT -> AppTheme.SuccessColor
+        OverallStrength.GOOD -> AppTheme.AccentTeal
+        OverallStrength.MODERATE -> AppTheme.AccentPrimary
+        OverallStrength.CHALLENGING -> AppTheme.WarningColor
+        OverallStrength.DIFFICULT -> AppTheme.ErrorColor
+    }
+}
+
+@Composable
+private fun getStrengthBackgroundColor(strength: OverallStrength): Color {
+    return getStrengthColor(strength).copy(alpha = 0.08f)
+}
+
+@Composable
+private fun getStrengthText(strength: OverallStrength): String {
+    return when (strength) {
+        OverallStrength.EXCELLENT -> stringResource(StringKeyAnalysis.STRENGTH_EXCELLENT)
+        OverallStrength.GOOD -> stringResource(StringKeyAnalysis.STRENGTH_GOOD)
+        OverallStrength.MODERATE -> stringResource(StringKeyAnalysis.STRENGTH_MODERATE)
+        OverallStrength.CHALLENGING -> stringResource(StringKeyAnalysis.STRENGTH_WEAK)
+        OverallStrength.DIFFICULT -> stringResource(StringKeyAnalysis.STRENGTH_WEAK)
+    }
+}
+
+@Composable
+private fun getStrengthIcon(strength: OverallStrength): ImageVector {
+    return when (strength) {
+        OverallStrength.EXCELLENT, OverallStrength.GOOD -> Icons.Filled.TrendingUp
+        OverallStrength.MODERATE -> Icons.Filled.Remove
+        OverallStrength.CHALLENGING, OverallStrength.DIFFICULT -> Icons.Filled.TrendingDown
+    }
+}
+
+@Composable
+private fun getInfluenceColor(influence: FactorInfluence): Color {
+    return when (influence) {
+        FactorInfluence.POSITIVE -> AppTheme.SuccessColor
+        FactorInfluence.NEUTRAL -> AppTheme.TextMuted
+        FactorInfluence.NEGATIVE -> AppTheme.ErrorColor
+    }
+}
+
+@Composable
+private fun getAreaInfluenceColor(influence: AreaInfluence): Color {
+    return when (influence) {
+        AreaInfluence.FAVORABLE -> AppTheme.SuccessColor
+        AreaInfluence.MIXED -> AppTheme.AccentGold
+        AreaInfluence.CHALLENGING -> AppTheme.ErrorColor
+    }
+}
+
+@Composable
+private fun getAreaInfluenceName(influence: AreaInfluence): String {
+    return when (influence) {
+        AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysis.BENEFIC)
+        AreaInfluence.MIXED -> stringResource(StringKeyAnalysis.ARGALA_MIXED)
+        AreaInfluence.CHALLENGING -> stringResource(StringKeyAnalysis.MALEFIC)
+    }
+}
+
+@Composable
+private fun getLifeAreaIcon(area: LifeArea): ImageVector {
+    return when (area) {
+        LifeArea.CAREER -> Icons.Outlined.Work
+        LifeArea.RELATIONSHIPS -> Icons.Outlined.Favorite
+        LifeArea.HEALTH -> Icons.Outlined.LocalHospital
+        LifeArea.FINANCE -> Icons.Outlined.AttachMoney
+        LifeArea.SPIRITUALITY -> Icons.Outlined.SelfImprovement
+        LifeArea.FAMILY -> Icons.Outlined.FamilyRestroom
+    }
+}
+
+@Composable
+private fun getLifeAreaName(area: LifeArea): String {
+    return when (area) {
+        LifeArea.CAREER -> stringResource(StringKeyDosha.ARUDHA_CAREER)
+        LifeArea.RELATIONSHIPS -> stringResource(StringKeyDosha.ARUDHA_RELATIONSHIPS)
+        LifeArea.HEALTH -> stringResource(StringKeyRemedy.REMEDY_CAT_HEALTH)
+        LifeArea.FINANCE -> stringResource(StringKeyDosha.ARUDHA_GAINS)
+        LifeArea.SPIRITUALITY -> stringResource(StringKey.CATEGORY_REMEDIAL)
+        LifeArea.FAMILY -> stringResource(StringKeyDosha.KUJA_DOSHA_DOMESTIC) // Approximate
+    }
+}
+
+@Composable
+private fun getAspectTypeName(type: AspectType): String {
+    return when (type) {
+        AspectType.CONJUNCTION -> stringResource(StringKeyDosha.CONJUNCTION)
+        AspectType.OPPOSITION -> stringResource(StringKeyDosha.OPPOSITION)
+        AspectType.TRINE -> stringResource(StringKeyDosha.TRINE)
+        AspectType.SQUARE -> stringResource(StringKeyDosha.SQUARE)
+        AspectType.SEXTILE -> stringResource(StringKeyDosha.SEXTILE)
+    }
+}
+
+@Composable
+private fun getAspectTypeColor(type: AspectType): Color {
+    return when (type) {
+        AspectType.CONJUNCTION, AspectType.TRINE, AspectType.SEXTILE -> AppTheme.SuccessColor
+        AspectType.OPPOSITION, AspectType.SQUARE -> AppTheme.WarningColor
     }
 }
 
@@ -1421,223 +1521,30 @@ private fun BhriguBinduInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT),
-                fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                text = stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT),
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
             )
         },
         text = {
-            Column {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT_DESC),
+                    text = stringResource(StringKeyDosha.BHRIGU_BINDU_INFO_1),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = AppTheme.TextSecondary,
-                    lineHeight = 20.sp
+                    color = AppTheme.TextSecondary
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                Surface(
-                    color = AppTheme.AccentTeal.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-                ) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_CALCULATION),
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = AppTheme.AccentTeal
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            stringResource(StringKeyDosha.BHRIGU_BINDU_ABOUT_DESC),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = AppTheme.TextSecondary,
-                            lineHeight = 16.sp
-                        )
-                    }
-                }
+                Text(
+                    text = stringResource(StringKeyDosha.BHRIGU_BINDU_INFO_2),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = AppTheme.TextSecondary
+                )
             }
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-// ============================================
-// Helper Functions
-// ============================================
-
-@Composable
-private fun getStrengthText(strength: OverallStrength): String = when (strength) {
-    OverallStrength.EXCELLENT -> stringResource(StringKeyAnalysis.STRENGTH_EXCELLENT)
-    OverallStrength.GOOD -> stringResource(StringKeyAnalysis.STRENGTH_GOOD)
-    OverallStrength.MODERATE -> stringResource(StringKeyAnalysis.STRENGTH_MODERATE)
-    OverallStrength.CHALLENGING -> stringResource(StringKeyAnalysis.STRENGTH_CHALLENGING)
-    OverallStrength.DIFFICULT -> stringResource(StringKeyAnalysis.STRENGTH_DIFFICULT)
-}
-
-@Composable
-private fun getStrengthColor(strength: OverallStrength): Color = when (strength) {
-    OverallStrength.EXCELLENT -> AppTheme.SuccessColor
-    OverallStrength.GOOD -> com.astro.vajra.ui.theme.SuccessDark
-    OverallStrength.MODERATE -> AppTheme.AccentTeal
-    OverallStrength.CHALLENGING -> AppTheme.WarningColor
-    OverallStrength.DIFFICULT -> AppTheme.ErrorColor
-}
-
-@Composable
-private fun getStrengthBackgroundColor(strength: OverallStrength): Color = when (strength) {
-    OverallStrength.EXCELLENT -> AppTheme.SuccessColor.copy(alpha = 0.08f)
-    OverallStrength.GOOD -> com.astro.vajra.ui.theme.SuccessDark.copy(alpha = 0.08f)
-    OverallStrength.MODERATE -> AppTheme.CardBackground
-    OverallStrength.CHALLENGING -> AppTheme.WarningColor.copy(alpha = 0.08f)
-    OverallStrength.DIFFICULT -> AppTheme.ErrorColor.copy(alpha = 0.08f)
-}
-
-private fun getStrengthIcon(strength: OverallStrength): ImageVector = when (strength) {
-    OverallStrength.EXCELLENT -> Icons.Filled.Star
-    OverallStrength.GOOD -> Icons.Filled.ThumbUp
-    OverallStrength.MODERATE -> Icons.Filled.HorizontalRule
-    OverallStrength.CHALLENGING -> Icons.Filled.Warning
-    OverallStrength.DIFFICULT -> Icons.Filled.Error
-}
-
-@Composable
-private fun getInfluenceColor(influence: FactorInfluence): Color = when (influence) {
-    FactorInfluence.HIGHLY_POSITIVE -> AppTheme.SuccessColor
-    FactorInfluence.POSITIVE -> com.astro.vajra.ui.theme.SuccessDark
-    FactorInfluence.NEUTRAL -> AppTheme.TextMuted
-    FactorInfluence.CHALLENGING -> AppTheme.WarningColor
-    FactorInfluence.NEGATIVE -> com.astro.vajra.ui.theme.WarningDark
-    FactorInfluence.HIGHLY_NEGATIVE -> AppTheme.ErrorColor
-}
-
-@Composable
-private fun getAreaInfluenceColor(influence: AreaInfluence): Color = when (influence) {
-    AreaInfluence.VERY_FAVORABLE -> AppTheme.SuccessColor
-    AreaInfluence.FAVORABLE -> com.astro.vajra.ui.theme.SuccessDark
-    AreaInfluence.NEUTRAL -> AppTheme.AccentTeal
-    AreaInfluence.CHALLENGING -> AppTheme.WarningColor
-    AreaInfluence.NEEDS_ATTENTION -> AppTheme.ErrorColor
-}
-
-@Composable
-private fun getAreaInfluenceName(influence: AreaInfluence): String = when (influence) {
-    AreaInfluence.VERY_FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_VERY_FAVORABLE)
-    AreaInfluence.FAVORABLE -> stringResource(StringKeyAnalysis.INFLUENCE_FAVORABLE)
-    AreaInfluence.NEUTRAL -> stringResource(StringKeyAnalysis.INFLUENCE_NEUTRAL)
-    AreaInfluence.CHALLENGING -> stringResource(StringKeyAnalysis.STRENGTH_CHALLENGING)
-    AreaInfluence.NEEDS_ATTENTION -> stringResource(StringKeyAnalysis.INFLUENCE_NEEDS_ATTENTION)
-}
-
-private fun getLifeAreaIcon(area: LifeArea): ImageVector = when (area) {
-    LifeArea.CAREER -> Icons.Filled.Work
-    LifeArea.RELATIONSHIPS -> Icons.Filled.Favorite
-    LifeArea.HEALTH -> Icons.Filled.LocalHospital
-    LifeArea.SPIRITUALITY -> Icons.Filled.SelfImprovement
-    LifeArea.WEALTH -> Icons.Filled.AttachMoney
-    LifeArea.FAMILY -> Icons.Filled.FamilyRestroom
-    LifeArea.EDUCATION -> Icons.Filled.School
-    LifeArea.FOREIGN_CONNECTIONS -> Icons.Filled.Flight
-}
-
-@Composable
-private fun getLifeAreaName(area: LifeArea): String = when (area) {
-    LifeArea.CAREER -> stringResource(StringKeyAnalysis.AREA_CAREER)
-    LifeArea.RELATIONSHIPS -> stringResource(StringKeyAnalysis.AREA_RELATIONSHIPS)
-    LifeArea.HEALTH -> stringResource(StringKeyAnalysis.AREA_HEALTH)
-    LifeArea.SPIRITUALITY -> stringResource(StringKeyAnalysis.AREA_SPIRITUALITY)
-    LifeArea.WEALTH -> stringResource(StringKeyAnalysis.AREA_WEALTH)
-    LifeArea.FAMILY -> stringResource(StringKeyAnalysis.AREA_FAMILY)
-    LifeArea.EDUCATION -> stringResource(StringKeyAnalysis.AREA_EDUCATION)
-    LifeArea.FOREIGN_CONNECTIONS -> stringResource(StringKeyAnalysis.AREA_FOREIGN_CONNECTIONS)
-}
-
-@Composable
-private fun getAspectTypeName(aspectType: AspectType): String = when (aspectType) {
-    AspectType.CONJUNCTION -> stringResource(StringKeyAnalysis.ASPECT_CONJUNCTION)
-    AspectType.OPPOSITION -> stringResource(StringKeyAnalysis.ASPECT_OPPOSITION)
-    AspectType.TRINE -> stringResource(StringKeyAnalysis.ASPECT_TRINE)
-    AspectType.SQUARE -> stringResource(StringKeyAnalysis.ASPECT_SQUARE)
-    AspectType.SEXTILE -> stringResource(StringKeyDosha.ASPECT_SEXTILE)
-    AspectType.SPECIAL_ASPECT -> stringResource(StringKeyDosha.ASPECT_SPECIAL)
-}
-
-@Composable
-private fun getAspectTypeColor(aspectType: AspectType): Color = when (aspectType) {
-    AspectType.CONJUNCTION -> AppTheme.AccentGold
-    AspectType.OPPOSITION -> AppTheme.ErrorColor
-    AspectType.TRINE -> AppTheme.SuccessColor
-    AspectType.SQUARE -> AppTheme.WarningColor
-    AspectType.SEXTILE -> AppTheme.AccentTeal
-    AspectType.SPECIAL_ASPECT -> AppTheme.AccentPrimary
-}
-
-@Composable
-private fun getTransitTypeName(transitType: BhriguBinduCalculator.TransitType): String = when (transitType) {
-    BhriguBinduCalculator.TransitType.CONJUNCTION -> stringResource(StringKeyAnalysis.ASPECT_CONJUNCTION)
-    BhriguBinduCalculator.TransitType.OPPOSITION -> stringResource(StringKeyAnalysis.ASPECT_OPPOSITION)
-    BhriguBinduCalculator.TransitType.TRINE -> stringResource(StringKeyAnalysis.ASPECT_TRINE)
-    BhriguBinduCalculator.TransitType.SQUARE -> stringResource(StringKeyAnalysis.ASPECT_SQUARE)
-    BhriguBinduCalculator.TransitType.ENTERING_SIGN -> stringResource(StringKeyDosha.TRANSIT_ENTERING_SIGN)
-}
-
-@Composable
-private fun getTransitSignificanceColor(significance: BhriguBinduCalculator.TransitSignificance): Color = when (significance) {
-    BhriguBinduCalculator.TransitSignificance.HIGHLY_SIGNIFICANT -> AppTheme.AccentGold
-    BhriguBinduCalculator.TransitSignificance.SIGNIFICANT -> AppTheme.AccentPrimary
-    BhriguBinduCalculator.TransitSignificance.MODERATE -> AppTheme.AccentTeal
-    BhriguBinduCalculator.TransitSignificance.MINOR -> AppTheme.TextMuted
-}
-
-private fun getRemedyCategoryIcon(category: RemedyCategory): ImageVector = when (category) {
-    RemedyCategory.MANTRA -> Icons.Filled.RecordVoiceOver
-    RemedyCategory.CHARITY -> Icons.Filled.VolunteerActivism
-    RemedyCategory.GEMSTONE -> Icons.Filled.Diamond
-    RemedyCategory.FASTING -> Icons.Filled.Restaurant
-    RemedyCategory.PILGRIMAGE -> Icons.Filled.Place
-    RemedyCategory.LIFESTYLE -> Icons.Filled.Spa
-}
-
-private fun resolveZoneId(timezone: String): ZoneId {
-    return try {
-        ZoneId.of(timezone)
-    } catch (_: DateTimeException) {
-        val trimmed = timezone.trim()
-        val numericHours = trimmed.toDoubleOrNull()
-        if (numericHours != null) {
-            val totalSeconds = (numericHours * 3600.0).roundToInt()
-            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
-}
-
-@Composable
-private fun getRemedyCategoryName(category: RemedyCategory): String = when (category) {
-    RemedyCategory.MANTRA -> stringResource(StringKeyRemedy.CAT_MANTRA)
-    RemedyCategory.CHARITY -> stringResource(StringKeyRemedy.CAT_CHARITY)
-    RemedyCategory.GEMSTONE -> stringResource(StringKeyRemedy.CAT_GEMSTONE)
-    RemedyCategory.FASTING -> stringResource(StringKeyRemedy.CAT_FASTING)
-    RemedyCategory.PILGRIMAGE -> stringResource(StringKeyRemedy.CAT_DEITY) // Using Deity for Pilgrimage
-    RemedyCategory.LIFESTYLE -> stringResource(StringKeyRemedy.CAT_LIFESTYLE)
-}
-
-@Composable
-private fun getRemedyPriorityColor(priority: RemedyPriority): Color = when (priority) {
-    RemedyPriority.ESSENTIAL -> AppTheme.ErrorColor
-    RemedyPriority.RECOMMENDED -> AppTheme.AccentGold
-    RemedyPriority.OPTIONAL -> AppTheme.AccentTeal
-}
-
-
-
-
-
-

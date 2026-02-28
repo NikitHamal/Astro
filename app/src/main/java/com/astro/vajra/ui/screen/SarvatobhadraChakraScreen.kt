@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -81,9 +81,17 @@ import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.SarvatobhadraChakraCalculator
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.components.common.ModernPillTabRow
+import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Sarvatobhadra Chakra Screen
@@ -188,38 +196,23 @@ private fun SarvatobhadraTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            com.astro.vajra.ui.components.common.NeoVedicChoicePill(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentPrimary.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
@@ -243,10 +236,11 @@ private fun SarvatobhadraOverviewSection(analysis: SarvatobhadraChakraCalculator
 
 @Composable
 private fun BirthNakshatraCard(analysis: SarvatobhadraChakraCalculator.SarvatobhadraAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Row(
             modifier = Modifier
@@ -277,13 +271,15 @@ private fun BirthNakshatraCard(analysis: SarvatobhadraChakraCalculator.Sarvatobh
                 )
                 Text(
                     text = analysis.birthNakshatra.displayName,
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = "Pada ${analysis.birthPada} \u2022 ${analysis.birthNakshatra.ruler.displayName}",
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -300,10 +296,11 @@ private fun TransitScoreCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhad
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -313,19 +310,22 @@ private fun TransitScoreCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhad
         ) {
             Text(
                 text = stringResource(StringKeyShadbala.SARVATOBHADRA_TRANSIT_SCORE),
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "${analysis.overallTransitScore}",
-                style = MaterialTheme.typography.displaySmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
             Text(
                 text = "/100",
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -377,10 +377,11 @@ private fun QuickStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -390,13 +391,15 @@ private fun QuickStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center,
                 maxLines = 2,
@@ -408,10 +411,11 @@ private fun QuickStatCard(
 
 @Composable
 private fun KeyInsightsCard(analysis: SarvatobhadraChakraCalculator.SarvatobhadraAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -426,7 +430,8 @@ private fun KeyInsightsCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhadr
                 )
                 Text(
                     text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -444,7 +449,8 @@ private fun KeyInsightsCard(analysis: SarvatobhadraChakraCalculator.Sarvatobhadr
                     )
                     Text(
                         text = insight,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -461,10 +467,11 @@ private fun SarvatobhadraChakraGridSection(analysis: SarvatobhadraChakraCalculat
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -479,7 +486,8 @@ private fun SarvatobhadraChakraGridSection(analysis: SarvatobhadraChakraCalculat
                     )
                     Text(
                         text = "9Ã—9 Chakra Grid",
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -541,7 +549,8 @@ private fun ChakraGridCell(
     ) {
         Text(
             text = cell.displayLabel,
-            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S8,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+            fontFamily = SpaceGroteskFamily,
             fontWeight = FontWeight.Medium,
             color = textColor,
             textAlign = TextAlign.Center,
@@ -552,10 +561,11 @@ private fun ChakraGridCell(
 
 @Composable
 private fun ChakraLegendCard() {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -585,7 +595,8 @@ private fun LegendItem(label: String, color: Color) {
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
     }
@@ -602,10 +613,11 @@ private fun SarvatobhadraDailySection(analysis: SarvatobhadraChakraCalculator.Sa
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // Today's Overview
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -620,7 +632,8 @@ private fun SarvatobhadraDailySection(analysis: SarvatobhadraChakraCalculator.Sa
                     )
                     Text(
                         text = stringResource(StringKeyShadbala.SARVATOBHADRA_TODAY),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -640,7 +653,8 @@ private fun SarvatobhadraDailySection(analysis: SarvatobhadraChakraCalculator.Sa
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = daily.interpretation,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -671,13 +685,15 @@ private fun DailyInfoItem(value: String, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MaterialTheme.typography.titleMedium,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.Bold,
             color = AppTheme.TextPrimary
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
             color = AppTheme.TextMuted
         )
     }
@@ -685,15 +701,17 @@ private fun DailyInfoItem(value: String, label: String) {
 
 @Composable
 private fun ActivitiesCard(title: String, activities: List<String>, color: Color) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = color.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = color.copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color
             )
@@ -709,7 +727,8 @@ private fun ActivitiesCard(title: String, activities: List<String>, color: Color
                     ) {
                         Text(
                             text = activity,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = color,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -729,14 +748,15 @@ private fun SarvatobhadraVedhaSection(analysis: SarvatobhadraChakraCalculator.Sa
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.currentTransitVedhas.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
+                color = AppTheme.SuccessColor.copy(alpha = 0.1f),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Text(
                     text = stringResource(StringKeyShadbala.SARVATOBHADRA_NO_VEDHA),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.SuccessColor,
                     modifier = Modifier.padding(16.dp),
                     textAlign = TextAlign.Center
@@ -760,12 +780,13 @@ private fun VedhaCard(vedha: SarvatobhadraChakraCalculator.NakshatraVedha) {
         SarvatobhadraChakraCalculator.VedhaEffect.NEUTRAL -> AppTheme.TextMuted
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -795,13 +816,15 @@ private fun VedhaCard(vedha: SarvatobhadraChakraCalculator.NakshatraVedha) {
                     Column {
                         Text(
                             text = "${vedha.transitingPlanet.displayName} in ${vedha.nakshatra.displayName}",
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "${vedha.vedhaType.displayName} \u2022 ${vedha.effect.displayName}",
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = effectColor
                         )
                     }
@@ -823,7 +846,8 @@ private fun VedhaCard(vedha: SarvatobhadraChakraCalculator.NakshatraVedha) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = vedha.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -843,10 +867,11 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
             .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -861,7 +886,8 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
                     )
                     Text(
                         text = stringResource(StringKeyShadbala.SARVATOBHADRA_NAME_ANALYSIS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -869,7 +895,8 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyShadbala.SARVATOBHADRA_FIRST_LETTER),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -904,10 +931,11 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
 
         // Name Analysis Result
         nameAnalysis?.let { na ->
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     if (na.associatedSwara != null) {
@@ -918,12 +946,14 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
                             Column {
                                 Text(
                                     text = stringResource(StringKeyShadbala.SARVATOBHADRA_ASSOCIATED_VOWEL),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                     color = AppTheme.TextMuted
                                 )
                                 Text(
                                     text = "${na.associatedSwara.sanskrit} (${na.associatedSwara.english})",
-                                    style = MaterialTheme.typography.titleMedium,
+                                    fontFamily = CinzelDecorativeFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.AccentGold
                                 )
@@ -932,7 +962,8 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
                                 Column(horizontalAlignment = Alignment.End) {
                                     Text(
                                         text = stringResource(StringKeyShadbala.SARVATOBHADRA_PLANETARY_INFLUENCE),
-                                        style = MaterialTheme.typography.labelSmall,
+                                        fontFamily = SpaceGroteskFamily,
+                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                         color = AppTheme.TextMuted
                                     )
                                     Row {
@@ -951,7 +982,8 @@ private fun SarvatobhadraNameSection(analysis: SarvatobhadraChakraCalculator.Sar
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = na.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -971,7 +1003,8 @@ private fun SarvatobhadraLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyShadbala.SARVATOBHADRA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -997,7 +1030,8 @@ private fun SarvatobhadraEmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyShadbala.SARVATOBHADRA_UNABLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -1012,7 +1046,8 @@ private fun SarvatobhadraInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyShadbala.SARVATOBHADRA_INFO_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1022,14 +1057,16 @@ private fun SarvatobhadraInfoDialog(onDismiss: () -> Unit) {
             Column {
                 Text(
                     text = stringResource(StringKeyShadbala.SARVATOBHADRA_INFO_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyShadbala.SARVATOBHADRA_VEDIC_REF),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
@@ -1037,16 +1074,9 @@ private fun SarvatobhadraInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -26,13 +26,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import com.astro.vajra.core.common.StringKey
-import com.astro.vajra.core.common.StringKeyAnalysis
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.Brightness4
 import androidx.compose.material.icons.outlined.Brightness7
 import androidx.compose.material.icons.outlined.EmojiEmotions
 import androidx.compose.material.icons.outlined.Info
@@ -69,23 +66,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.vajra.data.localization.LocalLanguage
 import com.astro.vajra.core.common.StringKeyDosha
+import com.astro.vajra.core.common.StringKey
+import com.astro.vajra.core.common.StringKeyAnalysis
+import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.currentLanguage
 import com.astro.vajra.data.localization.localizedAbbr
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.AvasthaCalculator
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.components.common.ModernPillTabRow
+import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Avastha Screen
@@ -201,38 +208,23 @@ private fun AvasthaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            com.astro.vajra.ui.components.common.NeoVedicChoicePill(
-                selected = selectedTab == index,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        text = tabs[index],
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                        fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentGold.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentGold,
-                    containerColor = AppTheme.CardBackground,
-                    labelColor = AppTheme.TextSecondary
-                ),
-                border = FilterChipDefaults.filterChipBorder(
-                    borderColor = AppTheme.BorderColor,
-                    selectedBorderColor = AppTheme.AccentGold.copy(alpha = 0.3f),
-                    enabled = true,
-                    selected = selectedTab == index
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
@@ -266,12 +258,11 @@ private fun AvasthaOverviewSection(analysis: AvasthaCalculator.AvasthaAnalysis) 
 private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
     val strengthColor = getStrengthColor(analysis.overallStrength)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = strengthColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -299,8 +290,9 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
             Text(
                 text = stringResource(StringKeyDosha.AVASTHA_OVERALL_STRENGTH),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
+                fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
 
@@ -308,7 +300,8 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
             Text(
                 text = "${analysis.overallStrength}%",
-                style = MaterialTheme.typography.headlineLarge,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
                 fontWeight = FontWeight.Bold,
                 color = strengthColor
             )
@@ -334,7 +327,8 @@ private fun OverallStrengthCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     analysis.overallStrength >= 50 -> stringResource(StringKeyAnalysis.AVASTHA_MODERATE_STRENGTH)
                     else -> stringResource(StringKeyAnalysis.AVASTHA_NEEDS_MEASURES)
                 },
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -350,10 +344,11 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
     ) {
         // Strongest Planet
         analysis.strongestPlanet?.let { strongest ->
-            Card(
+            Surface(
                 modifier = Modifier.weight(1f),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.SuccessColor.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -368,24 +363,28 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = strongest.planet.localizedAbbr(),
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(strongest.planet)
                     )
                     Text(
                         text = strongest.planet.displayName,
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = "${strongest.effectiveStrength}%",
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.SuccessColor
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.AVASTHA_STRONGEST),
-                        style = MaterialTheme.typography.labelSmall,
+                        text = stringResource(StringKeyDosha.AVASTHA_STRONGEST).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -394,10 +393,11 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
 
         // Weakest Planet
         analysis.weakestPlanet?.let { weakest ->
-            Card(
+            Surface(
                 modifier = Modifier.weight(1f),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.WarningColor.copy(alpha = 0.08f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.WarningColor.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.WarningColor.copy(alpha = 0.2f))
             ) {
                 Column(
                     modifier = Modifier.padding(16.dp),
@@ -412,24 +412,28 @@ private fun StrengthExtremeCards(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = weakest.planet.localizedAbbr(),
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(weakest.planet)
                     )
                     Text(
                         text = weakest.planet.displayName,
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = "${weakest.effectiveStrength}%",
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.WarningColor
                     )
                     Text(
-                        text = stringResource(StringKeyDosha.AVASTHA_NEEDS_ATTENTION),
-                        style = MaterialTheme.typography.labelSmall,
+                        text = stringResource(StringKeyDosha.AVASTHA_NEEDS_ATTENTION).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -476,10 +480,11 @@ private fun AvasthaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -489,14 +494,16 @@ private fun AvasthaStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -505,10 +512,11 @@ private fun AvasthaStatCard(
 
 @Composable
 private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -523,7 +531,8 @@ private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysi
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_INTERPRETATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -531,7 +540,8 @@ private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysi
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = analysis.interpretation,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -541,15 +551,17 @@ private fun AvasthaInterpretationCard(analysis: AvasthaCalculator.AvasthaAnalysi
 
 @Composable
 private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.AvasthaRecommendation>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -568,7 +580,8 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                         .fillMaxWidth()
                         .padding(vertical = 4.dp),
                     shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    color = AppTheme.CardBackgroundElevated
+                    color = AppTheme.CardBackgroundElevated,
+                    border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
                         Row(
@@ -582,7 +595,8 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                             )
                             Text(
                                 text = rec.planet.displayName,
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
@@ -592,7 +606,8 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                             ) {
                                Text(
                                    text = rec.priority.getLocalizedName(language),
-                                   style = MaterialTheme.typography.labelSmall,
+                                   fontFamily = SpaceGroteskFamily,
+                                   fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                    color = priorityColor,
                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
                                )
@@ -601,12 +616,14 @@ private fun AvasthaRecommendationsCard(recommendations: List<AvasthaCalculator.A
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = rec.issue,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             text = rec.remedy,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -635,12 +652,13 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     var expanded by remember { mutableStateOf(false) }
     val strengthColor = getStrengthColor(avastha.effectiveStrength)
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -666,6 +684,7 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     ) {
                         Text(
                             text = avastha.planet.localizedAbbr(),
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                             color = getPlanetColor(avastha.planet)
                         )
@@ -673,13 +692,15 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     Column {
                         Text(
                             text = avastha.planet.displayName,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "${avastha.sign.displayName} at ${String.format("%.1f", avastha.degree)}\u00B0",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -691,7 +712,8 @@ private fun PlanetAvasthaCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     Column(horizontalAlignment = Alignment.End) {
                         Text(
                             text = "${avastha.effectiveStrength}%",
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.Bold,
                             color = strengthColor
                         )
@@ -768,7 +790,8 @@ private fun AvasthaBadge(label: String, color: Color) {
     ) {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
             color = color,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
         )
@@ -793,13 +816,15 @@ private fun AvasthaDetailRow(
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextMuted
             )
             Text(
                 text = value,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -807,7 +832,8 @@ private fun AvasthaDetailRow(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = description,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextSecondary,
             lineHeight = 18.sp
         )
@@ -823,10 +849,11 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.AccentPrimary.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -841,7 +868,8 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     )
                     Text(
                         text = stringResource(StringKeyDosha.AVASTHA_AGE_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -849,7 +877,8 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.AVASTHA_AGE_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -866,10 +895,11 @@ private fun BaladiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
 private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val color = getBaladiColor(avastha.baladiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -884,19 +914,22 @@ private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
             ) {
                 Text(
                     text = avastha.planet.localizedAbbr(),
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = getPlanetColor(avastha.planet)
                 )
                 Column {
                     Text(
                         text = avastha.planet.displayName,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyDosha.AVASTHA_RESULT_CAPACITY, avastha.baladiAvastha.resultPercentage),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -908,7 +941,8 @@ private fun BaladiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 val language = LocalLanguage.current
                 Text(
                     text = avastha.baladiAvastha.getLocalizedName(language),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = color,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
@@ -927,10 +961,11 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentGold.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.AccentGold.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentGold.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -945,7 +980,8 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     )
                     Text(
                         text = stringResource(StringKeyDosha.AVASTHA_ALERTNESS_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -953,7 +989,8 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.AVASTHA_ALERTNESS_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -970,10 +1007,11 @@ private fun JagradadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
 private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val color = getJagradadiColor(avastha.jagradadiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -988,19 +1026,22 @@ private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
             ) {
                 Text(
                     text = avastha.planet.localizedAbbr(),
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = getPlanetColor(avastha.planet)
                 )
                 Column {
                     Text(
                         text = avastha.planet.displayName,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyDosha.AVASTHA_RESULT_CAPACITY, avastha.jagradadiAvastha.resultPercentage),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1012,7 +1053,8 @@ private fun JagradadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 val language = LocalLanguage.current
                 Text(
                     text = avastha.jagradadiAvastha.getLocalizedName(language),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = color,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
@@ -1031,10 +1073,11 @@ private fun DeeptadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.AccentTeal.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.AccentTeal.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentTeal.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -1049,7 +1092,8 @@ private fun DeeptadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     )
                     Text(
                         text = stringResource(StringKeyDosha.AVASTHA_DIGNITY_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1057,7 +1101,8 @@ private fun DeeptadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.AVASTHA_DIGNITY_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1075,10 +1120,11 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val language = LocalLanguage.current
     val color = getDeeptadiColor(avastha.deeptadiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1096,12 +1142,14 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 ) {
                     Text(
                         text = avastha.planet.localizedAbbr(),
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(avastha.planet)
                     )
                     Text(
                         text = avastha.planet.displayName,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1113,7 +1161,8 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     val language = LocalLanguage.current
                     Text(
                         text = avastha.deeptadiAvastha.getLocalizedName(language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.SemiBold,
                         color = color,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
@@ -1123,7 +1172,8 @@ private fun DeeptadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = avastha.deeptadiAvastha.getLocalizedDescription(language),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 lineHeight = 18.sp
             )
@@ -1140,10 +1190,11 @@ private fun LajjitadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Info card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.PlanetVenus.copy(alpha = 0.08f)),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.PlanetVenus.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.PlanetVenus.copy(alpha = 0.2f))
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -1158,7 +1209,8 @@ private fun LajjitadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                     )
                     Text(
                         text = stringResource(StringKeyDosha.AVASTHA_EMOTIONAL_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1166,7 +1218,8 @@ private fun LajjitadiSection(analysis: AvasthaCalculator.AvasthaAnalysis) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.AVASTHA_EMOTIONAL_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1184,10 +1237,11 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
     val language = LocalLanguage.current
     val color = getLajjitadiColor(avastha.lajjitadiAvastha)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1205,12 +1259,14 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                 ) {
                     Text(
                         text = avastha.planet.localizedAbbr(),
+                        fontFamily = CinzelDecorativeFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                         color = getPlanetColor(avastha.planet)
                     )
                     Text(
                         text = avastha.planet.displayName,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1222,7 +1278,8 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
                     val language = LocalLanguage.current
                     Text(
                         text = avastha.lajjitadiAvastha.getLocalizedName(language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.SemiBold,
                         color = color,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
@@ -1232,7 +1289,8 @@ private fun LajjitadiPlanetCard(avastha: AvasthaCalculator.PlanetaryAvastha) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = avastha.lajjitadiAvastha.getLocalizedDescription(language),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 lineHeight = 18.sp
             )
@@ -1251,7 +1309,8 @@ private fun AvasthaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.AVASTHA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -1277,14 +1336,16 @@ private fun AvasthaEmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.AVASTHA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1299,7 +1360,8 @@ private fun AvasthaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.AVASTHA_ABOUT_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1308,14 +1370,15 @@ private fun AvasthaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.AVASTHA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
@@ -1398,10 +1461,3 @@ private fun getLajjitadiColor(avastha: AvasthaCalculator.LajjitadiAvastha): Colo
         AvasthaCalculator.LajjitadiAvastha.KSHOBHITA -> AppTheme.ErrorColor
     }
 }
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -46,9 +46,14 @@ import com.astro.vajra.ephemeris.ArudhaPadaCalculator.YogaStrength
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Arudha Pada Analysis Screen
@@ -180,7 +185,8 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             )
             Text(
                 text = stringResource(StringKeyDosha.ARUDHA_CALCULATING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -229,10 +235,11 @@ private fun OverviewTab(analysis: ArudhaPadaAnalysis) {
 
 @Composable
 private fun SummaryCard(analysis: ArudhaPadaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -250,15 +257,17 @@ private fun SummaryCard(analysis: ArudhaPadaAnalysis) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.ARUDHA_ANALYSIS_TITLE),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
+                    fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
             }
 
             Text(
                 text = analysis.interpretation.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -268,10 +277,11 @@ private fun SummaryCard(analysis: ArudhaPadaAnalysis) {
 
 @Composable
 private fun KeyArudhasCard(analysis: ArudhaPadaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -279,7 +289,8 @@ private fun KeyArudhasCard(analysis: ArudhaPadaAnalysis) {
         ) {
             Text(
                 text = stringResource(StringKeyDosha.ARUDHA_KEY_POSITIONS),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -357,13 +368,15 @@ private fun KeyArudhaChip(
             Column {
                 Text(
                     text = detail.arudha.name,
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = detail.arudha.sign.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -373,10 +386,11 @@ private fun KeyArudhaChip(
 
 @Composable
 private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessment) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -384,7 +398,8 @@ private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessm
         ) {
             Text(
                 text = stringResource(StringKeyDosha.ARUDHA_MANIFESTATION),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -411,13 +426,14 @@ private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessm
                 icon = Icons.Outlined.Favorite
             )
 
-            Divider(color = AppTheme.BorderColor, modifier = Modifier.padding(vertical = 4.dp))
+            HorizontalDivider(color = AppTheme.BorderColor, modifier = Modifier.padding(vertical = 4.dp))
 
             // Key themes
             if (assessment.keyThemes.isNotEmpty()) {
                 Text(
                     text = stringResource(StringKeyDosha.ARUDHA_KEY_THEMES),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -425,15 +441,18 @@ private fun AssessmentCard(assessment: ArudhaPadaCalculator.ArudhaOverallAssessm
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(assessment.keyThemes) { theme ->
-                        SuggestionChip(
-                            onClick = {},
-                            label = { Text(theme, style = MaterialTheme.typography.labelSmall) },
-                            colors = SuggestionChipDefaults.suggestionChipColors(
-                                containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                                labelColor = AppTheme.AccentPrimary
-                            ),
-                            border = null
-                        )
+                        Surface(
+                            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            color = AppTheme.AccentPrimary.copy(alpha = 0.1f)
+                        ) {
+                            Text(
+                                text = theme,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                                color = AppTheme.AccentPrimary,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -467,7 +486,8 @@ private fun StrengthBar(
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextSecondary,
             modifier = Modifier.width(80.dp)
         )
@@ -482,7 +502,8 @@ private fun StrengthBar(
         )
         Text(
             text = "$value%",
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = color,
             fontWeight = FontWeight.Medium
         )
@@ -491,10 +512,11 @@ private fun StrengthBar(
 
 @Composable
 private fun KeyYogasPreview(yogas: List<ArudhaYoga>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -512,7 +534,8 @@ private fun KeyYogasPreview(yogas: List<ArudhaYoga>) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.ARUDHA_YOGAS_TITLE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -555,13 +578,15 @@ private fun YogaPreviewItem(yoga: ArudhaYoga) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = yoga.name,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = yoga.effects,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -573,10 +598,11 @@ private fun YogaPreviewItem(yoga: ArudhaYoga) {
 
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -594,7 +620,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.ARUDHA_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -611,7 +638,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     )
                     Text(
                         text = rec,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -667,7 +695,8 @@ private fun ArudhaPadaCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -701,7 +730,8 @@ private fun ArudhaPadaCard(
                     ) {
                         Text(
                             text = arudha.name,
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.Bold,
                             color = strengthColor
                         )
@@ -710,7 +740,8 @@ private fun ArudhaPadaCard(
                     Column {
                         Text(
                             text = arudha.fullName,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
@@ -724,7 +755,8 @@ private fun ArudhaPadaCard(
                             )
                             Text(
                                 text = arudha.sign.displayName,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -745,7 +777,8 @@ private fun ArudhaPadaCard(
             ) {
                 Text(
                     text = stringResource(StringKeyDosha.ARUDHA_STRENGTH_LABEL),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
                 Surface(
@@ -755,7 +788,8 @@ private fun ArudhaPadaCard(
                     Text(
                         text = arudha.strength.name.replace("_", " "),
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = strengthColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -767,7 +801,8 @@ private fun ArudhaPadaCard(
                         arudha.houseLord.displayName,
                         arudha.houseLordSign.displayName
                     ),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -782,12 +817,13 @@ private fun ArudhaPadaCard(
                     modifier = Modifier.padding(top = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Divider(color = AppTheme.BorderColor)
+                    HorizontalDivider(color = AppTheme.BorderColor)
 
                     // Interpretation
                     Text(
                         text = arudha.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -806,14 +842,16 @@ private fun ArudhaPadaCard(
                             )
                             Text(
                                 text = stringResource(StringKeyDosha.ARUDHA_PLANETS_IN_LABEL, arudha.name),
-                                style = MaterialTheme.typography.labelMedium,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.TextPrimary
                             )
                             val language = LocalLanguage.current
                             Text(
                                 text = arudha.planetsInArudha.joinToString { it.planet.getLocalizedName(language) },
-                                style = MaterialTheme.typography.bodySmall,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -822,7 +860,8 @@ private fun ArudhaPadaCard(
                     // Significations
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_SIGNIFICATIONS_LABEL),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
@@ -830,20 +869,18 @@ private fun ArudhaPadaCard(
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
                     ) {
                         items(arudha.significations) { signification ->
-                            SuggestionChip(
-                                onClick = {},
-                                label = {
-                                    Text(
-                                        signification,
-                                        style = MaterialTheme.typography.labelSmall
-                                    )
-                                },
-                                colors = SuggestionChipDefaults.suggestionChipColors(
-                                    containerColor = AppTheme.ChipBackground,
-                                    labelColor = AppTheme.TextSecondary
-                                ),
-                                border = null
-                            )
+                            Surface(
+                                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                                color = AppTheme.ChipBackground
+                            ) {
+                                Text(
+                                    text = signification,
+                                    fontFamily = PoppinsFontFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                                    color = AppTheme.TextSecondary,
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                                )
+                            }
                         }
                     }
                 }
@@ -875,7 +912,8 @@ private fun YogasTab(analysis: ArudhaPadaAnalysis) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_NO_ARUDHA_YOGAS),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextMuted
                 )
             }
@@ -912,10 +950,11 @@ private fun YogaCard(yoga: ArudhaYoga) {
         ArudhaPadaCalculator.ArudhaYogaType.GRAHA_YOGA -> Icons.Outlined.Stars
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -948,13 +987,15 @@ private fun YogaCard(yoga: ArudhaYoga) {
                     Column {
                         Text(
                             text = yoga.name,
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = yoga.type.name.replace("_", " "),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -967,7 +1008,8 @@ private fun YogaCard(yoga: ArudhaYoga) {
                     Text(
                         text = yoga.strength.name,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = strengthColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -986,7 +1028,8 @@ private fun YogaCard(yoga: ArudhaYoga) {
                         Text(
                             text = arudha,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.AccentPrimary,
                             fontWeight = FontWeight.Medium
                         )
@@ -994,14 +1037,16 @@ private fun YogaCard(yoga: ArudhaYoga) {
                 }
                 Text(
                     text = stringResource(StringKeyDosha.ARUDHA_IN_CONNECTOR),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 yoga.involvedSigns.forEach { sign ->
                     Text(
                         text = "${sign.symbol} ${sign.displayName}",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
@@ -1011,7 +1056,8 @@ private fun YogaCard(yoga: ArudhaYoga) {
             // Effects
             Text(
                 text = yoga.effects,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -1029,21 +1075,23 @@ private fun YogaCard(yoga: ArudhaYoga) {
                 )
                 Text(
                     text = yoga.timing,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
 
             // Recommendations
             if (yoga.recommendations.isNotEmpty()) {
-                Divider(color = AppTheme.BorderColor)
+                HorizontalDivider(color = AppTheme.BorderColor)
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     yoga.recommendations.forEach { rec ->
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             Text("\u2022", color = AppTheme.AccentPrimary, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12)
                             Text(
                                 text = rec,
-                                style = MaterialTheme.typography.labelSmall,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -1075,10 +1123,11 @@ private fun RelationshipsTab(analysis: ArudhaPadaAnalysis) {
 private fun RelationshipCard(relationship: ArudhaRelationship) {
     val isPositiveColor = if (relationship.isPositive) AppTheme.SuccessColor else AppTheme.WarningColor
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1095,7 +1144,8 @@ private fun RelationshipCard(relationship: ArudhaRelationship) {
                 Text(
                     text = relationship.arudha1,
                     modifier = Modifier.padding(12.dp),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentPrimary
                 )
@@ -1110,7 +1160,7 @@ private fun RelationshipCard(relationship: ArudhaRelationship) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Divider(
+                    HorizontalDivider(
                         modifier = Modifier.width(20.dp),
                         color = isPositiveColor
                     )
@@ -1121,19 +1171,21 @@ private fun RelationshipCard(relationship: ArudhaRelationship) {
                         tint = isPositiveColor,
                         modifier = Modifier.size(16.dp)
                     )
-                    Divider(
+                    HorizontalDivider(
                         modifier = Modifier.width(20.dp),
                         color = isPositiveColor
                     )
                 }
                 Text(
                     text = relationship.relationship.name.replace("_", " "),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     text = "${relationship.distanceInSigns} signs",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextSubtle
                 )
             }
@@ -1146,7 +1198,8 @@ private fun RelationshipCard(relationship: ArudhaRelationship) {
                 Text(
                     text = relationship.arudha2,
                     modifier = Modifier.padding(12.dp),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentPrimary
                 )
@@ -1157,7 +1210,8 @@ private fun RelationshipCard(relationship: ArudhaRelationship) {
         Text(
             text = relationship.effect,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextSecondary
         )
     }
@@ -1174,6 +1228,8 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.ARUDHA_INFO_TITLE),
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1186,13 +1242,15 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                 item {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_WHAT_IS_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_WHAT_IS_DESC),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -1200,7 +1258,8 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                 item {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_KEY_ARUDHAS_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1215,13 +1274,15 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                             Row {
                                 Text(
                                     text = "$name: ",
-                                    style = MaterialTheme.typography.labelMedium,
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     fontWeight = FontWeight.Medium,
                                     color = AppTheme.AccentPrimary
                                 )
                                 Text(
                                     text = desc,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontFamily = PoppinsFontFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1232,13 +1293,15 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                 item {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_CALC_METHOD_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_CALC_METHOD_DESC),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -1246,13 +1309,15 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                 item {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_REFERENCES_TITLE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_REFERENCES_DESC),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -1260,15 +1325,9 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-
-
-
-

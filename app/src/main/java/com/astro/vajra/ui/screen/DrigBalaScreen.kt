@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -46,6 +46,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import androidx.compose.runtime.Composable
@@ -79,9 +80,14 @@ import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.DrigBalaCalculator
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Drig Bala Screen
@@ -198,6 +204,7 @@ private fun DrigBalaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
+                        fontFamily = SpaceGroteskFamily,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
@@ -247,10 +254,11 @@ private fun OverallScoreCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -259,20 +267,24 @@ private fun OverallScoreCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(StringKeyShadbala.DRIG_TOTAL_SCORE),
-                style = MaterialTheme.typography.labelMedium,
+                text = stringResource(StringKeyShadbala.DRIG_TOTAL_SCORE).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                letterSpacing = 1.sp,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = String.format("%.0f", analysis.overallScore),
-                style = MaterialTheme.typography.displaySmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
             Text(
                 text = stringResource(StringKeyUIExtra.SLASH) + "100",
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -297,10 +309,11 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Strongest Planet
-        Card(
+        Surface(
             modifier = Modifier.weight(1f),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.SuccessColor.copy(alpha = 0.06f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
         ) {
             Column(
                 modifier = Modifier
@@ -309,19 +322,23 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKeyShadbala.DRIG_POSITIVE),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyShadbala.DRIG_POSITIVE).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.SuccessColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.strongestPlanet.localizedAbbr(),
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.SuccessColor
                 )
                 Text(
                     text = analysis.strongestPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -329,7 +346,8 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 strongestBala?.let {
                     Text(
                         text = "+${String.format("%.1f", it.netDrigBala)} ${stringResource(StringKeyShadbala.DRIG_VIRUPAS)}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.SuccessColor
                     )
                 }
@@ -337,10 +355,11 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
         }
 
         // Weakest Planet
-        Card(
+        Surface(
             modifier = Modifier.weight(1f),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.ErrorColor.copy(alpha = 0.1f)),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.ErrorColor.copy(alpha = 0.06f),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.ErrorColor.copy(alpha = 0.2f))
         ) {
             Column(
                 modifier = Modifier
@@ -349,19 +368,23 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKeyShadbala.DRIG_NEGATIVE),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyShadbala.DRIG_NEGATIVE).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.ErrorColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.weakestPlanet.localizedAbbr(),
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.ErrorColor
                 )
                 Text(
                     text = analysis.weakestPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -369,7 +392,8 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
                 weakestBala?.let {
                     Text(
                         text = "${String.format("%.1f", it.netDrigBala)} ${stringResource(StringKeyShadbala.DRIG_VIRUPAS)}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.ErrorColor
                     )
                 }
@@ -382,10 +406,11 @@ private fun StrongestWeakestRow(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
 private fun DrigBalaInsightsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
     if (analysis.keyInsights.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -400,7 +425,8 @@ private fun DrigBalaInsightsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) 
                 )
                 Text(
                     text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -418,7 +444,8 @@ private fun DrigBalaInsightsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) 
                     )
                     Text(
                         text = insight,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -431,15 +458,17 @@ private fun DrigBalaInsightsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) 
 private fun DrigBalaRecommendationsCard(analysis: DrigBalaCalculator.DrigBalaAnalysis) {
     if (analysis.recommendations.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.06f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(StringKeyUICommon.REMEDIES),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
             )
@@ -456,7 +485,8 @@ private fun DrigBalaRecommendationsCard(analysis: DrigBalaCalculator.DrigBalaAna
                     )
                     Text(
                         text = rec,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -474,10 +504,12 @@ private fun DrigBalaAspectsSection(analysis: DrigBalaCalculator.DrigBalaAnalysis
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(StringKeyShadbala.DRIG_TAB_ASPECTS),
-            style = MaterialTheme.typography.titleSmall,
+            text = stringResource(StringKeyShadbala.DRIG_TAB_ASPECTS).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+            letterSpacing = 2.sp,
             fontWeight = FontWeight.SemiBold,
-            color = AppTheme.TextPrimary,
+            color = AppTheme.TextMuted,
             modifier = Modifier.padding(bottom = 4.dp)
         )
 
@@ -495,12 +527,13 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
     val language = LocalLanguage.current
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -523,6 +556,7 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
                     ) {
                         Text(
                             text = planet.localizedAbbr(),
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                             color = AppTheme.AccentPrimary
                         )
@@ -530,14 +564,16 @@ private fun AspectGroupCard(planet: Planet, aspects: List<DrigBalaCalculator.Asp
                     Column {
                         Text(
                             text = planet.displayName,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         val aspectsCount = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(aspects.size) else aspects.size.toString()
                         Text(
                             text = stringResource(StringKeyAnalysis.TRANSIT_ASPECTS_TO_NATAL) + " " + stringResource(StringKeyUIExtra.PAREN_START) + aspectsCount + stringResource(StringKeyUIExtra.PAREN_END),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -587,18 +623,21 @@ private fun AspectDetailRow(aspect: DrigBalaCalculator.AspectInfo) {
         ) {
             Text(
                 text = aspect.aspectedPlanet.localizedAbbr(),
+                fontFamily = CinzelDecorativeFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary
             )
             Column {
                 Text(
                     text = aspect.aspectedPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = aspect.aspectType.displayName,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -606,14 +645,16 @@ private fun AspectDetailRow(aspect: DrigBalaCalculator.AspectInfo) {
         Column(horizontalAlignment = Alignment.End) {
             Text(
                 text = "${if (aspect.aspectEffect == DrigBalaCalculator.AspectEffect.BENEFIC) "+" else "-"}${String.format("%.1f", aspect.virupas)}",
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = effectColor
             )
             if (aspect.isSpecialAspect) {
                 Text(
-                    text = stringResource(StringKeyShadbala.DRIG_SPECIAL_ASPECT),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyShadbala.DRIG_SPECIAL_ASPECT).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.AccentGold
                 )
             }
@@ -648,12 +689,13 @@ private fun PlanetDrigBalaCard(planetBala: DrigBalaCalculator.PlanetDrigBala) {
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -676,6 +718,7 @@ private fun PlanetDrigBalaCard(planetBala: DrigBalaCalculator.PlanetDrigBala) {
                     ) {
                         Text(
                             text = planetBala.planet.symbol,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S22,
                             color = netColor
                         )
@@ -683,13 +726,15 @@ private fun PlanetDrigBalaCard(planetBala: DrigBalaCalculator.PlanetDrigBala) {
                     Column {
                         Text(
                             text = planetBala.planet.displayName,
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = planetBala.strengthRating,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = netColor
                         )
                     }
@@ -698,13 +743,15 @@ private fun PlanetDrigBalaCard(planetBala: DrigBalaCalculator.PlanetDrigBala) {
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = "${if (planetBala.isPositive) "+" else ""}${String.format("%.1f", planetBala.netDrigBala)}",
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = netColor
                     )
                     Text(
                         text = stringResource(StringKeyShadbala.DRIG_VIRUPAS),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -726,39 +773,45 @@ private fun PlanetDrigBalaCard(planetBala: DrigBalaCalculator.PlanetDrigBala) {
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = stringResource(StringKeyShadbala.DRIG_BENEFIC_ASPECTS),
-                                style = MaterialTheme.typography.labelSmall,
+                                text = stringResource(StringKeyShadbala.DRIG_BENEFIC_ASPECTS).uppercase(),
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                             Text(
                                 text = "+${String.format("%.1f", planetBala.beneficVirupas)}",
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.SuccessColor
                             )
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = stringResource(StringKeyShadbala.DRIG_MALEFIC_ASPECTS),
-                                style = MaterialTheme.typography.labelSmall,
+                                text = stringResource(StringKeyShadbala.DRIG_MALEFIC_ASPECTS).uppercase(),
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                             Text(
                                 text = "-${String.format("%.1f", planetBala.maleficVirupas)}",
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.Medium,
                                 color = AppTheme.ErrorColor
                             )
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = stringResource(StringKeyShadbala.DRIG_NET_STRENGTH),
-                                style = MaterialTheme.typography.labelSmall,
+                                text = stringResource(StringKeyShadbala.DRIG_NET_STRENGTH).uppercase(),
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                                 color = AppTheme.TextMuted
                             )
                             Text(
                                 text = String.format("%.1f", planetBala.netDrigBala),
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                 fontWeight = FontWeight.Medium,
                                 color = netColor
                             )
@@ -768,7 +821,8 @@ private fun PlanetDrigBalaCard(planetBala: DrigBalaCalculator.PlanetDrigBala) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = planetBala.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -798,10 +852,12 @@ private fun DrigBalaHousesSection(analysis: DrigBalaCalculator.DrigBalaAnalysis)
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(StringKeyShadbala.DRIG_TAB_HOUSES),
-            style = MaterialTheme.typography.titleSmall,
+            text = stringResource(StringKeyShadbala.DRIG_TAB_HOUSES).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+            letterSpacing = 2.sp,
             fontWeight = FontWeight.SemiBold,
-            color = AppTheme.TextPrimary,
+            color = AppTheme.TextMuted,
             modifier = Modifier.padding(bottom = 4.dp)
         )
 
@@ -820,10 +876,11 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
         DrigBalaCalculator.AspectEffect.NEUTRAL -> AppTheme.TextMuted
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -846,7 +903,8 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 ) {
                     Text(
                         text = houseNum,
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = netColor
                     )
@@ -854,13 +912,15 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 Column {
                     Text(
                         text = stringResource(StringKeyAnalysis.TRANSIT_HOUSE_LABEL) + " $houseNum",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = houseAspect.netEffect.displayName,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = netColor
                     )
                 }
@@ -870,26 +930,30 @@ private fun HouseAspectCard(houseAspect: DrigBalaCalculator.HouseAspects) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "${houseAspect.beneficCount}",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.SuccessColor
                     )
                     Text(
-                        text = stringResource(StringKeyShadbala.SARVATOBHADRA_BENEFIC),
-                        style = MaterialTheme.typography.labelSmall,
+                        text = stringResource(StringKeyShadbala.SARVATOBHADRA_BENEFIC).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
                         text = "${houseAspect.maleficCount}",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.ErrorColor
                     )
                     Text(
-                        text = stringResource(StringKeyShadbala.SARVATOBHADRA_MALEFIC),
-                        style = MaterialTheme.typography.labelSmall,
+                        text = stringResource(StringKeyShadbala.SARVATOBHADRA_MALEFIC).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -909,7 +973,8 @@ private fun DrigBalaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyShadbala.DRIG_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -935,7 +1000,8 @@ private fun DrigBalaEmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyShadbala.DRIG_UNABLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -950,7 +1016,8 @@ private fun DrigBalaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyShadbala.DRIG_INFO_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -960,14 +1027,16 @@ private fun DrigBalaInfoDialog(onDismiss: () -> Unit) {
             Column {
                 Text(
                     text = stringResource(StringKeyShadbala.DRIG_INFO_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyShadbala.DRIG_VEDIC_REF),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
@@ -975,15 +1044,9 @@ private fun DrigBalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -35,6 +35,8 @@ import com.astro.vajra.core.common.StringKeyMatch
 import com.astro.vajra.core.common.StringKeyUIExtra
 import com.astro.vajra.data.localization.currentLanguage
 import com.astro.vajra.data.localization.stringResource
+import com.astro.vajra.core.common.getLocalizedName
+import com.astro.vajra.data.localization.localizedAbbr
 import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.ArgalaCalculator
@@ -45,10 +47,18 @@ import com.astro.vajra.ephemeris.ArgalaCalculator.ArgalaType
 import com.astro.vajra.ephemeris.ArgalaCalculator.HouseArgalaResult
 import com.astro.vajra.ephemeris.ArgalaCalculator.PlanetArgalaResult
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.components.common.ModernPillTabRow
+import com.astro.vajra.ui.components.common.TabItem
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Argala Analysis Screen
@@ -143,7 +153,8 @@ fun ArgalaScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         stringResource(StringKeyAnalysis.ARGALA_CALCULATING),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -157,7 +168,8 @@ fun ArgalaScreen(
             ) {
                 Text(
                     stringResource(StringKeyAnalysis.ARGALA_FAILED),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.ErrorColor
                 )
             }
@@ -219,32 +231,23 @@ private fun ArgalaTabSelector(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(tabs.size) { index ->
-            val isSelected = selectedTab == index
-            com.astro.vajra.ui.components.common.NeoVedicChoicePill(
-                selected = isSelected,
-                onClick = { onTabSelected(index) },
-                label = {
-                    Text(
-                        tabs[index],
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                    )
-                },
-                colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.15f),
-                    selectedLabelColor = AppTheme.AccentPrimary,
-                    containerColor = AppTheme.ChipBackground,
-                    labelColor = AppTheme.TextSecondary
-                )
-            )
-        }
+    val tabItems = tabs.mapIndexed { index, title ->
+        TabItem(
+            title = title,
+            accentColor = when (index) {
+                0 -> AppTheme.AccentGold
+                1 -> AppTheme.AccentTeal
+                else -> AppTheme.AccentPrimary
+            }
+        )
     }
+
+    ModernPillTabRow(
+        tabs = tabItems,
+        selectedIndex = selectedTab,
+        onTabSelected = onTabSelected,
+        modifier = Modifier.padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS)
+    )
 }
 
 @Composable
@@ -254,10 +257,11 @@ private fun ArgalaOverviewTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // About Argala Card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -279,13 +283,15 @@ private fun ArgalaOverviewTab(
                     Column {
                         Text(
                             stringResource(StringKeyDosha.ARGALA_TITLE),
-                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             stringResource(StringKeyDosha.ARGALA_SUBTITLE),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -295,7 +301,8 @@ private fun ArgalaOverviewTab(
 
                 Text(
                     stringResource(StringKeyDosha.ARGALA_ABOUT_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
@@ -305,15 +312,17 @@ private fun ArgalaOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Argala Types Explanation
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardElevated,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     stringResource(StringKeyAnalysis.ARGALA_TYPES_TITLE),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -408,13 +417,15 @@ private fun ArgalaTypeItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
                 description,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
@@ -426,15 +437,17 @@ private fun OverallArgalaCard(
     analysis: ArgalaAnalysis,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 stringResource(StringKeyAnalysis.ARGALA_CHART_WIDE_PATTERNS),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -492,7 +505,8 @@ private fun OverallArgalaCard(
 
                 Text(
                     stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -513,7 +527,8 @@ private fun OverallArgalaCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             recommendation,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -548,7 +563,8 @@ private fun ArgalaHighlightRow(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 label,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -556,8 +572,9 @@ private fun ArgalaHighlightRow(
         }
         Text(
             value,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+            fontWeight = FontWeight.Bold,
             color = color,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -568,10 +585,11 @@ private fun ArgalaHighlightRow(
 
 @Composable
 private fun KarmaPatternCard(analysis: ArgalaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardElevated,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -584,7 +602,8 @@ private fun KarmaPatternCard(analysis: ArgalaAnalysis) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     stringResource(StringKeyAnalysis.ARGALA_KARMA_PATTERNS),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -607,7 +626,8 @@ private fun KarmaPatternCard(analysis: ArgalaAnalysis) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         pattern,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -621,15 +641,17 @@ private fun SignificantArgalasCard(
     analysis: ArgalaAnalysis,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 stringResource(StringKeyAnalysis.ARGALA_SIGNIFICANT_ARGALAS),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -668,7 +690,8 @@ private fun SignificantArgalaItem(
                 Text(
                     argala.targetDescription,
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     maxLines = 2,
@@ -681,7 +704,8 @@ private fun SignificantArgalaItem(
 
             Text(
                 argala.lifeAreaEffect,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary
             )
 
@@ -713,7 +737,8 @@ private fun ArgalaStrengthBadge(strength: ArgalaStrength, color: Color) {
     ) {
         Text(
             label,
-            style = MaterialTheme.typography.labelSmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
             fontWeight = FontWeight.SemiBold,
             color = bgColor,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -735,13 +760,15 @@ private fun PlanetChip(planet: Planet, language: Language) {
         ) {
             Text(
                 planet.symbol,
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.getPlanetColor(planet)
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 planet.getLocalizedName(language),
-                style = MaterialTheme.typography.labelSmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.getPlanetColor(planet)
             )
         }
@@ -759,7 +786,8 @@ private fun ArgalaHousesTab(
         // House selector
         Text(
             stringResource(StringKeyAnalysis.ARGALA_HOUSE_SELECTOR_LABEL),
-            style = MaterialTheme.typography.titleSmall,
+            fontFamily = CinzelDecorativeFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -828,7 +856,8 @@ private fun HouseGridSelector(
                         ) {
                             Text(
                                 house.toString(),
-                                style = MaterialTheme.typography.titleMedium,
+                                fontFamily = SpaceGroteskFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                                 fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                                 color = if (isSelected) AppTheme.AccentPrimary else AppTheme.TextPrimary
                             )
@@ -848,16 +877,15 @@ private fun HouseArgalaDetailCard(
 ) {
     Column {
         // Header card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = when (result.effectiveArgala.dominantNature) {
-                    ArgalaNature.SHUBHA -> AppTheme.SuccessColor.copy(alpha = 0.08f)
-                    ArgalaNature.ASHUBHA -> AppTheme.WarningColor.copy(alpha = 0.08f)
-                    ArgalaNature.MIXED -> AppTheme.InfoColor.copy(alpha = 0.08f)
-                }
-            ),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = when (result.effectiveArgala.dominantNature) {
+                ArgalaNature.SHUBHA -> AppTheme.SuccessColor.copy(alpha = 0.08f)
+                ArgalaNature.ASHUBHA -> AppTheme.WarningColor.copy(alpha = 0.08f)
+                ArgalaNature.MIXED -> AppTheme.InfoColor.copy(alpha = 0.08f)
+            },
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {
                 Row(
@@ -868,7 +896,8 @@ private fun HouseArgalaDetailCard(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             stringResource(StringKeyDosha.ARGALA_TO_HOUSE, house),
-                            style = MaterialTheme.typography.headlineSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary,
                             maxLines = 2,
@@ -876,7 +905,8 @@ private fun HouseArgalaDetailCard(
                         )
                         Text(
                             getHouseName(house, language),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextMuted,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
@@ -893,7 +923,8 @@ private fun HouseArgalaDetailCard(
 
                 Text(
                     result.interpretation,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     lineHeight = 20.sp
                 )
@@ -904,10 +935,11 @@ private fun HouseArgalaDetailCard(
 
         // Primary Argalas
         if (result.primaryArgalas.isNotEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -920,7 +952,8 @@ private fun HouseArgalaDetailCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             stringResource(com.astro.vajra.core.common.StringKeyAnalysis.UI_ARGALA_INFLUENCES),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -940,10 +973,11 @@ private fun HouseArgalaDetailCard(
 
         // Virodha Argalas (Obstructions)
         if (result.virodhaArgalas.isNotEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardElevated,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -956,7 +990,8 @@ private fun HouseArgalaDetailCard(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             stringResource(StringKeyDosha.ARGALA_VIRODHA),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -1008,7 +1043,8 @@ private fun NetEffectIndicator(
             Spacer(modifier = Modifier.width(6.dp))
             Text(
                 String.format("%.2f", netStrength),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
@@ -1040,7 +1076,8 @@ private fun ArgalaInfluenceItem(
                 Text(
                     argala.argalaType.displayName,
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     maxLines = 2,
@@ -1056,7 +1093,8 @@ private fun ArgalaInfluenceItem(
                             ArgalaNature.ASHUBHA -> stringResource(StringKeyDosha.ARGALA_ASHUBHA)
                             ArgalaNature.MIXED -> stringResource(StringKeyDosha.ARGALA_MIXED)
                         },
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Medium,
                         color = natureColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1068,7 +1106,8 @@ private fun ArgalaInfluenceItem(
 
             Text(
                 stringResource(StringKeyDosha.ARGALA_FROM_HOUSE, argala.argalaHouse),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
 
@@ -1091,14 +1130,16 @@ private fun ArgalaInfluenceItem(
                 Text(
                     stringResource(StringKeyUIExtra.ARGALA_STRENGTH_LABEL),
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     String.format("%.2f", argala.strength),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = natureColor
                 )
@@ -1128,7 +1169,8 @@ private fun VirodhaArgalaItem(
                 Text(
                     stringResource(StringKeyUIExtra.ARGALA_HOUSE_PREFIX, virodha.obstructingHouse),
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
                     maxLines = 1,
@@ -1141,7 +1183,8 @@ private fun VirodhaArgalaItem(
                     ) {
                         Text(
                             stringResource(StringKeyUIExtra.ARGALA_EFFECTIVE),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.WarningColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1154,7 +1197,8 @@ private fun VirodhaArgalaItem(
 
             Text(
                 virodha.description,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary
             )
 
@@ -1177,14 +1221,16 @@ private fun VirodhaArgalaItem(
                 Text(
                     stringResource(StringKeyUIExtra.ARGALA_OBSTRUCTION_LABEL),
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     "${(virodha.obstructionStrength * 100).toInt()}%",
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = if (virodha.isEffective) AppTheme.WarningColor else AppTheme.TextMuted
                 )
@@ -1197,10 +1243,11 @@ private fun VirodhaArgalaItem(
 private fun NetEffectCard(
     effectiveArgala: ArgalaCalculator.EffectiveArgala
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1213,7 +1260,8 @@ private fun NetEffectCard(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyDosha.ARGALA_NET_EFFECT),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1240,7 +1288,8 @@ private fun NetEffectCard(
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         stringResource(StringKeyUIExtra.ARGALA_BENEFIC_STRENGTH),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -1248,7 +1297,8 @@ private fun NetEffectCard(
                 }
                 Text(
                     String.format("%.2f", effectiveArgala.netBeneficStrength),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
                 )
@@ -1275,7 +1325,8 @@ private fun NetEffectCard(
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         stringResource(StringKeyUIExtra.ARGALA_MALEFIC_STRENGTH),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -1283,7 +1334,8 @@ private fun NetEffectCard(
                 }
                 Text(
                     String.format("%.2f", effectiveArgala.netMaleficStrength),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.WarningColor
                 )
@@ -1295,7 +1347,8 @@ private fun NetEffectCard(
 
             Text(
                 effectiveArgala.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -1315,7 +1368,8 @@ private fun ArgalaPlanetsTab(
         // Planet selector
         Text(
             stringResource(StringKeyDosha.ARGALA_PLANET_CAUSES),
-            style = MaterialTheme.typography.titleSmall,
+            fontFamily = CinzelDecorativeFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -1334,9 +1388,9 @@ private fun ArgalaPlanetsTab(
                     onClick = { onSelectPlanet(planet) },
                     label = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(planet.symbol)
+                            Text(planet.symbol, fontFamily = CinzelDecorativeFamily)
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(planet.getLocalizedName(language))
+                            Text(planet.getLocalizedName(language), fontFamily = PoppinsFontFamily)
                         }
                     },
                     leadingIcon = if (result?.netStrength ?: 0.0 > 0) {
@@ -1348,16 +1402,7 @@ private fun ArgalaPlanetsTab(
                                 modifier = Modifier.size(16.dp)
                             )
                         }
-                    } else {
-                        {
-                            Icon(
-                                Icons.Filled.TrendingDown,
-                                contentDescription = null,
-                                tint = AppTheme.WarningColor,
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
-                    },
+                    } else null,
                     colors = FilterChipDefaults.filterChipColors(
                         selectedContainerColor = AppTheme.getPlanetColor(planet).copy(alpha = 0.15f),
                         selectedLabelColor = AppTheme.getPlanetColor(planet),
@@ -1370,17 +1415,23 @@ private fun ArgalaPlanetsTab(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Planet detail
-        val planet = selectedPlanet ?: analysis.planetArgalas.keys.firstOrNull()
-        planet?.let { p ->
-            analysis.planetArgalas[p]?.let { result ->
-                PlanetArgalaDetailCard(
-                    planet = p,
-                    result = result,
-                    language = language,
-                    chart = chart
-                )
-            }
+        // Planet details
+        val planetResult = if (selectedPlanet != null) {
+            analysis.planetArgalas[selectedPlanet]
+        } else {
+            // Default to planet with most strength
+            val maxStrengthPlanet = analysis.planetArgalas.maxByOrNull { it.value.netStrength }?.key
+            analysis.planetArgalas[maxStrengthPlanet]
+        }
+
+        planetResult?.let { result ->
+            val planet = analysis.planetArgalas.entries.firstOrNull { it.value == result }?.key ?: Planet.SUN
+            PlanetArgalaDetailCard(
+                planet = planet,
+                result = result,
+                language = language,
+                chart = chart
+            )
         }
     }
 }
@@ -1392,146 +1443,123 @@ private fun PlanetArgalaDetailCard(
     language: Language,
     chart: VedicChart
 ) {
-    val planetColor = AppTheme.getPlanetColor(planet)
-    val planetHouse = chart.planetPositions.find { it.planet == planet }?.house ?: 1
-
-    Column {
-        // Header card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = planetColor.copy(alpha = 0.08f)
-            ),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            planet.getLocalizedName(language),
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = AppTheme.TextPrimary,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            stringResource(StringKey.TRANSIT_HOUSE_LABEL) + " $planetHouse",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = AppTheme.TextMuted,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .size(60.dp)
-                            .clip(CircleShape)
-                            .background(planetColor.copy(alpha = 0.15f)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            planet.symbol,
-                            style = MaterialTheme.typography.headlineMedium,
-                            color = planetColor
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    result.interpretation,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = AppTheme.TextSecondary,
-                    lineHeight = 20.sp
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Surface(
-                    color = if (result.netStrength > 0)
-                        AppTheme.SuccessColor.copy(alpha = 0.15f)
-                    else
-                        AppTheme.WarningColor.copy(alpha = 0.15f),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            if (result.netStrength > 0) Icons.Filled.TrendingUp else Icons.Filled.TrendingDown,
-                            contentDescription = null,
-                            tint = if (result.netStrength > 0) AppTheme.SuccessColor else AppTheme.WarningColor,
-                            modifier = Modifier.size(18.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
-                        Text(
-                            stringResource(StringKeyUIExtra.ARGALA_NET_STRENGTH_FMT, String.format("%.2f", result.netStrength)),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = if (result.netStrength > 0) AppTheme.SuccessColor else AppTheme.WarningColor
-                        )
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Argalas received
-        if (result.argalasReceived.isNotEmpty()) {
-            Card(
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(20.dp)) {
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Box(
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(CircleShape)
+                        .background(AppTheme.getPlanetColor(planet).copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
                     Text(
-                        stringResource(StringKeyUIExtra.ARGALA_INFLUENCES_RECEIVED),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
+                        planet.localizedAbbr(),
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
+                        color = AppTheme.getPlanetColor(planet)
+                    )
+                }
+                
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        planet.getLocalizedName(language),
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
+                        fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
+                    Text(
+                        stringResource(StringKeyDosha.ARGALA_CAUSED_BY_PLANET),
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                        color = AppTheme.TextMuted
+                    )
+                }
 
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    result.argalasReceived.forEach { argala ->
-                        ArgalaInfluenceItem(argala = argala, language = language)
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
+                Surface(
+                    color = (if (result.netStrength > 0) AppTheme.SuccessColor else AppTheme.WarningColor).copy(alpha = 0.15f),
+                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                ) {
+                    Text(
+                        stringResource(StringKeyUIExtra.ARGALA_NET_STRENGTH, String.format("%.1f", result.netStrength)),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                        fontWeight = FontWeight.Bold,
+                        color = if (result.netStrength > 0) AppTheme.SuccessColor else AppTheme.WarningColor,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-        }
 
-        // Virodhas received
-        if (result.virodhasReceived.isNotEmpty()) {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
-            ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        stringResource(StringKeyUIExtra.ARGALA_OBSTRUCTIONS_RECEIVED),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
+            Text(
+                result.interpretation,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                color = AppTheme.TextSecondary,
+                lineHeight = 22.sp
+            )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-                    result.virodhasReceived.forEach { virodha ->
-                        VirodhaArgalaItem(virodha = virodha, language = language)
-                        Spacer(modifier = Modifier.height(10.dp))
+            if (result.affectedHouses.isNotEmpty()) {
+                Text(
+                    stringResource(StringKeyDosha.ARGALA_AFFECTED_HOUSES),
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                result.affectedHouses.forEach { houseEffect ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Surface(
+                            color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                            shape = CircleShape,
+                            modifier = Modifier.size(24.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Text(
+                                    houseEffect.house.toString(),
+                                    fontFamily = SpaceGroteskFamily,
+                                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                                    fontWeight = FontWeight.Bold,
+                                    color = AppTheme.AccentPrimary
+                                )
+                            }
+                        }
+                        Text(
+                            houseEffect.effectType,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                            color = AppTheme.TextSecondary,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            String.format("%.1f", houseEffect.strength),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            fontWeight = FontWeight.SemiBold,
+                            color = if (houseEffect.isBenefic) AppTheme.SuccessColor else AppTheme.WarningColor
+                        )
                     }
                 }
             }
@@ -1545,59 +1573,28 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                stringResource(StringKeyDosha.ARGALA_ABOUT),
-                fontWeight = FontWeight.Bold,
-                color = AppTheme.TextPrimary,
+                text = stringResource(StringKeyDosha.ARGALA_ABOUT),
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
+                fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         },
         text = {
-            val dialogScroll = rememberScrollState()
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 420.dp)
-                    .verticalScroll(dialogScroll)
-            ) {
+            Column {
                 Text(
-                    stringResource(StringKeyDosha.ARGALA_ABOUT_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = AppTheme.TextSecondary
+                    text = stringResource(StringKeyDosha.ARGALA_ABOUT_DESC),
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 22.sp
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    stringResource(StringKeyUIExtra.ARGALA_KEY_CONCEPTS),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                listOf(
-                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_1),
-                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_2),
-                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_3),
-                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_4),
-                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_5),
-                    stringResource(StringKeyUIExtra.ARGALA_CONCEPT_6)
-                ).forEach { item ->
-                    Text(
-                        item,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted,
-                        modifier = Modifier.padding(vertical = 2.dp)
-                    )
-                }
-
                 Spacer(modifier = Modifier.height(12.dp))
-
                 Text(
-                    stringResource(StringKeyUIExtra.ARGALA_SOURCE),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyDosha.ARGALA_REF),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
@@ -1605,37 +1602,15 @@ private fun ArgalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
 
-// ============================================
-// Helper Functions
-// ============================================
-
+// Helper to get house name (1st House, 2nd House etc.)
+@Composable
 private fun getHouseName(house: Int, language: Language): String {
-    val key = when (house) {
-        1 -> StringKeyAnalysis.HOUSE_1_NAME
-        2 -> StringKeyAnalysis.HOUSE_2_NAME
-        3 -> StringKeyAnalysis.HOUSE_3_NAME
-        4 -> StringKeyAnalysis.HOUSE_4_NAME
-        5 -> StringKeyAnalysis.HOUSE_5_NAME
-        6 -> StringKeyAnalysis.HOUSE_6_NAME
-        7 -> StringKeyAnalysis.HOUSE_7_NAME
-        8 -> StringKeyAnalysis.HOUSE_8_NAME
-        9 -> StringKeyAnalysis.HOUSE_9_NAME
-        10 -> StringKeyAnalysis.HOUSE_10_NAME
-        11 -> StringKeyAnalysis.HOUSE_11_NAME
-        12 -> StringKeyAnalysis.HOUSE_12_NAME
-        else -> null
-    }
-    return key?.let { com.astro.vajra.core.common.StringResources.get(it, language) } ?: ""
+    return stringResource(StringKeyMatch.HOUSE_LABEL, house)
 }
-
-
-
-
-

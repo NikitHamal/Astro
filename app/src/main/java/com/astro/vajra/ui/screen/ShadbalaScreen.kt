@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -47,6 +47,9 @@ import com.astro.vajra.ephemeris.ShadbalaCalculator
 import com.astro.vajra.ephemeris.StrengthRating
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.components.common.NeoVedicEmptyState
@@ -152,7 +155,7 @@ fun ShadbalaScreen(
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         stringResource(StringKeyDosha.SHADBALA_CALCULATING),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -166,7 +169,7 @@ fun ShadbalaScreen(
             ) {
                 Text(
                     stringResource(StringKeyDosha.SHADBALA_CALCULATION_ERROR),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.ErrorColor
                 )
             }
@@ -276,8 +279,9 @@ private fun ShadbalaOverviewTab(
             ) {
                 Text(
                     stringResource(StringKeyDosha.SHADBALA_OVERALL_STRENGTH),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
+                    fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
 
@@ -305,13 +309,15 @@ private fun ShadbalaOverviewTab(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = String.format("%.1f", analysis.overallStrengthScore),
-                            style = MaterialTheme.typography.displaySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = stringResource(StringKeyUIExtra.PERCENT),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -372,10 +378,12 @@ private fun ShadbalaOverviewTab(
         ) {
             Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_CHART_ANALYSIS),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.SHADBALA_CHART_ANALYSIS).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceMD))
@@ -418,7 +426,8 @@ private fun StrengthCountChip(
             ) {
                 Text(
                     count.toString(),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -426,7 +435,8 @@ private fun StrengthCountChip(
             Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
             Text(
                 if (count == 1) stringResource(StringKey.REPORT_PLANET).lowercase() else stringResource(StringKey.FEATURE_PLANETS).lowercase(),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = color
             )
         }
@@ -445,7 +455,7 @@ private fun StrongestWeakestCard(
     modifier: Modifier = Modifier,
     language: Language
 ) {
-    val accentColor = if (isStrong) AppTheme.SuccessColor else AppTheme.WarningColor
+    val accentColor = if (isStrong) AppTheme.SuccessColor else AppTheme.ErrorColor
 
     Surface(
         modifier = modifier,
@@ -458,8 +468,10 @@ private fun StrongestWeakestCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                title,
-                style = MaterialTheme.typography.labelMedium,
+                title.uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                letterSpacing = 1.sp,
                 color = AppTheme.TextMuted
             )
 
@@ -474,7 +486,9 @@ private fun StrongestWeakestCard(
             ) {
                 Text(
                     planet.localizedAbbr(),
-                    style = MaterialTheme.typography.headlineSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
+                    fontWeight = FontWeight.Bold,
                     color = accentColor
                 )
             }
@@ -483,7 +497,8 @@ private fun StrongestWeakestCard(
 
             Text(
                 planet.getLocalizedName(language),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -492,7 +507,8 @@ private fun StrongestWeakestCard(
                 val rupasSuffix = stringResource(StringKeyUIExtra.RUPAS_SUFFIX)
                 Text(
                     String.format("%.2f", it.totalRupas) + rupasSuffix,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = accentColor
                 )
             }
@@ -524,7 +540,8 @@ private fun PlanetStrengthRow(
         ) {
             Text(
                 shadbala.planet.localizedAbbr(),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.getPlanetColor(shadbala.planet)
             )
         }
@@ -538,13 +555,15 @@ private fun PlanetStrengthRow(
             ) {
                 Text(
                     shadbala.planet.getLocalizedName(language),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     String.format("%.1f", shadbala.percentageOfRequired) + stringResource(StringKeyUIExtra.PERCENT_SIGN),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.SemiBold,
                     color = getStrengthColor(shadbala.percentageOfRequired)
                 )
@@ -594,9 +613,9 @@ private fun ShadbalaDetailsTab(
                     onClick = { onSelectPlanet(planet) },
                                     label = {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Text(planet.localizedAbbr())
+                                            Text(planet.localizedAbbr(), fontFamily = CinzelDecorativeFamily)
                                             Spacer(modifier = Modifier.width(4.dp))
-                                            Text(planet.getLocalizedName(language))
+                                            Text(planet.getLocalizedName(language), fontFamily = PoppinsFontFamily)
                                         }
                                     },
                     
@@ -645,12 +664,11 @@ private fun PlanetShadbalaDetailCard(
 
     Column {
         // Header Card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = accentColor.copy(alpha = 0.08f)
-            ),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = accentColor.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, accentColor.copy(alpha = 0.2f))
         ) {
             Column(
                 modifier = Modifier.padding(20.dp),
@@ -664,13 +682,15 @@ private fun PlanetShadbalaDetailCard(
                     Column {
                         Text(
                             planet.getLocalizedName(language),
-                            style = MaterialTheme.typography.headlineSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             stringResource(StringKeyDosha.SHADBALA_PLANET_ANALYSIS, planet.getLocalizedName(language)),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -684,7 +704,8 @@ private fun PlanetShadbalaDetailCard(
                     ) {
                         Text(
                             planet.localizedAbbr(),
-                            style = MaterialTheme.typography.headlineMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                             color = accentColor
                         )
                     }
@@ -700,13 +721,16 @@ private fun PlanetShadbalaDetailCard(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             String.format("%.2f", shadbala.totalRupas),
-                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_RUPAS),
-                            style = MaterialTheme.typography.labelSmall,
+                            stringResource(StringKeyDosha.SHADBALA_RUPAS).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                            letterSpacing = 1.sp,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -719,13 +743,16 @@ private fun PlanetShadbalaDetailCard(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             String.format("%.2f", shadbala.requiredRupas),
-                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextMuted
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_REQUIRED),
-                            style = MaterialTheme.typography.labelSmall,
+                            stringResource(StringKeyDosha.SHADBALA_REQUIRED).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                            letterSpacing = 1.sp,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -738,13 +765,16 @@ private fun PlanetShadbalaDetailCard(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             String.format("%.1f%%", shadbala.percentageOfRequired),
-                            style = MaterialTheme.typography.titleLarge,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                             fontWeight = FontWeight.Bold,
                             color = getStrengthColor(shadbala.percentageOfRequired)
                         )
                         Text(
-                            stringResource(StringKeyDosha.SHADBALA_PERCENTAGE),
-                            style = MaterialTheme.typography.labelSmall,
+                            stringResource(StringKeyDosha.SHADBALA_PERCENTAGE).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                            letterSpacing = 1.sp,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -770,7 +800,8 @@ private fun PlanetShadbalaDetailCard(
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
                             getLocalizedStrengthRating(shadbala.strengthRating, language),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             fontWeight = FontWeight.SemiBold,
                             color = getStrengthColor(shadbala.percentageOfRequired)
                         )
@@ -782,17 +813,20 @@ private fun PlanetShadbalaDetailCard(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Six-fold Breakdown
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_BREAKDOWN),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.SHADBALA_BREAKDOWN).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -860,17 +894,20 @@ private fun PlanetShadbalaDetailCard(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Detailed sub-components for Sthana Bala
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardElevated,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "${stringResource(StringKeyDosha.SHADBALA_STHANA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}",
-                    style = MaterialTheme.typography.titleSmall,
+                    "${stringResource(StringKeyDosha.SHADBALA_STHANA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}".uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -886,17 +923,20 @@ private fun PlanetShadbalaDetailCard(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Detailed sub-components for Kala Bala
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardElevated,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    "${stringResource(StringKeyDosha.SHADBALA_KALA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}",
-                    style = MaterialTheme.typography.titleSmall,
+                    "${stringResource(StringKeyDosha.SHADBALA_KALA_BALA)} ${stringResource(StringKeyDosha.SHADBALA_BREAKDOWN)}".uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -943,20 +983,23 @@ private fun BalaBreakdownItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 title,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
                 subtitle,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
         }
 
         Text(
             String.format("%.2f", value),
-            style = MaterialTheme.typography.bodyMedium,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.AccentPrimary
         )
@@ -973,12 +1016,14 @@ private fun SubBalaRow(label: String, value: Double) {
     ) {
         Text(
             label,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextMuted
         )
         Text(
             String.format("%.2f", value),
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextSecondary
         )
@@ -992,17 +1037,20 @@ private fun ShadbalaComparisonTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Bar chart comparison
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyDosha.SHADBALA_TOTAL_STRENGTH),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyDosha.SHADBALA_TOTAL_STRENGTH).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -1024,17 +1072,20 @@ private fun ShadbalaComparisonTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Six Bala comparison
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = AppTheme.CardElevated,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+            border = BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    stringResource(StringKeyUIExtra.SHADBALA_SIXFOLD_COMP_TITLE),
-                    style = MaterialTheme.typography.titleSmall,
+                    stringResource(StringKeyUIExtra.SHADBALA_SIXFOLD_COMP_TITLE).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    letterSpacing = 2.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -1045,17 +1096,18 @@ private fun ShadbalaComparisonTab(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        stringResource(StringKey.REPORT_PLANET),
-                        style = MaterialTheme.typography.labelSmall,
+                        stringResource(StringKey.REPORT_PLANET).uppercase(),
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextMuted,
                         modifier = Modifier.width(60.dp)
                     )
-                    Text(stringResource(StringKeyDosha.SHADBALA_STHANA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_DIG), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_KALA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_CHESTA), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
-                    Text(stringResource(StringKeyDosha.SHADBALA_TOTAL), style = MaterialTheme.typography.labelSmall, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyDosha.SHADBALA_STHANA).uppercase(), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyDosha.SHADBALA_DIG).uppercase(), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyDosha.SHADBALA_KALA).uppercase(), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyDosha.SHADBALA_CHESTA).uppercase(), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
+                    Text(stringResource(StringKeyDosha.SHADBALA_TOTAL).uppercase(), fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10, color = AppTheme.TextMuted, modifier = Modifier.weight(1f), textAlign = TextAlign.Center)
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -1073,7 +1125,8 @@ private fun ShadbalaComparisonTab(
                                         ) {
                                             Text(
                                                 shadbala.planet.localizedAbbr(),
-                                                style = MaterialTheme.typography.bodyMedium,
+                                                fontFamily = CinzelDecorativeFamily,
+                                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                                                 fontWeight = FontWeight.Bold,
                                                 color = AppTheme.getPlanetColor(shadbala.planet),
                                                 modifier = Modifier.width(60.dp)
@@ -1081,35 +1134,40 @@ private fun ShadbalaComparisonTab(
                 
                         Text(
                             String.format("%.0f", shadbala.sthanaBala.total),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.weight(1f),
                             textAlign = TextAlign.Center
                         )
                         Text(
                             String.format("%.0f", shadbala.digBala),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.weight(1f),
                             textAlign = TextAlign.Center
                         )
                         Text(
                             String.format("%.0f", shadbala.kalaBala.total),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.weight(1f),
                             textAlign = TextAlign.Center
                         )
                         Text(
                             String.format("%.0f", shadbala.chestaBala),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.weight(1f),
                             textAlign = TextAlign.Center
                         )
                         Text(
                             String.format("%.1f", shadbala.totalRupas),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             fontWeight = FontWeight.SemiBold,
                             color = if (shadbala.isStrong) AppTheme.SuccessColor else AppTheme.WarningColor,
                             modifier = Modifier.weight(1f),
@@ -1148,7 +1206,8 @@ private fun ComparisonBarRow(
         ) {
             Text(
                 shadbala.planet.localizedAbbr(),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.getPlanetColor(shadbala.planet)
             )
@@ -1161,14 +1220,14 @@ private fun ComparisonBarRow(
             modifier = Modifier
                 .weight(1f)
                 .height(20.dp)
-                .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+            .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
                 .background(AppTheme.ChipBackground)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(progress)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
                     .background(
                         Brush.horizontalGradient(
                             colors = listOf(
@@ -1186,7 +1245,8 @@ private fun ComparisonBarRow(
         val rupasSuffix = stringResource(StringKeyUIExtra.RUPAS_SUFFIX)
         Text(
             String.format("%.2f", shadbala.totalRupas) + rupasSuffix,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.SemiBold,
             color = if (shadbala.isStrong) AppTheme.SuccessColor else AppTheme.WarningColor,
             modifier = Modifier.width(60.dp),
@@ -1202,6 +1262,8 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 stringResource(StringKeyDosha.SHADBALA_INFO_TITLE),
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary,
                 maxLines = 1,
@@ -1212,7 +1274,8 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
             Column {
                 Text(
                     stringResource(StringKeyDosha.SHADBALA_INFO_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary
                 )
 
@@ -1220,7 +1283,8 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
 
                 Text(
                     stringResource(StringKeyDosha.SHADBALA_INFO_INTRO),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1237,7 +1301,8 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
                 ).forEach { item ->
                     Text(
                         item,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextMuted,
                         modifier = Modifier.padding(vertical = 2.dp)
                     )
@@ -1246,7 +1311,7 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
@@ -1261,7 +1326,7 @@ private fun ShadbalaInfoDialog(onDismiss: () -> Unit) {
 private fun getStrengthColor(percentage: Double): Color {
     return when {
         percentage >= 130 -> AppTheme.SuccessColor
-        percentage >= 100 -> com.astro.vajra.ui.theme.SuccessDark
+        percentage >= 100 -> AppTheme.SuccessColor
         percentage >= 85 -> AppTheme.AccentPrimary
         percentage >= 70 -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
@@ -1271,9 +1336,3 @@ private fun getStrengthColor(percentage: Double): Color {
 private fun getLocalizedStrengthRating(rating: StrengthRating, language: Language): String {
     return rating.getLocalizedName(language)
 }
-
-
-
-
-
-

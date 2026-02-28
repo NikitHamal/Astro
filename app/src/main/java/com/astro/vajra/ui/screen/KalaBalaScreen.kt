@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -76,6 +76,9 @@ import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.KalaBalaCalculator
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.components.common.NeoVedicEmptyState
@@ -262,18 +265,21 @@ private fun BirthContextCard(context: KalaBalaCalculator.BirthContext) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = if (context.isDay) stringResource(StringKeyShadbala.KALA_DAY_BIRTH) else stringResource(StringKeyShadbala.KALA_NIGHT_BIRTH),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = "${context.pakshaType.displayName} " + stringResource(StringKeyUICommon.BULLET) + " " + stringResource(StringKeyShadbala.KALA_TITHI_LABEL) + " ${context.tithiNumber}",
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
                 Text(
                     text = stringResource(StringKeyShadbala.KALA_HORA_LABEL) + stringResource(StringKeyUICommon.COLON) + " ${context.horaLord.displayName} " + stringResource(StringKeyUICommon.BULLET) + " " + stringResource(StringKeyShadbala.KALA_DAY_LABEL) + stringResource(StringKeyUICommon.COLON) + " ${context.dayLord.displayName}",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
             }
@@ -307,21 +313,25 @@ private fun KalaBalaScoreCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(StringKeyShadbala.KALA_TOTAL),
-                style = MaterialTheme.typography.labelMedium,
+                text = stringResource(StringKeyShadbala.KALA_TOTAL).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                letterSpacing = 1.sp,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(8.dp))
             val scoreText = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(analysis.overallScore.toInt()) else String.format("%.0f", analysis.overallScore)
             Text(
                 text = scoreText,
-                style = MaterialTheme.typography.displaySmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S32,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
             Text(
                 text = stringResource(StringKeyUIExtra.SLASH) + "100",
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -362,19 +372,23 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKeyShadbala.STHANA_STRONG),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyShadbala.STHANA_STRONG).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.SuccessColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.strongestPlanet.symbol,
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.SuccessColor
                 )
                 Text(
                     text = analysis.strongestPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -383,7 +397,8 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                     val perc = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
                         text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.SuccessColor
                     )
                 }
@@ -403,19 +418,23 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(StringKeyShadbala.STHANA_WEAK),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = stringResource(StringKeyShadbala.STHANA_WEAK).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    letterSpacing = 1.sp,
                     color = AppTheme.ErrorColor
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = analysis.weakestPlanet.symbol,
+                    fontFamily = CinzelDecorativeFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                     color = AppTheme.ErrorColor
                 )
                 Text(
                     text = analysis.weakestPlanet.displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -424,7 +443,8 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
                     val perc = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.percentageOfRequired.toInt()) else String.format("%.0f", it.percentageOfRequired)
                     Text(
                         text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.ErrorColor
                     )
                 }
@@ -437,10 +457,11 @@ private fun KalaBalaStrongestWeakestRow(analysis: KalaBalaCalculator.KalaBalaAna
 private fun KalaBalaInsightsCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
     if (analysis.keyInsights.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -455,7 +476,8 @@ private fun KalaBalaInsightsCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) 
                 )
                 Text(
                     text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -469,7 +491,8 @@ private fun KalaBalaInsightsCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) 
                     Text(text = stringResource(StringKeyUICommon.BULLET), color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -482,15 +505,17 @@ private fun KalaBalaInsightsCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) 
 private fun KalaBalaRecommendationsCard(analysis: KalaBalaCalculator.KalaBalaAnalysis) {
     if (analysis.recommendations.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.06f),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(StringKeyUICommon.REMEDIES),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.AccentPrimary
             )
@@ -503,7 +528,8 @@ private fun KalaBalaRecommendationsCard(analysis: KalaBalaCalculator.KalaBalaAna
                     Text(text = stringResource(StringKeyUIExtra.ARROW), color = AppTheme.AccentPrimary, fontWeight = FontWeight.Bold)
                     Text(
                         text = rec,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -521,8 +547,10 @@ private fun KalaBalaComponentsSection(analysis: KalaBalaCalculator.KalaBalaAnaly
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            text = stringResource(StringKeyShadbala.KALA_TAB_COMPONENTS),
-            style = MaterialTheme.typography.titleSmall,
+            text = stringResource(StringKeyShadbala.KALA_TAB_COMPONENTS).uppercase(),
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+            letterSpacing = 2.sp,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(bottom = 4.dp)
@@ -544,10 +572,11 @@ private fun KalaBalaComponentCard(component: KalaBalaCalculator.ComponentSummary
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -558,26 +587,30 @@ private fun KalaBalaComponentCard(component: KalaBalaCalculator.ComponentSummary
                 Column {
                     Text(
                         text = component.name,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = component.description,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = String.format("%.1f", component.avgVirupas),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = scoreColor
                     )
                     Text(
                         text = stringResource(StringKeyUIExtra.SLASH) + " ${String.format("%.0f", component.maxVirupas)}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -624,12 +657,13 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -652,6 +686,7 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
                     ) {
                         Text(
                             text = planetBala.planet.symbol,
+                            fontFamily = CinzelDecorativeFamily,
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S22,
                             color = scoreColor
                         )
@@ -659,13 +694,15 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
                     Column {
                         Text(
                             text = planetBala.planet.displayName,
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = planetBala.strengthRating,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = scoreColor
                         )
                     }
@@ -676,14 +713,16 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
                     val perc = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(planetBala.percentageOfRequired.toInt()) else String.format("%.0f", planetBala.percentageOfRequired)
                     Text(
                         text = "$perc" + stringResource(StringKeyUIExtra.PERCENT),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
                         color = scoreColor
                     )
                     val rupas = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(String.format("%.1f", planetBala.totalRupas)) else String.format("%.1f", planetBala.totalRupas)
                     Text(
                         text = "$rupas ${stringResource(StringKeyShadbala.COMMON_RUPAS)}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -708,7 +747,8 @@ private fun PlanetKalaBalaCard(planetBala: KalaBalaCalculator.PlanetKalaBala) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = planetBala.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -740,12 +780,14 @@ private fun KalaBalaBreakdownRow(name: String, value: Double, max: Double) {
     ) {
         Text(
             text = name,
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = AppTheme.TextSecondary
         )
         Text(
             text = "${String.format("%.1f", value)} " + stringResource(StringKeyUIExtra.SLASH) + " ${String.format("%.0f", max)}",
-            style = MaterialTheme.typography.bodySmall,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             fontWeight = FontWeight.Medium,
             color = AppTheme.TextPrimary
         )
@@ -763,7 +805,8 @@ private fun KalaBalaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyShadbala.KALA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -790,7 +833,8 @@ private fun KalaBalaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyShadbala.KALA_INFO_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -800,14 +844,16 @@ private fun KalaBalaInfoDialog(onDismiss: () -> Unit) {
             Column {
                 Text(
                     text = stringResource(StringKeyShadbala.KALA_INFO_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyShadbala.KALA_VEDIC_REF),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
@@ -815,14 +861,9 @@ private fun KalaBalaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyShadbala.COMMON_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-
-
-

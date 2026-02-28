@@ -1,6 +1,7 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -55,9 +56,15 @@ import com.astro.vajra.ephemeris.GrahaYuddhaCalculator.RemedyType
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Graha Yuddha (Planetary War) Analysis Screen
@@ -191,7 +198,8 @@ private fun LoadingContent(paddingValues: PaddingValues) {
             )
             Text(
                 text = stringResource(StringKeyDosha.GRAHA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextMuted
             )
         }
@@ -264,10 +272,11 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
         )
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -303,7 +312,8 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
                         stringResource(com.astro.vajra.core.common.StringKeyDosha.GRAHA_WAR_AFFECTS_DESC)
                     else
                         stringResource(com.astro.vajra.core.common.StringKeyDosha.GRAHA_NO_WARS_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextMuted
                 )
             }
@@ -313,10 +323,11 @@ private fun WarStatusCard(analysis: GrahaYuddhaAnalysis) {
 
 @Composable
 private fun SummaryCard(summary: String) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -334,7 +345,8 @@ private fun SummaryCard(summary: String) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.GRAHA_ANALYSIS_SUMMARY),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -342,7 +354,8 @@ private fun SummaryCard(summary: String) {
 
             Text(
                 text = summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -361,10 +374,11 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
         WarImpactLevel.SEVERE -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -372,7 +386,8 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
         ) {
             Text(
                 text = stringResource(StringKeyDosha.GRAHA_OVERALL_IMPACT),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -404,7 +419,8 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
                     Text(
                         text = impactLevel.displayName,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Medium,
                         color = impactColor
                     )
@@ -413,7 +429,7 @@ private fun ImpactAssessmentCard(analysis: GrahaYuddhaAnalysis) {
 
             // Winner/Loser summary
             if (analysis.activeWars.isNotEmpty()) {
-                Divider(color = AppTheme.BorderColor, modifier = Modifier.padding(vertical = 4.dp))
+                HorizontalDivider(color = AppTheme.BorderColor, modifier = Modifier.padding(vertical = 4.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -467,7 +483,8 @@ private fun PlanetChip(planet: com.astro.vajra.core.model.Planet, isWinner: Bool
         Text(
             text = planet.symbol,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            style = MaterialTheme.typography.labelMedium,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
             color = color
         )
     }
@@ -475,10 +492,11 @@ private fun PlanetChip(planet: com.astro.vajra.core.model.Planet, isWinner: Bool
 
 @Composable
 private fun KeyInsightsCard(insights: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -496,7 +514,8 @@ private fun KeyInsightsCard(insights: List<String>) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_KEY_INSIGHTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -515,7 +534,8 @@ private fun KeyInsightsCard(insights: List<String>) {
                     )
                     Text(
                         text = insight,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -526,10 +546,11 @@ private fun KeyInsightsCard(insights: List<String>) {
 
 @Composable
 private fun AffectedAreasCard(areas: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -537,7 +558,8 @@ private fun AffectedAreasCard(areas: List<String>) {
         ) {
             Text(
                 text = stringResource(StringKeyDosha.GRAHA_AFFECTED_AREAS),
-                style = MaterialTheme.typography.titleSmall,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -548,7 +570,7 @@ private fun AffectedAreasCard(areas: List<String>) {
                 items(areas) { area ->
                     SuggestionChip(
                         onClick = {},
-                        label = { Text(area, style = MaterialTheme.typography.labelSmall) },
+                        label = { Text(area, fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12) },
                         colors = SuggestionChipDefaults.suggestionChipColors(
                             containerColor = AppTheme.WarningColor.copy(alpha = 0.1f),
                             labelColor = AppTheme.WarningColor
@@ -563,10 +585,11 @@ private fun AffectedAreasCard(areas: List<String>) {
 
 @Composable
 private fun RecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -584,7 +607,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -601,7 +625,8 @@ private fun RecommendationsCard(recommendations: List<String>) {
                     )
                     Text(
                         text = rec,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -634,12 +659,14 @@ private fun ActiveWarsTab(analysis: GrahaYuddhaAnalysis) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.GRAHA_NO_WARS),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     text = stringResource(StringKeyDosha.GRAHA_NO_WARS_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextSubtle
                 )
             }
@@ -673,7 +700,8 @@ private fun WarCard(war: GrahaYuddhaResult) {
         onClick = { isExpanded = !isExpanded },
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -700,7 +728,8 @@ private fun WarCard(war: GrahaYuddhaResult) {
                     ) {
                         Text(
                             text = war.winner.symbol,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.SuccessColor
                         )
@@ -734,7 +763,8 @@ private fun WarCard(war: GrahaYuddhaResult) {
                     ) {
                         Text(
                             text = war.loser.symbol,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.ErrorColor
                         )
@@ -749,7 +779,8 @@ private fun WarCard(war: GrahaYuddhaResult) {
                     Text(
                         text = war.intensityLevel.displayName,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.SemiBold,
                         color = intensityColor
                     )
@@ -764,13 +795,15 @@ private fun WarCard(war: GrahaYuddhaResult) {
                 Column {
                     Text(
                         text = stringResource(StringKeyDosha.GRAHA_DEFEATS_MSG, war.winner.displayName, war.loser.displayName),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         text = stringResource(StringKeyDosha.GRAHA_IN_HOUSE_MSG, war.warSign.displayName, war.warHouse),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -813,12 +846,13 @@ private fun WarCard(war: GrahaYuddhaResult) {
                     modifier = Modifier.padding(top = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Divider(color = AppTheme.BorderColor)
+                    HorizontalDivider(color = AppTheme.BorderColor)
 
                     // Interpretation
                     Text(
                         text = war.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -841,7 +875,8 @@ private fun WarCard(war: GrahaYuddhaResult) {
                     // Weakness areas
                     Text(
                         text = stringResource(StringKeyDosha.GRAHA_WEAKNESS_AREAS),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
@@ -849,7 +884,7 @@ private fun WarCard(war: GrahaYuddhaResult) {
                         items(war.loserEffects.weaknessAreas) { area ->
                             SuggestionChip(
                                 onClick = {},
-                                label = { Text(area, style = MaterialTheme.typography.labelSmall) },
+                                label = { Text(area, fontFamily = SpaceGroteskFamily, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10) },
                                 colors = SuggestionChipDefaults.suggestionChipColors(
                                     containerColor = AppTheme.ChipBackground,
                                     labelColor = AppTheme.TextMuted
@@ -881,7 +916,8 @@ private fun DetailChip(label: String, value: String) {
             )
             Text(
                 text = value,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
@@ -902,14 +938,16 @@ private fun EffectsSection(title: String, color: Color, content: String) {
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = content,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextSecondary,
                 lineHeight = 18.sp
             )
@@ -940,7 +978,8 @@ private fun DashaEffectsTab(analysis: GrahaYuddhaAnalysis) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.GRAHA_NO_DASHA_EFFECTS),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextMuted
                 )
             }
@@ -962,10 +1001,11 @@ private fun DashaEffectsTab(analysis: GrahaYuddhaAnalysis) {
 private fun DashaEffectCard(effect: DashaWarEffect) {
     val color = if (effect.isWinner) AppTheme.SuccessColor else AppTheme.ErrorColor
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -985,7 +1025,8 @@ private fun DashaEffectCard(effect: DashaWarEffect) {
                 ) {
                     Text(
                         text = effect.planet.symbol,
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                         fontWeight = FontWeight.Bold,
                         color = color
                     )
@@ -994,7 +1035,8 @@ private fun DashaEffectCard(effect: DashaWarEffect) {
                     val language = currentLanguage()
                     Text(
                         text = stringResource(StringKeyDosha.GRAHA_PERIODS_LABEL_FMT, effect.planet.getLocalizedName(language)),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1052,13 +1094,15 @@ private fun DashaEffectRow(
         Column {
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = content,
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted,
                 lineHeight = 18.sp
             )
@@ -1089,12 +1133,14 @@ private fun RemediesTab(analysis: GrahaYuddhaAnalysis) {
                 )
                 Text(
                     text = stringResource(StringKeyDosha.GRAHA_NO_REMEDIES),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     text = stringResource(StringKeyDosha.GRAHA_NO_REMEDIES_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextSubtle
                 )
             }
@@ -1113,7 +1159,8 @@ private fun RemediesTab(analysis: GrahaYuddhaAnalysis) {
                     val language = currentLanguage()
                     Text(
                         text = planet?.getLocalizedName(language) ?: stringResource(StringKeyDosha.GRAHA_GENERAL_REMEDIES),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
                         modifier = Modifier.padding(vertical = 4.dp)
@@ -1146,10 +1193,11 @@ private fun RemedyCard(remedy: WarRemedy) {
         RemedyType.GENERAL -> stringResource(StringKeyRemedy.CAT_LIFESTYLE)
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1184,7 +1232,8 @@ private fun RemedyCard(remedy: WarRemedy) {
                 )
                 Text(
                     text = remedy.description,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextPrimary
                 )
 
@@ -1196,7 +1245,8 @@ private fun RemedyCard(remedy: WarRemedy) {
                         Text(
                             text = mantra,
                             modifier = Modifier.padding(8.dp),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                             color = AppTheme.AccentPrimary
                         )
                     }
@@ -1221,7 +1271,8 @@ private fun RemedyCard(remedy: WarRemedy) {
 
                 Text(
                     text = remedy.expectedBenefit,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1240,6 +1291,8 @@ private fun GrahaYuddhaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.GRAHA_ABOUT_TITLE),
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1252,7 +1305,8 @@ private fun GrahaYuddhaInfoDialog(onDismiss: () -> Unit) {
             ) {
                 Text(
                     text = stringResource(StringKeyDosha.GRAHA_ABOUT_DESC),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
@@ -1260,14 +1314,9 @@ private fun GrahaYuddhaInfoDialog(onDismiss: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary)
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentPrimary, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
     )
 }
-
-
-
-
-
