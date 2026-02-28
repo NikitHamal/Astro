@@ -386,12 +386,6 @@ private fun NeoVedicTopBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = "AstroVajra logo",
-                    modifier = Modifier.size(32.dp),
-                    contentScale = ContentScale.Fit
-                )
                 Text(
                     text = "ASTROVAJRA",
                     fontFamily = CinzelDecorativeFamily,

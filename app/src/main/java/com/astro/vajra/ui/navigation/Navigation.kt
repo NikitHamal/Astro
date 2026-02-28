@@ -411,6 +411,7 @@ fun AstroVajraNavigation(
                 onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
                 onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
                 onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
+                onNavigateToAbout = { navigateToFeature(Screen.About.route) },
                 onExportChart = { format ->
                     currentChart?.let { chart ->
                         when (format) {
