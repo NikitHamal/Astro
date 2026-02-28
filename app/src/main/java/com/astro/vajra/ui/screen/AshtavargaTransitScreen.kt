@@ -79,7 +79,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import com.astro.vajra.ui.theme.AppColors
+import com.astro.vajra.ui.theme.AppThemeColors
+import com.astro.vajra.core.common.StringKeyMatch
+import com.astro.vajra.core.common.StringKeyAdvanced
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -1463,7 +1465,7 @@ private fun SectionHeaderSS(title: String, language: Language) {
     )
 }
 
-private fun getQualityColorSS(quality: TransitQuality, colors: AppColors): Color {
+private fun getQualityColorSS(quality: TransitQuality, colors: AppThemeColors): Color {
     return when (quality) {
         TransitQuality.EXCELLENT -> colors.SuccessColor
         TransitQuality.GOOD -> colors.AccentTeal

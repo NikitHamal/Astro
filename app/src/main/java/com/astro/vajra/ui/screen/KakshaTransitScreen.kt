@@ -35,6 +35,7 @@ import com.astro.vajra.data.localization.LocalLanguage
 import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.StringKeyAnalysis
 import com.astro.vajra.core.common.StringKeyAdvanced
+import com.astro.vajra.core.common.StringKeyAshtavarga
 import com.astro.vajra.core.common.StringKeyUICommon
 import com.astro.vajra.core.common.StringKeyUIExtra
 import com.astro.vajra.core.common.getLocalizedName
