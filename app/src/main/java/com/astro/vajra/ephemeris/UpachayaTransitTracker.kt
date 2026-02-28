@@ -610,7 +610,8 @@ data class UpcomingUpachayaTransit(
     val targetHouse: Int,
     val targetSign: ZodiacSign,
     val significance: String,
-    val recommendation: String
+    val recommendation: String,
+    val expectedDate: String = "Upcoming" // Added with default
 )
 
 
