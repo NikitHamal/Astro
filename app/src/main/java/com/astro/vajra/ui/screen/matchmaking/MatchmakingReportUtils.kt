@@ -50,7 +50,7 @@ object MatchmakingReportUtils {
         return buildString {
             appendLine("═══════════════════════════════════════")
             appendLine("       ${StringResources.get(StringKeyMatch.REPORT_MATCHMAKING_TITLE, language)}")
-            appendLine("         ${StringResources.get(StringKeyMatch.REPORT_ASTROSTORM_ANALYSIS, language)}")
+            appendLine("         ${StringResources.get(StringKeyMatch.REPORT_ASTROVAJRA_ANALYSIS, language)}")
             appendLine("═══════════════════════════════════════")
             appendLine()
 
@@ -125,7 +125,7 @@ object MatchmakingReportUtils {
 
             appendLine("═══════════════════════════════════════")
             appendLine(StringResources.get(StringKeyMatch.REPORT_GENERATED_BY, language))
-            appendLine(StringResources.get(StringKeyMatch.REPORT_ASTROSTORM_VEDIC, language))
+            appendLine(StringResources.get(StringKeyMatch.REPORT_ASTROVAJRA_VEDIC, language))
             appendLine("═══════════════════════════════════════")
         }
     }

@@ -393,7 +393,7 @@ private fun NeoVedicTopBar(
                     contentScale = ContentScale.Fit
                 )
                 Text(
-                    text = "ASTROSTORM",
+                    text = "ASTROVAJRA",
                     fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.Bold,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S17,

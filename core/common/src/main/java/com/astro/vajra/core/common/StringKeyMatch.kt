@@ -1106,7 +1106,7 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
 
     REPORT_MATCHMAKING("KUNDLI MILAN (MATCHMAKING) REPORT", "कुण्डली मिलान रिपोर्ट"),
     REPORT_MATCHMAKING_TITLE("KUNDLI MILAN REPORT", "कुण्डली मिलान रिपोर्ट"),
-    REPORT_ASTROSTORM_ANALYSIS("AstroVajra Analysis", "AstroVajra विश्लेषण"),
+    REPORT_ASTROVAJRA_ANALYSIS("AstroVajra Analysis", "AstroVajra विश्लेषण"),
     REPORT_PROFILES("PROFILES", "प्रोफाइलहरू"),
     REPORT_BRIDE("BRIDE", "वधू"),
     REPORT_BRIDE_LABEL("Bride:", "वधू:"),
@@ -1142,7 +1142,7 @@ enum class StringKeyMatch(override val en: String, override val ne: String) : St
     REPORT_NOT_SATISFIED("Not satisfied", "सन्तुष्ट छैन"),
     REPORT_NOT_APPLICABLE("Not applicable", "लागू हुँदैन"),
     REPORT_NA("N/A", "उपलब्ध छैन"),
-    REPORT_ASTROSTORM_VEDIC("Vedic Astrology • Ultra-Precision", "वैदिक ज्योतिष • अति-सटीक"),
+    REPORT_ASTROVAJRA_VEDIC("Vedic Astrology • Ultra-Precision", "वैदिक ज्योतिष • अति-सटीक"),
     REPORT_KUNDLI_MILAN_SUMMARY("KUNDLI MILAN SUMMARY", "कुण्डली मिलान सारांश"),
     REPORT_MANGLIK_LABEL("Manglik:", "मांगलिक:"),
     REPORT_ASHTAKOOTA_GUNA_SCORES("ASHTAKOOTA GUNA SCORES", "अष्टकूट गुण अंकहरू"),

@@ -27,9 +27,9 @@ class GeocodingService @Inject constructor(
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             val versionName = packageInfo.versionName ?: "1.0"
             val appName = context.applicationInfo.loadLabel(context.packageManager).toString()
-            "$appName/$versionName (${context.packageName}; contact@astrostorm.app)"
+            "$appName/$versionName (${context.packageName}; contact@astrovajra.app)"
         } catch (e: Exception) {
-            "AstroVajra/1.0 (Vedic Astrology App; contact@astrostorm.app)"
+            "AstroVajra/1.0 (Vedic Astrology App; contact@astrovajra.app)"
         }
     }
 

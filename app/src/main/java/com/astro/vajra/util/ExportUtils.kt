@@ -75,16 +75,16 @@ object ExportUtils {
 
                 @Suppress("DEPRECATION")
                 val picturesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                val astroStormDir = File(picturesDir, "AstroVajra")
-                if (!astroStormDir.exists()) {
-                    if (!astroStormDir.mkdirs()) {
+                val astroVajraDir = File(picturesDir, "AstroVajra")
+                if (!astroVajraDir.exists()) {
+                    if (!astroVajraDir.mkdirs()) {
                         return@withContext Result.failure(
                             Exception("Failed to create AstroVajra directory in Pictures")
                         )
                     }
                 }
 
-                val file = File(astroStormDir, displayName)
+                val file = File(astroVajraDir, displayName)
                 FileOutputStream(file).use { outputStream ->
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
                 }
