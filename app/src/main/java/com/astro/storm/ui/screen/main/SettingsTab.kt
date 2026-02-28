@@ -115,15 +115,8 @@ fun SettingsTab(
                 SettingsSectionHeader(titleKey = StringKey.SETTINGS_EXPORT)
             }
 
-            ExportFormat.entries.forEach { format ->
-                item {
-                    SettingsItem(
-                        icon = format.icon,
-                        titleKey = format.titleKey,
-                        subtitleKey = format.descriptionKey,
-                        onClick = { onExportChart(format) }
-                    )
-                }
+            item {
+                ExportSetting(onExportChart = onExportChart)
             }
         }
 
@@ -483,6 +476,99 @@ private fun SettingsItem(
                 tint = AppTheme.TextMuted,
                 modifier = Modifier.size(24.dp)
             )
+        }
+    }
+}
+
+@Composable
+private fun ExportSetting(onExportChart: (ExportFormat) -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        shape = SettingsDesignTokens.CardShape,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded }
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(SettingsDesignTokens.IconShape)
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Share,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(StringKey.SETTINGS_EXPORT),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                ExportFormat.entries.forEach { format ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onExportChart(format)
+                                expanded = false
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = format.icon,
+                            contentDescription = null,
+                            tint = AppTheme.TextSecondary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column {
+                            Text(
+                                text = stringResource(format.titleKey),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = AppTheme.TextPrimary
+                            )
+                            Text(
+                                text = stringResource(format.descriptionKey),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = AppTheme.TextMuted
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
