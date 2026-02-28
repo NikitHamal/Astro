@@ -468,7 +468,6 @@ private fun DateSelectorBar(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
@@ -675,7 +674,6 @@ private fun CurrentMuhurtaCard(muhurta: MuhurtaDetails) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Box(
@@ -2009,7 +2007,6 @@ private fun SearchResultCard(result: MuhurtaSearchResult) {
             .vedicCornerMarkers(color = scoreColor, 12.dp),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

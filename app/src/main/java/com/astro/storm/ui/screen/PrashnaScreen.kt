@@ -351,8 +351,79 @@ private fun PrashnaHeaderCard() {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        color = AppTheme.AccentTeal.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius)
+    ) {
+        Column(
+            modifier = Modifier.padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
+                    .clip(CircleShape)
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(
+                                AppTheme.AccentTeal.copy(alpha = 0.3f),
+                                AppTheme.AccentTeal.copy(alpha = 0.1f)
+                            )
+                        )
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    Icons.AutoMirrored.Filled.HelpOutline,
+                    contentDescription = null,
+                    tint = AppTheme.AccentTeal,
+                    modifier = Modifier.size(36.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S21,
+                fontWeight = FontWeight.Bold,
+                color = AppTheme.TextPrimary
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            Text(
+                stringResource(StringKeyAnalysis.PRASHNA_HORARY),
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S14,
+                color = AppTheme.AccentTeal
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                stringResource(StringKeyAnalysis.PRASHNA_INTRO),
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.storm.ui.theme.NeoVedicFontSizes.S12,
+                color = AppTheme.TextMuted,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
+private fun QuestionInputCard(
+    question: String,
+    onQuestionChange: (String) -> Unit,
+    onSubmit: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp)
-            .vedicCornerMarkers(color = verdictColor, 12.dp),
+            .vedicCornerMarkers(color = AppTheme.AccentPrimary, 12.dp),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
@@ -896,7 +967,6 @@ private fun VerdictCard(result: PrashnaResult) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.storm.ui.theme.NeoVedicTokens.CardCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         border = androidx.compose.foundation.BorderStroke(com.astro.storm.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Box(
