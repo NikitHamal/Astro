@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -12,10 +12,13 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
+import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
+import com.astro.vajra.ui.components.common.TabItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,13 +49,15 @@ import com.astro.vajra.ephemeris.jaimini.JaiminiKarakaCalculator.KarakaAssignmen
 import com.astro.vajra.ephemeris.jaimini.JaiminiKarakaCalculator.KarakamshaAnalysis
 import com.astro.vajra.ephemeris.jaimini.JaiminiKarakaCalculator.SwamshaAnalysis
 import com.astro.vajra.ephemeris.jaimini.JaiminiKarakaCalculator.KarakenshiYoga
-import com.astro.vajra.ui.components.common.ModernPillTabRow
-import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.foundation.BorderStroke
 
 /**
  * JaiminiKarakaScreen - Comprehensive Chara Karaka Analysis Screen
@@ -171,7 +176,7 @@ private fun KarakasTab(
     ) {
         // Header Card
         item {
-            HeaderCard(
+            HeaderCardSS(
                 title = StringResources.get(StringKeyJaimini.HEADER_7_KARAKAS, language),
                 subtitle = StringResources.get(StringKeyJaimini.SUBTITLE_7_KARAKAS, language),
                 icon = Icons.Outlined.Stars
@@ -180,7 +185,7 @@ private fun KarakasTab(
 
         // Karaka Cards
         items(analysis.karakas.entries.toList()) { (type, assignment) ->
-            KarakaCard(
+            KarakaCardSS(
                 karakaType = type,
                 assignment = assignment,
                 language = language
@@ -189,7 +194,7 @@ private fun KarakasTab(
 
         // System Info
         item {
-            InfoCard(
+            InfoCardSS(
                 title = StringResources.get(StringKeyJaimini.SYSTEM_INFO_TITLE, language),
                 content = StringResources.get(StringKeyJaimini.SYSTEM_INFO_CONTENT, language, analysis.karakaSystem.name.replace("_", " ")),
                 icon = Icons.Outlined.Info
@@ -199,17 +204,18 @@ private fun KarakasTab(
 }
 
 @Composable
-private fun KarakaCard(
+private fun KarakaCardSS(
     karakaType: KarakaType,
     assignment: KarakaAssignment,
     language: Language
 ) {
     val planetColor = getPlanetColorSS(assignment.planet)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -225,16 +231,18 @@ private fun KarakaCard(
                     .background(
                         Brush.radialGradient(
                             colors = listOf(
-                                planetColor.copy(alpha = 0.3f),
-                                planetColor.copy(alpha = 0.1f)
+                                planetColor.copy(alpha = 0.25f),
+                                planetColor.copy(alpha = 0.05f)
                             )
                         )
-                    ),
+                    )
+                    .border(1.dp, planetColor.copy(alpha = 0.3f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = assignment.planet.getLocalizedName(language).take(2),
-                    style = MaterialTheme.typography.titleMedium,
+                    text = assignment.planet.symbol,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                     fontWeight = FontWeight.Bold,
                     color = planetColor
                 )
@@ -246,7 +254,8 @@ private fun KarakaCard(
                 // Karaka Type Name
                 Text(
                     text = karakaType.name.replace("_", " "),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -254,23 +263,27 @@ private fun KarakaCard(
                 // Planet & Sign
                 Text(
                     text = "${assignment.planet.getLocalizedName(language)} in ${assignment.sign.getLocalizedName(language)}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                     color = AppTheme.TextSecondary
                 )
 
                 // Degree
                 Text(
                     text = StringResources.get(StringKeyJaimini.DEGREE_LABEL, language, String.format("%.2f", assignment.degreeInSign)),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                     color = AppTheme.TextMuted
                 )
 
                 // Signification
                 Text(
                     text = karakaType.primarySignification,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                     color = planetColor,
-                    modifier = Modifier.padding(top = 4.dp)
+                    modifier = Modifier.padding(top = 4.dp),
+                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
             }
 
@@ -279,12 +292,13 @@ private fun KarakaCard(
                 modifier = Modifier
                     .size(32.dp)
                     .clip(CircleShape)
-                    .background(planetColor.copy(alpha = 0.2f)),
+                    .background(planetColor.copy(alpha = 0.15f)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = "${assignment.karakaType.rank}",
-                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Bold,
                     color = planetColor
                 )
@@ -306,7 +320,7 @@ private fun KarakamshaTab(
         // Karakamsha Card
         analysis.karakamsha?.let { karakamsha ->
             item {
-                HeaderCard(
+                HeaderCardSS(
                     title = StringResources.get(StringKeyJaimini.KARAKAMSHA_TITLE, language),
                     subtitle = StringResources.get(StringKeyJaimini.KARAKAMSHA_SUBTITLE, language),
                     icon = Icons.Outlined.Explore
@@ -314,14 +328,14 @@ private fun KarakamshaTab(
             }
 
             item {
-                KarakamshaDetailCard(karakamsha, language)
+                KarakamshaDetailCardSS(karakamsha, language)
             }
         }
 
         // Swamsha Card
         analysis.swamsha?.let { swamsha ->
             item {
-                HeaderCard(
+                HeaderCardSS(
                     title = StringResources.get(StringKeyJaimini.SWAMSHA_TITLE, language),
                     subtitle = StringResources.get(StringKeyJaimini.SWAMSHA_SUBTITLE, language),
                     icon = Icons.Outlined.SelfImprovement
@@ -329,21 +343,22 @@ private fun KarakamshaTab(
             }
 
             item {
-                SwamshaDetailCard(swamsha, language)
+                SwamshaDetailCardSS(swamsha, language)
             }
         }
     }
 }
 
 @Composable
-private fun KarakamshaDetailCard(
+private fun KarakamshaDetailCardSS(
     karakamsha: KarakamshaAnalysis,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -356,14 +371,15 @@ private fun KarakamshaDetailCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .size(56.dp)
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                         .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = karakamsha.karakamshaSign.getLocalizedName(language).take(2),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentPrimary
                     )
@@ -374,12 +390,14 @@ private fun KarakamshaDetailCard(
                 Column {
                     Text(
                         text = StringResources.get(StringKeyJaimini.SIGN_LABEL, language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = karakamsha.karakamshaSign.getLocalizedName(language),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -392,8 +410,10 @@ private fun KarakamshaDetailCard(
 
             // Indicators
             Text(
-                text = StringResources.get(StringKeyJaimini.LIFE_PATH_INDICATORS, language),
-                style = MaterialTheme.typography.titleSmall,
+                text = StringResources.get(StringKeyJaimini.LIFE_PATH_INDICATORS, language).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                letterSpacing = 2.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -434,14 +454,15 @@ private fun KarakamshaDetailCard(
 }
 
 @Composable
-private fun SwamshaDetailCard(
+private fun SwamshaDetailCardSS(
     swamsha: SwamshaAnalysis,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -453,14 +474,15 @@ private fun SwamshaDetailCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .size(56.dp)
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                         .background(AppTheme.LifeAreaSpiritual.copy(alpha = 0.15f)),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = swamsha.swamshaSign.getLocalizedName(language).take(2),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.LifeAreaSpiritual
                     )
@@ -471,12 +493,14 @@ private fun SwamshaDetailCard(
                 Column {
                     Text(
                         text = StringResources.get(StringKeyJaimini.SWAMSHA_LAGNA_LABEL, language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = swamsha.swamshaSign.getLocalizedName(language),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
@@ -488,7 +512,8 @@ private fun SwamshaDetailCard(
             // Interpretation
             Text(
                 text = swamsha.interpretation,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -516,7 +541,8 @@ private fun IndicatorSectionSS(
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelMedium,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color
             )
@@ -539,8 +565,10 @@ private fun IndicatorSectionSS(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = indicator,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 18.sp
                 )
             }
         }
@@ -558,7 +586,7 @@ private fun YogasTab(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            HeaderCard(
+            HeaderCardSS(
                 title = StringResources.get(StringKeyJaimini.YOGAS_TITLE, language),
                 subtitle = StringResources.get(StringKeyJaimini.YOGAS_SUBTITLE, language),
                 icon = Icons.Outlined.AutoAwesome
@@ -567,15 +595,16 @@ private fun YogasTab(
 
         if (analysis.karakenshiYogas.isEmpty()) {
             item {
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+                    shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                    color = AppTheme.CardBackground,
+                    border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(24.dp),
+                            .padding(32.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Icon(
@@ -584,10 +613,11 @@ private fun YogasTab(
                             tint = AppTheme.TextMuted,
                             modifier = Modifier.size(48.dp)
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = StringResources.get(StringKeyJaimini.NO_YOGAS_FOUND, language),
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                             color = AppTheme.TextMuted,
                             textAlign = TextAlign.Center
                         )
@@ -596,14 +626,14 @@ private fun YogasTab(
             }
         } else {
             items(analysis.karakenshiYogas) { yoga ->
-                KarakenshiYogaCard(yoga, language)
+                KarakenshiYogaCardSS(yoga, language)
             }
         }
     }
 }
 
 @Composable
-private fun KarakenshiYogaCard(
+private fun KarakenshiYogaCardSS(
     yoga: KarakenshiYoga,
     language: Language
 ) {
@@ -612,10 +642,11 @@ private fun KarakenshiYogaCard(
         else -> AppTheme.WarningColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -630,8 +661,8 @@ private fun KarakenshiYogaCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .size(40.dp)
-                            .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                            .size(44.dp)
+                            .clip(CircleShape)
                             .background(yogaColor.copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -648,13 +679,15 @@ private fun KarakenshiYogaCard(
                     Column {
                         Text(
                             text = yoga.name,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = StringResources.get(StringKeyJaimini.STRENGTH_LABEL, language, String.format("%.0f", yoga.strength * 100)),
-                            style = MaterialTheme.typography.bodySmall,
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -662,12 +695,13 @@ private fun KarakenshiYogaCard(
 
                 // Benefic/Malefic Badge
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = yogaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = if (yoga.isAuspicious) StringResources.get(StringKeyJaimini.YOGA_BENEFIC, language) else StringResources.get(StringKeyJaimini.YOGA_CHALLENGING, language),
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.SemiBold,
                         color = yogaColor,
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -680,7 +714,8 @@ private fun KarakenshiYogaCard(
             // Description
             Text(
                 text = yoga.effects,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -688,34 +723,20 @@ private fun KarakenshiYogaCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             // Involved Planets
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = StringResources.get(StringKeyJaimini.PLANETS_LABEL, language),
-                    style = MaterialTheme.typography.labelSmall,
+                    text = StringResources.get(StringKeyJaimini.PLANETS_LABEL, language).uppercase(),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                     color = AppTheme.TextMuted
                 )
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = yoga.involvedPlanets.joinToString(", ") { it.getLocalizedName(language) },
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     fontWeight = FontWeight.Medium,
-                    color = AppTheme.TextSecondary
-                )
-            }
-
-            // Results
-            if (yoga.effects.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = StringResources.get(StringKeyJaimini.RESULTS_LABEL, language),
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextMuted
-                )
-                Text(
-                    text = "\u2022 ${yoga.effects}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary,
-                    modifier = Modifier.padding(start = 8.dp, top = 2.dp)
+                    color = AppTheme.TextPrimary
                 )
             }
         }
@@ -730,10 +751,10 @@ private fun InterpretationTab(
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
-            HeaderCard(
+            HeaderCardSS(
                 title = StringResources.get(StringKeyJaimini.INTERP_TITLE, language),
                 subtitle = StringResources.get(StringKeyJaimini.INTERP_SUBTITLE, language),
                 icon = Icons.Outlined.Description
@@ -742,22 +763,29 @@ private fun InterpretationTab(
 
         // Full Interpretation
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                color = AppTheme.CardBackground,
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(20.dp)
                 ) {
-                    Text(
-                        text = analysis.keyInsights.joinToString("\n\n"),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 24.sp
-                    )
+                    analysis.keyInsights.forEach { insight ->
+                        Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.Top) {
+                            Text("\u2022", color = AppTheme.AccentGold, modifier = Modifier.padding(end = 12.dp))
+                            Text(
+                                text = insight,
+                                fontFamily = PoppinsFontFamily,
+                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                                color = AppTheme.TextSecondary,
+                                lineHeight = 24.sp
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -765,30 +793,31 @@ private fun InterpretationTab(
         // Atmakaraka Analysis (Soul's Direction)
         analysis.getAtmakaraka()?.let { ak ->
             item {
-                AtmakarakaAnalysisCard(ak, language)
+                AtmakarakaAnalysisCardSS(ak, language)
             }
         }
 
         // Gemstone Recommendations
         if (analysis.recommendations.isNotEmpty()) {
             item {
-                GemstoneRecommendationsCard(analysis.recommendations, language)
+                GemstoneRecommendationsCardSS(analysis.recommendations, language)
             }
         }
     }
 }
 
 @Composable
-private fun AtmakarakaAnalysisCard(
+private fun AtmakarakaAnalysisCardSS(
     ak: KarakaAssignment,
     language: Language
 ) {
     val planetColor = getPlanetColorSS(ak.planet)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -796,8 +825,10 @@ private fun AtmakarakaAnalysisCard(
                 .padding(20.dp)
         ) {
             Text(
-                text = StringResources.get(StringKeyJaimini.ATMAKARAKA_ANALYSIS_TITLE, language),
-                style = MaterialTheme.typography.titleMedium,
+                text = StringResources.get(StringKeyJaimini.ATMAKARAKA_ANALYSIS_TITLE, language).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                letterSpacing = 2.sp,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
@@ -809,14 +840,20 @@ private fun AtmakarakaAnalysisCard(
             ) {
                 Box(
                     modifier = Modifier
-                        .size(56.dp)
+                        .size(64.dp)
                         .clip(CircleShape)
-                        .background(planetColor.copy(alpha = 0.2f)),
+                        .background(
+                            Brush.radialGradient(
+                                listOf(planetColor.copy(alpha = 0.2f), planetColor.copy(alpha = 0.05f))
+                            )
+                        )
+                        .border(1.dp, planetColor.copy(alpha = 0.3f), CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = ak.planet.getLocalizedName(language).take(2),
-                        style = MaterialTheme.typography.titleMedium,
+                        text = ak.planet.symbol,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S24,
                         fontWeight = FontWeight.Bold,
                         color = planetColor
                     )
@@ -827,30 +864,34 @@ private fun AtmakarakaAnalysisCard(
                 Column {
                     Text(
                         text = StringResources.get(StringKeyJaimini.AK_SOUL_PLANET_LABEL, language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         color = AppTheme.TextMuted
                     )
                     Text(
                         text = ak.planet.getLocalizedName(language),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = planetColor
                     )
                     Text(
                         text = "in ${ak.sign.getLocalizedName(language)} at ${String.format("%.2f", ak.degreeInSign)}\u00B0",
-                        style = MaterialTheme.typography.bodySmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = AppTheme.TextSecondary
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
             HorizontalDivider(color = AppTheme.DividerColor)
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = StringResources.get(StringKeyJaimini.AK_DESC, language),
-                style = MaterialTheme.typography.bodySmall,
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -859,14 +900,15 @@ private fun AtmakarakaAnalysisCard(
 }
 
 @Composable
-private fun GemstoneRecommendationsCard(
+private fun GemstoneRecommendationsCardSS(
     recommendations: List<String>,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.CardBackground,
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -885,7 +927,8 @@ private fun GemstoneRecommendationsCard(
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = StringResources.get(StringKeyJaimini.GEMSTONE_REC_TITLE, language),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
@@ -898,17 +941,12 @@ private fun GemstoneRecommendationsCard(
                     modifier = Modifier.padding(bottom = 8.dp),
                     verticalAlignment = Alignment.Top
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .padding(top = 6.dp)
-                            .size(6.dp)
-                            .clip(CircleShape)
-                            .background(AppTheme.AccentGold)
-                    )
+                    Icon(Icons.Filled.Diamond, null, tint = AppTheme.AccentGold, modifier = Modifier.size(14.dp).padding(top = 4.dp))
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         text = recommendation,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -918,42 +956,51 @@ private fun GemstoneRecommendationsCard(
 }
 
 @Composable
-private fun HeaderCard(
+private fun HeaderCardSS(
     title: String,
     subtitle: String,
     icon: ImageVector
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-        )
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        color = AppTheme.AccentPrimary.copy(alpha = 0.08f),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = AppTheme.AccentPrimary,
-                modifier = Modifier.size(32.dp)
-            )
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(AppTheme.AccentPrimary.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = AppTheme.AccentPrimary,
+                    modifier = Modifier.size(28.dp)
+                )
+            }
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S17,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = AppTheme.TextSecondary
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    color = AppTheme.TextMuted
                 )
             }
         }
@@ -961,15 +1008,15 @@ private fun HeaderCard(
 }
 
 @Composable
-private fun InfoCard(
+private fun InfoCardSS(
     title: String,
     content: String,
     icon: ImageVector
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.ChipBackground)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        color = AppTheme.ChipBackground
     ) {
         Row(
             modifier = Modifier
@@ -987,12 +1034,15 @@ private fun InfoCard(
             Column {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                    fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     text = content,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1012,7 +1062,7 @@ private fun LoadingStateSS(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = StringResources.get(StringKeyJaimini.LOADING_JAIMINI, language),
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -1038,7 +1088,7 @@ private fun ErrorStateSS(message: String, modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = message,
-                style = MaterialTheme.typography.bodyMedium,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1061,8 +1111,3 @@ private fun getPlanetColorSS(planet: Planet): Color {
         else -> AppTheme.AccentPrimary
     }
 }
-
-
-
-
-

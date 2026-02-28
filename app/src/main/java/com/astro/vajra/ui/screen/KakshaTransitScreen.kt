@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -49,6 +49,11 @@ import com.astro.vajra.ui.viewmodel.KakshaTransitUiState
 import com.astro.vajra.ui.viewmodel.KakshaTransitViewModel
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import androidx.compose.foundation.BorderStroke
 
 /**
  * Kakshya Transit Analysis Screen
@@ -66,7 +71,6 @@ fun KakshaTransitScreen(
     val language = LocalLanguage.current
     val uiState by viewModel.uiState.collectAsState()
     val selectedTab by viewModel.selectedTab.collectAsState()
-    val colors = AppTheme.current
 
     LaunchedEffect(chart) {
         chart?.let {
@@ -75,14 +79,21 @@ fun KakshaTransitScreen(
     }
 
     Scaffold(
-        containerColor = colors.ScreenBackground,
+        containerColor = AppTheme.ScreenBackground,
         topBar = {
             NeoVedicPageHeader(
                 title = stringResource(StringKeyAdvanced.KAKSHYA_TITLE),
                 subtitle = stringResource(StringKeyAdvanced.KAKSHYA_SUBTITLE),
                 onBack = onBack,
-                actionIcon = Icons.Default.Refresh,
-                onAction = { chart?.let { viewModel.calculateKakshaTransits(it, language, true) } }
+                actions = {
+                    IconButton(onClick = { chart?.let { viewModel.calculateKakshaTransits(it, language, true) } }) {
+                        Icon(
+                            Icons.Default.Refresh,
+                            contentDescription = stringResource(StringKey.BTN_RETRY),
+                            tint = AppTheme.TextPrimary
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -125,19 +136,20 @@ private fun KakshaTabSelector(
     onTabSelected: (KakshaTab) -> Unit,
     language: Language
 ) {
-    val colors = AppTheme.current
+    val tabItems = KakshaTab.entries.map { tab ->
+        TabItem(
+            title = getTabTitle(tab, language),
+            accentColor = if (selectedTab == tab) AppTheme.AccentGold else Color.Unspecified
+        )
+    }
+
     ModernPillTabRow(
-        tabs = KakshaTab.entries.map { tab ->
-            TabItem(
-                title = getTabTitle(tab, language),
-                accentColor = if (selectedTab == tab) colors.AccentPrimary else Color.Unspecified
-            )
-        },
+        tabs = tabItems,
         selectedIndex = selectedTab.ordinal,
         onTabSelected = { index -> onTabSelected(KakshaTab.entries[index]) },
         modifier = Modifier.padding(
-            horizontal = com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding,
-            vertical = com.astro.vajra.ui.theme.NeoVedicTokens.SpaceXS
+            horizontal = NeoVedicTokens.ScreenPadding,
+            vertical = NeoVedicTokens.SpaceXS
         )
     )
 }
@@ -168,7 +180,6 @@ private fun CurrentKakshaTab(
     language: Language
 ) {
     val summary = viewModel.getSummary()
-    val colors = AppTheme.current
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -181,10 +192,13 @@ private fun CurrentKakshaTab(
 
         item {
             Text(
-                text = stringResource(StringKeyAdvanced.KAKSHYA_PLANET_POSITIONS),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = colors.TextPrimary
+                text = stringResource(StringKeyAdvanced.KAKSHYA_PLANET_POSITIONS).uppercase(),
+                fontFamily = SpaceGroteskFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                letterSpacing = 2.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextMuted,
+                modifier = Modifier.padding(bottom = 4.dp)
             )
         }
 
@@ -197,15 +211,15 @@ private fun CurrentKakshaTab(
 @Composable
 private fun KakshaSummaryCard(summary: com.astro.vajra.ui.viewmodel.KakshaSummary?, language: Language) {
     if (summary == null) return
-    val colors = AppTheme.current
     val qualityColor = getQualityColor(summary.overallQuality)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(20.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -214,12 +228,14 @@ private fun KakshaSummaryCard(summary: com.astro.vajra.ui.viewmodel.KakshaSummar
                 Column {
                     Text(
                         text = stringResource(StringKeyAdvanced.KAKSHYA_OVERALL_QUALITY),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = colors.TextMuted
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                        color = AppTheme.TextMuted
                     )
                     Text(
                         text = summary.overallQuality.getLocalizedName(language),
-                        style = MaterialTheme.typography.titleLarge,
+                        fontFamily = CinzelDecorativeFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
                         fontWeight = FontWeight.Bold,
                         color = qualityColor
                     )
@@ -228,23 +244,24 @@ private fun KakshaSummaryCard(summary: com.astro.vajra.ui.viewmodel.KakshaSummar
                 Box(contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
                         progress = { (summary.overallScore / 100).toFloat() },
-                        modifier = Modifier.size(60.dp),
+                        modifier = Modifier.size(64.dp),
                         color = qualityColor,
                         trackColor = qualityColor.copy(alpha = 0.1f),
-                        strokeWidth = 6.dp,
+                        strokeWidth = 8.dp,
                         strokeCap = StrokeCap.Round
                     )
                     Text(
                         text = "${summary.overallScore.toInt()}",
-                        style = MaterialTheme.typography.titleMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                         fontWeight = FontWeight.Bold,
-                        color = colors.TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                 }
             }
             
             Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider(color = colors.DividerColor)
+            HorizontalDivider(color = AppTheme.DividerColor)
             Spacer(modifier = Modifier.height(16.dp))
             
             Row(
@@ -254,22 +271,22 @@ private fun KakshaSummaryCard(summary: com.astro.vajra.ui.viewmodel.KakshaSummar
                 SummaryStat(
                     label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_EXCELLENT),
                     value = summary.excellentCount.toString(),
-                    color = colors.SuccessColor
+                    color = AppTheme.SuccessColor
                 )
                 SummaryStat(
                     label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_GOOD),
                     value = summary.goodCount.toString(),
-                    color = colors.AccentTeal
+                    color = AppTheme.AccentTeal
                 )
                 SummaryStat(
                     label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_MODERATE),
                     value = summary.moderateCount.toString(),
-                    color = colors.AccentGold
+                    color = AppTheme.AccentGold
                 )
                 SummaryStat(
                     label = stringResource(StringKeyAdvanced.KAKSHYA_QUALITY_POOR),
                     value = summary.poorCount.toString(),
-                    color = colors.ErrorColor
+                    color = AppTheme.ErrorColor
                 )
             }
         }
@@ -278,31 +295,33 @@ private fun KakshaSummaryCard(summary: com.astro.vajra.ui.viewmodel.KakshaSummar
 
 @Composable
 private fun SummaryStat(label: String, value: String, color: Color) {
-    val colors = AppTheme.current
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
-            style = MaterialTheme.typography.titleMedium,
+            fontFamily = SpaceGroteskFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = colors.TextMuted
+            fontFamily = PoppinsFontFamily,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+            color = AppTheme.TextMuted,
+            textAlign = TextAlign.Center
         )
     }
 }
 
 @Composable
 private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosition, language: Language) {
-    val colors = AppTheme.current
     val qualityColor = getQualityColor(position.quality)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -311,51 +330,55 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Surface(
-                        modifier = Modifier.size(40.dp),
-                        shape = CircleShape,
-                        color = colors.AccentPrimary.copy(alpha = 0.1f)
+                    Box(
+                        modifier = Modifier
+                            .size(40.dp)
+                            .clip(CircleShape)
+                            .background(AppTheme.getPlanetColor(position.planet).copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text(
-                                text = position.planet.symbol,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = colors.AccentPrimary
-                            )
-                        }
+                        Text(
+                            text = position.planet.symbol,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.getPlanetColor(position.planet)
+                        )
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
                             text = position.planet.getLocalizedName(language),
-                            style = MaterialTheme.typography.titleMedium,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                             fontWeight = FontWeight.Bold,
-                            color = colors.TextPrimary
+                            color = AppTheme.TextPrimary
                         )
                         Text(
-                            text = position.sign.displayName + stringResource(StringKeyUIExtra.PAREN_START) + position.degreeInSign.toInt() + stringResource(StringKeyUIExtra.DEGREE) + ((position.degreeInSign % 1) * 60).toInt() + stringResource(StringKeyUIExtra.ARC_MINUTE) + stringResource(StringKeyUIExtra.PAREN_END),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = colors.TextMuted
+                            text = position.sign.getLocalizedName(language) + " (${position.degreeInSign.toInt()}\u00B0" + ((position.degreeInSign % 1) * 60).toInt() + "')",
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            color = AppTheme.TextMuted
                         )
                     }
                 }
                 
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    color = qualityColor.copy(alpha = 0.1f)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                    color = qualityColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = position.quality.getLocalizedName(language),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.Bold,
                         color = qualityColor,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                     )
                 }
             }
             
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -365,42 +388,48 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
                 Column {
                     Text(
                         text = stringResource(StringKeyAdvanced.KAKSHYA_LORD),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = colors.TextMuted
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                        color = AppTheme.TextMuted
                     )
                     Text(
                         text = position.kakshaLord,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
-                        color = colors.TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                 }
                 
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "BAV",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = colors.TextMuted
+                        text = stringResource(StringKeyAdvanced.ASHTAVARGA_BAV_TITLE),
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                        color = AppTheme.TextMuted
                     )
                     Text(
                         text = "${position.bavScore}/8",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
-                        color = if (position.hasBinbu) colors.SuccessColor else colors.TextPrimary
+                        color = if (position.hasBinbu) AppTheme.SuccessColor else AppTheme.TextPrimary
                     )
                 }
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         text = stringResource(StringKeyAdvanced.KAKSHYA_NEXT),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = colors.TextMuted
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                        color = AppTheme.TextMuted
                     )
                     Text(
                         text = "${position.timeToNextKaksha}h",
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Medium,
-                        color = colors.AccentPrimary
+                        color = AppTheme.AccentPrimary
                     )
                 }
             }
@@ -409,14 +438,16 @@ private fun KakshaPlanetCard(position: KakshaTransitCalculator.KakshaPlanetPosit
             
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                color = colors.ScreenBackground.copy(alpha = 0.5f)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                color = AppTheme.CardBackgroundElevated
             ) {
                 Text(
                     text = if (language == Language.NEPALI) position.interpretationNe else position.interpretation,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colors.TextSecondary,
-                    modifier = Modifier.padding(12.dp)
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    color = AppTheme.TextSecondary,
+                    modifier = Modifier.padding(12.dp),
+                    lineHeight = 18.sp
                 )
             }
         }
@@ -430,26 +461,25 @@ private fun PlanetsKakshaTab(
     language: Language
 ) {
     val selectedPlanet by viewModel.selectedPlanet.collectAsState()
-    val colors = AppTheme.current
 
     Column(modifier = Modifier.fillMaxSize()) {
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(result.currentPositions) { pos ->
                 com.astro.vajra.ui.components.common.NeoVedicChoicePill(
                     selected = selectedPlanet == pos.planet,
                     onClick = { viewModel.selectPlanet(if (selectedPlanet == pos.planet) null else pos.planet) },
-                    label = { Text(pos.planet.getLocalizedName(language)) },
+                    label = { Text(pos.planet.getLocalizedName(language), fontFamily = SpaceGroteskFamily) },
                     leadingIcon = if (selectedPlanet == pos.planet) {
                         { Icon(Icons.Default.Check, null, modifier = Modifier.size(16.dp)) }
                     } else null,
                     colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = colors.AccentPrimary,
-                        selectedLabelColor = Color.White
+                        selectedContainerColor = AppTheme.AccentPrimary.copy(alpha = 0.2f),
+                        selectedLabelColor = AppTheme.AccentPrimary
                     )
                 )
             }
@@ -472,10 +502,12 @@ private fun PlanetsKakshaTab(
                 if (favorable.isNotEmpty()) {
                     item {
                         Text(
-                            text = stringResource(StringKeyAdvanced.KAKSHYA_UPCOMING_FAVORABLE),
-                            style = MaterialTheme.typography.titleSmall,
+                            text = stringResource(StringKeyAdvanced.KAKSHYA_UPCOMING_FAVORABLE).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                            letterSpacing = 1.5.sp,
                             fontWeight = FontWeight.Bold,
-                            color = colors.TextPrimary
+                            color = AppTheme.SuccessColor
                         )
                     }
                     items(favorable) { period ->
@@ -486,10 +518,12 @@ private fun PlanetsKakshaTab(
                 if (changes.isNotEmpty()) {
                     item {
                         Text(
-                            text = stringResource(StringKeyAdvanced.KAKSHYA_UPCOMING_CHANGES),
-                            style = MaterialTheme.typography.titleSmall,
+                            text = stringResource(StringKeyAdvanced.KAKSHYA_UPCOMING_CHANGES).uppercase(),
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                            letterSpacing = 1.5.sp,
                             fontWeight = FontWeight.Bold,
-                            color = colors.TextPrimary
+                            color = AppTheme.AccentPrimary
                         )
                     }
                     items(changes) { change ->
@@ -504,13 +538,14 @@ private fun PlanetsKakshaTab(
                         imageVector = Icons.Outlined.Public,
                         contentDescription = null,
                         modifier = Modifier.size(64.dp),
-                        tint = colors.TextMuted
+                        tint = AppTheme.TextMuted
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = stringResource(StringKeyAdvanced.KAKSHYA_SELECT_PLANET),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = colors.TextMuted
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                        color = AppTheme.TextMuted
                     )
                 }
             }
@@ -520,13 +555,13 @@ private fun PlanetsKakshaTab(
 
 @Composable
 private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaPeriod, language: Language) {
-    val colors = AppTheme.current
     val dateFormatter = kakshaDateTimeFormatter(language)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = colors.SuccessColor.copy(alpha = 0.05f))
+        color = AppTheme.SuccessColor.copy(alpha = 0.05f),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -538,26 +573,28 @@ private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaP
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
-                        tint = colors.AccentGold,
+                        tint = AppTheme.AccentGold,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = period.kakshaLord,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
-                        color = colors.TextPrimary
+                        color = AppTheme.TextPrimary
                     )
                 }
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    color = colors.SuccessColor.copy(alpha = 0.1f)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                    color = AppTheme.SuccessColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = "BAV: ${period.bavScore}",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Bold,
-                        color = colors.SuccessColor,
+                        color = AppTheme.SuccessColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                     )
                 }
@@ -569,14 +606,15 @@ private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaP
                 Icon(
                     imageVector = Icons.Default.Schedule,
                     contentDescription = null,
-                    tint = colors.TextMuted,
+                    tint = AppTheme.TextMuted,
                     modifier = Modifier.size(14.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = "${period.startTime.format(dateFormatter)} - ${period.endTime.format(dateFormatter)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colors.TextMuted
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    color = AppTheme.TextMuted
                 )
             }
             
@@ -584,8 +622,10 @@ private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaP
             
             Text(
                 text = if (language == Language.NEPALI) period.descriptionNe else period.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = colors.TextSecondary
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                color = AppTheme.TextSecondary,
+                lineHeight = 18.sp
             )
         }
     }
@@ -593,13 +633,13 @@ private fun FavorablePeriodItem(period: KakshaTransitCalculator.FavorableKakshaP
 
 @Composable
 private fun KakshaChangeItem(change: KakshaTransitCalculator.KakshaChange, language: Language) {
-    val colors = AppTheme.current
     val dateFormatter = kakshaDateTimeFormatter(language)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -609,46 +649,51 @@ private fun KakshaChangeItem(change: KakshaTransitCalculator.KakshaChange, langu
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "Kakshya ${change.currentKaksha}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = colors.TextMuted
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                        color = AppTheme.TextMuted
                     )
                     Icon(
                         imageVector = Icons.Default.ArrowForward,
                         contentDescription = null,
                         modifier = Modifier.size(14.dp).padding(horizontal = 4.dp),
-                        tint = colors.TextMuted
+                        tint = AppTheme.TextMuted
                     )
                     Text(
                         text = change.nextKakshaLord,
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
                         fontWeight = FontWeight.Bold,
-                        color = colors.AccentPrimary
+                        color = AppTheme.AccentPrimary
                     )
                 }
                 Text(
                     text = change.expectedTime.format(dateFormatter),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colors.TextMuted
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                    color = AppTheme.TextMuted
                 )
             }
             
             Column(horizontalAlignment = Alignment.End) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    color = if (change.willHaveBindu) colors.SuccessColor.copy(alpha = 0.1f) else colors.ErrorColor.copy(alpha = 0.1f)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                    color = if (change.willHaveBindu) AppTheme.SuccessColor.copy(alpha = 0.15f) else AppTheme.ErrorColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = if (change.willHaveBindu) "Bindu +" else "Bindu -",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
                         fontWeight = FontWeight.Bold,
-                        color = if (change.willHaveBindu) colors.SuccessColor else colors.ErrorColor,
+                        color = if (change.willHaveBindu) AppTheme.SuccessColor else AppTheme.ErrorColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                     )
                 }
                 Text(
                     text = "in ${change.hoursFromNow}h",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = colors.TextMuted
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    color = AppTheme.TextMuted
                 )
             }
         }
@@ -660,14 +705,13 @@ private fun TimelineKakshaTab(
     result: KakshaTransitCalculator.KakshaTransitResult,
     language: Language
 ) {
-    val colors = AppTheme.current
-    
     if (result.upcomingChanges.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
                 text = stringResource(StringKeyAdvanced.KAKSHYA_NO_CHANGES),
-                style = MaterialTheme.typography.bodyMedium,
-                color = colors.TextMuted
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                color = AppTheme.TextMuted
             )
         }
         return
@@ -679,41 +723,46 @@ private fun TimelineKakshaTab(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(result.upcomingChanges) { change ->
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Surface(
-                        modifier = Modifier.size(40.dp),
-                        shape = CircleShape,
-                        color = colors.AccentPrimary.copy(alpha = 0.1f)
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(CircleShape)
+                            .background(AppTheme.getPlanetColor(change.planet).copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Text(
-                                text = change.planet.symbol,
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = colors.AccentPrimary
-                            )
-                        }
+                        Text(
+                            text = change.planet.symbol,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18,
+                            fontWeight = FontWeight.Bold,
+                            color = AppTheme.getPlanetColor(change.planet)
+                        )
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = if (language == Language.NEPALI) change.impactDescriptionNe else change.impactDescription,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                             fontWeight = FontWeight.Medium,
-                            color = colors.TextPrimary
+                            color = AppTheme.TextPrimary,
+                            lineHeight = 18.sp
                         )
                         Text(
                             text = change.expectedTime.format(kakshaDateTimeFormatter(language)),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = colors.TextMuted
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                            color = AppTheme.TextMuted
                         )
                     }
                 }
@@ -727,14 +776,13 @@ private fun FavorableKakshaTab(
     result: KakshaTransitCalculator.KakshaTransitResult,
     language: Language
 ) {
-    val colors = AppTheme.current
-
     if (result.favorablePeriods.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
                 text = stringResource(StringKeyAdvanced.KAKSHYA_NO_FAVORABLE),
-                style = MaterialTheme.typography.bodyMedium,
-                color = colors.TextMuted
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                color = AppTheme.TextMuted
             )
         }
         return
@@ -746,28 +794,30 @@ private fun FavorableKakshaTab(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(result.favorablePeriods) { period ->
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(containerColor = colors.CardBackground)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Surface(
                             modifier = Modifier.size(32.dp),
                             shape = CircleShape,
-                            color = colors.AccentGold.copy(alpha = 0.1f)
+                            color = AppTheme.AccentGold.copy(alpha = 0.15f)
                         ) {
                             Box(contentAlignment = Alignment.Center) {
-                                Icon(Icons.Default.Star, null, tint = colors.AccentGold, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.Star, null, tint = AppTheme.AccentGold, modifier = Modifier.size(16.dp))
                             }
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
                             text = "${period.planet.getLocalizedName(language)} in ${period.kakshaLord} Kakshya",
-                            style = MaterialTheme.typography.titleSmall,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                             fontWeight = FontWeight.Bold,
-                            color = colors.TextPrimary
+                            color = AppTheme.TextPrimary
                         )
                     }
                     
@@ -775,19 +825,22 @@ private fun FavorableKakshaTab(
                     
                     Text(
                         text = if (language == Language.NEPALI) period.descriptionNe else period.description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = colors.TextSecondary
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 20.sp
                     )
                     
                     Spacer(modifier = Modifier.height(12.dp))
                     
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Schedule, null, tint = colors.TextMuted, modifier = Modifier.size(14.dp))
+                        Icon(Icons.Default.Schedule, null, tint = AppTheme.TextMuted, modifier = Modifier.size(14.dp))
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "${period.startTime.format(kakshaMonthDayFormatter(language))} - ${period.endTime.format(kakshaMonthDayFormatter(language))} (${period.duration/24} days)",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = colors.TextMuted
+                            fontFamily = SpaceGroteskFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            color = AppTheme.TextMuted
                         )
                     }
                 }
@@ -799,21 +852,20 @@ private fun FavorableKakshaTab(
 @Composable
 private fun KakshaLoadingContent(modifier: Modifier = Modifier) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator(color = AppTheme.current.AccentPrimary)
+        CircularProgressIndicator(color = AppTheme.AccentPrimary)
     }
 }
 
 @Composable
 private fun KakshaErrorContent(message: String, modifier: Modifier = Modifier, onRetry: () -> Unit) {
-    val colors = AppTheme.current
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(Icons.Default.Error, null, tint = colors.ErrorColor, modifier = Modifier.size(48.dp))
+            Icon(Icons.Default.Error, null, tint = AppTheme.ErrorColor, modifier = Modifier.size(48.dp))
             Spacer(modifier = Modifier.height(16.dp))
-            Text(text = message, color = colors.TextPrimary, textAlign = TextAlign.Center)
+            Text(text = message, fontFamily = PoppinsFontFamily, color = AppTheme.TextPrimary, textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = onRetry) {
-                Text(text = stringResource(StringKey.BTN_RETRY))
+                Text(text = stringResource(StringKey.BTN_RETRY), fontFamily = SpaceGroteskFamily)
             }
         }
     }
@@ -822,13 +874,8 @@ private fun KakshaErrorContent(message: String, modifier: Modifier = Modifier, o
 private fun getQualityColor(quality: KakshaQuality): Color {
     return when (quality) {
         KakshaQuality.EXCELLENT -> com.astro.vajra.ui.theme.SuccessDark
-        KakshaQuality.GOOD -> com.astro.vajra.ui.theme.PlanetSaturn
-        KakshaQuality.MODERATE -> com.astro.vajra.ui.theme.WarningDark
-        KakshaQuality.POOR -> com.astro.vajra.ui.theme.MarsRed
+        KakshaQuality.GOOD -> AppTheme.PlanetSaturn
+        KakshaQuality.MODERATE -> AppTheme.AccentGold
+        KakshaQuality.POOR -> AppTheme.ErrorColor
     }
 }
-
-
-
-
-
