@@ -1598,10 +1598,11 @@ private fun AshtamangalaInfoDialog(onDismiss: () -> Unit) {
             )
         },
         text = {
-            LazyColumn(
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                item {
+                Column {
                     Text(
                         text = stringResource(StringKeyAshtamangala.INFO_DESC),
                         style = MaterialTheme.typography.bodySmall,
@@ -1610,7 +1611,7 @@ private fun AshtamangalaInfoDialog(onDismiss: () -> Unit) {
                     )
                 }
 
-                item {
+                Column {
                     Text(
                         text = stringResource(StringKeyAshtamangala.THE_EIGHT_POSITIONS),
                         style = MaterialTheme.typography.titleSmall,
@@ -1636,7 +1637,7 @@ private fun AshtamangalaInfoDialog(onDismiss: () -> Unit) {
                     }
                 }
 
-                item {
+                Column {
                     Text(
                         text = stringResource(StringKeyAshtamangala.INFO_VEDIC_REF),
                         style = MaterialTheme.typography.labelSmall,

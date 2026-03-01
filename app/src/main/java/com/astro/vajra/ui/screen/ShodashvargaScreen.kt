@@ -1409,27 +1409,25 @@ private fun ShodashvargaInfoDialog(onDismiss: () -> Unit) {
             )
         },
         text = {
-            LazyColumn {
-                item {
-                    Text(
-                        stringResource(StringKeyDosha.SHODASHVARGA_ABOUT_DESC),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = AppTheme.TextSecondary
-                    )
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                Text(
+                    stringResource(StringKeyDosha.SHODASHVARGA_ABOUT_DESC),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = AppTheme.TextSecondary
+                )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                    Text(
-                        stringResource(StringKeyDosha.SHODASHVARGA_16_DIAGRAMS_HEADER),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = AppTheme.TextPrimary
-                    )
+                Text(
+                    stringResource(StringKeyDosha.SHODASHVARGA_16_DIAGRAMS_HEADER),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
 
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
+                Spacer(modifier = Modifier.height(8.dp))
 
-                items(VargaType.entries.toList()) { varga ->
+                VargaType.entries.forEach { varga ->
                     Row(
                         modifier = Modifier.padding(vertical = 4.dp),
                         verticalAlignment = Alignment.Top

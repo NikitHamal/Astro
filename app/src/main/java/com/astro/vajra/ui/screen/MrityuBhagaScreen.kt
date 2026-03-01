@@ -869,26 +869,23 @@ private fun PushkaraBhagaCard(result: PushkaraBhagaResult, language: Language) {
 
 @Composable
 private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Language) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        item {
-            Text(
-                stringResource(StringKeyDosha.MRITYU_BHAGA_ALL_SIGNS),
-                fontFamily = CinzelDecorativeFamily,
-                fontWeight = FontWeight.Bold,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
-                color = AppTheme.TextPrimary,
-                modifier = Modifier.padding(bottom = 8.dp)
-            )
-        }
+        Text(
+            stringResource(StringKeyDosha.MRITYU_BHAGA_ALL_SIGNS),
+            fontFamily = CinzelDecorativeFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+            color = AppTheme.TextPrimary,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
 
         // Group by planet
         val planetGroups = analysis.mrityuBhagaAnalysis.groupBy { it.planet }
 
-        items(planetGroups.entries.toList()) { (planet, results) ->
+        planetGroups.entries.forEach { (planet, results) ->
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardBackground,
@@ -963,59 +960,56 @@ private fun SignDegreesTab(analysis: SensitiveDegreesAnalysis, language: Languag
 
 @Composable
 private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp),
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // General Recommendations
-        item {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = AppTheme.CardBackground,
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        ) {
+            Column(modifier = Modifier.padding(20.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Filled.Lightbulb,
+                        contentDescription = null,
+                        tint = AppTheme.AccentGold,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
+                        fontFamily = CinzelDecorativeFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                        color = AppTheme.TextPrimary
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                analysis.recommendations.forEach { recommendation ->
+                    Row(
+                        modifier = Modifier.padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.Top
+                    ) {
                         Icon(
-                            Icons.Filled.Lightbulb,
+                            Icons.Filled.Check,
                             contentDescription = null,
-                            tint = AppTheme.AccentGold,
-                            modifier = Modifier.size(24.dp)
+                            tint = AppTheme.SuccessColor,
+                            modifier = Modifier.size(16.dp)
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
-                            stringResource(StringKeyDosha.SCREEN_RECOMMENDATIONS),
-                            fontFamily = CinzelDecorativeFamily,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
-                            color = AppTheme.TextPrimary
+                            recommendation,
+                            fontFamily = PoppinsFontFamily,
+                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                            color = AppTheme.TextSecondary,
+                            lineHeight = 20.sp
                         )
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    analysis.recommendations.forEach { recommendation ->
-                        Row(
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            verticalAlignment = Alignment.Top
-                        ) {
-                            Icon(
-                                Icons.Filled.Check,
-                                contentDescription = null,
-                                tint = AppTheme.SuccessColor,
-                                modifier = Modifier.size(16.dp)
-                            )
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(
-                                recommendation,
-                                fontFamily = PoppinsFontFamily,
-                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
-                                color = AppTheme.TextSecondary,
-                                lineHeight = 20.sp
-                            )
-                        }
                     }
                 }
             }
@@ -1025,18 +1019,16 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         val criticalPlanets = analysis.mrityuBhagaAnalysis.filter { it.isInMrityuBhaga }
 
         if (criticalPlanets.isNotEmpty()) {
-            item {
-                Text(
-                    stringResource(StringKeyFinder.LABEL_PLANET_SPEC_REM),
-                    fontFamily = CinzelDecorativeFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
-                    color = AppTheme.TextPrimary,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
+            Text(
+                stringResource(StringKeyFinder.LABEL_PLANET_SPEC_REM),
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                color = AppTheme.TextPrimary,
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
-            items(criticalPlanets) { result ->
+            criticalPlanets.forEach { result ->
                 if (result.remedies.isNotEmpty()) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
@@ -1098,18 +1090,16 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         val gandantaPlanets = analysis.gandantaAnalysis.filter { it.isInGandanta }
 
         if (gandantaPlanets.isNotEmpty()) {
-            item {
-                Text(
-                    stringResource(StringKeyFinder.LABEL_GAND_REM),
-                    fontFamily = CinzelDecorativeFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
-                    color = AppTheme.TextPrimary,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
+            Text(
+                stringResource(StringKeyFinder.LABEL_GAND_REM),
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.Bold,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                color = AppTheme.TextPrimary,
+                modifier = Modifier.padding(top = 8.dp)
+            )
 
-            items(gandantaPlanets) { result ->
+            gandantaPlanets.forEach { result ->
                 if (result.remedies.isNotEmpty()) {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
@@ -1208,6 +1198,7 @@ private fun MrityuBhagaInfoDialog(onDismiss: () -> Unit) {
                 color = AppTheme.TextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S18
             )
         },
             text = {

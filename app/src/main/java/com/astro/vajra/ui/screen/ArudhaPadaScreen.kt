@@ -1236,10 +1236,11 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
             )
         },
         text = {
-            LazyColumn(
+            Column(
+                modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                item {
+                Column {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_WHAT_IS_TITLE),
                         fontFamily = CinzelDecorativeFamily,
@@ -1255,7 +1256,7 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                     )
                 }
 
-                item {
+                Column {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_KEY_ARUDHAS_TITLE),
                         fontFamily = CinzelDecorativeFamily,
@@ -1290,7 +1291,7 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                     }
                 }
 
-                item {
+                Column {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_CALC_METHOD_TITLE),
                         fontFamily = CinzelDecorativeFamily,
@@ -1306,7 +1307,7 @@ private fun ArudhaPadaInfoDialog(onDismiss: () -> Unit) {
                     )
                 }
 
-                item {
+                Column {
                     Text(
                         text = stringResource(StringKeyDosha.ARUDHA_REFERENCES_TITLE),
                         fontFamily = CinzelDecorativeFamily,
