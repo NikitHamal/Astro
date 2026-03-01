@@ -245,9 +245,10 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
         BadhakaCalculator.SignModality.DUAL -> AppTheme.AccentTeal
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = modalityColor.copy(alpha = 0.1f)),
+        color = modalityColor.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, modalityColor.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
@@ -374,9 +375,10 @@ private fun BadhakaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
@@ -404,9 +406,10 @@ private fun BadhakaStatCard(
 
 @Composable
 private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -511,11 +514,12 @@ private fun BadhakaPlanetCard(
         BadhakaCalculator.BadhakaSeverity.NONE -> AppTheme.TextMuted
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -636,9 +640,10 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Affected Life Areas Card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -677,9 +682,10 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
 
         // Primary Obstacles Card (Replaces Obstacle Nature)
         if (analysis.primaryObstacles.isNotEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -794,9 +800,10 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.dashaPeriods.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
+                color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
@@ -822,9 +829,10 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                 }
             }
         } else {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -917,9 +925,10 @@ private fun BadhakaRemediesSection(analysis: BadhakaCalculator.BadhakaAnalysis) 
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.remedies.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
@@ -967,9 +976,10 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
         else -> AppTheme.TextSecondary
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

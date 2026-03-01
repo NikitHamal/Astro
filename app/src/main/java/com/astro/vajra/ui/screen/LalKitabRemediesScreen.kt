@@ -307,11 +307,10 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
     ) {
         // System Note Banner
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.InfoColor.copy(alpha = 0.1f)
-                ),
+                color = AppTheme.InfoColor.copy(alpha = 0.1f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.InfoColor.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Row(
@@ -417,11 +416,12 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
         AfflictionType.NONE -> stringResource(StringKeyDosha.LAL_KITAB_AFFLICTION_GENERAL)
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -542,11 +542,10 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
 
 @Composable
 private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.SuccessColor.copy(alpha = 0.05f)
-        ),
+        color = AppTheme.SuccessColor.copy(alpha = 0.05f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -619,9 +618,10 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
 
 @Composable
 private fun GeneralRecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -671,11 +671,10 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
     ) {
         // Introduction Card
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.08f)
-                ),
+                color = AppTheme.AccentPrimary.copy(alpha = 0.08f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.AccentPrimary.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
@@ -703,11 +702,10 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
             }
         } else {
             item {
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
-                    ),
+                    color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
                     shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
@@ -756,11 +754,12 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
         DebtType.KANYA_RIN -> Triple(Icons.Filled.ChildCare, AppTheme.AccentPrimary, stringResource(StringKeyDosha.LAL_KITAB_DEBT_KANYA))
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { expanded = !expanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -902,9 +901,10 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
 
 @Composable
 private fun DebtTypesReferenceCard() {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -986,9 +986,10 @@ private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: Language) {
 
 @Composable
 private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -1101,9 +1102,10 @@ private fun ColorDirectionTab(analysis: LalKitabAnalysis, language: Language) {
 
 @Composable
 private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1200,9 +1202,10 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
 
 @Composable
 private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

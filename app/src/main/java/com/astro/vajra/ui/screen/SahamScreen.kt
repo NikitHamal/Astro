@@ -250,9 +250,10 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
         else -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = scoreColor.copy(alpha = 0.1f)),
+        color = scoreColor.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, scoreColor.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
@@ -377,9 +378,10 @@ private fun SahamStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
@@ -407,9 +409,10 @@ private fun SahamStatCard(
 
 @Composable
 private fun SahamBirthTypeCard(isDayBirth: Boolean) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -452,9 +455,10 @@ private fun SahamBirthTypeCard(isDayBirth: Boolean) {
 
 @Composable
 private fun SahamInsightsCard(insights: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -496,9 +500,10 @@ private fun SahamInsightsCard(insights: List<String>) {
 
 @Composable
 private fun SahamRecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -550,9 +555,10 @@ private fun SahamListSection(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (sahams.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
@@ -589,11 +595,12 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
         SahamCalculator.SahamStrength.AFFLICTED -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -885,11 +892,12 @@ private fun SahamEmptyContent(modifier: Modifier = Modifier) {
 @Composable
 private fun SahamInfoDialog(onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
-        Card(
+        Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(20.dp)) {

@@ -1011,14 +1011,15 @@ private fun GunaSummaryHeader(result: MatchmakingResult) {
     val positiveCount = result.gunaAnalyses.count { it.isPositive }
     val totalCount = result.gunaAnalyses.size
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(
                 horizontal = com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding,
                 vertical = com.astro.vajra.ui.theme.NeoVedicTokens.SpaceXS
             ),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)),
+        color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.AccentPrimary.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(

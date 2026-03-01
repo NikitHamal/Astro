@@ -76,11 +76,11 @@ import kotlinx.coroutines.delay
  */
 fun getRatingColor(rating: CompatibilityRating): Color {
     return when (rating) {
-        CompatibilityRating.EXCELLENT -> com.astro.vajra.ui.theme.SuccessDark
-        CompatibilityRating.GOOD -> com.astro.vajra.ui.theme.SuccessDark
-        CompatibilityRating.AVERAGE -> com.astro.vajra.ui.theme.WarningDark
-        CompatibilityRating.BELOW_AVERAGE -> com.astro.vajra.ui.theme.WarningDark
-        CompatibilityRating.POOR -> com.astro.vajra.ui.theme.MarsRed
+        CompatibilityRating.EXCELLENT -> AppTheme.SuccessColor
+        CompatibilityRating.GOOD -> AppTheme.SuccessColor
+        CompatibilityRating.AVERAGE -> AppTheme.WarningColor
+        CompatibilityRating.BELOW_AVERAGE -> AppTheme.WarningColor
+        CompatibilityRating.POOR -> AppTheme.ErrorColor
     }
 }
 
@@ -134,7 +134,7 @@ fun getManglikSeverityColor(dosha: ManglikDosha): Color {
         ManglikDosha.NONE -> AppTheme.SuccessColor
         ManglikDosha.PARTIAL -> AppTheme.WarningColor
         ManglikDosha.FULL -> AppTheme.ErrorColor
-        ManglikDosha.DOUBLE -> com.astro.vajra.ui.theme.MarsRedDark // Dark red for severe
+        ManglikDosha.DOUBLE -> AppTheme.ErrorColor // Dark red for severe
     }
 }
 
@@ -160,7 +160,7 @@ fun ProfileCard(
         label = "scale"
     )
 
-    Card(
+    Surface(
         modifier = modifier
             .scale(scale)
             .clickable(
@@ -168,9 +168,7 @@ fun ProfileCard(
                 indication = null,
                 onClick = onClick
             ),
-        colors = CardDefaults.cardColors(
-            containerColor = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground
-        ),
+        color = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = if (chart != null) null else androidx.compose.foundation.BorderStroke(
             1.dp, AppTheme.BorderColor.copy(alpha = 0.5f)
@@ -289,13 +287,13 @@ fun CompatibilityScoreCard(
     result: MatchmakingResult,
     animatedProgress: Float
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor)
     ) {
         Box(
             modifier = Modifier
@@ -696,13 +694,12 @@ fun ErrorCard(
     error: String,
     onRetry: () -> Unit
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.ErrorColor.copy(alpha = 0.08f)
-        ),
+        color = AppTheme.ErrorColor.copy(alpha = 0.08f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.ErrorColor.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -749,11 +746,12 @@ fun ManglikPersonCard(
     label: String,
     accentColor: Color
 ) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {

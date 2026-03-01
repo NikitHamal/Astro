@@ -330,11 +330,12 @@ private fun OverviewTab(
 
 @Composable
 private fun SummaryCard(result: RemediesResult) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
@@ -485,11 +486,12 @@ private fun StatItem(
 
 @Composable
 private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -573,11 +575,12 @@ private fun EssentialRemediesPreview(result: RemediesResult) {
 
     if (essentialRemedies.isEmpty()) return
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -673,11 +676,12 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
         }
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -772,11 +776,12 @@ private fun WeekDayChip(
 @Composable
 private fun LifeAreaFocusCard(lifeAreaFocus: Map<LifeArea, List<Remedy>>) {
     val language = LocalLanguage.current
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -841,11 +846,12 @@ private fun LifeAreaRow(area: LifeArea, remedyCount: Int, language: Language) {
 
 @Composable
 private fun GeneralRecommendationsCard(recommendations: List<String>) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.InfoColor.copy(alpha = 0.1f)),
+        color = AppTheme.InfoColor.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.InfoColor.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1060,7 +1066,7 @@ private fun RemedyCard(
         label = "ChevronRotation"
     )
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
@@ -1069,7 +1075,8 @@ private fun RemedyCard(
                 indication = null,
                 onClick = onExpand
             ),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1396,11 +1403,12 @@ private fun PlanetAnalysisCard(analysis: PlanetaryAnalysis) {
         label = "StrengthAnimation"
     )
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

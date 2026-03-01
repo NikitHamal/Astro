@@ -739,11 +739,12 @@ private fun ChartSelectionSection(
 ) {
     val hasSelection = chart1 != null || chart2 != null
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
@@ -880,7 +881,7 @@ private fun SynastryChartCard(
         label = "scale"
     )
 
-    Card(
+    Surface(
         modifier = modifier
             .scale(scale)
             .clickable(
@@ -888,9 +889,7 @@ private fun SynastryChartCard(
                 indication = null,
                 onClick = onClick
             ),
-        colors = CardDefaults.cardColors(
-            containerColor = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground
-        ),
+        color = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = if (chart != null)
             androidx.compose.foundation.BorderStroke(1.5.dp, color.copy(alpha = 0.3f))
@@ -998,9 +997,10 @@ private fun SynastryOverviewTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Overall Score Card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(
@@ -1098,9 +1098,10 @@ private fun SynastryOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Compatibility categories
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -1119,9 +1120,10 @@ private fun SynastryOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Aspect summary
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -1156,9 +1158,10 @@ private fun SynastryOverviewTab(
         if (result.keyFindings.isNotEmpty()) {
             Spacer(modifier = Modifier.height(16.dp))
 
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
+                color = AppTheme.CardElevated,
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -1294,15 +1297,14 @@ private fun SynastryAspectsTab(result: SynastryAnalysisResult) {
 
 @Composable
 private fun AspectCard(aspect: SynastryAspect, language: Language) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = when (aspect.aspectType.nature) {
-                AspectNature.HARMONIOUS -> AppTheme.SuccessColor.copy(alpha = 0.05f)
-                AspectNature.CHALLENGING -> AppTheme.WarningColor.copy(alpha = 0.05f)
-                else -> AppTheme.CardBackground
-            }
-        ),
+        color = when (aspect.aspectType.nature) {
+            AspectNature.HARMONIOUS -> AppTheme.SuccessColor.copy(alpha = 0.05f)
+            AspectNature.CHALLENGING -> AppTheme.WarningColor.copy(alpha = 0.05f)
+            else -> AppTheme.CardBackground
+        },
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -1411,9 +1413,10 @@ private fun SynastryHouseOverlaysTab(
 
 @Composable
 private fun HouseOverlayCard(overlay: HouseOverlay, chartName: String) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
@@ -1469,9 +1472,10 @@ private fun SynastryCompatibilityTab(result: SynastryAnalysisResult) {
 
 @Composable
 private fun CompatibilityDetailCard(category: CompatibilityCategory) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1547,13 +1551,12 @@ private fun SynastryCalculatingState() {
 
 @Composable
 private fun SynastryErrorCard(error: String, onRetry: () -> Unit) {
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.ErrorColor.copy(alpha = 0.08f)
-        ),
+        color = AppTheme.ErrorColor.copy(alpha = 0.08f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.ErrorColor.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(

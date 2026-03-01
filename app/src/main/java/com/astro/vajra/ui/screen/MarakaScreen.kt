@@ -245,9 +245,10 @@ private fun LongevityStatusCard(longevity: MarakaCalculator.LongevityAnalysis) {
         MarakaCalculator.LongevityCategory.BALARISHTA -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = statusColor.copy(alpha = 0.1f)),
+        color = statusColor.copy(alpha = 0.1f),
+        border = androidx.compose.foundation.BorderStroke(1.dp, statusColor.copy(alpha = 0.2f)),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
@@ -345,9 +346,10 @@ private fun MarakaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
@@ -375,9 +377,10 @@ private fun MarakaStatCard(
 
 @Composable
 private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -442,9 +445,10 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.primaryMarakas.isEmpty() && analysis.secondaryMarakas.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
+                color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
@@ -513,11 +517,12 @@ private fun MarakaPlanetCard(
         MarakaCalculator.MarakaSeverity.NONE -> AppTheme.TextMuted
     }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -646,9 +651,10 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Longevity Methods Card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
@@ -690,9 +696,10 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
         }
 
         if (longevity.supportingFactors.isNotEmpty() || longevity.challengingFactors.isNotEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -813,9 +820,10 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.dashaPeriods.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
+                color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
@@ -841,9 +849,10 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
                 }
             }
         } else {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -945,9 +954,10 @@ private fun MarakaRemediesSection(analysis: MarakaCalculator.MarakaAnalysis) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (analysis.remedies.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
@@ -1004,9 +1014,10 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
         else -> remedy.remedyType
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
