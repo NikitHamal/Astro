@@ -287,7 +287,7 @@ private fun DailyStrengthScoreCard(
             Text(
                 stringResource(StringKeyAnalysis.TARABALA_TODAY_STRENGTH),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextMuted
             )
@@ -331,7 +331,7 @@ private fun DailyStrengthScoreCard(
                     todayStrength.combinedStrength.getLocalizedName(language),
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = scoreColor
                 )
@@ -346,7 +346,7 @@ private fun DailyStrengthScoreCard(
             Text(
                 todayStrength.generalAdvice,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center,
                 lineHeight = 22.sp
@@ -395,14 +395,14 @@ private fun TarabalaDetailCard(
                         Text(
                             stringResource(StringKeyAnalysis.TARABALA_LABEL),
                             fontFamily = CinzelDecorativeFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                            style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             stringResource(StringKeyAnalysis.TARABALA_STAR_STRENGTH),
                             fontFamily = PoppinsFontFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -419,7 +419,7 @@ private fun TarabalaDetailCard(
                             stringResource(StringKeyAnalysis.TARABALA_CHALLENGING),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                        style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = taraColor
                     )
@@ -459,13 +459,13 @@ private fun TarabalaDetailCard(
                         Text(
                             stringResource(StringKeyAnalysis.TARABALA_TARA_TYPE),
                             fontFamily = PoppinsFontFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             "${tarabala.tara.getLocalizedName(language)} (${tarabala.tara.number}/9)",
                             fontFamily = SpaceGroteskFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = taraColor
                         )
@@ -478,13 +478,13 @@ private fun TarabalaDetailCard(
                         Text(
                             stringResource(StringKeyAnalysis.TARABALA_CYCLE),
                             fontFamily = PoppinsFontFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             "${tarabala.cycle}/3",
                             fontFamily = SpaceGroteskFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
@@ -525,13 +525,13 @@ private fun TaraInfoChip(label: String, value: String) {
         Text(
             label,
             fontFamily = PoppinsFontFamily,
-            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+            style = MaterialTheme.typography.labelMedium,
             color = AppTheme.TextSubtle
         )
         Text(
             value,
             fontFamily = SpaceGroteskFamily,
-            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+            style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary
         )
@@ -583,14 +583,14 @@ private fun ChandrabalaDetailCard(
                         Text(
                             stringResource(StringKeyAnalysis.CHANDRABALA_LABEL),
                             fontFamily = CinzelDecorativeFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                            style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             stringResource(StringKeyAnalysis.CHANDRABALA_MOON_STRENGTH),
                             fontFamily = PoppinsFontFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -604,7 +604,7 @@ private fun ChandrabalaDetailCard(
                         chandrabala.strength.getLocalizedName(language),
                         modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                        style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = strengthColor
                     )
@@ -644,14 +644,14 @@ private fun ChandrabalaDetailCard(
                     Text(
                         stringResource(StringKeyAnalysis.CHANDRABALA_SIGNIFICATIONS),
                         fontFamily = PoppinsFontFamily,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                        style = MaterialTheme.typography.labelMedium,
                         color = AppTheme.TextSubtle
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         chandrabala.significations,
                         fontFamily = PoppinsFontFamily,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = AppTheme.TextPrimary
                     )
                 }
@@ -699,7 +699,7 @@ private fun ActivityRecommendationsCard(
             Text(
                 stringResource(StringKeyAnalysis.TARABALA_ACTIVITIES),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -711,7 +711,7 @@ private fun ActivityRecommendationsCard(
                 Text(
                     stringResource(StringKeyAnalysis.TARABALA_FAVORABLE_ACTIVITIES),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.SuccessColor,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -731,7 +731,7 @@ private fun ActivityRecommendationsCard(
                 Text(
                     stringResource(StringKeyAnalysis.TARABALA_AVOID_ACTIVITIES),
                     fontFamily = SpaceGroteskFamily,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.WarningColor,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -776,14 +776,14 @@ private fun ActivityItem(
                 Text(
                     activity.activity,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                    style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     activity.reason,
                     fontFamily = PoppinsFontFamily,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextMuted
                 )
             }
@@ -815,7 +815,7 @@ private fun TarabalaWeeklyTab(
         Text(
             stringResource(StringKeyAnalysis.TARABALA_DAILY_BREAKDOWN),
             fontFamily = CinzelDecorativeFamily,
-            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -854,7 +854,7 @@ private fun WeeklySummaryCard(
             Text(
                 stringResource(StringKeyAnalysis.TARABALA_WEEKLY_OVERVIEW),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -891,7 +891,7 @@ private fun WeeklySummaryCard(
             Text(
                 weeklyForecast.weeklyAdvice,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 lineHeight = 20.sp
             )
@@ -917,7 +917,7 @@ private fun DayHighlightChip(
             Text(
                 label,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                style = MaterialTheme.typography.labelMedium,
                 color = color.copy(alpha = 0.8f)
             )
             Text(
@@ -930,7 +930,7 @@ private fun DayHighlightChip(
             Text(
                 "$score%",
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 color = color.copy(alpha = 0.8f)
             )
         }
@@ -994,7 +994,7 @@ private fun DailyStrengthCard(
                             Text(
                                 dailyStrength.date.dayOfWeek.name.take(3),
                                 fontFamily = SpaceGroteskFamily,
-                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                                style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = if (isBestDay) AppTheme.SuccessColor
                                 else if (isWorstDay) AppTheme.WarningColor
@@ -1003,7 +1003,7 @@ private fun DailyStrengthCard(
                             Text(
                                 "${dailyStrength.date.dayOfMonth}",
                                 fontFamily = SpaceGroteskFamily,
-                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                                style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -1016,7 +1016,7 @@ private fun DailyStrengthCard(
                             Text(
                                 dailyStrength.combinedStrength.getLocalizedName(language),
                                 fontFamily = PoppinsFontFamily,
-                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.TextPrimary
                             )
@@ -1030,7 +1030,7 @@ private fun DailyStrengthCard(
                                         stringResource(StringKeyAnalysis.TARABALA_BEST_LABEL),
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                                         fontFamily = SpaceGroteskFamily,
-                                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                                        style = MaterialTheme.typography.labelSmall,
                                         color = AppTheme.SuccessColor
                                     )
                                 }
@@ -1039,7 +1039,7 @@ private fun DailyStrengthCard(
                         Text(
                             "${dailyStrength.tarabala.tara.sanskritName} + ${dailyStrength.chandrabala.houseFromMoon}H",
                             fontFamily = PoppinsFontFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1055,7 +1055,7 @@ private fun DailyStrengthCard(
                             "${dailyStrength.overallScore}%",
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
                             fontFamily = SpaceGroteskFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            style = MaterialTheme.typography.bodySmall,
                             fontWeight = FontWeight.Bold,
                             color = scoreColor
                         )
@@ -1082,7 +1082,7 @@ private fun DailyStrengthCard(
                     Text(
                         dailyStrength.generalAdvice,
                         fontFamily = PoppinsFontFamily,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                        style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -1105,7 +1105,7 @@ private fun TarabalaAllNakshatrasTab(
         Text(
             stringResource(StringKeyAnalysis.TARABALA_ALL_27_DESC),
             fontFamily = PoppinsFontFamily,
-            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+            style = MaterialTheme.typography.bodySmall,
             color = AppTheme.TextMuted,
             modifier = Modifier.padding(bottom = 16.dp)
         )
@@ -1157,7 +1157,7 @@ private fun TaraGroupCard(
                         Text(
                             "${tara.number}",
                             fontFamily = SpaceGroteskFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             color = taraColor
                         )
@@ -1167,14 +1167,14 @@ private fun TaraGroupCard(
                         Text(
                             tara.getLocalizedName(language),
                             fontFamily = CinzelDecorativeFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             tara.englishMeaning,
                             fontFamily = PoppinsFontFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                            style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1206,7 +1206,7 @@ private fun TaraGroupCard(
                             nak.targetNakshatra.getLocalizedName(language),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             fontFamily = PoppinsFontFamily,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
+                            style = MaterialTheme.typography.labelMedium,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -1240,7 +1240,7 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
                 Text(
                     stringResource(StringKeyAnalysis.TARABALA_EXPLANATION),
                     fontFamily = PoppinsFontFamily,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )
@@ -1248,7 +1248,7 @@ private fun TarabalaInfoDialog(onDismiss: () -> Unit) {
                 Text(
                     stringResource(StringKeyAnalysis.CHANDRABALA_EXPLANATION),
                     fontFamily = PoppinsFontFamily,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     lineHeight = 22.sp
                 )

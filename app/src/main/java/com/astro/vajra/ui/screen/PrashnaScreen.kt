@@ -386,7 +386,7 @@ private fun PrashnaHeaderCard() {
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_KUNDALI),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S21,
+                style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
@@ -396,7 +396,7 @@ private fun PrashnaHeaderCard() {
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_HORARY),
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.AccentTeal
             )
 
@@ -405,7 +405,7 @@ private fun PrashnaHeaderCard() {
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_INTRO),
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -440,7 +440,7 @@ private fun QuestionInputCard(
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_YOUR_QUESTION),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -484,7 +484,7 @@ private fun QuestionInputCard(
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_QUESTION_HELP),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
         }
@@ -519,7 +519,7 @@ private fun CategorySelectorCard(
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_CATEGORY),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -591,14 +591,14 @@ private fun CategorySelectorCard(
                         Text(
                             selectedCategory.getLocalizedName(currentLanguage()),
                             fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             selectedCategory.getLocalizedDescription(currentLanguage()),
                             fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -643,13 +643,13 @@ private fun LocationInfoCard(locationName: String) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_LOCATION),
                     fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
                 Text(
                     locationName,
                     fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -672,7 +672,7 @@ private fun LocationInfoCard(locationName: String) {
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_TIME_NOW),
                         fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.InfoColor
                     )
@@ -710,7 +710,7 @@ private fun AnalyzeButton(
         Text(
             stringResource(StringKeyAnalysis.PRASHNA_ANALYZE),
             fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S17,
+                style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = if (enabled) AppTheme.ButtonText else AppTheme.ButtonText.copy(alpha = 0.5f)
         )
@@ -752,7 +752,7 @@ private fun PrashnaInstructionsCard() {
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_ABOUT),
                         fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -795,7 +795,7 @@ private fun PrashnaInstructionsCard() {
                                     Text(
                                         (index + 1).localized(),
                                         fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                                         fontWeight = FontWeight.Bold,
                                         color = AppTheme.InfoColor
                                     )
@@ -805,7 +805,7 @@ private fun PrashnaInstructionsCard() {
                             Text(
                                 instruction,
                                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary,
                                 modifier = Modifier.weight(1f)
                             )
@@ -837,7 +837,7 @@ private fun PrashnaLoadingContent() {
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_ANALYZING),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S17,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -845,7 +845,7 @@ private fun PrashnaLoadingContent() {
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_CALCULATING),
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -877,7 +877,7 @@ private fun PrashnaErrorContent(
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_ANALYSIS_FAILED),
                 fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S17,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -885,7 +885,7 @@ private fun PrashnaErrorContent(
             Text(
                 message,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1005,7 +1005,7 @@ private fun VerdictCard(result: PrashnaResult) {
                 Text(
                     result.judgment.verdict.getLocalizedName(currentLanguage()),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S21,
+                style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = verdictColor,
                     textAlign = TextAlign.Center
@@ -1027,7 +1027,7 @@ private fun VerdictCard(result: PrashnaResult) {
                 Text(
                     result.judgment.primaryReason,
                     fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                     color = AppTheme.TextSecondary,
                     textAlign = TextAlign.Center
                 )
@@ -1056,7 +1056,7 @@ private fun ConfidenceBadge(confidence: Int) {
         Text(
             stringResource(StringKeyAnalysis.PRASHNA_CONFIDENCE, confidence.localized()),
             fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
             color = color,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -1073,7 +1073,7 @@ private fun CertaintyBadge(certainty: CertaintyLevel) {
         Text(
             certainty.getLocalizedName(currentLanguage()),
             fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
             color = AppTheme.InfoColor,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
@@ -1125,20 +1125,20 @@ private fun ScoreIndicator(score: Int) {
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_UNFAVORABLE),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_SCORE, score.localized()),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Medium,
                 color = scoreColor
             )
             Text(
                 stringResource(StringKeyAnalysis.PRASHNA_FAVORABLE),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
         }
@@ -1167,7 +1167,7 @@ private fun QuestionSummaryCard(result: PrashnaResult) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_QUESTION_DETAILS),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1183,7 +1183,7 @@ private fun QuestionSummaryCard(result: PrashnaResult) {
                     Text(
                         "\"${result.question}\"",
                         fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
                         color = AppTheme.TextPrimary
                     )
@@ -1237,7 +1237,7 @@ private fun InfoChip(
             Text(
                 label,
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -1270,7 +1270,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_MOON_ANALYSIS),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1282,7 +1282,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                     Text(
                         moonAnalysis.moonStrength.getLocalizedName(currentLanguage()),
                         fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Medium,
                         color = strengthColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -1374,7 +1374,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
                         Text(
                             stringResource(StringKeyAnalysis.PRASHNA_MOON_VOID),
                             fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.WarningColor
                         )
                     }
@@ -1386,7 +1386,7 @@ private fun MoonAnalysisCard(moonAnalysis: MoonAnalysis) {
             Text(
                 moonAnalysis.interpretation,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
         }
@@ -1408,14 +1408,14 @@ private fun MoonDetailItem(
             Text(
                 label,
                 fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                 color = AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 value,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary,
                 maxLines = 1,
@@ -1456,7 +1456,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_LAGNA_ANALYSIS),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1521,7 +1521,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
                             stringResource(StringKeyAnalysis.PRASHNA_PLANETS_IN_LAGNA_TEMPLATE)
                                 .format(lagnaAnalysis.planetsInLagna.joinToString { it.planet.getLocalizedName(language) }),
                             fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.InfoColor
                         )
                     }
@@ -1533,7 +1533,7 @@ private fun LagnaAnalysisCard(lagnaAnalysis: LagnaAnalysis) {
             Text(
                 lagnaAnalysis.interpretation,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
         }
@@ -1562,7 +1562,7 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_TIMING),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1582,7 +1582,7 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
                     Text(
                         timing.estimatedTime,
                         fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S21,
+                style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.AccentTeal
                     )
@@ -1590,7 +1590,7 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_ESTIMATED_TIMEFRAME),
                         fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1619,7 +1619,7 @@ private fun TimingPredictionCard(timing: TimingPrediction) {
             Text(
                 timing.explanation,
                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                 color = AppTheme.TextMuted
             )
         }
@@ -1648,7 +1648,7 @@ private fun SpecialYogasCard(yogas: List<PrashnaYoga>) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_SPECIAL_YOGAS),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1693,7 +1693,7 @@ private fun YogaItem(yoga: PrashnaYoga) {
                     Text(
                         yoga.name,
                         fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1711,14 +1711,14 @@ private fun YogaItem(yoga: PrashnaYoga) {
                 Text(
                     yoga.description,
                     fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                     color = AppTheme.TextMuted
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     yoga.interpretation,
                     fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                     color = AppTheme.TextSecondary
                 )
             }
@@ -1750,7 +1750,7 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_SUPPORTING_FACTORS),
                         fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1771,7 +1771,7 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                             Text(
                                 factor,
                                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1801,7 +1801,7 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                     Text(
                         stringResource(StringKeyAnalysis.PRASHNA_CHALLENGES),
                         fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -1822,7 +1822,7 @@ private fun FactorsCard(judgment: PrashnaJudgment) {
                             Text(
                                 factor,
                                 fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1855,7 +1855,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                 Text(
                     stringResource(StringKeyAnalysis.PRASHNA_RECOMMENDATIONS),
                     fontFamily = CinzelDecorativeFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1878,7 +1878,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                                 Text(
                                     (index + 1).localized(),
                                     fontFamily = SpaceGroteskFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                style = MaterialTheme.typography.labelSmall,
                                     fontWeight = FontWeight.Bold,
                                     color = AppTheme.InfoColor
                                 )
@@ -1888,7 +1888,7 @@ private fun RecommendationsCard(recommendations: List<String>) {
                         Text(
                             rec,
                             fontFamily = PoppinsFontFamily,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.weight(1f)
                         )

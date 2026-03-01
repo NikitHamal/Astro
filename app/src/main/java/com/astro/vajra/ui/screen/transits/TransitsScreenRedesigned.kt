@@ -57,6 +57,7 @@ import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.ephemeris.TransitAnalyzer
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.NeoVedicEmptyState
+import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import com.astro.vajra.ui.components.common.NeoVedicStatusPill
 import com.astro.vajra.ui.components.common.NeoVedicEphemerisDateHeader
 import com.astro.vajra.ui.components.common.NeoVedicEphemerisTransitItem
@@ -125,8 +126,9 @@ fun TransitsScreenRedesigned(
     Scaffold(
         containerColor = colors.ScreenBackground,
         topBar = {
-            EphemerisTopBar(
-                language = language,
+            NeoVedicPageHeader(
+                title = StringResources.get(StringKeyEphemerisUi.HEADER_TITLE, language),
+                subtitle = StringResources.get(StringKeyEphemerisUi.HEADER_SUBTITLE, language),
                 onBack = onBack
             )
         }
@@ -285,60 +287,7 @@ private fun EphemerisTimelineMode(
     }
 }
 
-@Composable
-private fun EphemerisTopBar(
-    language: Language,
-    onBack: () -> Unit
-) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = AppTheme.ScreenBackground,
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsPadding()
-                .padding(horizontal = NeoVedicTokens.ScreenPadding, vertical = NeoVedicTokens.SpaceXS),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onBack, modifier = Modifier.size(40.dp)) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = StringResources.get(StringKeyUICommon.BACK, language),
-                    tint = AppTheme.TextPrimary
-                )
-            }
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = NeoVedicTokens.SpaceSM)
-            ) {
-                Text(
-                    text = StringResources.get(StringKeyEphemerisUi.HEADER_TITLE, language).uppercase(),
-                    style = MaterialTheme.typography.displaySmall.copy(
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S26,
-                        letterSpacing = 0.4.sp
-                    ),
-                    color = AppTheme.TextPrimary,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = StringResources.get(StringKeyEphemerisUi.HEADER_SUBTITLE, language).uppercase(),
-                    style = MaterialTheme.typography.labelLarge.copy(
-                        fontWeight = FontWeight.Medium,
-                        letterSpacing = 2.sp
-                    ),
-                    color = AppTheme.AccentGold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-    }
-}
 
 private fun dateHeaderFormatter(language: Language): DateTimeFormatter {
     val locale = if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH

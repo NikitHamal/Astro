@@ -77,6 +77,7 @@ import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.SahamCalculator
+import com.astro.vajra.ui.theme.NeoVedicTypeScale
 import com.astro.vajra.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -199,7 +200,7 @@ private fun SahamTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                        style = MaterialTheme.typography.bodySmall,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -616,7 +617,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     ) {
                         Text(
                             text = saham.lord.symbol,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S20,
+                            style = MaterialTheme.typography.titleLarge,
                             color = strengthColor
                         )
                     }
