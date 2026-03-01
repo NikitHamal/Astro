@@ -1148,39 +1148,37 @@ private fun RemediesTab(analysis: SensitiveDegreesAnalysis, language: Language) 
         }
 
         // Precautionary Measures
-        item {
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = AppTheme.InfoColor.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.InfoColor.copy(alpha = 0.2f))
-            ) {
-                Column(modifier = Modifier.padding(20.dp)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            Icons.Outlined.Shield,
-                            contentDescription = null,
-                            tint = AppTheme.InfoColor,
-                            modifier = Modifier.size(24.dp)
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            stringResource(StringKeyDosha.MRITYU_BHAGA_PRECAUTIONS),
-                            fontFamily = CinzelDecorativeFamily,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
-                            color = AppTheme.TextPrimary
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = AppTheme.InfoColor.copy(alpha = 0.08f),
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.InfoColor.copy(alpha = 0.2f))
+        ) {
+            Column(modifier = Modifier.padding(20.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        Icons.Outlined.Shield,
+                        contentDescription = null,
+                        tint = AppTheme.InfoColor,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
                     Text(
-                        stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
-                        fontFamily = PoppinsFontFamily,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 20.sp
+                        stringResource(StringKeyDosha.MRITYU_BHAGA_PRECAUTIONS),
+                        fontFamily = CinzelDecorativeFamily,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
+                        color = AppTheme.TextPrimary
                     )
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    stringResource(StringKeyDosha.MRITYU_BHAGA_SCREEN_ABOUT_DESC),
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                    color = AppTheme.TextSecondary,
+                    lineHeight = 20.sp
+                )
             }
         }
     }
