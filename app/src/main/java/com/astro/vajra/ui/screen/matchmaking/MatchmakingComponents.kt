@@ -74,6 +74,7 @@ import kotlinx.coroutines.delay
 /**
  * Get the appropriate color for a compatibility rating.
  */
+@Composable
 fun getRatingColor(rating: CompatibilityRating): Color {
     return when (rating) {
         CompatibilityRating.EXCELLENT -> AppTheme.SuccessColor

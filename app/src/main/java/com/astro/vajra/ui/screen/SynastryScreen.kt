@@ -1755,7 +1755,7 @@ private fun SynastryInfoDialog(onDismiss: () -> Unit) {
 private fun getCompatibilityColor(score: Double): Color {
     return when {
         score >= 80 -> AppTheme.SuccessColor
-        score >= 60 -> com.astro.vajra.ui.theme.SuccessDark
+        score >= 60 -> AppTheme.SuccessColor
         score >= 40 -> AppTheme.WarningColor
         else -> AppTheme.ErrorColor
     }
