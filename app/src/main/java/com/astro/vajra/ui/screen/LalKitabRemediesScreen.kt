@@ -53,6 +53,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
 
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
+
 /**
  * Lal Kitab Remedies Screen
  *
@@ -308,10 +314,10 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
         // System Note Banner
         item {
             Surface(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.InfoColor, strokeWidth = 1.dp),
                 color = AppTheme.InfoColor.copy(alpha = 0.1f),
                 border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.InfoColor.copy(alpha = 0.2f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -326,7 +332,8 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         analysis.systemNote,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 12.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -389,7 +396,8 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
         Text(
             title,
             fontWeight = FontWeight.SemiBold,
-            style = MaterialTheme.typography.titleSmall,
+            fontSize = 16.sp,
+            fontFamily = CinzelDecorativeFamily,
             color = AppTheme.TextPrimary
         )
     }
@@ -422,7 +430,7 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
             .clickable { expanded = !expanded },
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -441,7 +449,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Text(
                             affliction.planet.displayName.take(2),
                             fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.getPlanetColor(affliction.planet)
                         )
                     }
@@ -450,11 +459,14 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Text(
                             affliction.planet.getLocalizedName(language),
                             fontWeight = FontWeight.SemiBold,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             "House ${affliction.house} \u2022 $afflictionTypeName",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -462,12 +474,13 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
 
                 Surface(
                     color = severityColor.copy(alpha = 0.2f),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Text(
                         affliction.severity.name,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = 10.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.Medium,
                         color = severityColor
                     )
@@ -483,7 +496,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -492,11 +506,12 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("\u2022", color = AppTheme.TextMuted, style = MaterialTheme.typography.bodySmall)
+                                Text("\u2022", color = AppTheme.TextMuted, fontSize = 12.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 12.sp,
+                                    fontFamily = PoppinsFontFamily,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
                                 )
@@ -509,7 +524,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_SECTION_REMEDIES),
                             fontWeight = FontWeight.Medium,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.SuccessColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -527,7 +543,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     remedy,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 12.sp,
+                                    fontFamily = PoppinsFontFamily,
                                     color = AppTheme.TextSecondary,
                                     lineHeight = 18.sp
                                 )
@@ -546,7 +563,7 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.SuccessColor.copy(alpha = 0.05f),
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -561,7 +578,8 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                     remedy.remedy,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary,
-                    style = MaterialTheme.typography.bodyMedium
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily
                 )
             }
 
@@ -570,7 +588,8 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
             if (remedy.method.isNotEmpty()) {
                 Text(
                     remedy.method,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextSecondary,
                     lineHeight = 18.sp
                 )
@@ -593,7 +612,8 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             remedy.frequency,
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -601,12 +621,13 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                 if (remedy.effectiveness.isNotEmpty()) {
                     Surface(
                         color = AppTheme.SuccessColor.copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             remedy.effectiveness,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.SuccessColor
                         )
                     }
@@ -622,7 +643,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -636,7 +657,8 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 Text(
                     stringResource(StringKeyDosha.LAL_KITAB_GENERAL_PRINCIPLES),
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -648,11 +670,12 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                     modifier = Modifier.padding(vertical = 4.dp),
                     verticalAlignment = Alignment.Top
                 ) {
-                    Text("\u2022", color = AppTheme.AccentGold, style = MaterialTheme.typography.bodyMedium)
+                    Text("\u2022", color = AppTheme.AccentGold, fontSize = 14.sp)
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         rec,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 12.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 18.sp
                     )
@@ -672,22 +695,24 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
         // Introduction Card
         item {
             Surface(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentPrimary, strokeWidth = 1.dp),
                 color = AppTheme.AccentPrimary.copy(alpha = 0.08f),
                 border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.AccentPrimary.copy(alpha = 0.2f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_RIN_TITLE),
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_RIN_DESC),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 12.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -706,7 +731,7 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                     modifier = Modifier.fillMaxWidth(),
                     color = AppTheme.SuccessColor.copy(alpha = 0.1f),
                     border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                 ) {
                     Row(
                         modifier = Modifier.padding(20.dp),
@@ -723,11 +748,14 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                             Text(
                                 stringResource(StringKeyDosha.LAL_KITAB_RIN_NONE_TITLE),
                                 fontWeight = FontWeight.SemiBold,
+                                fontSize = 14.sp,
+                                fontFamily = PoppinsFontFamily,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
                                 stringResource(StringKeyDosha.LAL_KITAB_RIN_NONE_DESC),
-                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 12.sp,
+                                fontFamily = PoppinsFontFamily,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -760,7 +788,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
             .clickable { expanded = !expanded },
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -788,11 +816,14 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Text(
                             title,
                             fontWeight = FontWeight.SemiBold,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             debt.description,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -814,7 +845,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_INDICATORS),
                             fontWeight = FontWeight.Medium,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -832,7 +864,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     indicator,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 12.sp,
+                                    fontFamily = PoppinsFontFamily,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -844,7 +877,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
                             fontWeight = FontWeight.Medium,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.WarningColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -853,11 +887,12 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 verticalAlignment = Alignment.Top
                             ) {
-                                Text("\u2022", color = AppTheme.WarningColor, style = MaterialTheme.typography.bodySmall)
+                                Text("\u2022", color = AppTheme.WarningColor, fontSize = 12.sp)
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 12.sp,
+                                    fontFamily = PoppinsFontFamily,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -869,7 +904,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_REMEDIES_LABEL),
                             fontWeight = FontWeight.Medium,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.SuccessColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -887,7 +923,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     remedy,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 12.sp,
+                                    fontFamily = PoppinsFontFamily,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -905,13 +942,14 @@ private fun DebtTypesReferenceCard() {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_TYPES_TITLE),
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
+                fontFamily = CinzelDecorativeFamily,
                 color = AppTheme.TextPrimary
             )
 
@@ -940,12 +978,14 @@ private fun DebtTypesReferenceCard() {
                         Text(
                             name,
                             fontWeight = FontWeight.Medium,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             desc,
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -966,13 +1006,15 @@ private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: Language) {
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_WEEKLY_SCHEDULE),
                 fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleLarge,
+                fontSize = 18.sp,
+                fontFamily = CinzelDecorativeFamily,
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_DAILY_REMEDIES_DESC),
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = 12.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -990,7 +1032,7 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1006,7 +1048,8 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                 Text(
                     entry.day.take(3),
                     fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.getPlanetColor(entry.planet)
                 )
             }
@@ -1021,16 +1064,19 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                     Text(
                         entry.day,
                         fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextPrimary
                     )
                     Surface(
                         color = AppTheme.getPlanetColor(entry.planet).copy(alpha = 0.2f),
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                     ) {
                         Text(
                             entry.planet.getLocalizedName(language),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.getPlanetColor(entry.planet)
                         )
@@ -1053,7 +1099,8 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             remedy,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextSecondary,
                             lineHeight = 18.sp
                         )
@@ -1106,7 +1153,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1128,6 +1175,8 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Text(
                     remedy.planet.getLocalizedName(language),
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -1141,7 +1190,8 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Column {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_FAVORABLE),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = 10.sp,
+                        fontFamily = SpaceGroteskFamily,
                         color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1149,12 +1199,13 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                         items(remedy.favorableColors) { color ->
                             Surface(
                                 color = AppTheme.SuccessColor.copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     color,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                    style = MaterialTheme.typography.labelMedium,
+                                    fontSize = 10.sp,
+                                    fontFamily = SpaceGroteskFamily,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1165,7 +1216,8 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_AVOID),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = 10.sp,
+                        fontFamily = SpaceGroteskFamily,
                         color = AppTheme.ErrorColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1173,12 +1225,13 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                         items(remedy.avoidColors) { color ->
                             Surface(
                                 color = AppTheme.ErrorColor.copy(alpha = 0.15f),
-                                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
                             ) {
                                 Text(
                                     color,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                    style = MaterialTheme.typography.labelMedium,
+                                    fontSize = 10.sp,
+                                    fontFamily = SpaceGroteskFamily,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1191,7 +1244,8 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     remedy.application,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextMuted,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                 )
@@ -1206,7 +1260,7 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1228,6 +1282,8 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                 Text(
                     remedy.planet.getLocalizedName(language),
                     fontWeight = FontWeight.SemiBold,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextPrimary
                 )
             }

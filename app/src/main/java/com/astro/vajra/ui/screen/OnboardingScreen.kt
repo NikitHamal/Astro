@@ -1,39 +1,8 @@
-package com.astro.vajra.ui.screen
-
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.astro.vajra.core.common.Language
-import com.astro.vajra.data.localization.LocalizationManager
-import com.astro.vajra.core.common.StringKey
-import com.astro.vajra.data.localization.stringResource
-import com.astro.vajra.data.preferences.OnboardingManager
-import com.astro.vajra.data.preferences.ThemeManager
-import com.astro.vajra.data.preferences.ThemeMode
-import com.astro.vajra.ui.theme.AppTheme
-import com.astro.vajra.ui.theme.LocalAppThemeColors
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
 
 /**
  * Onboarding pages enumeration
@@ -233,6 +202,7 @@ private fun WelcomePage(
         Text(
             text = stringResource(StringKey.ONBOARDING_WELCOME_TITLE),
             fontSize = if (isSmallScreen) 24.sp else 28.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
             textAlign = TextAlign.Center
@@ -244,6 +214,7 @@ private fun WelcomePage(
         Text(
             text = stringResource(StringKey.ONBOARDING_TAGLINE),
             fontSize = if (isSmallScreen) 14.sp else 16.sp,
+            fontFamily = PoppinsFontFamily,
             color = colors.AccentGold,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
@@ -283,7 +254,7 @@ private fun CompactFeatureGrid(
                 Box(
                     modifier = Modifier
                         .size(if (isSmallScreen) 44.dp else 52.dp)
-                        .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                         .background(colors.ChipBackground),
                     contentAlignment = Alignment.Center
                 ) {
@@ -298,6 +269,7 @@ private fun CompactFeatureGrid(
                 Text(
                     text = label,
                     fontSize = if (isSmallScreen) 10.sp else 11.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = colors.TextMuted,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
@@ -326,6 +298,7 @@ private fun FeaturesPage(
         Text(
             text = stringResource(StringKey.ONBOARDING_FEATURES_OVERVIEW_TITLE),
             fontSize = if (isSmallScreen) 20.sp else 24.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
             textAlign = TextAlign.Center
@@ -386,8 +359,8 @@ private fun FeatureCategory(
     isSmallScreen: Boolean
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = colors.AccentGold, strokeWidth = 1.dp),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = colors.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, colors.BorderColor.copy(alpha = 0.5f))
     ) {
@@ -400,7 +373,7 @@ private fun FeatureCategory(
             Box(
                 modifier = Modifier
                     .size(if (isSmallScreen) 36.dp else 40.dp)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                     .background(colors.AccentGold.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
@@ -418,6 +391,7 @@ private fun FeatureCategory(
                 Text(
                     text = title,
                     fontSize = if (isSmallScreen) 13.sp else 14.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = colors.TextPrimary
                 )
@@ -426,6 +400,7 @@ private fun FeatureCategory(
                     Text(
                         text = "• $item",
                         fontSize = if (isSmallScreen) 11.sp else 12.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = colors.TextMuted,
                         lineHeight = if (isSmallScreen) 14.sp else 16.sp
                     )
@@ -474,6 +449,7 @@ private fun LanguagePage(
         Text(
             text = stringResource(StringKey.ONBOARDING_LANGUAGE_TITLE),
             fontSize = if (isSmallScreen) 20.sp else 24.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
             textAlign = TextAlign.Center
@@ -515,7 +491,7 @@ private fun LanguageOptionCardCompact(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .semantics { contentDescription = language.englishName },
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = if (isSelected) colors.AccentGold.copy(alpha = 0.15f) else colors.CardBackground,
         border = if (isSelected) {
             androidx.compose.foundation.BorderStroke(2.dp, colors.AccentGold)
@@ -533,12 +509,14 @@ private fun LanguageOptionCardCompact(
                 Text(
                     text = language.nativeName,
                     fontSize = if (isSmallScreen) 15.sp else 16.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = if (isSelected) colors.AccentGold else colors.TextPrimary
                 )
                 Text(
                     text = language.englishName,
                     fontSize = if (isSmallScreen) 12.sp else 13.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = colors.TextMuted
                 )
             }
@@ -602,6 +580,7 @@ private fun ThemePage(
         Text(
             text = stringResource(StringKey.ONBOARDING_THEME_TITLE),
             fontSize = if (isSmallScreen) 20.sp else 24.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
             textAlign = TextAlign.Center
@@ -648,6 +627,7 @@ private fun ThemePage(
         Text(
             text = stringResource(StringKey.ONBOARDING_THEME_DESC),
             fontSize = if (isSmallScreen) 11.sp else 12.sp,
+            fontFamily = PoppinsFontFamily,
             color = colors.TextMuted,
             textAlign = TextAlign.Center
         )
@@ -677,7 +657,7 @@ private fun ThemeOptionCardCompact(
         modifier = modifier
             .clickable(onClick = onClick)
             .semantics { contentDescription = displayName },
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = if (isSelected) colors.AccentGold.copy(alpha = 0.15f) else colors.CardBackground,
         border = if (isSelected) {
             androidx.compose.foundation.BorderStroke(2.dp, colors.AccentGold)
@@ -694,7 +674,7 @@ private fun ThemeOptionCardCompact(
             Box(
                 modifier = Modifier
                     .size(if (isSmallScreen) 36.dp else 44.dp)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                     .background(if (isSelected) colors.AccentGold.copy(alpha = 0.2f) else colors.ChipBackground),
                 contentAlignment = Alignment.Center
             ) {
@@ -711,6 +691,7 @@ private fun ThemeOptionCardCompact(
             Text(
                 text = displayName,
                 fontSize = if (isSmallScreen) 12.sp else 13.sp,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Medium,
                 color = if (isSelected) colors.AccentGold else colors.TextPrimary,
                 textAlign = TextAlign.Center
@@ -763,6 +744,7 @@ private fun ReadyPage(
         Text(
             text = stringResource(StringKey.ONBOARDING_READY_TITLE),
             fontSize = if (isSmallScreen) 22.sp else 26.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.Bold,
             color = colors.TextPrimary,
             textAlign = TextAlign.Center
@@ -773,6 +755,7 @@ private fun ReadyPage(
         Text(
             text = stringResource(StringKey.ONBOARDING_CREATE_FIRST_CHART),
             fontSize = if (isSmallScreen) 14.sp else 16.sp,
+            fontFamily = PoppinsFontFamily,
             color = colors.AccentGold,
             fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
@@ -783,7 +766,7 @@ private fun ReadyPage(
         // Quick start info
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
             color = colors.CardBackground,
             border = androidx.compose.foundation.BorderStroke(1.dp, colors.BorderColor.copy(alpha = 0.5f))
         ) {
@@ -804,6 +787,7 @@ private fun ReadyPage(
                     Text(
                         text = stringResource(StringKey.ONBOARDING_QUICK_START_TITLE),
                         fontSize = if (isSmallScreen) 13.sp else 14.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.Medium,
                         color = colors.TextPrimary
                     )
@@ -841,6 +825,7 @@ private fun QuickStartItem(
         Text(
             text = text,
             fontSize = if (isSmallScreen) 12.sp else 13.sp,
+            fontFamily = PoppinsFontFamily,
             color = colors.TextSecondary
         )
     }
@@ -882,6 +867,7 @@ private fun NavigationButtons(
                 Text(
                     text = stringResource(StringKey.ONBOARDING_BTN_BACK),
                     fontSize = if (isSmallScreen) 14.sp else 15.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Medium
                 )
             }
@@ -912,6 +898,7 @@ private fun NavigationButtons(
                         stringResource(StringKey.ONBOARDING_BTN_NEXT)
                     },
                     fontSize = if (isSmallScreen) 14.sp else 15.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold
                 )
                 if (!isLastPage) {

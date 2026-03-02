@@ -84,6 +84,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
 
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
+
 /**
  * Saham (Arabic Parts/Lots) Analysis Screen
  *
@@ -251,10 +257,10 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
     }
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = scoreColor, strokeWidth = 1.dp),
         color = scoreColor.copy(alpha = 0.1f),
         border = androidx.compose.foundation.BorderStroke(1.dp, scoreColor.copy(alpha = 0.2f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -279,14 +285,16 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "${analysis.overallScore.toInt()}%",
-                style = MaterialTheme.typography.headlineMedium,
+                fontSize = 32.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = scoreColor
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(StringKeyShadbala.SAHAM_STRENGTH),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -295,7 +303,7 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = scoreColor,
                 trackColor = scoreColor.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
@@ -311,12 +319,14 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = stringResource(StringKeySaham.STRONGEST),
-                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             text = strongest.type.displayName.split(" ")[0],
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.SuccessColor
                         )
@@ -325,12 +335,14 @@ private fun SahamScoreCard(analysis: SahamCalculator.SahamAnalysis) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
                                 text = stringResource(StringKeySaham.NEEDS_FOCUS),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontSize = 10.sp,
+                                fontFamily = SpaceGroteskFamily,
                                 color = AppTheme.TextMuted
                             )
                             Text(
                                 text = weakest.type.displayName.split(" ")[0],
-                                style = MaterialTheme.typography.bodyMedium,
+                                fontSize = 14.sp,
+                                fontFamily = PoppinsFontFamily,
                                 fontWeight = FontWeight.SemiBold,
                                 color = AppTheme.WarningColor
                             )
@@ -382,7 +394,7 @@ private fun SahamStatCard(
         modifier = modifier,
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -392,14 +404,16 @@ private fun SahamStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontSize = 24.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -413,7 +427,7 @@ private fun SahamBirthTypeCard(isDayBirth: Boolean) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -439,13 +453,15 @@ private fun SahamBirthTypeCard(isDayBirth: Boolean) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = if (isDayBirth) stringResource(StringKeySaham.DAY_BIRTH) else stringResource(StringKeySaham.NIGHT_BIRTH),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = stringResource(StringKeySaham.FORMULA_ADJUSTED_DESC),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -459,7 +475,7 @@ private fun SahamInsightsCard(insights: List<String>) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -474,7 +490,8 @@ private fun SahamInsightsCard(insights: List<String>) {
                 )
                 Text(
                     text = stringResource(StringKeyAnalysis.UI_KEY_INSIGHTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -488,7 +505,8 @@ private fun SahamInsightsCard(insights: List<String>) {
                     Text("\u2022", color = AppTheme.AccentGold, fontWeight = FontWeight.Bold)
                     Text(
                         text = insight,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -504,7 +522,7 @@ private fun SahamRecommendationsCard(recommendations: List<String>) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -519,7 +537,8 @@ private fun SahamRecommendationsCard(recommendations: List<String>) {
                 )
                 Text(
                     text = stringResource(StringKeySaham.RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -533,7 +552,8 @@ private fun SahamRecommendationsCard(recommendations: List<String>) {
                     Text("\u2192", color = AppTheme.AccentTeal, fontWeight = FontWeight.Bold)
                     Text(
                         text = recommendation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -601,7 +621,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
             .animateContentSize(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -624,20 +644,22 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     ) {
                         Text(
                             text = saham.lord.symbol,
-                            style = MaterialTheme.typography.titleLarge,
+                            fontSize = 24.sp,
                             color = strengthColor
                         )
                     }
                     Column {
                         Text(
                             text = saham.type.displayName,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = 16.sp,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = saham.type.nepaliName,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -647,12 +669,13 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = strengthColor.copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = saham.strength.displayName,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = strengthColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -703,12 +726,14 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     ) {
                         Text(
                             text = stringResource(StringKeyShadbala.SAHAM_NAKSHATRA),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             text = "${saham.nakshatra.displayName} (Pada ${saham.nakshatraPada})",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextSecondary
                         )
@@ -723,12 +748,14 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     ) {
                         Text(
                             text = stringResource(StringKeyShadbala.SAHAM_FORMULA),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             text = saham.formula,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = PoppinsFontFamily,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.AccentGold
                         )
@@ -743,12 +770,14 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     ) {
                         Text(
                             text = stringResource(StringKeyShadbala.SAHAM_POSITION),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                         Text(
                             text = "${String.format("%.2f", saham.degreeInSign)}\u00B0",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             fontWeight = FontWeight.Medium,
                             color = AppTheme.TextSecondary
                         )
@@ -758,7 +787,7 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     if (saham.isActivated) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Surface(
-                            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.SuccessColor.copy(alpha = 0.1f)
                         ) {
                             Row(
@@ -769,7 +798,8 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                                 Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                                 Text(
                                     text = stringResource(StringKeySaham.ACTIVATED),
-                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = 10.sp,
+                                    fontFamily = SpaceGroteskFamily,
                                     color = AppTheme.SuccessColor
                                 )
                             }
@@ -781,14 +811,16 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     // Interpretation
                     Text(
                         text = stringResource(StringKeyShadbala.SAHAM_INTERPRETATION),
-                        style = MaterialTheme.typography.labelMedium,
+                        fontSize = 12.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = saham.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -797,7 +829,8 @@ private fun SahamCard(saham: SahamCalculator.SahamResult) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = saham.type.description,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 12.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted,
                         fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
                     )
@@ -812,13 +845,15 @@ private fun DetailItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = label,
-            style = MaterialTheme.typography.labelSmall,
+            fontSize = 10.sp,
+            fontFamily = SpaceGroteskFamily,
             color = AppTheme.TextMuted
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = value,
-            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 14.sp,
+            fontFamily = PoppinsFontFamily,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary
         )

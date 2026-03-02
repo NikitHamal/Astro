@@ -83,6 +83,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
 
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
+
 /**
  * Maraka Analysis Screen
  *
@@ -200,7 +206,8 @@ private fun MarakaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                        fontSize = 13.sp,
+                        fontFamily = PoppinsFontFamily,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -246,10 +253,10 @@ private fun LongevityStatusCard(longevity: MarakaCalculator.LongevityAnalysis) {
     }
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = statusColor, strokeWidth = 1.dp),
         color = statusColor.copy(alpha = 0.1f),
         border = androidx.compose.foundation.BorderStroke(1.dp, statusColor.copy(alpha = 0.2f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -274,20 +281,23 @@ private fun LongevityStatusCard(longevity: MarakaCalculator.LongevityAnalysis) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = longevity.category.displayName,
-                style = MaterialTheme.typography.titleLarge,
+                fontSize = 24.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = statusColor
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = longevity.category.yearsRange,
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = longevity.interpretation,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary,
                 textAlign = TextAlign.Center
             )
@@ -297,14 +307,15 @@ private fun LongevityStatusCard(longevity: MarakaCalculator.LongevityAnalysis) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = statusColor,
                 trackColor = statusColor.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
             )
             Text(
                 text = "${stringResource(StringKeyDosha.MARAKA_LONGEVITY_SCORE)}: ${longevity.overallScore}%",
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(top = 4.dp)
             )
@@ -350,7 +361,7 @@ private fun MarakaStatCard(
         modifier = modifier,
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -360,14 +371,16 @@ private fun MarakaStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontSize = 24.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -381,7 +394,7 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -396,7 +409,8 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_INTERPRETATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -404,7 +418,8 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = analysis.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -412,7 +427,8 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyDosha.MARAKA_PROTECTIVE),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
                 )
@@ -425,7 +441,8 @@ private fun MarakaInterpretationCard(analysis: MarakaCalculator.MarakaAnalysis) 
                         Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                         Text(
                             text = factor,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -449,7 +466,7 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.SuccessColor.copy(alpha = 0.1f),
                 border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -466,7 +483,8 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(StringKeyDosha.MARAKA_NO_SIGNIFICANT),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
                         textAlign = TextAlign.Center
@@ -477,7 +495,8 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
             if (analysis.primaryMarakas.isNotEmpty()) {
                 Text(
                     text = stringResource(StringKeyDosha.MARAKA_PRIMARY_TITLE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 14.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.ErrorColor
                 )
@@ -489,7 +508,8 @@ private fun MarakaPlanetsSection(analysis: MarakaCalculator.MarakaAnalysis) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(StringKeyDosha.MARAKA_SECONDARY_TITLE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 14.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.WarningColor
                 )
@@ -523,7 +543,7 @@ private fun MarakaPlanetCard(
             .animateContentSize(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -546,20 +566,22 @@ private fun MarakaPlanetCard(
                     ) {
                         Text(
                             text = maraka.planet.symbol,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S22,
+                            fontSize = 22.sp,
                             color = severityColor
                         )
                     }
                     Column {
                         Text(
                             text = maraka.planet.displayName,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = 16.sp,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "${maraka.position.sign.getLocalizedName(language)} \u2022 H${maraka.position.house}",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -569,12 +591,13 @@ private fun MarakaPlanetCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = severityColor.copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = maraka.severity.displayName,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = severityColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -599,13 +622,14 @@ private fun MarakaPlanetCard(
 
                     // maraka.marakaTypes is just maraka.marakaType (single enum)
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = AppTheme.ChipBackground,
                         modifier = Modifier.padding(vertical = 2.dp)
                     ) {
                         Text(
                             text = maraka.marakaType.displayName,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextSecondary,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         )
@@ -614,27 +638,11 @@ private fun MarakaPlanetCard(
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = maraka.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
-
-                    if (false) { // maraka.afflictions does not exist in MarakaPlanet
-                        Spacer(modifier = Modifier.height(8.dp))
-//                        Text(
-//                            text = stringResource(StringKeyDosha.MARAKA_AFFLICTIONS),
-//                            style = MaterialTheme.typography.labelSmall,
-//                            fontWeight = FontWeight.SemiBold,
-//                            color = AppTheme.WarningColor
-//                        )
-//                        maraka.afflictions.take(3).forEach { affliction ->
-//                            Text(
-//                                text = "\u2022 $affliction",
-//                                style = MaterialTheme.typography.labelSmall,
-//                                color = AppTheme.TextMuted
-//                            )
-//                        }
-                    }
                 }
             }
         }
@@ -654,8 +662,8 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -670,7 +678,8 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                     )
                     Text(
                         text = stringResource(StringKeyDosha.MARAKA_METHODS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -682,16 +691,6 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                     result = longevity.category.displayName,
                     score = longevity.overallScore
                 )
-//                LongevityMethodRow(
-//                    method = stringResource(StringKeyDosha.MARAKA_PINDAYURDAYA),
-//                    result = longevity.pindayurdayaResult,
-//                    score = longevity.pindayurdayaScore
-//                )
-//                LongevityMethodRow(
-//                    method = stringResource(StringKeyDosha.MARAKA_NISARGAYURDAYA),
-//                    result = longevity.nisargayurdayaResult,
-//                    score = longevity.nisargayurdayaScore
-//                )
             }
         }
 
@@ -699,13 +698,14 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(StringKeyDosha.MARAKA_FACTORS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -714,7 +714,8 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                     if (longevity.supportingFactors.isNotEmpty()) {
                         Text(
                             text = stringResource(StringKeyDosha.MARAKA_POSITIVE),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.SuccessColor
                         )
                         longevity.supportingFactors.take(4).forEach { factor ->
@@ -722,10 +723,11 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("\u2713", color = AppTheme.SuccessColor, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u2713", color = AppTheme.SuccessColor, fontSize = 12.sp)
                                 Text(
                                     text = factor,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 14.sp,
+                                    fontFamily = PoppinsFontFamily,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -736,7 +738,8 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = stringResource(StringKeyDosha.MARAKA_NEGATIVE),
-                            style = MaterialTheme.typography.labelMedium,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.WarningColor
                         )
                         longevity.challengingFactors.take(4).forEach { factor ->
@@ -744,10 +747,11 @@ private fun LongevitySection(analysis: MarakaCalculator.MarakaAnalysis) {
                                 modifier = Modifier.padding(vertical = 2.dp),
                                 horizontalArrangement = Arrangement.spacedBy(6.dp)
                             ) {
-                                Text("\u26A0", color = AppTheme.WarningColor, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12)
+                                Text("\u26A0", color = AppTheme.WarningColor, fontSize = 12.sp)
                                 Text(
                                     text = factor,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 14.sp,
+                                    fontFamily = PoppinsFontFamily,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -772,7 +776,7 @@ private fun LongevityMethodRow(method: String, result: String, score: Int) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Row(
@@ -785,23 +789,26 @@ private fun LongevityMethodRow(method: String, result: String, score: Int) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = method,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     text = result,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted
                 )
             }
             Surface(
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = scoreColor.copy(alpha = 0.15f)
             ) {
                 Text(
                     text = "$score%",
-                    style = MaterialTheme.typography.labelMedium,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = scoreColor,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -824,7 +831,7 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.SuccessColor.copy(alpha = 0.1f),
                 border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -841,7 +848,8 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(StringKeyDosha.MARAKA_NO_CRITICAL),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
                         textAlign = TextAlign.Center
@@ -852,8 +860,8 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -868,7 +876,8 @@ private fun MarakaDashaSection(analysis: MarakaCalculator.MarakaAnalysis) {
                         )
                         Text(
                             text = stringResource(StringKeyDosha.MARAKA_CRITICAL_PERIODS),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 16.sp,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -898,7 +907,7 @@ private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Row(
@@ -911,13 +920,14 @@ private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(StringKeyDosha.MARAKA_PERIOD_FMT, period.planet.getLocalizedName(language)),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
             }
             Surface(
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = riskColor.copy(alpha = 0.15f)
             ) {
                 Row(
@@ -935,7 +945,8 @@ private fun MarakaDashaPeriodRow(period: MarakaCalculator.MarakaDashaPeriod) {
                     }
                     Text(
                         text = "${period.riskLevel.level * 20}%",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 12.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = riskColor
                     )
@@ -957,8 +968,8 @@ private fun MarakaRemediesSection(analysis: MarakaCalculator.MarakaAnalysis) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -975,7 +986,8 @@ private fun MarakaRemediesSection(analysis: MarakaCalculator.MarakaAnalysis) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(StringKeyDosha.MARAKA_NO_REMEDIES),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
@@ -1018,7 +1030,7 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1026,38 +1038,43 @@ private fun MarakaRemedyCard(remedy: MarakaCalculator.MarakaRemedy) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = categoryColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = categoryName,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 10.sp,
+                        fontFamily = SpaceGroteskFamily,
                         color = categoryColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
                 Text(
                     text = remedy.planet?.getLocalizedName(language) ?: stringResource(StringKeyAnalysis.TRANSIT_QUALITY_UNKNOWN),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = remedy.description,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = remedy.mantra ?: remedy.charity ?: "",
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary
             )
             if (!remedy.fasting.isNullOrEmpty()) {
                 Text(
                     text = "${stringResource(StringKeyDosha.UI_TIMING)}: ${remedy.fasting}",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 10.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.padding(top = 4.dp)
                 )
@@ -1077,7 +1094,8 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.MARAKA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -1103,14 +1121,16 @@ private fun EmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 18.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.MARAKA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1125,7 +1145,8 @@ private fun MarakaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.MARAKA_ABOUT_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 18.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1134,14 +1155,15 @@ private fun MarakaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.MARAKA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold)
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentGold, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground

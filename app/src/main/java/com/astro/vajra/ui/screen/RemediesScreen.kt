@@ -61,6 +61,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RemediesScreen(
@@ -333,10 +339,11 @@ private fun SummaryCard(result: RemediesResult) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .vedicCornerMarkers(color = AppTheme.AccentPrimary, strokeWidth = 1.dp),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -349,13 +356,15 @@ private fun SummaryCard(result: RemediesResult) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         stringResource(StringKeyMatch.REMEDIES_ANALYSIS),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = 18.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         result.chart.birthData.name,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -381,7 +390,8 @@ private fun SummaryCard(result: RemediesResult) {
 
             Text(
                 result.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
@@ -410,7 +420,7 @@ private fun OverallChartHealthIndicator(result: RemediesResult) {
 
     Surface(
         color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -422,13 +432,15 @@ private fun OverallChartHealthIndicator(result: RemediesResult) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     stringResource(StringKeyMatch.REMEDIES_CHART_STRENGTH),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     stringResource(StringKeyMatch.REMEDIES_PLANETS_WELL_PLACED, strongPlanets, totalPlanets),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -454,7 +466,8 @@ private fun OverallChartHealthIndicator(result: RemediesResult) {
 
                 Text(
                     "${healthPercentage.toInt()}%",
-                    style = MaterialTheme.typography.labelMedium,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Bold,
                     color = progressColor
                 )
@@ -472,13 +485,15 @@ private fun StatItem(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             value,
-            style = MaterialTheme.typography.titleLarge,
+            fontSize = 20.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.Bold,
             color = color
         )
         Text(
             label,
-            style = MaterialTheme.typography.labelSmall,
+            fontSize = 10.sp,
+            fontFamily = SpaceGroteskFamily,
             color = AppTheme.TextMuted
         )
     }
@@ -492,7 +507,7 @@ private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -505,7 +520,8 @@ private fun WeakPlanetsCard(weakPlanets: List<Planet>) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.REMEDIES_PLANETS_ATTENTION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 14.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -531,7 +547,7 @@ private fun PlanetChip(planet: Planet) {
     val attentionDesc = stringResource(StringKeyUIExtra.REMEDIES_REQUIRES_ATTENTION, planet.displayName)
     Surface(
         color = planetColor.copy(alpha = 0.15f),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         modifier = Modifier.semantics {
             contentDescription = attentionDesc
         }
@@ -549,7 +565,8 @@ private fun PlanetChip(planet: Planet) {
             ) {
                 Text(
                     planet.symbol,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Bold,
                     color = planetColor
                 )
@@ -557,7 +574,8 @@ private fun PlanetChip(planet: Planet) {
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 planet.displayName,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Medium,
                 color = planetColor
             )
@@ -581,7 +599,7 @@ private fun EssentialRemediesPreview(result: RemediesResult) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -594,7 +612,8 @@ private fun EssentialRemediesPreview(result: RemediesResult) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.REMEDIES_ESSENTIAL),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -627,7 +646,8 @@ private fun EssentialRemedyRow(remedy: Remedy) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 remedy.title,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary,
                 maxLines = 1,
@@ -635,7 +655,8 @@ private fun EssentialRemedyRow(remedy: Remedy) {
             )
             Text(
                 remedy.category.displayName,
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -649,7 +670,8 @@ private fun EssentialRemedyRow(remedy: Remedy) {
             ) {
                 Text(
                     planet.symbol,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Bold,
                     color = getPlanetColor(planet)
                 )
@@ -682,7 +704,7 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -695,7 +717,8 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.REMEDIES_WEEKLY_SCHEDULE),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -705,7 +728,8 @@ private fun WeeklyRemedyScheduleCard(result: RemediesResult) {
 
             Text(
                 stringResource(StringKeyMatch.REMEDIES_WEEKLY_SCHEDULE_DESC),
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = 12.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
 
@@ -737,7 +761,7 @@ private fun WeekDayChip(
 
     Surface(
         color = if (remedyCount > 0) planetColor.copy(alpha = 0.15f) else AppTheme.CardBackground.copy(alpha = 0.5f),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
@@ -745,13 +769,15 @@ private fun WeekDayChip(
         ) {
             Text(
                 day,
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = if (remedyCount > 0) planetColor else AppTheme.TextMuted
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 planet.symbol,
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 16.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = if (remedyCount > 0) planetColor else AppTheme.TextSubtle
             )
@@ -763,7 +789,8 @@ private fun WeekDayChip(
                 ) {
                     Text(
                         "$remedyCount",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 10.sp,
+                        fontFamily = SpaceGroteskFamily,
                         color = Color.White,
                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 1.dp)
                     )
@@ -782,12 +809,13 @@ private fun LifeAreaFocusCard(lifeAreaFocus: Map<LifeArea, List<Remedy>>) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 stringResource(StringKeyMatch.REMEDIES_LIFE_AREA_FOCUS),
-                style = MaterialTheme.typography.titleSmall,
+                fontSize = 16.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
@@ -825,17 +853,19 @@ private fun LifeAreaRow(area: LifeArea, remedyCount: Int, language: Language) {
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 area.getLocalizedName(language),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextPrimary
             )
         }
         Surface(
             color = areaColor.copy(alpha = 0.15f),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         ) {
             Text(
                 "$remedyCount",
-                style = MaterialTheme.typography.labelMedium,
+                fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.Bold,
                 color = areaColor,
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
@@ -852,7 +882,7 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
             .padding(horizontal = 16.dp, vertical = 8.dp),
         color = AppTheme.InfoColor.copy(alpha = 0.1f),
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.InfoColor.copy(alpha = 0.2f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -865,7 +895,8 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     stringResource(StringKeyMatch.REMEDIES_GENERAL_RECOMMENDATIONS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -879,7 +910,8 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         rec,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary
                     )
                 }
@@ -1077,7 +1109,7 @@ private fun RemedyCard(
             ),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1092,7 +1124,7 @@ private fun RemedyCard(
                     Box(
                         modifier = Modifier
                             .size(40.dp)
-                            .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
+                            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                             .background(getCategoryColor(remedy.category).copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
@@ -1103,6 +1135,290 @@ private fun RemedyCard(
                             modifier = Modifier.size(22.dp)
                         )
                     }
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            remedy.title,
+                            fontSize = 16.sp,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontWeight = FontWeight.Medium,
+                            color = AppTheme.TextPrimary,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                remedy.category.getLocalizedName(LocalLanguage.current),
+                                fontSize = 12.sp,
+                                fontFamily = SpaceGroteskFamily,
+                                color = AppTheme.TextMuted
+                            )
+                            remedy.planet?.let { planet ->
+                                Text(" ${stringResource(StringKeyUICommon.BULLET)} ", color = AppTheme.TextMuted)
+                                Text(
+                                    planet.displayName,
+                                    fontSize = 12.sp,
+                                    fontFamily = SpaceGroteskFamily,
+                                    color = getPlanetColor(planet)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Surface(
+                    color = getPriorityColor(remedy.priority).copy(alpha = 0.15f),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            getPriorityIcon(remedy.priority),
+                            contentDescription = null,
+                            tint = getPriorityColor(remedy.priority),
+                            modifier = Modifier.size(12.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            remedy.priority.getLocalizedName(LocalLanguage.current),
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
+                            color = getPriorityColor(remedy.priority)
+                        )
+                    }
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = expandVertically(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)) +
+                        fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)) +
+                        fadeOut(animationSpec = tween(200))
+            ) {
+                Column {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    HorizontalDivider(color = AppTheme.DividerColor)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        remedy.description,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 22.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    DetailSection(
+                        icon = Icons.Outlined.MenuBook,
+                        title = stringResource(StringKeyMatch.REMEDIES_METHOD),
+                        content = remedy.method
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            DetailSection(
+                                icon = Icons.Outlined.Schedule,
+                                title = stringResource(StringKeyMatch.REMEDIES_TIMING),
+                                content = remedy.timing
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Box(modifier = Modifier.weight(1f)) {
+                            DetailSection(
+                                icon = Icons.Outlined.DateRange,
+                                title = stringResource(StringKeyMatch.REMEDIES_DURATION),
+                                content = remedy.duration
+                            )
+                        }
+                    }
+
+                    if (remedy.category == RemedyCategory.MANTRA && remedy.mantraText != null) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        MantraSection(
+                            mantraText = remedy.mantraText
+                        )
+                    }
+
+                    if (remedy.benefits.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        BenefitsList(benefits = remedy.benefits)
+                    }
+
+                    if (remedy.cautions.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        CautionsList(cautions = remedy.cautions)
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    Icons.Filled.ExpandMore,
+                    contentDescription = if (isExpanded) stringResource(StringKeyMatch.MISC_COLLAPSE) else stringResource(StringKeyMatch.MISC_EXPAND),
+                    tint = AppTheme.TextSubtle,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .rotate(rotationAngle)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MantraSection(
+    mantraText: String
+) {
+    Surface(
+        color = AppTheme.AccentGold.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text(
+                stringResource(StringKeyMatch.REMEDIES_MANTRA_SECTION),
+                fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.AccentGold
+            )
+            Text(
+                mantraText,
+                fontSize = 16.sp,
+                fontFamily = PoppinsFontFamily,
+                fontWeight = FontWeight.Medium,
+                color = AppTheme.TextPrimary,
+                lineHeight = 24.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun BenefitsList(benefits: List<String>) {
+    Column {
+        Text(
+            stringResource(StringKeyMatch.REMEDIES_BENEFITS),
+            fontSize = 12.sp,
+            fontFamily = SpaceGroteskFamily,
+            fontWeight = FontWeight.SemiBold,
+            color = AppTheme.TextPrimary
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        benefits.forEach { benefit ->
+            Row(
+                modifier = Modifier.padding(vertical = 2.dp),
+                verticalAlignment = Alignment.Top
+            ) {
+                Icon(
+                    Icons.Filled.Check,
+                    contentDescription = null,
+                    tint = AppTheme.SuccessColor,
+                    modifier = Modifier
+                        .size(14.dp)
+                        .padding(top = 2.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    benefit,
+                    fontSize = 12.sp,
+                    fontFamily = PoppinsFontFamily,
+                    color = AppTheme.TextSecondary
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun CautionsList(cautions: List<String>) {
+    Surface(
+        color = AppTheme.WarningColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text(
+                stringResource(StringKeyMatch.REMEDIES_CAUTIONS),
+                fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.WarningColor
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            cautions.forEach { caution ->
+                Row(
+                    modifier = Modifier.padding(vertical = 2.dp),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Icon(
+                        Icons.Filled.Warning,
+                        contentDescription = null,
+                        tint = AppTheme.WarningColor,
+                        modifier = Modifier
+                            .size(14.dp)
+                            .padding(top = 2.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        caution,
+                        fontSize = 12.sp,
+                        fontFamily = PoppinsFontFamily,
+                        color = AppTheme.TextSecondary
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DetailSection(
+    icon: ImageVector,
+    title: String,
+    content: String
+) {
+    Row(crossAxisAlignment = Alignment.Start) {
+        Icon(
+            icon,
+            contentDescription = null,
+            tint = AppTheme.AccentPrimary,
+            modifier = Modifier
+                .size(16.dp)
+                .padding(top = 2.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Column {
+            Text(
+                title,
+                fontSize = 12.sp,
+                fontFamily = SpaceGroteskFamily,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Text(
+                content,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
+                color = AppTheme.TextSecondary
+            )
+        }
+    }
+}
 
                     Spacer(modifier = Modifier.width(12.dp))
 

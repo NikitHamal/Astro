@@ -55,6 +55,12 @@ import kotlinx.coroutines.withContext
 import kotlin.math.abs
 import kotlin.math.floor
 
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
+
 /**
  * Synastry/Chart Comparison Screen
  *
@@ -890,7 +896,7 @@ private fun SynastryChartCard(
                 onClick = onClick
             ),
         color = if (chart != null) color.copy(alpha = 0.08f) else AppTheme.ChipBackground,
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         border = if (chart != null)
             androidx.compose.foundation.BorderStroke(1.5.dp, color.copy(alpha = 0.3f))
         else null
@@ -911,7 +917,8 @@ private fun SynastryChartCard(
                 if (chart != null) {
                     Text(
                         chart.birthData.name.firstOrNull()?.uppercase() ?: "?",
-                        style = MaterialTheme.typography.titleLarge,
+                        fontSize = 24.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.Bold,
                         color = color
                     )
@@ -929,7 +936,8 @@ private fun SynastryChartCard(
 
             Text(
                 chart?.birthData?.name ?: label,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = if (chart != null) FontWeight.SemiBold else FontWeight.Normal,
                 color = if (chart != null) AppTheme.TextPrimary else AppTheme.TextMuted,
                 maxLines = 1,
@@ -940,13 +948,15 @@ private fun SynastryChartCard(
             if (chart != null) {
                 Text(
                     ZodiacSign.fromLongitude(chart.ascendant).displayName,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextSubtle
                 )
             } else {
                 Text(
                     stringResource(StringKeyMatch.MATCH_TAP_TO_SELECT),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextSubtle
                 )
             }
@@ -998,10 +1008,10 @@ private fun SynastryOverviewTab(
     Column(modifier = Modifier.padding(16.dp)) {
         // Overall Score Card
         Surface(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = getCompatibilityColor(result.overallCompatibility), strokeWidth = 1.dp),
             color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(
                 modifier = Modifier.padding(24.dp),
@@ -1009,7 +1019,8 @@ private fun SynastryOverviewTab(
             ) {
                 Text(
                     stringResource(StringKeyDosha.SYNASTRY_OVERALL_SCORE),
-                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 18.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1038,13 +1049,15 @@ private fun SynastryOverviewTab(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = String.format("%.0f", result.overallCompatibility),
-                            style = MaterialTheme.typography.displaySmall,
+                            fontSize = 36.sp,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = "%",
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 14.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1060,13 +1073,15 @@ private fun SynastryOverviewTab(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             chart1.birthData.name,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.AccentPrimary
                         )
                         Text(
                             ZodiacSign.fromLongitude(chart1.ascendant).displayName,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1081,13 +1096,15 @@ private fun SynastryOverviewTab(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             chart2.birthData.name,
-                            style = MaterialTheme.typography.bodyMedium,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.AccentTeal
                         )
                         Text(
                             ZodiacSign.fromLongitude(chart2.ascendant).displayName,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1101,8 +1118,8 @@ private fun SynastryOverviewTab(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 result.compatibilityCategories.forEach { category ->
@@ -1123,13 +1140,14 @@ private fun SynastryOverviewTab(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
                     stringResource(StringKeyDosha.SYNASTRY_KEY_ASPECTS),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -1162,7 +1180,7 @@ private fun SynastryOverviewTab(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardElevated,
                 border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     result.keyFindings.forEach { finding ->
@@ -1179,7 +1197,8 @@ private fun SynastryOverviewTab(
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 finding,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 14.sp,
+                                fontFamily = PoppinsFontFamily,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -1216,7 +1235,8 @@ private fun CompatibilityCategoryRow(category: CompatibilityCategory) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 category.name,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
@@ -1225,7 +1245,7 @@ private fun CompatibilityCategoryRow(category: CompatibilityCategory) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = getCompatibilityColor(category.score * 10),
                 trackColor = AppTheme.ChipBackground
             )
@@ -1235,7 +1255,8 @@ private fun CompatibilityCategoryRow(category: CompatibilityCategory) {
 
         Text(
             String.format("%.1f", category.score),
-            style = MaterialTheme.typography.bodyMedium,
+            fontSize = 14.sp,
+            fontFamily = SpaceGroteskFamily,
             fontWeight = FontWeight.SemiBold,
             color = getCompatibilityColor(category.score * 10)
         )
@@ -1246,7 +1267,7 @@ private fun CompatibilityCategoryRow(category: CompatibilityCategory) {
 private fun AspectCountChip(label: String, count: Int, color: Color) {
     Surface(
         color = color.copy(alpha = 0.1f),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -1254,14 +1275,16 @@ private fun AspectCountChip(label: String, count: Int, color: Color) {
         ) {
             Text(
                 count.toString(),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 18.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 label,
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = 12.sp,
+                fontFamily = PoppinsFontFamily,
                 color = color.copy(alpha = 0.8f)
             )
         }
@@ -1305,7 +1328,7 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
             else -> AppTheme.CardBackground
         },
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1329,7 +1352,8 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
             ) {
                 Text(
                     aspect.aspectType.symbol,
-                    style = MaterialTheme.typography.titleLarge,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
                     color = when (aspect.aspectType.nature) {
                         AspectNature.HARMONIOUS -> AppTheme.SuccessColor
                         AspectNature.CHALLENGING -> AppTheme.WarningColor
@@ -1343,13 +1367,15 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     "${aspect.planet1.getLocalizedName(language)} ${aspect.aspectType.symbol} ${aspect.planet2.getLocalizedName(language)}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     aspect.aspectType.getLocalizedName(language),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1357,14 +1383,16 @@ private fun AspectCard(aspect: SynastryAspect, language: Language) {
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     String.format("%.1f\u00B0", aspect.orb),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextSecondary
                 )
                 Text(
                     if (aspect.isApplying) stringResource(StringKeyDosha.SYNASTRY_APPLYING)
                     else stringResource(StringKeyDosha.SYNASTRY_SEPARATING),
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 10.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextSubtle
                 )
             }
@@ -1382,7 +1410,8 @@ private fun SynastryHouseOverlaysTab(
         // Chart 1 planets in Chart 2 houses
         Text(
             "${chart1.birthData.name}'s planets in ${chart2.birthData.name}'s houses",
-            style = MaterialTheme.typography.titleSmall,
+            fontSize = 16.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -1398,7 +1427,8 @@ private fun SynastryHouseOverlaysTab(
         // Chart 2 planets in Chart 1 houses
         Text(
             "${chart2.birthData.name}'s planets in ${chart1.birthData.name}'s houses",
-            style = MaterialTheme.typography.titleSmall,
+            fontSize = 16.sp,
+            fontFamily = CinzelDecorativeFamily,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.TextPrimary,
             modifier = Modifier.padding(bottom = 12.dp)
@@ -1417,7 +1447,7 @@ private fun HouseOverlayCard(overlay: HouseOverlay, chartName: String) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier
@@ -1434,7 +1464,8 @@ private fun HouseOverlayCard(overlay: HouseOverlay, chartName: String) {
             ) {
                 Text(
                     "H${overlay.houseNumber}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Bold,
                     color = AppTheme.AccentPrimary
                 )
@@ -1445,13 +1476,15 @@ private fun HouseOverlayCard(overlay: HouseOverlay, chartName: String) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     overlay.planet.displayName,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Text(
                     overlay.lifeArea,
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 12.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -1476,7 +1509,7 @@ private fun CompatibilityDetailCard(category: CompatibilityCategory) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1489,14 +1522,16 @@ private fun CompatibilityDetailCard(category: CompatibilityCategory) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     category.name,
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
                     String.format("%.1f/%.1f", category.score, category.maxScore),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.Bold,
                     color = getCompatibilityColor(category.score * 10)
                 )
@@ -1509,7 +1544,7 @@ private fun CompatibilityDetailCard(category: CompatibilityCategory) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = getCompatibilityColor(category.score * 10),
                 trackColor = AppTheme.ChipBackground
             )
@@ -1518,7 +1553,8 @@ private fun CompatibilityDetailCard(category: CompatibilityCategory) {
 
             Text(
                 category.description,
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = 12.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -1542,7 +1578,8 @@ private fun SynastryCalculatingState() {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 stringResource(StringKeyDosha.SYNASTRY_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -1557,7 +1594,7 @@ private fun SynastryErrorCard(error: String, onRetry: () -> Unit) {
             .padding(16.dp),
         color = AppTheme.ErrorColor.copy(alpha = 0.08f),
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.ErrorColor.copy(alpha = 0.2f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -1572,12 +1609,17 @@ private fun SynastryErrorCard(error: String, onRetry: () -> Unit) {
             Spacer(modifier = Modifier.width(12.dp))
             Text(
                 error,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.ErrorColor,
                 modifier = Modifier.weight(1f)
             )
             TextButton(onClick = onRetry) {
-                Text(stringResource(StringKey.BTN_RETRY), color = AppTheme.ErrorColor)
+                Text(
+                    stringResource(StringKey.BTN_RETRY),
+                    color = AppTheme.ErrorColor,
+                    fontFamily = SpaceGroteskFamily
+                )
             }
         }
     }
@@ -1627,13 +1669,15 @@ private fun ChartSelectorBottomSheet(
                 Column {
                     Text(
                         title,
-                        style = MaterialTheme.typography.titleLarge,
+                        fontSize = 20.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
                     Text(
                         stringResource(StringKeyDosha.SYNASTRY_AVAILABLE_CHARTS, availableCharts.size),
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 12.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1648,7 +1692,8 @@ private fun ChartSelectorBottomSheet(
                 ) {
                     Text(
                         stringResource(StringKeyMatch.MATCH_NO_CHARTS_AVAILABLE),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted
                     )
                 }
@@ -1663,7 +1708,7 @@ private fun ChartSelectorBottomSheet(
                         Surface(
                             onClick = { onSelect(chart.id) },
                             color = if (isSelected) accentColor.copy(alpha = 0.1f) else Color.Transparent,
-                            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                             border = if (isSelected)
                                 androidx.compose.foundation.BorderStroke(1.5.dp, accentColor)
                             else
@@ -1687,7 +1732,8 @@ private fun ChartSelectorBottomSheet(
                                 ) {
                                     Text(
                                         chart.name.firstOrNull()?.uppercase() ?: "?",
-                                        style = MaterialTheme.typography.titleMedium,
+                                        fontSize = 18.sp,
+                                        fontFamily = CinzelDecorativeFamily,
                                         fontWeight = FontWeight.Bold,
                                         color = if (isSelected) accentColor else AppTheme.TextMuted
                                     )
@@ -1696,13 +1742,15 @@ private fun ChartSelectorBottomSheet(
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         chart.name,
-                                        style = MaterialTheme.typography.bodyLarge,
+                                        fontSize = 16.sp,
+                                        fontFamily = PoppinsFontFamily,
                                         fontWeight = FontWeight.SemiBold,
                                         color = AppTheme.TextPrimary
                                     )
                                     Text(
                                         chart.location,
-                                        style = MaterialTheme.typography.bodySmall,
+                                        fontSize = 12.sp,
+                                        fontFamily = SpaceGroteskFamily,
                                         color = AppTheme.TextMuted
                                     )
                                 }
@@ -1730,6 +1778,7 @@ private fun SynastryInfoDialog(onDismiss: () -> Unit) {
             Text(
                 stringResource(StringKeyDosha.SYNASTRY_INFO_TITLE),
                 fontWeight = FontWeight.Bold,
+                fontFamily = CinzelDecorativeFamily,
                 color = AppTheme.TextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1738,13 +1787,14 @@ private fun SynastryInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 stringResource(StringKeyDosha.SYNASTRY_INFO_DESC),
+                fontFamily = PoppinsFontFamily,
                 style = MaterialTheme.typography.bodyMedium,
                 color = AppTheme.TextSecondary
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold)
+                Text(stringResource(StringKey.BTN_CLOSE), color = AppTheme.AccentGold, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground

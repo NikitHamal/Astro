@@ -82,6 +82,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.text.style.TextOverflow
 
+import com.astro.vajra.ui.theme.CinzelDecorativeFamily
+import com.astro.vajra.ui.theme.PoppinsFontFamily
+import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
+
 /**
  * Badhaka Analysis Screen
  *
@@ -200,7 +206,8 @@ private fun BadhakaTabSelector(
                 label = {
                     Text(
                         text = tabs[index],
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
+                        fontSize = 13.sp,
+                        fontFamily = PoppinsFontFamily,
                         fontWeight = if (selectedTab == index) FontWeight.SemiBold else FontWeight.Normal
                     )
                 },
@@ -246,10 +253,10 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
     }
 
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = modalityColor, strokeWidth = 1.dp),
         color = modalityColor.copy(alpha = 0.1f),
         border = androidx.compose.foundation.BorderStroke(1.dp, modalityColor.copy(alpha = 0.2f)),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -274,7 +281,8 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.BADHAKA_STHANA) + stringResource(StringKeyUIExtra.COLON_SPACE) + analysis.badhakaHouse + getOrdinalSuffix(analysis.badhakaHouse) + " " + stringResource(StringKeyAnalysis.EXPORT_HOUSE),
-                style = MaterialTheme.typography.titleLarge,
+                fontSize = 24.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = modalityColor
             )
@@ -284,26 +292,29 @@ private fun BadhakaSthanaCard(analysis: BadhakaCalculator.BadhakaAnalysis) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = modalityColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = analysis.signModality.displayName,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 12.sp,
+                        fontFamily = SpaceGroteskFamily,
                         color = modalityColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
                 Text(
                     text = analysis.ascendantSign.getLocalizedName(language),
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextSecondary
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = getBadhakaSthanaExplanation(analysis.signModality),
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -379,7 +390,7 @@ private fun BadhakaStatCard(
         modifier = modifier,
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(
             modifier = Modifier
@@ -389,14 +400,16 @@ private fun BadhakaStatCard(
         ) {
             Text(
                 text = value,
-                style = MaterialTheme.typography.headlineSmall,
+                fontSize = 24.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.Bold,
                 color = color
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 10.sp,
+                fontFamily = SpaceGroteskFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -410,7 +423,7 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -425,7 +438,8 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
                 )
                 Text(
                     text = stringResource(StringKeyDosha.UI_INTERPRETATION),
-                    style = MaterialTheme.typography.titleSmall,
+                    fontSize = 16.sp,
+                    fontFamily = CinzelDecorativeFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.TextPrimary
                 )
@@ -433,7 +447,8 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = analysis.summary,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary,
                 lineHeight = 24.sp
             )
@@ -441,7 +456,8 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = stringResource(StringKeyDosha.BADHAKA_MITIGATING),
-                    style = MaterialTheme.typography.labelMedium,
+                    fontSize = 12.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = AppTheme.SuccessColor
                 )
@@ -454,7 +470,8 @@ private fun BadhakaInterpretationCard(analysis: BadhakaCalculator.BadhakaAnalysi
                         Text("\u2713", color = AppTheme.SuccessColor, fontWeight = FontWeight.Bold)
                         Text(
                             text = factor,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 14.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextSecondary
                         )
                     }
@@ -476,7 +493,8 @@ private fun BadhakaPlanetsSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
         // Primary Badhakesh
         Text(
             text = stringResource(StringKeyDosha.BADHAKA_PRIMARY_TITLE),
-            style = MaterialTheme.typography.titleSmall,
+            fontSize = 14.sp,
+            fontFamily = SpaceGroteskFamily,
             fontWeight = FontWeight.SemiBold,
             color = AppTheme.ErrorColor
         )
@@ -487,7 +505,8 @@ private fun BadhakaPlanetsSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.BADHAKA_SECONDARY_TITLE),
-                style = MaterialTheme.typography.titleSmall,
+                fontSize = 14.sp,
+                fontFamily = SpaceGroteskFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.WarningColor
             )
@@ -520,7 +539,7 @@ private fun BadhakaPlanetCard(
             .animateContentSize(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -543,20 +562,22 @@ private fun BadhakaPlanetCard(
                     ) {
                         Text(
                             text = badhaka.planet.symbol,
-                            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S22,
+                            fontSize = 22.sp,
                             color = severityColor
                         )
                     }
                     Column {
                         Text(
                             text = badhaka.planet.displayName,
-                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = 16.sp,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             text = badhaka.position.sign.getLocalizedName(language) + stringResource(StringKeyUIExtra.BULLET_SPACE) + stringResource(StringKeyUIExtra.HOUSE_PREFIX_SHORT) + badhaka.position.house,
-                            style = MaterialTheme.typography.bodySmall,
+                            fontSize = 12.sp,
+                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -566,12 +587,13 @@ private fun BadhakaPlanetCard(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                         color = severityColor.copy(alpha = 0.15f)
                     ) {
                         Text(
                             text = badhaka.severity.displayName,
-                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = severityColor,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -596,13 +618,14 @@ private fun BadhakaPlanetCard(
 
                     if (isPrimary) {
                         Surface(
-                            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                             color = AppTheme.ErrorColor.copy(alpha = 0.15f),
                             modifier = Modifier.padding(bottom = 8.dp)
                         ) {
                             Text(
                                 text = stringResource(StringKeyDosha.BADHAKA_LORD),
-                                style = MaterialTheme.typography.labelSmall,
+                                fontSize = 10.sp,
+                                fontFamily = SpaceGroteskFamily,
                                 color = AppTheme.ErrorColor,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                             )
@@ -611,7 +634,8 @@ private fun BadhakaPlanetCard(
 
                     Text(
                         text = badhaka.interpretation,
-                        style = MaterialTheme.typography.bodySmall,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextSecondary,
                         lineHeight = 20.sp
                     )
@@ -643,8 +667,8 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
         Surface(
             modifier = Modifier.fillMaxWidth(),
             color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+            shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Row(
@@ -659,7 +683,8 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                     )
                     Text(
                         text = stringResource(StringKeyDosha.BADHAKA_AFFECTED_AREAS),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -669,7 +694,8 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                 if (analysis.affectedLifeAreas.isEmpty()) {
                     Text(
                         text = stringResource(StringKeyDosha.BADHAKA_NO_AREAS),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted
                     )
                 } else {
@@ -685,13 +711,14 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = stringResource(StringKeyDosha.BADHAKA_NATURE),
-                        style = MaterialTheme.typography.titleSmall,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary
                     )
@@ -712,7 +739,8 @@ private fun ObstaclesSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                             )
                             Text(
                                 text = obstacle.displayName,
-                                style = MaterialTheme.typography.bodySmall,
+                                fontSize = 14.sp,
+                                fontFamily = PoppinsFontFamily,
                                 color = AppTheme.TextSecondary
                             )
                         }
@@ -736,7 +764,7 @@ private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Column(
@@ -751,17 +779,19 @@ private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
             ) {
                 Text(
                     text = area.area,
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = areaColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = "${area.impactLevel}%",
-                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 10.sp,
+                        fontFamily = SpaceGroteskFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = areaColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -774,7 +804,7 @@ private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(4.dp)
-                    .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = areaColor,
                 trackColor = areaColor.copy(alpha = 0.2f),
                 strokeCap = StrokeCap.Round
@@ -783,7 +813,8 @@ private fun ObstacleAreaRow(area: BadhakaCalculator.AffectedLifeArea) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = area.description,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 10.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted
                 )
             }
@@ -804,7 +835,7 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.SuccessColor.copy(alpha = 0.1f),
                 border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.SuccessColor.copy(alpha = 0.2f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -821,7 +852,8 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(StringKeyDosha.BADHAKA_NO_CRITICAL),
-                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = 16.sp,
+                        fontFamily = CinzelDecorativeFamily,
                         fontWeight = FontWeight.SemiBold,
                         color = AppTheme.TextPrimary,
                         textAlign = TextAlign.Center
@@ -833,7 +865,7 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Row(
@@ -848,7 +880,8 @@ private fun BadhakaDashaSection(analysis: BadhakaCalculator.BadhakaAnalysis) {
                         )
                         Text(
                             text = stringResource(StringKeyDosha.BADHAKA_CRITICAL_PERIODS),
-                            style = MaterialTheme.typography.titleSmall,
+                            fontSize = 16.sp,
+                            fontFamily = CinzelDecorativeFamily,
                             fontWeight = FontWeight.SemiBold,
                             color = AppTheme.TextPrimary
                         )
@@ -877,7 +910,7 @@ private fun BadhakaDashaPeriodRow(period: BadhakaCalculator.BadhakaDashaPeriod) 
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackgroundElevated
     ) {
         Row(
@@ -890,7 +923,8 @@ private fun BadhakaDashaPeriodRow(period: BadhakaCalculator.BadhakaDashaPeriod) 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = "${period.planet.displayName} Period",
-                    style = MaterialTheme.typography.bodyMedium,
+                    fontSize = 14.sp,
+                    fontFamily = PoppinsFontFamily,
                     fontWeight = FontWeight.Medium,
                     color = AppTheme.TextPrimary
                 )
@@ -901,12 +935,13 @@ private fun BadhakaDashaPeriodRow(period: BadhakaCalculator.BadhakaDashaPeriod) 
 //                )
             }
             Surface(
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = riskColor.copy(alpha = 0.15f)
             ) {
                 Text(
                     text = "${period.obstructionLevel.level * 20}%",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 10.sp,
+                    fontFamily = SpaceGroteskFamily,
                     fontWeight = FontWeight.SemiBold,
                     color = riskColor,
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -929,7 +964,7 @@ private fun BadhakaRemediesSection(analysis: BadhakaCalculator.BadhakaAnalysis) 
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             ) {
                 Column(
                     modifier = Modifier
@@ -946,7 +981,8 @@ private fun BadhakaRemediesSection(analysis: BadhakaCalculator.BadhakaAnalysis) 
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
                         text = stringResource(StringKeyDosha.BADHAKA_NO_REMEDIES),
-                        style = MaterialTheme.typography.bodyMedium,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextMuted,
                         textAlign = TextAlign.Center
                     )
@@ -980,7 +1016,7 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
         border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -988,38 +1024,43 @@ private fun BadhakaRemedyCard(remedy: BadhakaCalculator.BadhakaRemedy) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Surface(
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = categoryColor.copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = remedy.remedyType,
-                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 10.sp,
+                        fontFamily = SpaceGroteskFamily,
                         color = categoryColor,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                     )
                 }
                 Text(
                     text = remedy.planet?.displayName ?: "General",
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 10.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = remedy.description,
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 fontWeight = FontWeight.Medium,
                 color = AppTheme.TextPrimary
             )
             Text(
                 text = (remedy.mantra ?: "").ifEmpty { remedy.charity ?: "" },
-                style = MaterialTheme.typography.bodySmall,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary
             )
             if (!remedy.ritual.isNullOrEmpty()) {
                 Text(
                     text = stringResource(StringKeyDosha.UI_TIMING) + stringResource(StringKeyUIExtra.COLON_SPACE) + remedy.ritual,
-                    style = MaterialTheme.typography.labelSmall,
+                    fontSize = 10.sp,
+                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.TextMuted,
                     modifier = Modifier.padding(top = 4.dp)
                 )
@@ -1039,7 +1080,8 @@ private fun BadhakaLoadingContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.BADHAKA_ANALYZING),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted
             )
         }
@@ -1065,14 +1107,16 @@ private fun BadhakaEmptyContent(modifier: Modifier = Modifier) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = stringResource(StringKeyDosha.UI_NO_CHART_DATA),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 18.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextPrimary
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = stringResource(StringKeyDosha.BADHAKA_NO_CHART_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextMuted,
                 textAlign = TextAlign.Center
             )
@@ -1087,7 +1131,8 @@ private fun BadhakaInfoDialog(onDismiss: () -> Unit) {
         title = {
             Text(
                 text = stringResource(StringKeyDosha.BADHAKA_ABOUT_TITLE),
-                style = MaterialTheme.typography.titleMedium,
+                fontSize = 18.sp,
+                fontFamily = CinzelDecorativeFamily,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -1096,14 +1141,15 @@ private fun BadhakaInfoDialog(onDismiss: () -> Unit) {
         text = {
             Text(
                 text = stringResource(StringKeyDosha.BADHAKA_ABOUT_DESC),
-                style = MaterialTheme.typography.bodyMedium,
+                fontSize = 14.sp,
+                fontFamily = PoppinsFontFamily,
                 color = AppTheme.TextSecondary,
                 lineHeight = 22.sp
             )
         },
         confirmButton = {
             androidx.compose.material3.TextButton(onClick = onDismiss) {
-                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentTeal)
+                Text(stringResource(StringKeyDosha.BTN_GOT_IT), color = AppTheme.AccentTeal, fontFamily = SpaceGroteskFamily)
             }
         },
         containerColor = AppTheme.CardBackground
