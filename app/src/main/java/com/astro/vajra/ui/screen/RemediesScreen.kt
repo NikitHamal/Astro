@@ -1246,7 +1246,152 @@ private fun RemedyCard(
                     if (remedy.category == RemedyCategory.MANTRA && remedy.mantraText != null) {
                         Spacer(modifier = Modifier.height(12.dp))
                         MantraSection(
-                            mantraText = remedy.mantraText
+                            mantraText = remedy.mantraText!!
+                        )
+                    }
+
+                    if (remedy.benefits.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        BenefitsList(benefits = remedy.benefits)
+                    }
+
+                    if (remedy.cautions.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        CautionsList(cautions = remedy.cautions)
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    Icons.Filled.ExpandMore,
+                    contentDescription = if (isExpanded) stringResource(StringKeyMatch.MISC_COLLAPSE) else stringResource(StringKeyMatch.MISC_EXPAND),
+                    tint = AppTheme.TextSubtle,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .rotate(rotationAngle)
+                )
+            }
+        }
+    }
+}
+
+                    Spacer(modifier = Modifier.width(12.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            remedy.title,
+                            fontSize = 16.sp,
+                            fontFamily = CinzelDecorativeFamily,
+                            fontWeight = FontWeight.Medium,
+                            color = AppTheme.TextPrimary,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                remedy.category.getLocalizedName(LocalLanguage.current),
+                                fontSize = 12.sp,
+                                fontFamily = SpaceGroteskFamily,
+                                color = AppTheme.TextMuted
+                            )
+                            remedy.planet?.let { planet ->
+                                Text(" ${stringResource(StringKeyUICommon.BULLET)} ", color = AppTheme.TextMuted)
+                                Text(
+                                    planet.displayName,
+                                    fontSize = 12.sp,
+                                    fontFamily = SpaceGroteskFamily,
+                                    color = getPlanetColor(planet)
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Surface(
+                    color = getPriorityColor(remedy.priority).copy(alpha = 0.15f),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            getPriorityIcon(remedy.priority),
+                            contentDescription = null,
+                            tint = getPriorityColor(remedy.priority),
+                            modifier = Modifier.size(12.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            remedy.priority.getLocalizedName(LocalLanguage.current),
+                            fontSize = 10.sp,
+                            fontFamily = SpaceGroteskFamily,
+                            color = getPriorityColor(remedy.priority)
+                        )
+                    }
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = expandVertically(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)) +
+                        fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)) +
+                        fadeOut(animationSpec = tween(200))
+            ) {
+                Column {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    HorizontalDivider(color = AppTheme.DividerColor)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        remedy.description,
+                        fontSize = 14.sp,
+                        fontFamily = PoppinsFontFamily,
+                        color = AppTheme.TextSecondary,
+                        lineHeight = 22.sp
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    DetailSection(
+                        icon = Icons.Outlined.MenuBook,
+                        title = stringResource(StringKeyMatch.REMEDIES_METHOD),
+                        content = remedy.method
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Box(modifier = Modifier.weight(1f)) {
+                            DetailSection(
+                                icon = Icons.Outlined.Schedule,
+                                title = stringResource(StringKeyMatch.REMEDIES_TIMING),
+                                content = remedy.timing
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Box(modifier = Modifier.weight(1f)) {
+                            DetailSection(
+                                icon = Icons.Outlined.DateRange,
+                                title = stringResource(StringKeyMatch.REMEDIES_DURATION),
+                                content = remedy.duration
+                            )
+                        }
+                    }
+
+                    if (remedy.category == RemedyCategory.MANTRA && remedy.mantraText != null) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        MantraSection(
+                            mantraText = remedy.mantraText!!
                         )
                     }
 
