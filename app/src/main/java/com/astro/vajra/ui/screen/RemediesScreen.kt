@@ -1280,6 +1280,45 @@ private fun RemedyCard(
         }
     }
 }
+                    }
+
+                    if (remedy.category == RemedyCategory.MANTRA && remedy.mantraText != null) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        MantraSection(
+                            mantraText = remedy.mantraText!!
+                        )
+                    }
+
+                    if (remedy.benefits.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        BenefitsList(benefits = remedy.benefits)
+                    }
+
+                    if (remedy.cautions.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        CautionsList(cautions = remedy.cautions)
+                    }
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    Icons.Filled.ExpandMore,
+                    contentDescription = if (isExpanded) stringResource(StringKeyMatch.MISC_COLLAPSE) else stringResource(StringKeyMatch.MISC_EXPAND),
+                    tint = AppTheme.TextSubtle,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .rotate(rotationAngle)
+                )
+            }
+        }
+    }
+}
 
 @Composable
 private fun MantraSection(
