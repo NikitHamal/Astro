@@ -76,6 +76,21 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.TimeZone
 
+import com.astro.vajra.ui.theme.LocalAppThemeColors
+import com.astro.vajra.ui.theme.AppThemeColors
+import com.astro.vajra.ui.components.common.NeoVedicCard
+ *
+ * Features:
+ * - Fast lazy loading with virtualized list
+ * - Real-time search/filter as you type
+ * - Common timezones at the top for quick access
+ * - Shows current time in each timezone
+ * - UTC offset display
+ * - Keyboard support with proper focus management
+ * - Smooth animations
+ * - Memory efficient with derived state
+ */
+
 /**
  * Production-grade Searchable Timezone Selector Dialog
  *
@@ -89,19 +104,6 @@ import java.util.TimeZone
  * - Smooth animations
  * - Memory efficient with derived state
  */
-
-// Theme colors matching the app design
-private object TimezoneSelectorTheme {
-    val ScreenBackground = Color(0xFF1C1410)
-    val CardBackground = Color(0xFF2A201A)
-    val AccentColor = Color(0xFFB8A99A)
-    val TextPrimary = Color(0xFFE8DFD6)
-    val TextSecondary = Color(0xFFB8A99A)
-    val BorderColor = Color(0xFF4A3F38)
-    val ChipBackground = Color(0xFF3D322B)
-    val SearchBackground = Color(0xFF3D322B)
-    val SelectedBackground = Color(0xFF4A3F38)
-}
 
 /**
  * Data class representing a timezone with computed metadata
@@ -228,6 +230,8 @@ fun TimezonePickerDialog(
         initialFirstVisibleItemIndex = selectedIndex.coerceAtMost((filteredTimezones.size - 1).coerceAtLeast(0))
     )
 
+    val colors = LocalAppThemeColors.current
+
     // Auto-focus search field
     LaunchedEffect(Unit) {
         searchFocusRequester.requestFocus()
@@ -246,7 +250,7 @@ fun TimezonePickerDialog(
                 .heightIn(max = 600.dp)
                 .imePadding(),
             shape = RoundedCornerShape(24.dp),
-            color = TimezoneSelectorTheme.CardBackground
+            color = colors.CardBackground
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
@@ -254,10 +258,11 @@ fun TimezonePickerDialog(
                 // Header
                 TimezoneDialogHeader(
                     language = language,
+                    colors = colors,
                     onDismiss = onDismiss
                 )
 
-                HorizontalDivider(color = TimezoneSelectorTheme.BorderColor)
+                HorizontalDivider(color = colors.BorderColor)
 
                 // Search Field
                 TimezoneSearchField(
@@ -265,10 +270,11 @@ fun TimezonePickerDialog(
                     onQueryChange = { searchQuery = it },
                     focusRequester = searchFocusRequester,
                     onClear = { searchQuery = "" },
-                    language = language
+                    language = language,
+                    colors = colors
                 )
 
-                HorizontalDivider(color = TimezoneSelectorTheme.BorderColor)
+                HorizontalDivider(color = colors.BorderColor)
 
                 // Results count
                 Row(
@@ -285,7 +291,7 @@ fun TimezonePickerDialog(
                                     stringResource(StringKeyUIExtra.TIMEZONES_COUNT_FMT, filteredTimezones.size)
                         },
                         style = MaterialTheme.typography.bodySmall,
-                        color = TimezoneSelectorTheme.TextSecondary
+                        color = colors.TextSecondary
                     )
 
                     if (searchQuery.isNotBlank()) {
@@ -295,7 +301,7 @@ fun TimezonePickerDialog(
                             Text(
                                 text = stringResource(StringKey.LOCATION_CLEAR),
                                 style = MaterialTheme.typography.bodySmall,
-                                color = TimezoneSelectorTheme.AccentColor
+                                color = colors.AccentPrimary
                             )
                         }
                     }
@@ -316,7 +322,7 @@ fun TimezonePickerDialog(
                                 text = stringResource(StringKeyUICommon.COMMON_TIMEZONES),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
-                                color = TimezoneSelectorTheme.AccentColor,
+                                color = colors.AccentPrimary,
                                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
                             )
                         }
@@ -329,6 +335,7 @@ fun TimezonePickerDialog(
                         TimezoneItem(
                             timezone = timezone,
                             isSelected = timezone.id == selectedTimezone,
+                            colors = colors,
                             onClick = {
                                 onTimezoneSelected(timezone.id)
                                 onDismiss()
@@ -343,7 +350,7 @@ fun TimezonePickerDialog(
                                     text = stringResource(StringKeyUICommon.ALL_TIMEZONES),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
-                                    color = TimezoneSelectorTheme.AccentColor,
+                                    color = colors.AccentPrimary,
                                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
                                 )
                             }
@@ -365,14 +372,14 @@ fun TimezonePickerDialog(
                                     Icon(
                                         imageVector = Icons.Default.Search,
                                         contentDescription = null,
-                                        tint = TimezoneSelectorTheme.TextSecondary,
+                                        tint = colors.TextSecondary,
                                         modifier = Modifier.size(48.dp)
                                     )
                                     Spacer(modifier = Modifier.height(16.dp))
                                     Text(
                                         text = stringResource(StringKeyUICommon.NO_TIMEZONES_FOUND),
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = TimezoneSelectorTheme.TextSecondary
+                                        color = colors.TextSecondary
                                     )
                                 }
                             }
@@ -387,6 +394,7 @@ fun TimezonePickerDialog(
 @Composable
 private fun TimezoneDialogHeader(
     language: Language,
+    colors: AppThemeColors,
     onDismiss: () -> Unit
 ) {
     Row(
@@ -402,7 +410,7 @@ private fun TimezoneDialogHeader(
             Icon(
                 imageVector = Icons.Default.AccessTime,
                 contentDescription = null,
-                tint = TimezoneSelectorTheme.AccentColor,
+                tint = colors.AccentPrimary,
                 modifier = Modifier.size(24.dp)
             )
             Spacer(modifier = Modifier.width(12.dp))
@@ -410,7 +418,7 @@ private fun TimezoneDialogHeader(
                 text = stringResource(StringKeyUICommon.SELECT_TIMEZONE),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
-                color = TimezoneSelectorTheme.TextPrimary
+                color = colors.TextPrimary
             )
         }
 
@@ -418,7 +426,7 @@ private fun TimezoneDialogHeader(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(StringKey.BTN_CLOSE),
-                tint = TimezoneSelectorTheme.TextSecondary
+                tint = colors.TextSecondary
             )
         }
     }
@@ -430,14 +438,15 @@ private fun TimezoneSearchField(
     onQueryChange: (String) -> Unit,
     focusRequester: FocusRequester,
     onClear: () -> Unit,
-    language: Language
+    language: Language,
+    colors: AppThemeColors
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 12.dp)
             .background(
-                color = TimezoneSelectorTheme.SearchBackground,
+                color = colors.ChipBackground,
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -446,7 +455,7 @@ private fun TimezoneSearchField(
         Icon(
             imageVector = Icons.Default.Search,
             contentDescription = null,
-            tint = TimezoneSelectorTheme.TextSecondary,
+            tint = colors.TextSecondary,
             modifier = Modifier.size(20.dp)
         )
 
@@ -459,11 +468,11 @@ private fun TimezoneSearchField(
                 .weight(1f)
                 .focusRequester(focusRequester),
             textStyle = TextStyle(
-                color = TimezoneSelectorTheme.TextPrimary,
+                color = colors.TextPrimary,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16
             ),
             singleLine = true,
-            cursorBrush = SolidColor(TimezoneSelectorTheme.AccentColor),
+            cursorBrush = SolidColor(colors.AccentPrimary),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { /* Already filtering as you type */ }),
             decorationBox = { innerTextField ->
@@ -472,7 +481,7 @@ private fun TimezoneSearchField(
                         Text(
                             text = stringResource(StringKeyUICommon.SEARCH_TIMEZONE),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = TimezoneSelectorTheme.TextSecondary
+                            color = colors.TextSecondary
                         )
                     }
                     innerTextField()
@@ -492,7 +501,7 @@ private fun TimezoneSearchField(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = stringResource(StringKeyUICommon.CLEAR_SEARCH),
-                    tint = TimezoneSelectorTheme.TextSecondary,
+                    tint = colors.TextSecondary,
                     modifier = Modifier.size(18.dp)
                 )
             }
@@ -504,6 +513,7 @@ private fun TimezoneSearchField(
 private fun TimezoneItem(
     timezone: TimezoneInfo,
     isSelected: Boolean,
+    colors: AppThemeColors,
     onClick: () -> Unit
 ) {
     Surface(
@@ -511,7 +521,7 @@ private fun TimezoneItem(
             .fillMaxWidth()
             .clickable(onClick = onClick)
             .padding(horizontal = 8.dp, vertical = 2.dp),
-        color = if (isSelected) TimezoneSelectorTheme.SelectedBackground else Color.Transparent,
+        color = if (isSelected) colors.ChipBackground else Color.Transparent,
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(
@@ -526,7 +536,7 @@ private fun TimezoneItem(
                     text = timezone.city,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    color = if (isSelected) TimezoneSelectorTheme.AccentColor else TimezoneSelectorTheme.TextPrimary,
+                    color = if (isSelected) colors.AccentPrimary else colors.TextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -536,7 +546,7 @@ private fun TimezoneItem(
                     Text(
                         text = timezone.region,
                         style = MaterialTheme.typography.bodySmall,
-                        color = TimezoneSelectorTheme.TextSecondary,
+                        color = colors.TextSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -544,14 +554,14 @@ private fun TimezoneItem(
                         Text(
                                 text = stringResource(StringKeyUIExtra.BULLET_SPACE),
                             style = MaterialTheme.typography.bodySmall,
-                            color = TimezoneSelectorTheme.TextSecondary
+                            color = colors.TextSecondary
                         )
                     }
                     Text(
                         text = timezone.utcOffset,
                         style = MaterialTheme.typography.bodySmall,
                         fontWeight = FontWeight.Medium,
-                        color = TimezoneSelectorTheme.TextSecondary
+                        color = colors.TextSecondary
                     )
                 }
             }
@@ -564,7 +574,7 @@ private fun TimezoneItem(
                     text = timezone.currentTime,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium,
-                    color = TimezoneSelectorTheme.AccentColor
+                    color = colors.AccentPrimary
                 )
 
                 if (isSelected) {
@@ -572,7 +582,7 @@ private fun TimezoneItem(
                     Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = null,
-                        tint = TimezoneSelectorTheme.AccentColor,
+                        tint = colors.AccentPrimary,
                         modifier = Modifier.size(20.dp)
                     )
                 }
@@ -616,12 +626,13 @@ fun TimezoneSelector(
         "$city ($utcOffset)"
     }
 
-    Card(
+    val colors = LocalAppThemeColors.current
+
+    NeoVedicCard(
         modifier = modifier
             .fillMaxWidth()
             .clickable(enabled = enabled) { showDialog = true },
-        colors = CardDefaults.cardColors(containerColor = TimezoneSelectorTheme.ChipBackground),
-        shape = RoundedCornerShape(12.dp)
+        backgroundColor = colors.ChipBackground
     ) {
         Row(
             modifier = Modifier
@@ -637,7 +648,7 @@ fun TimezoneSelector(
                 Icon(
                     imageVector = Icons.Default.AccessTime,
                     contentDescription = null,
-                    tint = TimezoneSelectorTheme.AccentColor,
+                    tint = colors.AccentPrimary,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
@@ -645,13 +656,13 @@ fun TimezoneSelector(
                     Text(
                         text = stringResource(StringKey.INPUT_TIMEZONE),
                         style = MaterialTheme.typography.labelSmall,
-                        color = TimezoneSelectorTheme.TextSecondary
+                        color = colors.TextSecondary
                     )
                     Text(
                         text = timezoneInfo,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium,
-                        color = if (enabled) TimezoneSelectorTheme.TextPrimary else TimezoneSelectorTheme.TextSecondary,
+                        color = if (enabled) colors.TextPrimary else colors.TextSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -661,7 +672,7 @@ fun TimezoneSelector(
             Icon(
                 imageVector = Icons.Default.Search,
                 contentDescription = stringResource(StringKeyUICommon.CHANGE_TIMEZONE),
-                tint = TimezoneSelectorTheme.TextSecondary,
+                tint = colors.TextSecondary,
                 modifier = Modifier.size(20.dp)
             )
         }

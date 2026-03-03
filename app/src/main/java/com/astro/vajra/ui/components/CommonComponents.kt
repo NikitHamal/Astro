@@ -23,6 +23,7 @@ import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.components.common.NeoVedicCard
 
 /**
  * Common reusable UI components used across multiple screens.
@@ -87,14 +88,11 @@ fun InfoCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = AppTheme.CardBackground
 ) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = backgroundColor),
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = modifier,
+        backgroundColor = backgroundColor
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items.forEach { (label, value) ->

@@ -37,7 +37,8 @@ import com.astro.vajra.data.api.GeocodingService
 import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.StringKeyUIExtra
 import com.astro.vajra.data.localization.stringResource
-import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.LocalAppThemeColors
+import com.astro.vajra.ui.components.common.NeoVedicTextField
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -69,6 +70,7 @@ fun LocationSearchField(
 ) {
     val focusManager = LocalFocusManager.current
     var hasFocus by remember { mutableStateOf(false) }
+    val colors = LocalAppThemeColors.current
 
     // Pre-fetch localized error strings for display
     val rateLimitText = stringResource(StringKey.ERROR_RATE_LIMIT)
@@ -106,19 +108,12 @@ fun LocationSearchField(
     }
 
     Column(modifier = modifier) {
-        OutlinedTextField(
+        NeoVedicTextField(
             value = value,
             onValueChange = onValueChange,
-            label = { Text(label, color = AppTheme.TextMuted, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14) },
-            placeholder = { Text(placeholder, color = AppTheme.TextSubtle, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14) },
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Outlined.Search,
-                    contentDescription = null,
-                    tint = AppTheme.TextMuted,
-                    modifier = Modifier.size(20.dp)
-                )
-            },
+            label = label,
+            placeholder = placeholder,
+            leadingIcon = Icons.Outlined.Search,
             trailingIcon = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -129,7 +124,7 @@ fun LocationSearchField(
                             modifier = Modifier
                                 .size(20.dp)
                                 .padding(end = 8.dp),
-                            color = AppTheme.AccentGold,
+                            color = colors.AccentPrimary,
                             strokeWidth = 2.dp
                         )
                     }
@@ -144,7 +139,7 @@ fun LocationSearchField(
                             Icon(
                                 imageVector = Icons.Outlined.Clear,
                                 contentDescription = clearSearchText,
-                                tint = AppTheme.TextMuted,
+                                tint = colors.TextSecondary,
                                 modifier = Modifier.size(18.dp)
                             )
                         }
@@ -157,27 +152,16 @@ fun LocationSearchField(
                     hasFocus = focusState.isFocused
                 },
             singleLine = true,
-            shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedTextColor = AppTheme.TextPrimary,
-                unfocusedTextColor = AppTheme.TextPrimary,
-                focusedBorderColor = AppTheme.AccentGold,
-                unfocusedBorderColor = AppTheme.BorderColor,
-                focusedLabelColor = AppTheme.AccentGold,
-                unfocusedLabelColor = AppTheme.TextMuted,
-                cursorColor = AppTheme.AccentGold
-            ),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(
                 onSearch = { focusManager.clearFocus() }
-            ),
-            textStyle = LocalTextStyle.current.copy(fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16)
+            )
         )
 
         AnimatedVisibility(visible = errorMessage != null) {
             Text(
                 text = errorMessage ?: "",
-                color = AppTheme.ErrorColor,
+                color = colors.ErrorColor,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 modifier = Modifier.padding(start = 16.dp, top = 4.dp)
             )
@@ -193,7 +177,7 @@ fun LocationSearchField(
                     .fillMaxWidth()
                     .padding(top = 4.dp),
                 shape = RoundedCornerShape(12.dp),
-                color = AppTheme.CardBackground,
+                color = colors.CardBackground,
                 shadowElevation = 8.dp,
                 tonalElevation = 2.dp
             ) {
@@ -214,14 +198,15 @@ fun LocationSearchField(
                                 onLocationSelected(formattedName, result.latitude, result.longitude)
                                 searchState.clear()
                                 focusManager.clearFocus()
-                            }
+                            },
+                            colors = colors
                         )
 
                         if (index < searchState.results.lastIndex) {
                             HorizontalDivider(
                                 modifier = Modifier.padding(horizontal = 16.dp),
                                 thickness = 0.5.dp,
-                                color = AppTheme.BorderColor.copy(alpha = 0.5f)
+                                color = colors.BorderColor.copy(alpha = 0.5f)
                             )
                         }
                     }
@@ -234,7 +219,8 @@ fun LocationSearchField(
 @Composable
 private fun LocationResultItem(
     result: GeocodingService.GeocodingResult,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    colors: com.astro.vajra.ui.theme.AppThemeColors
 ) {
     val selectText = stringResource(StringKey.LOCATION_SELECT, result.formattedShortName)
     Row(
@@ -249,13 +235,13 @@ private fun LocationResultItem(
             modifier = Modifier
                 .size(40.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .background(AppTheme.AccentGold.copy(alpha = 0.12f)),
+                .background(colors.AccentPrimary.copy(alpha = 0.12f)),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.Outlined.LocationOn,
                 contentDescription = null,
-                tint = AppTheme.AccentGold,
+                tint = colors.AccentPrimary,
                 modifier = Modifier.size(22.dp)
             )
         }
@@ -272,7 +258,7 @@ private fun LocationResultItem(
 
             Text(
                 text = mainName,
-                color = AppTheme.TextPrimary,
+                color = colors.TextPrimary,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
                 fontWeight = FontWeight.Medium,
                 maxLines = 1,
@@ -283,7 +269,7 @@ private fun LocationResultItem(
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = details,
-                    color = AppTheme.TextMuted,
+                    color = colors.TextSecondary,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -300,7 +286,7 @@ private fun LocationResultItem(
                     result.longitude,
                     stringResource(StringKeyUIExtra.DEGREE)
                 ),
-                color = AppTheme.TextSubtle,
+                color = colors.TextMuted,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                 letterSpacing = 0.3.sp
             )

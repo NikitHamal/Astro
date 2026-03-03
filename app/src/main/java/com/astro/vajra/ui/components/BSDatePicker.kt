@@ -98,6 +98,7 @@ import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.StringKeyMatch
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.components.common.NeoVedicCard
 import java.time.LocalDate
 
 @Immutable
@@ -613,12 +614,9 @@ private fun SelectedDateDisplay(
         adDate?.let { "(${it.year}-${it.monthValue.toString().padStart(2, '0')}-${it.dayOfMonth.toString().padStart(2, '0')} AD)" }
     }
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = colors.accentColor.copy(alpha = 0.15f)
-        ),
-        shape = RoundedCornerShape(12.dp)
+        backgroundColor = colors.accentColor.copy(alpha = 0.15f)
     ) {
         Column(
             modifier = Modifier
@@ -845,13 +843,11 @@ private fun DropdownSelector(
             enter = fadeIn(tween(200)) + expandVertically(tween(300)),
             exit = fadeOut(tween(150)) + shrinkVertically(tween(200))
         ) {
-            Card(
+            NeoVedicCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp),
-                colors = CardDefaults.cardColors(containerColor = colors.containerColor),
-                shape = RoundedCornerShape(10.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                backgroundColor = colors.containerColor
             ) {
                 content()
             }

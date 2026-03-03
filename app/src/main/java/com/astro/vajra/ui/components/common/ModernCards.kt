@@ -55,6 +55,7 @@ import com.astro.vajra.core.common.StringKeyMatch
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.NeoVedicCard
 
 /**
  * Modern elevated card with subtle shadow and rounded corners
@@ -69,9 +70,8 @@ fun ModernCard(
     onClick: (() -> Unit)? = null,
     content: @Composable () -> Unit
 ) {
-    Surface(
+    NeoVedicCard(
         modifier = modifier
-            .fillMaxWidth()
             .shadow(
                 elevation = elevation,
                 shape = RoundedCornerShape(cornerRadius),
@@ -89,9 +89,8 @@ fun ModernCard(
                         )
                 } else Modifier
             ),
-        shape = RoundedCornerShape(cornerRadius),
-        color = backgroundColor,
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        backgroundColor = backgroundColor,
+        borderColor = AppTheme.BorderColor
     ) {
         content()
     }
@@ -125,7 +124,6 @@ fun ExpandableCard(
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
                 .animateContentSize(animationSpec = tween(250))
         ) {
             Row(
@@ -220,14 +218,10 @@ fun InfoCard(
     modifier: Modifier = Modifier,
     subtitle: String? = null
 ) {
-    Surface(
-        modifier = modifier,
-        color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = modifier
     ) {
         Row(
-            modifier = Modifier.padding(14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -286,13 +280,10 @@ fun ProgressCard(
     subtitle: String? = null,
     icon: ImageVector? = null
 ) {
-    Surface(
-        modifier = modifier,
-        color = AppTheme.CardBackground,
-        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = modifier
     ) {
-        Column(modifier = Modifier.padding(14.dp)) {
+        Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -359,14 +350,12 @@ fun StatCard(
     icon: ImageVector? = null,
     iconTint: Color = AppTheme.AccentPrimary
 ) {
-    Surface(
+    NeoVedicCard(
         modifier = modifier,
-        color = AppTheme.CardBackgroundElevated,
-        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor.copy(alpha = 0.5f))
+        backgroundColor = AppTheme.CardBackgroundElevated,
+        borderColor = AppTheme.BorderColor.copy(alpha = 0.5f)
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             icon?.let {

@@ -57,6 +57,7 @@ import com.astro.vajra.ui.chart.ChartRenderer
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.components.common.NeoVedicCard
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import androidx.compose.foundation.BorderStroke
@@ -865,13 +866,10 @@ private fun DialogCard(
     icon: ImageVector,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 12.dp)

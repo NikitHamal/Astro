@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.components.common.NeoVedicCard
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,13 +45,10 @@ fun DialogCard(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = modifier
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(bottom = 12.dp)
