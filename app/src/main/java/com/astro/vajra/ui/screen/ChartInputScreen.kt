@@ -60,7 +60,16 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import com.astro.vajra.ui.components.common.NeoVedicTextField
 import com.astro.vajra.ui.components.common.NeoVedicButton
+import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.NeoVedicFontSizes
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerDefaults
 
 private val chartInputDateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 private val chartInputTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -298,7 +307,7 @@ fun ChartInputScreen(
                             chartCalculationInitiated = false
                             chartSaveRequested = false
                             onChartCalculated()
-                            return@GenerateButton
+                            return@NeoVedicButton
                         }
                     }
 
@@ -314,12 +323,12 @@ fun ChartInputScreen(
                     if (validationKey != null) {
                         errorKey = validationKey
                         showErrorDialog = true
-                        return@GenerateButton
+                        return@NeoVedicButton
                     }
 
                     // Use parseCoordinate to handle degree symbols and other formats
-                    val lat = parseCoordinate(latitude) ?: return@GenerateButton
-                    val lon = parseCoordinate(longitude) ?: return@GenerateButton
+                    val lat = parseCoordinate(latitude) ?: return@NeoVedicButton
+                    val lon = parseCoordinate(longitude) ?: return@NeoVedicButton
                     val dateTime = LocalDateTime.of(selectedDate, selectedTime)
 
                     val birthData = BirthData(
