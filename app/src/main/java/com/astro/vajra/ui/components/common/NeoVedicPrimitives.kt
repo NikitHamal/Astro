@@ -773,3 +773,128 @@ fun Modifier.vedicCornerMarkers(
     drawLine(color, Offset(size.width - len, size.height - sw / 2), Offset(size.width, size.height - sw / 2), sw)
     drawLine(color, Offset(size.width - sw / 2, size.height - len), Offset(size.width - sw / 2, size.height), sw)
 }
+
+@Composable
+fun NeoVedicCard(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = AppTheme.CardBackground,
+    borderColor: Color = AppTheme.BorderColor,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        color = backgroundColor,
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, borderColor)
+    ) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun NeoVedicTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    modifier: Modifier = Modifier,
+    placeholder: String? = null,
+    leadingIcon: ImageVector? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    keyboardOptions: androidx.compose.foundation.text.KeyboardOptions = androidx.compose.foundation.text.KeyboardOptions.Default,
+    keyboardActions: androidx.compose.foundation.text.KeyboardActions = androidx.compose.foundation.text.KeyboardActions.Default,
+    singleLine: Boolean = true,
+    maxLines: Int = 1
+) {
+    androidx.compose.material3.OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        modifier = modifier.fillMaxWidth(),
+        label = { 
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextSecondary
+            )
+        },
+        placeholder = if (placeholder != null) {
+            { Text(text = placeholder, style = MaterialTheme.typography.bodyMedium, color = AppTheme.TextMuted) }
+        } else null,
+        leadingIcon = if (leadingIcon != null) {
+            { Icon(imageVector = leadingIcon, contentDescription = null, tint = AppTheme.TextSecondary) }
+        } else null,
+        trailingIcon = trailingIcon,
+        textStyle = MaterialTheme.typography.bodyLarge.copy(color = AppTheme.TextPrimary),
+        colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = AppTheme.AccentPrimary,
+            unfocusedBorderColor = AppTheme.BorderColor,
+            focusedContainerColor = AppTheme.CardBackground,
+            unfocusedContainerColor = AppTheme.CardBackground,
+            cursorColor = AppTheme.AccentPrimary,
+            focusedLabelColor = AppTheme.AccentPrimary,
+            unfocusedLabelColor = AppTheme.TextSecondary
+        ),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        singleLine = singleLine,
+        maxLines = maxLines,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions
+    )
+}
+
+@Composable
+fun NeoVedicButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+    icon: ImageVector? = null,
+    containerColor: Color = AppTheme.AccentPrimary,
+    contentColor: Color = AppTheme.ButtonText
+) {
+    androidx.compose.material3.Button(
+        onClick = onClick,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(56.dp),
+        enabled = enabled && !isLoading,
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = containerColor.copy(alpha = 0.5f),
+            disabledContentColor = contentColor.copy(alpha = 0.5f)
+        )
+    ) {
+        if (isLoading) {
+            androidx.compose.material3.CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                color = contentColor,
+                strokeWidth = 2.dp
+            )
+        } else {
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (icon != null) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+    }
+}
+
+

@@ -45,6 +45,7 @@ import com.astro.vajra.data.repository.SavedChart
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.components.common.NeoVedicCard
 
 /**
  * Settings Tab - App Settings & Profile Management
@@ -241,17 +242,10 @@ private fun CurrentProfileCard(
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
+        Column {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
@@ -367,19 +361,13 @@ private fun ChartDetailItem(
 
 @Composable
 private fun EmptyProfileCard(onManageProfiles: () -> Unit) {
-    Card(
+    NeoVedicCard(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clickable { onManageProfiles() },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+            .clickable { onManageProfiles() }
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
@@ -421,19 +409,13 @@ private fun SettingsItem(
         stringResource(subtitleKey)
     }
 
-    Card(
+    NeoVedicCard(
         modifier = Modifier
-            .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clickable { onClick() },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+            .clickable { onClick() }
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -485,20 +467,14 @@ private fun SettingsItem(
 private fun ExportSetting(onExportChart: (ExportFormat) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(16.dp),
+                    .clickable { expanded = !expanded },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -582,20 +558,14 @@ private fun HouseSystemSetting() {
     val selectedSystem by astroSettings.houseSystem.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(16.dp),
+                    .clickable { expanded = !expanded },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -682,20 +652,14 @@ private fun LanguageSetting(localizationManager: LocalizationManager?) {
     val currentLanguage by localizationManager?.language?.collectAsState() ?: remember { mutableStateOf(Language.DEFAULT) }
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(16.dp),
+                    .clickable { expanded = !expanded },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -796,20 +760,14 @@ private fun ThemeSetting(themeManager: ThemeManager) {
         ThemeMode.SYSTEM to Triple(Icons.Outlined.Brightness6, StringKey.THEME_SYSTEM, StringKey.THEME_SYSTEM_DESC)
     )
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(16.dp),
+                    .clickable { expanded = !expanded },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -922,20 +880,14 @@ private fun AyanamsaSetting() {
     val selectedAyanamsa by astroSettings.ayanamsa.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(16.dp),
+                    .clickable { expanded = !expanded },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -1034,20 +986,14 @@ private fun NodeSetting() {
     val currentNodeMode by astroSettings.nodeMode.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
-                    .padding(16.dp),
+                    .clickable { expanded = !expanded },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
@@ -1133,18 +1079,11 @@ private fun NodeSetting() {
 
 @Composable
 private fun AboutCard() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = SettingsDesignTokens.CardShape,
-        border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(

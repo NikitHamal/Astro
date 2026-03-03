@@ -57,7 +57,9 @@ import com.astro.vajra.ui.theme.LocalAppThemeColors
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.theme.PoppinsFontFamily
-import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.components.common.NeoVedicPageHeader
+import com.astro.vajra.ui.components.common.NeoVedicTextField
+import com.astro.vajra.ui.components.common.NeoVedicButton
 import com.astro.vajra.ui.theme.NeoVedicFontSizes
 
 private val chartInputDateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
@@ -204,9 +206,9 @@ fun ChartInputScreen(
                 .padding(horizontal = 24.dp)
                 .padding(top = 16.dp, bottom = 32.dp)
         ) {
-            ChartInputHeader(
-                onNavigateBack = onNavigateBack,
-                isEditMode = isEditMode
+            NeoVedicPageHeader(
+                title = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
+                onBack = onNavigateBack
             )
 
             Spacer(modifier = Modifier.height(28.dp))
@@ -271,9 +273,11 @@ fun ChartInputScreen(
             // Extract localized string outside the lambda (stringResource is @Composable)
             val unknownText = stringResource(StringKeyMatch.MISC_UNKNOWN)
 
-            GenerateButton(
-                isCalculating = isCalculating,
-                isEditMode = isEditMode,
+            NeoVedicButton(
+                text = if (isEditMode) stringResource(StringKey.BTN_UPDATE_SAVE) else stringResource(StringKey.BTN_GENERATE_SAVE),
+                isLoading = isCalculating,
+                enabled = !isCalculating,
+                icon = Icons.Outlined.PlayArrow,
                 onClick = {
                     val normalizedTimezone = normalizeTimezoneForStorage(selectedTimezone)
 
@@ -512,42 +516,6 @@ private fun validateBirthDataInput(
 }
 
 @Composable
-private fun ChartInputHeader(
-    onNavigateBack: () -> Unit,
-    isEditMode: Boolean = false
-) {
-    val colors = LocalAppThemeColors.current
-    val goBackText = stringResource(StringKey.BTN_BACK)
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .statusBarsPadding(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        IconButton(
-            onClick = onNavigateBack,
-            modifier = Modifier.semantics { contentDescription = goBackText }
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = null,
-                tint = colors.TextSecondary,
-                modifier = Modifier.size(24.dp)
-            )
-        }
-        Spacer(Modifier.width(12.dp))
-        Text(
-            text = if (isEditMode) stringResource(StringKey.INPUT_EDIT_CHART) else stringResource(StringKey.INPUT_NEW_CHART),
-            fontSize = NeoVedicFontSizes.S22,
-            fontFamily = CinzelDecorativeFamily,
-            fontWeight = FontWeight.Bold,
-            color = colors.TextPrimary,
-            letterSpacing = 0.3.sp
-        )
-    }
-}
-
-@Composable
 private fun IdentitySection(
     name: String,
     onNameChange: (String) -> Unit,
@@ -561,7 +529,7 @@ private fun IdentitySection(
         SectionTitle(stringResource(StringKey.INPUT_IDENTITY))
         Spacer(modifier = Modifier.height(12.dp))
 
-        ChartOutlinedTextField(
+        NeoVedicTextField(
             value = name,
             onValueChange = onNameChange,
             label = stringResource(StringKey.INPUT_FULL_NAME),
@@ -741,7 +709,7 @@ private fun CoordinatesSection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            ChartOutlinedTextField(
+            NeoVedicTextField(
                 value = latitude,
                 onValueChange = onLatitudeChange,
                 label = stringResource(StringKey.INPUT_LATITUDE),
@@ -754,11 +722,10 @@ private fun CoordinatesSection(
                 ),
                 keyboardActions = KeyboardActions(
                     onNext = { longitudeFocusRequester.requestFocus() }
-                ),
-                fontFamily = SpaceGroteskFamily
+                )
             )
 
-            ChartOutlinedTextField(
+            NeoVedicTextField(
                 value = longitude,
                 onValueChange = onLongitudeChange,
                 label = stringResource(StringKey.INPUT_LONGITUDE),
@@ -771,63 +738,8 @@ private fun CoordinatesSection(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = { onDone() }
-                ),
-                fontFamily = SpaceGroteskFamily
-            )
-        }
-    }
-}
-
-@Composable
-private fun GenerateButton(
-    isCalculating: Boolean,
-    isEditMode: Boolean = false,
-    onClick: () -> Unit
-) {
-    val colors = LocalAppThemeColors.current
-    val buttonText = if (isEditMode) stringResource(StringKey.BTN_UPDATE_SAVE) else stringResource(StringKey.BTN_GENERATE_SAVE)
-    val buttonContentDesc = buttonText
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .semantics { contentDescription = buttonContentDesc },
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = colors.ButtonBackground,
-            contentColor = colors.ButtonText,
-            disabledContainerColor = colors.ButtonBackground.copy(alpha = 0.5f),
-            disabledContentColor = colors.ButtonText.copy(alpha = 0.5f)
-        ),
-        enabled = !isCalculating
-    ) {
-        Crossfade(targetState = isCalculating, label = "button_content") { calculating ->
-            if (calculating) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = colors.ButtonText,
-                    strokeWidth = 2.dp
                 )
-            } else {
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.PlayArrow,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        buttonText,
-                        fontSize = NeoVedicFontSizes.S16,
-                        fontFamily = CinzelDecorativeFamily,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
+            )
         }
     }
 }
@@ -984,57 +896,6 @@ private fun SectionTitle(title: String) {
         fontWeight = FontWeight.Bold,
         color = colors.TextPrimary,
         letterSpacing = 0.5.sp
-    )
-}
-
-@Composable
-private fun ChartOutlinedTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    label: String,
-    modifier: Modifier = Modifier,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-    fontFamily: androidx.compose.ui.text.font.FontFamily = PoppinsFontFamily
-) {
-    val colors = LocalAppThemeColors.current
-    OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { 
-            Text(
-                label, 
-                color = colors.TextSecondary, 
-                fontSize = NeoVedicFontSizes.S14,
-                fontFamily = SpaceGroteskFamily
-            ) 
-        },
-        modifier = modifier.fillMaxWidth(),
-        singleLine = true,
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        colors = chartTextFieldColors(),
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
-        textStyle = LocalTextStyle.current.copy(
-            fontSize = NeoVedicFontSizes.S16,
-            fontFamily = fontFamily
-        )
-    )
-}
-
-@Composable
-private fun chartTextFieldColors(): TextFieldColors {
-    val colors = LocalAppThemeColors.current
-    return OutlinedTextFieldDefaults.colors(
-        focusedTextColor = colors.TextPrimary,
-        unfocusedTextColor = colors.TextPrimary,
-        focusedBorderColor = colors.AccentPrimary,
-        unfocusedBorderColor = colors.BorderColor,
-        focusedLabelColor = colors.AccentPrimary,
-        unfocusedLabelColor = colors.TextSecondary,
-        cursorColor = colors.AccentPrimary,
-        focusedTrailingIconColor = colors.TextSecondary,
-        unfocusedTrailingIconColor = colors.TextSecondary
     )
 }
 
