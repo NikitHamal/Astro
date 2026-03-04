@@ -41,6 +41,7 @@ import com.astro.vajra.data.preferences.AshtamangalaMode
 import com.astro.vajra.data.preferences.AstrologySettingsManager
 import com.astro.vajra.data.preferences.DashaYearBasis
 import com.astro.vajra.data.preferences.NodeCalculationMode
+import com.astro.vajra.data.preferences.OuterPlanetMode
 import com.astro.vajra.data.preferences.ThemeManager
 import com.astro.vajra.data.preferences.ThemeMode
 import com.astro.vajra.data.repository.SavedChart
@@ -160,6 +161,10 @@ fun SettingsTab(
 
         item {
             AshtamangalaModeSetting()
+        }
+
+        item {
+            OuterPlanetModeSetting()
         }
 
         // About Section
@@ -1285,6 +1290,110 @@ private fun AshtamangalaModeSetting() {
                             selected = mode == currentMode,
                             onClick = {
                                 astroSettings.setAshtamangalaMode(mode)
+                                expanded = false
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = AppTheme.AccentPrimary,
+                                unselectedColor = AppTheme.TextMuted
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(nameKey),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (mode == currentMode) AppTheme.TextPrimary else AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun OuterPlanetModeSetting() {
+    val context = LocalContext.current
+    val astroSettings = remember { AstrologySettingsManager.getInstance(context) }
+    val currentMode by astroSettings.outerPlanetMode.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
+
+    val options = listOf(
+        OuterPlanetMode.CLASSICAL_ONLY to StringKey.SETTINGS_OUTER_PLANET_CLASSICAL,
+        OuterPlanetMode.INCLUDE_IN_EXTENDED to StringKey.SETTINGS_OUTER_PLANET_EXTENDED
+    )
+
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(SettingsDesignTokens.IconShape)
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Public,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(StringKey.SETTINGS_OUTER_PLANET_MODE),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = stringResource(
+                            if (currentMode == OuterPlanetMode.INCLUDE_IN_EXTENDED) {
+                                StringKey.SETTINGS_OUTER_PLANET_EXTENDED
+                            } else {
+                                StringKey.SETTINGS_OUTER_PLANET_CLASSICAL
+                            }
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                options.forEach { (mode, nameKey) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                astroSettings.setOuterPlanetMode(mode)
+                                expanded = false
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = mode == currentMode,
+                            onClick = {
+                                astroSettings.setOuterPlanetMode(mode)
                                 expanded = false
                             },
                             colors = RadioButtonDefaults.colors(

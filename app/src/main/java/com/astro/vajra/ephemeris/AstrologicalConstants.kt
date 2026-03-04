@@ -2,6 +2,7 @@ package com.astro.vajra.ephemeris
 
 import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.ZodiacSign
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Centralized Astrological Constants for AstroVajra
@@ -15,6 +16,21 @@ import com.astro.vajra.core.model.ZodiacSign
  * - Jataka Parijata
  */
 object AstrologicalConstants {
+
+    enum class OuterPlanetMode {
+        /**
+         * Strict classical behavior for core Vedic rules.
+         * Uranus/Neptune/Pluto are kept for display and optional modern context.
+         */
+        CLASSICAL_ONLY,
+
+        /**
+         * Allow outer planets in broader/extended calculations where supported.
+         */
+        INCLUDE_IN_EXTENDED
+    }
+
+    private val outerPlanetModeRef = AtomicReference(OuterPlanetMode.CLASSICAL_ONLY)
 
     // ============================================
     // FUNDAMENTAL ZODIAC CONSTANTS
@@ -154,6 +170,21 @@ object AstrologicalConstants {
 
     /** Outer planets (modern, not classical Vedic) */
     val OUTER_PLANETS = setOf(Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO)
+
+    fun setOuterPlanetMode(mode: OuterPlanetMode) {
+        outerPlanetModeRef.set(mode)
+    }
+
+    fun getOuterPlanetMode(): OuterPlanetMode = outerPlanetModeRef.get()
+
+    fun isOuterPlanet(planet: Planet): Boolean = planet in OUTER_PLANETS
+
+    fun shouldIncludeOuterPlanetsInExtended(): Boolean =
+        outerPlanetModeRef.get() == OuterPlanetMode.INCLUDE_IN_EXTENDED
+
+    fun canPlanetParticipateInClassicalRules(planet: Planet): Boolean {
+        return !isOuterPlanet(planet) || shouldIncludeOuterPlanetsInExtended()
+    }
 
     // ============================================
     // PLANETARY DIGNITIES

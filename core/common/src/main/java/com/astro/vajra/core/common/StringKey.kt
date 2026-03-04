@@ -635,6 +635,9 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     SETTINGS_ASHTAMANGALA_MODE("Ashtamangala Mode", "अष्टमङ्गल मोड"),
     SETTINGS_ASHTAMANGALA_DETERMINISTIC("Deterministic (daily)", "नियत (दैनिक)"),
     SETTINGS_ASHTAMANGALA_CLASSIC_RANDOM("Classic random throw", "परम्परागत यादृच्छिक फाल"),
+    SETTINGS_OUTER_PLANET_MODE("Outer Planet Policy", "बाह्य ग्रह नीति"),
+    SETTINGS_OUTER_PLANET_CLASSICAL("Classical only (default)", "केवल शास्त्रीय (पूर्वनिर्धारित)"),
+    SETTINGS_OUTER_PLANET_EXTENDED("Include in extended analysis", "विस्तारित विश्लेषणमा समावेश"),
 
     // Theme options
     THEME_LIGHT("Light", "उज्यालो"),

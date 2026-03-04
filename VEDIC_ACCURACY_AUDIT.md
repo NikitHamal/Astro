@@ -23,6 +23,13 @@ Date: 2026-03-05
   - Deterministic (daily) (default)
   - Classic random throw
 - Made Ashtamangala generation deterministic-by-default when no explicit seed is passed.
+- Added user setting for outer-planet policy:
+  - Classical only (default)
+  - Include in extended analysis
+- Wired outer-planet policy into key hardcoded exclusion points:
+  - `AspectCalculator`
+  - `DrigBalaCalculator`
+  - `RetrogradeCombustionCalculator`
 
 ## High-Priority Heuristic/Incomplete Hotspots
 

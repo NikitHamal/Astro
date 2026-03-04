@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.astro.vajra.core.model.Ayanamsa
 import com.astro.vajra.core.model.HouseSystem
+import com.astro.vajra.ephemeris.AstrologicalConstants
 import com.astro.vajra.ephemeris.DashaUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,6 +41,14 @@ enum class AshtamangalaMode {
 }
 
 /**
+ * Outer planet usage policy in classical rule engines.
+ */
+enum class OuterPlanetMode {
+    CLASSICAL_ONLY,
+    INCLUDE_IN_EXTENDED
+}
+
+/**
  * Astrology Settings Manager for persisting calculation preferences
  */
 @Singleton
@@ -67,8 +76,12 @@ class AstrologySettingsManager @Inject constructor(
     private val _ashtamangalaMode = MutableStateFlow(getPersistedAshtamangalaMode())
     val ashtamangalaMode: StateFlow<AshtamangalaMode> = _ashtamangalaMode.asStateFlow()
 
+    private val _outerPlanetMode = MutableStateFlow(getPersistedOuterPlanetMode())
+    val outerPlanetMode: StateFlow<OuterPlanetMode> = _outerPlanetMode.asStateFlow()
+
     init {
         DashaUtils.setDefaultYearBasis(_dashaYearBasis.value.toDashaUtilsBasis())
+        AstrologicalConstants.setOuterPlanetMode(_outerPlanetMode.value.toAstroOuterMode())
     }
 
     /**
@@ -110,6 +123,15 @@ class AstrologySettingsManager @Inject constructor(
     fun setAshtamangalaMode(value: AshtamangalaMode) {
         prefs.edit().putString(KEY_ASHTAMANGALA_MODE, value.name).apply()
         _ashtamangalaMode.value = value
+    }
+
+    /**
+     * Update outer-planet policy.
+     */
+    fun setOuterPlanetMode(value: OuterPlanetMode) {
+        prefs.edit().putString(KEY_OUTER_PLANET_MODE, value.name).apply()
+        _outerPlanetMode.value = value
+        AstrologicalConstants.setOuterPlanetMode(value.toAstroOuterMode())
     }
 
     /**
@@ -167,6 +189,22 @@ class AstrologySettingsManager @Inject constructor(
         }
     }
 
+    private fun getPersistedOuterPlanetMode(): OuterPlanetMode {
+        val name = prefs.getString(KEY_OUTER_PLANET_MODE, OuterPlanetMode.CLASSICAL_ONLY.name)
+        return try {
+            OuterPlanetMode.valueOf(name ?: OuterPlanetMode.CLASSICAL_ONLY.name)
+        } catch (e: Exception) {
+            OuterPlanetMode.CLASSICAL_ONLY
+        }
+    }
+
+    private fun OuterPlanetMode.toAstroOuterMode(): AstrologicalConstants.OuterPlanetMode {
+        return when (this) {
+            OuterPlanetMode.CLASSICAL_ONLY -> AstrologicalConstants.OuterPlanetMode.CLASSICAL_ONLY
+            OuterPlanetMode.INCLUDE_IN_EXTENDED -> AstrologicalConstants.OuterPlanetMode.INCLUDE_IN_EXTENDED
+        }
+    }
+
     companion object {
         private const val PREFS_NAME = "astro_storm_astrology_settings"
         private const val KEY_NODE_MODE = "node_mode"
@@ -174,6 +212,7 @@ class AstrologySettingsManager @Inject constructor(
         private const val KEY_HOUSE_SYSTEM = "house_system"
         private const val KEY_DASHA_YEAR_BASIS = "dasha_year_basis"
         private const val KEY_ASHTAMANGALA_MODE = "ashtamangala_mode"
+        private const val KEY_OUTER_PLANET_MODE = "outer_planet_mode"
 
         @Volatile
         private var instance: AstrologySettingsManager? = null

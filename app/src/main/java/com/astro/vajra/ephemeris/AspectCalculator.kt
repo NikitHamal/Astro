@@ -158,14 +158,15 @@ object AspectCalculator {
         config: AspectConfiguration = AspectConfiguration()
     ): AspectMatrix {
         val allAspects = mutableListOf<AspectData>()
+        val includeOuterPlanets = config.includeOuterPlanets || AstrologicalConstants.shouldIncludeOuterPlanetsInExtended()
         val positions = chart.planetPositions.filter { position ->
-            if (!config.includeOuterPlanets) {
-                position.planet !in listOf(Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO)
+            if (!includeOuterPlanets) {
+                !AstrologicalConstants.isOuterPlanet(position.planet)
             } else true
         }
 
         for (aspectingPosition in positions) {
-            if (!canCastAspect(aspectingPosition.planet)) continue
+            if (!canCastAspect(aspectingPosition.planet, includeOuterPlanets)) continue
 
             for (aspectedPosition in positions) {
                 if (aspectingPosition.planet == aspectedPosition.planet) continue
@@ -200,8 +201,8 @@ object AspectCalculator {
         )
     }
 
-    private fun canCastAspect(planet: Planet): Boolean {
-        return planet !in listOf(Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO)
+    private fun canCastAspect(planet: Planet, includeOuterPlanets: Boolean): Boolean {
+        return includeOuterPlanets || !AstrologicalConstants.isOuterPlanet(planet)
     }
 
     private fun getAllApplicableAspects(planet: Planet, config: AspectConfiguration): List<AspectType> {
@@ -443,9 +444,10 @@ object AspectCalculator {
     ): List<AspectData> {
         val houseSign = getSignNumber(houseCusp)
         val aspects = mutableListOf<AspectData>()
+        val includeOuterPlanets = config.includeOuterPlanets || AstrologicalConstants.shouldIncludeOuterPlanetsInExtended()
 
         for (position in chart.planetPositions) {
-            if (!canCastAspect(position.planet)) continue
+            if (!canCastAspect(position.planet, includeOuterPlanets)) continue
 
             val planetSign = getSignNumber(position.longitude)
             val signDistance = calculateSignDistance(planetSign, houseSign)

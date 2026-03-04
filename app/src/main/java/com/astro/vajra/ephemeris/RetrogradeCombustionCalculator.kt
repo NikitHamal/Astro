@@ -276,7 +276,8 @@ object RetrogradeCombustionCalculator {
         }
 
         val rankedPlanets = finalConditions.values
-            .filter { it.planet !in listOf(Planet.RAHU, Planet.KETU, Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO) }
+            .filter { it.planet !in listOf(Planet.RAHU, Planet.KETU) }
+            .filter { AstrologicalConstants.canPlanetParticipateInClassicalRules(it.planet) }
             .sortedByDescending { it.combinedStrengthFactor }
 
         val maleficPressure = calculateMaleficPressure(finalConditions.values.toList())
@@ -406,7 +407,7 @@ object RetrogradeCombustionCalculator {
         planetSpeed: Double,
         sunSpeed: Double
     ): CombustionStatus {
-        if (planet in listOf(Planet.RAHU, Planet.KETU, Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO)) {
+        if (planet in listOf(Planet.RAHU, Planet.KETU) || AstrologicalConstants.isOuterPlanet(planet)) {
             return CombustionStatus.NOT_COMBUST
         }
 
@@ -765,7 +766,7 @@ class RetrogradeEphemerisCalculator(context: Context) : AutoCloseable {
         fromDate: LocalDate,
         maxSearchDays: Int = 450
     ): RetrogradeCombustionCalculator.CombustionPeriod? {
-        if (planet in listOf(Planet.SUN, Planet.RAHU, Planet.KETU, Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO)) {
+        if (planet == Planet.SUN || planet in listOf(Planet.RAHU, Planet.KETU) || AstrologicalConstants.isOuterPlanet(planet)) {
             return null
         }
 

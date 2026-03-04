@@ -333,7 +333,7 @@ object DrigBalaCalculator {
      * Check if planet can cast aspects
      */
     private fun canCastAspect(planet: Planet): Boolean {
-        return planet !in listOf(Planet.URANUS, Planet.NEPTUNE, Planet.PLUTO)
+        return AstrologicalConstants.canPlanetParticipateInClassicalRules(planet)
     }
 
     /**
