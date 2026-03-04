@@ -6,6 +6,7 @@
 - Localization safety: use display-name helper indirection to avoid wrong translation namespaces.
 - Edit/update UX: when no fields are changed in chart edit mode, treat update as a no-op success.
 - Runtime safety: sanitize legacy/invalid timezone strings centrally before calculation to prevent parser edge-case crashes.
+- Nepali typography: Devanagari can appear optically smaller under Latin-oriented uppercase/micro-label styling; use language-aware casing/tracking and a modest Nepali-only font-scale multiplier.
 
 ## Actions Taken
 - Added/expanded advanced dasha and yoga capabilities.
@@ -16,6 +17,13 @@
 - Added transit screen error-state UI with retry instead of infinite loading when analysis fails.
 - Added navigation/main-screen reset hooks to avoid stale error snackbar reappearing after back navigation.
 - Added resilient fallback calculation flow in `ChartViewModel` to retry with sanitized/system/UTC timezone before surfacing an error.
+- Added Nepali readability patch in Neo-Vedic shell/home layers:
+  - theme-level Nepali font scale via `LocalDensity` in `ui/theme/Theme.kt`.
+  - language-aware casing/tracking/font-family updates in:
+    - `ui/screen/main/MainScreen.kt`
+    - `ui/screen/main/HomeTab.kt`
+    - `ui/screen/main/SettingsTab.kt`
+    - `ui/components/common/NeoVedicPrimitives.kt`
 
 ## Architecture Decisions
 - Maintain modular ephemeris engines and feature-specific calculators.

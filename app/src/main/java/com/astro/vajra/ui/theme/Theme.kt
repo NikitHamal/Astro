@@ -9,12 +9,18 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.Density
 import androidx.core.view.WindowCompat
+import com.astro.vajra.core.common.Language
+import com.astro.vajra.data.localization.LocalLanguage
 
 // ============================================================================
 // NEO-VEDIC MATERIAL 3 COLOR SCHEMES
@@ -133,6 +139,15 @@ fun AstroVajraTheme(
 
     // Select AppTheme colors based on dark/light preference
     val appThemeColors = if (darkTheme) DarkAppThemeColors else LightAppThemeColors
+    val language = LocalLanguage.current
+    val baseDensity = LocalDensity.current
+    val typographyScale = if (language == Language.NEPALI) 1.12f else 1f
+    val effectiveDensity = remember(baseDensity, typographyScale) {
+        Density(
+            density = baseDensity.density,
+            fontScale = baseDensity.fontScale * typographyScale
+        )
+    }
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -159,10 +174,12 @@ fun AstroVajraTheme(
 
     // Provide both Material theme and custom AppTheme colors
     ProvideAppThemeColors(colors = appThemeColors) {
-        MaterialTheme(
-            colorScheme = colorScheme,
-            typography = Typography,
-            content = content
-        )
+        CompositionLocalProvider(LocalDensity provides effectiveDensity) {
+            MaterialTheme(
+                colorScheme = colorScheme,
+                typography = Typography,
+                content = content
+            )
+        }
     }
 }

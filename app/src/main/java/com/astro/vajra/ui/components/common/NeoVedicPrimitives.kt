@@ -36,6 +36,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.ColumnScope
+import com.astro.vajra.core.common.Language
+import com.astro.vajra.data.localization.LocalLanguage
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
 
@@ -711,6 +713,7 @@ fun NeoVedicSectionDivider(
     title: String? = null,
     modifier: Modifier = Modifier
 ) {
+    val language = LocalLanguage.current
     if (title != null) {
         Row(
             modifier = modifier
@@ -726,7 +729,7 @@ fun NeoVedicSectionDivider(
                     .background(AppTheme.DividerColor)
             )
             Text(
-                text = title.uppercase(),
+                text = if (language == Language.NEPALI) title else title.uppercase(),
                 style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.SemiBold,
                 color = AppTheme.TextMuted
@@ -896,5 +899,4 @@ fun NeoVedicButton(
         }
     }
 }
-
 

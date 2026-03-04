@@ -1,43 +1,44 @@
 ## Goal (incl. success criteria):
-Fully eliminate recurring `length=13; index=13` failures in chart create/edit flows, keep transit stable, and push a robust runtime-safe fix.
+Fix Nepali readability regression where UI text appears optically smaller than English in Neo-Vedic screens, and push a production-safe patch without running build/test/gradle commands.
 
 ## Constraints/Assumptions:
 - User requested direct fix + push.
 - Skip tests and Gradle/`gradlew` commands.
-- Preserve existing chart behavior while handling legacy/invalid stored timezone strings safely.
+- Preserve existing app behavior and navigation/contracts.
 
 ## Key Decisions:
-- Add centralized timezone sanitizer/parser with safe fallback to avoid parser edge-case crashes from malformed/legacy timezone strings.
-- Normalize timezone values at repository mapping boundaries so loaded charts use valid timezone IDs.
-- Stop infinite loading in transit screen by handling analysis exceptions explicitly with retry UI.
-- Reset chart UI error state when leaving chart input and after showing error snackbar to avoid repeated stale toasts.
-- Add resilient chart calculation fallback in `ChartViewModel` (timezone-attempt sequence + safe mapped error) so create/update does not fail hard on parser edge cases.
+- Apply a centralized Nepali-only typography scale via `LocalDensity.fontScale` in app theme so all `sp` text scales consistently without per-screen refactors.
+- Remove forced uppercase + high tracking for Nepali in key high-visibility shell/home labels while keeping English styling unchanged.
+- Keep patch scope to shared shell/home primitives for immediate perceptual impact and low regression risk.
 
 ## State:
 - Done:
-  - Added `TimezoneSanitizer` utility and integrated it in chart repository, transit analyzer, chart input, and Swiss engine timezone resolution.
-  - Added explicit transit analysis error state + retry in `TransitsScreenRedesigned`.
-  - Added state reset hooks in navigation callbacks and main-screen error snackbar handling.
-  - Added chart-input error-dialog reset behavior for runtime (non-validation) errors.
-  - Added `ChartViewModel` resilient chart calculation path with timezone fallback attempts and calculation error mapping.
+  - Implemented Nepali readability patch set:
+    - `app/src/main/java/com/astro/vajra/ui/theme/Theme.kt`
+      - added Nepali-only typography scale (`1.12x`) through `CompositionLocalProvider(LocalDensity ...)`.
+    - `app/src/main/java/com/astro/vajra/ui/screen/main/MainScreen.kt`
+      - bottom nav labels now avoid uppercase for Nepali, use `PoppinsFontFamily`, and reduced tracking.
+    - `app/src/main/java/com/astro/vajra/ui/screen/main/HomeTab.kt`
+      - added localized micro-label helpers for case/font/spacing/size.
+      - applied to home labels (`Current Maha Dasha`, snapshot card titles, section headers, create-chart CTA).
+    - `app/src/main/java/com/astro/vajra/ui/screen/main/SettingsTab.kt`
+      - section headers now avoid uppercase for Nepali and switch to `PoppinsFontFamily`.
+    - `app/src/main/java/com/astro/vajra/ui/components/common/NeoVedicPrimitives.kt`
+      - `NeoVedicSectionDivider` now avoids uppercase in Nepali.
 - Now:
-  - Commit and push the new `ChartViewModel` fallback patch.
+  - Commit and push Nepali readability patch.
 - Next:
-  - Ask user to verify new chart creation with `Generate & Save`, plus edit/transit regressions.
+  - Ask user to verify Nepali visual size/spacing in Home/Insights/Settings shell screens.
 
 ## Open Questions (UNCONFIRMED if needed):
-- UNCONFIRMED: exact low-level source of `StringIndexOutOfBoundsException(length=13,index=13)` in prior runtime path (guarded via timezone sanitization/fallback).
+- None.
 
 ## Working Set (files/ids/commands):
-- `app/src/main/java/com/astro/vajra/util/TimezoneSanitizer.kt`
-- `app/src/main/java/com/astro/vajra/data/repository/ChartRepository.kt`
-- `app/src/main/java/com/astro/vajra/ephemeris/SwissEphemerisEngine.kt`
-- `app/src/main/java/com/astro/vajra/ephemeris/TransitAnalyzer.kt`
-- `app/src/main/java/com/astro/vajra/ui/screen/transits/TransitsScreenRedesigned.kt`
-- `app/src/main/java/com/astro/vajra/ui/screen/ChartInputScreen.kt`
+- `app/src/main/java/com/astro/vajra/ui/theme/Theme.kt`
 - `app/src/main/java/com/astro/vajra/ui/screen/main/MainScreen.kt`
-- `app/src/main/java/com/astro/vajra/ui/navigation/Navigation.kt`
-- `app/src/main/java/com/astro/vajra/ui/viewmodel/ChartViewModel.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/main/HomeTab.kt`
+- `app/src/main/java/com/astro/vajra/ui/screen/main/SettingsTab.kt`
+- `app/src/main/java/com/astro/vajra/ui/components/common/NeoVedicPrimitives.kt`
 - `CONTINUITY.md`
 - Commands:
   - `git status --short`

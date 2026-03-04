@@ -35,6 +35,7 @@ import com.astro.vajra.ui.components.ProfileSwitcherBottomSheet
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.ChartUiState
 import com.astro.vajra.ui.viewmodel.ChartViewModel
@@ -451,11 +452,19 @@ private fun NeoVedicBottomNavigation(
                 },
                 label = {
                     Text(
-                        text = localizedTitle.uppercase(),
-                        fontFamily = SpaceGroteskFamily,
+                        text = if (language == com.astro.vajra.core.common.Language.NEPALI) {
+                            localizedTitle
+                        } else {
+                            localizedTitle.uppercase()
+                        },
+                        fontFamily = if (language == com.astro.vajra.core.common.Language.NEPALI) {
+                            PoppinsFontFamily
+                        } else {
+                            SpaceGroteskFamily
+                        },
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                        letterSpacing = 1.5.sp
+                        letterSpacing = if (language == com.astro.vajra.core.common.Language.NEPALI) 0.2.sp else 1.5.sp
                     )
                 },
                 colors = NavigationBarItemDefaults.colors(

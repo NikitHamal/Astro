@@ -44,6 +44,7 @@ import com.astro.vajra.data.preferences.ThemeMode
 import com.astro.vajra.data.repository.SavedChart
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
+import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.components.common.NeoVedicCard
 
@@ -225,10 +226,19 @@ private object SettingsDesignTokens {
 
 @Composable
 private fun SettingsSectionHeader(titleKey: StringKey) {
+    val language = LocalLanguage.current
     Text(
-        text = stringResource(titleKey).uppercase(),
+        text = if (language == com.astro.vajra.core.common.Language.NEPALI) {
+            stringResource(titleKey)
+        } else {
+            stringResource(titleKey).uppercase()
+        },
         style = MaterialTheme.typography.labelLarge,
-        fontFamily = SpaceGroteskFamily,
+        fontFamily = if (language == com.astro.vajra.core.common.Language.NEPALI) {
+            PoppinsFontFamily
+        } else {
+            SpaceGroteskFamily
+        },
         fontWeight = FontWeight.SemiBold,
         color = AppTheme.TextMuted,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)

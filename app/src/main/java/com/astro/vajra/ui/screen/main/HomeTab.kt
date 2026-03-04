@@ -36,10 +36,12 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.astro.vajra.core.common.Language
@@ -99,6 +101,18 @@ private fun homeWeekdayFormatter(language: Language): DateTimeFormatter =
 
 private fun homeFullDateFormatter(language: Language): DateTimeFormatter =
     DateTimeFormatter.ofPattern("MMMM d, yyyy", homeLocale(language))
+
+private fun homeLabelText(text: String, language: Language): String =
+    if (language == Language.NEPALI) text else text.uppercase()
+
+private fun homeLabelFont(language: Language): FontFamily =
+    if (language == Language.NEPALI) PoppinsFontFamily else SpaceGroteskFamily
+
+private fun homeLabelSpacing(default: TextUnit, language: Language): TextUnit =
+    if (language == Language.NEPALI) 0.2.sp else default
+
+private fun homeLabelSize(default: TextUnit, language: Language, nepaliScale: Float = 1.15f): TextUnit =
+    if (language == Language.NEPALI) (default.value * nepaliScale).sp else default
 
 // ============================================================================
 // MAIN HOME TAB COMPOSABLE - CELESTIAL DASHBOARD
@@ -337,11 +351,11 @@ private fun HeroDashaCard(
                 ) {
                     // Label - Space Grotesk uppercase
                     Text(
-                        text = stringResource(StringKey.CURRENT_MAHA_DASHA).uppercase(),
-                        fontFamily = SpaceGroteskFamily,
+                        text = homeLabelText(stringResource(StringKey.CURRENT_MAHA_DASHA), language),
+                        fontFamily = homeLabelFont(language),
                         fontWeight = FontWeight.Medium,
-                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
-                        letterSpacing = 2.sp,
+                        fontSize = homeLabelSize(com.astro.vajra.ui.theme.NeoVedicFontSizes.S10, language, nepaliScale = 1.25f),
+                        letterSpacing = homeLabelSpacing(2.sp, language),
                         color = planetColor
                     )
 
@@ -532,6 +546,7 @@ private fun QuickActionItem(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     Surface(
         modifier = modifier
@@ -712,11 +727,11 @@ private fun SnapshotCard(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Text(
-                    text = title.uppercase(),
-                    fontFamily = SpaceGroteskFamily,
+                    text = homeLabelText(title, language),
+                    fontFamily = homeLabelFont(language),
                     fontWeight = FontWeight.Medium,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
-                    letterSpacing = 1.5.sp,
+                    fontSize = homeLabelSize(com.astro.vajra.ui.theme.NeoVedicFontSizes.S10, language, nepaliScale = 1.2f),
+                    letterSpacing = homeLabelSpacing(1.5.sp, language),
                     color = colors.TextMuted
                 )
             }
@@ -936,14 +951,15 @@ private fun SectionHeader(
     subtitle: String? = null
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     Column(modifier = modifier) {
         Text(
-            text = title.uppercase(),
-            fontFamily = SpaceGroteskFamily,
+            text = homeLabelText(title, language),
+            fontFamily = homeLabelFont(language),
             fontWeight = FontWeight.SemiBold,
-            fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
-            letterSpacing = 2.sp,
+            fontSize = homeLabelSize(com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, language, nepaliScale = 1.2f),
+            letterSpacing = homeLabelSpacing(2.sp, language),
             color = colors.TextMuted
         )
         if (subtitle != null) {
@@ -968,6 +984,7 @@ private fun EmptyHomeState(
     modifier: Modifier = Modifier
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     Box(
         modifier = modifier
@@ -1049,11 +1066,11 @@ private fun EmptyHomeState(
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = stringResource(StringKey.BTN_CREATE_CHART).uppercase(),
-                    fontFamily = SpaceGroteskFamily,
+                    text = homeLabelText(stringResource(StringKey.BTN_CREATE_CHART), language),
+                    fontFamily = homeLabelFont(language),
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
-                    letterSpacing = 1.5.sp
+                    fontSize = homeLabelSize(com.astro.vajra.ui.theme.NeoVedicFontSizes.S12, language, nepaliScale = 1.15f),
+                    letterSpacing = homeLabelSpacing(1.5.sp, language)
                 )
             }
         }
