@@ -56,6 +56,21 @@ Date: 2026-03-05
   - `shoola/ShoolaDashaCalculator`
   - `varshaphala/MuddaDashaCalculator`
   - `varshaphala/VarshaphalaHelpers`
+- Extended timezone sanitization to UI/viewmodel resolver points to eliminate layer drift:
+  - `ui/screen/AshtottariDashaScreen`
+  - `ui/screen/BhriguBinduScreen`
+  - `ui/screen/DrigDashaScreen`
+  - `ui/screen/KalachakraDashaScreen`
+  - `ui/screen/MuhurtaScreen`
+  - `ui/screen/PredictionsScreen`
+  - `ui/screen/SudarshanaChakraScreen`
+  - `ui/screen/VarshaphalaScreen`
+  - `ui/screen/YoginiDashaScreen`
+  - `ui/screen/main/HomeTab`
+  - `ui/screen/main/InsightsTab`
+  - `ui/viewmodel/AshtavargaTransitViewModel`
+  - `ui/viewmodel/InsightsViewModel`
+  - `ui/viewmodel/KakshaTransitViewModel`
 - Replaced 7-day fixed significant transit period buckets with daily sampled, contiguous sign-window period detection in `TransitAnalyzer`.
 
 ## High-Priority Heuristic/Incomplete Hotspots

@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -112,7 +112,6 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.KalachakraDashaUiState
 import com.astro.vajra.ui.viewmodel.KalachakraDashaViewModel
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -2021,7 +2020,7 @@ private fun formatNumber(number: Int, language: Language): String {
 private fun formatYearsLocalized(years: Int, language: Language): String {
     return when (language) {
         Language.ENGLISH -> if (years == 1) "1 year" else "$years years"
-        Language.NEPALI -> "${BikramSambatConverter.toNepaliNumerals(years)} à¤µà¤°à¥à¤·"
+        Language.NEPALI -> "${BikramSambatConverter.toNepaliNumerals(years)} वर्ष"
     }
 }
 
@@ -2038,9 +2037,9 @@ private fun formatRemainingYearsLocalized(years: Double, language: Language): St
             else -> ""
         }
         Language.NEPALI -> when {
-            wholeYears > 0 && remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤· ${BikramSambatConverter.toNepaliNumerals(remainingMonths)} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
-            wholeYears > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} à¤µà¤°à¥à¤· à¤¬à¤¾à¤à¤•à¥€"
-            remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(remainingMonths)} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
+            wholeYears > 0 && remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष ${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
+            wholeYears > 0 -> "${BikramSambatConverter.toNepaliNumerals(wholeYears)} वर्ष बाँकी"
+            remainingMonths > 0 -> "${BikramSambatConverter.toNepaliNumerals(remainingMonths)} महिना बाँकी"
             else -> ""
         }
     }
@@ -2058,28 +2057,16 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
             else -> "${remainingDays}d remaining"
         }
         Language.NEPALI -> when {
-            months > 0 && remainingDays > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ ${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
-            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} à¤®à¤¹à¤¿à¤¨à¤¾ à¤¬à¤¾à¤à¤•à¥€"
-            else -> "${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} à¤¦à¤¿à¤¨ à¤¬à¤¾à¤à¤•à¥€"
+            months > 0 && remainingDays > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना ${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
+            months > 0 -> "${BikramSambatConverter.toNepaliNumerals(months.toInt())} महिना बाँकी"
+            else -> "${BikramSambatConverter.toNepaliNumerals(remainingDays.toInt())} दिन बाँकी"
         }
     }
 }
 
 private fun resolveZoneId(timezone: String?): ZoneId {
-    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-    return try {
-        ZoneId.of(timezone.trim())
-    } catch (_: DateTimeException) {
-        val normalized = timezone.trim()
-            .replace("UTC", "", ignoreCase = true)
-            .replace("GMT", "", ignoreCase = true)
-            .trim()
-        if (normalized.isNotEmpty()) {
-            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
 }
 
 

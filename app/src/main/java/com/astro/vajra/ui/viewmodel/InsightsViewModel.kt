@@ -22,13 +22,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withContext
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.util.concurrent.ConcurrentLinkedQueue
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 data class InsightsData(
     val chart: VedicChart,
@@ -228,18 +225,8 @@ class InsightsViewModel @Inject constructor(
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt()
-                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: ZoneId.systemDefault()
     }
 
     fun clearCache() {

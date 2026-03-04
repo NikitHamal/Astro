@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen.main
+package com.astro.vajra.ui.screen.main
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -62,14 +62,11 @@ import com.astro.vajra.ui.viewmodel.InsightsData
 import com.astro.vajra.ui.viewmodel.InsightError
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
-import kotlin.math.roundToInt
 
 enum class HoroscopePeriod(val titleKey: StringKey) {
     TODAY(StringKey.PERIOD_TODAY),
@@ -2527,18 +2524,8 @@ private fun formatDuration(days: Long, language: Language): String {
 }
 
 private fun resolveZoneId(timezone: String?): ZoneId {
-    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-    return try {
-        ZoneId.of(timezone)
-    } catch (_: DateTimeException) {
-        val numericHours = timezone.trim().toDoubleOrNull()
-        if (numericHours != null) {
-            val totalSeconds = (numericHours * 3600.0).roundToInt()
-            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
 }
 
 @Composable

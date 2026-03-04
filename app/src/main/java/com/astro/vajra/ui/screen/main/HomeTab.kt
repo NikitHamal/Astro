@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen.main
+package com.astro.vajra.ui.screen.main
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -60,15 +60,12 @@ import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.components.common.vedicCornerMarkers
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Locale
-import kotlin.math.roundToInt
 
 // ============================================================================
 // NEO-VEDIC DESIGN TOKENS
@@ -1596,18 +1593,8 @@ enum class InsightFeature(
 }
 
 private fun resolveZoneId(timezone: String): ZoneId {
-    return try {
-        ZoneId.of(timezone)
-    } catch (_: DateTimeException) {
-        val trimmed = timezone.trim()
-        val numericHours = trimmed.toDoubleOrNull()
-        if (numericHours != null) {
-            val totalSeconds = (numericHours * 3600.0).roundToInt()
-            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
 }
 
 

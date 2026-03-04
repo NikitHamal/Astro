@@ -60,17 +60,14 @@ import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ephemeris.varshaphala.TajikaYogaCalculator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
-import kotlin.math.roundToInt
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
@@ -395,18 +392,8 @@ private fun EmptyState() {
 }
 
 private fun resolveZoneId(timezone: String?): ZoneId {
-    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-    return try {
-        ZoneId.of(timezone)
-    } catch (_: DateTimeException) {
-        val numericHours = timezone.trim().toDoubleOrNull()
-        if (numericHours != null) {
-            val totalSeconds = (numericHours * 3600.0).roundToInt()
-            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
 }
 
 @Composable

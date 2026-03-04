@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -88,7 +88,6 @@ import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -1307,20 +1306,8 @@ private fun getPlanetColor(planet: Planet): Color {
 }
 
 private fun resolveZoneId(timezone: String?): ZoneId {
-    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-    return try {
-        ZoneId.of(timezone.trim())
-    } catch (_: DateTimeException) {
-        val normalized = timezone.trim()
-            .replace("UTC", "", ignoreCase = true)
-            .replace("GMT", "", ignoreCase = true)
-            .trim()
-        if (normalized.isNotEmpty()) {
-            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
 }
 
 

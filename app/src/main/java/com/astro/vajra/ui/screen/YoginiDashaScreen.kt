@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -107,7 +107,6 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.YoginiDashaUiState
 import com.astro.vajra.ui.viewmodel.YoginiDashaViewModel
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
@@ -1646,20 +1645,8 @@ private fun formatRemainingDaysLocalized(days: Long, language: Language): String
 }
 
 private fun resolveZoneId(timezone: String?): ZoneId {
-    if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-    return try {
-        ZoneId.of(timezone.trim())
-    } catch (_: DateTimeException) {
-        val normalized = timezone.trim()
-            .replace("UTC", "", ignoreCase = true)
-            .replace("GMT", "", ignoreCase = true)
-            .trim()
-        if (normalized.isNotEmpty()) {
-            runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
 }
 
 

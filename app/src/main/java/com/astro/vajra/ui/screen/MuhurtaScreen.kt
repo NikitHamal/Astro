@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -132,15 +132,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.Instant
-import java.time.ZoneOffset
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.DateTimeException
 import java.time.format.DateTimeFormatter
 import java.util.Locale
-import kotlin.math.roundToInt
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
@@ -192,17 +189,8 @@ private object MuhurtaFormatters {
 private enum class InauspiciousSeverity { HIGH, MEDIUM, LOW }
 
 private fun resolveZoneIdStrict(timezone: String): ZoneId {
-    try {
-        return ZoneId.of(timezone)
-    } catch (_: DateTimeException) {
-        val trimmed = timezone.trim()
-        val numericHours = trimmed.toDoubleOrNull()
-        if (numericHours != null) {
-            val totalSeconds = (numericHours * 3600.0).roundToInt()
-            return ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-        }
-        throw IllegalArgumentException("Invalid timezone: $timezone")
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: throw IllegalArgumentException("Invalid timezone: $timezone")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

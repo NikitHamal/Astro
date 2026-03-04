@@ -1,4 +1,4 @@
-﻿package com.astro.vajra.ui.screen
+package com.astro.vajra.ui.screen
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -52,12 +52,9 @@ import com.astro.vajra.ui.theme.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.Period
 import java.time.ZoneId
-import java.time.ZoneOffset
-import kotlin.math.roundToInt
 
 /**
  * Sudarshana Chakra Dasha Screen
@@ -1373,18 +1370,8 @@ private fun getStrengthColor(score: Double): Color {
 }
 
 private fun resolveZoneId(timezone: String): ZoneId {
-    return try {
-        ZoneId.of(timezone)
-    } catch (_: DateTimeException) {
-        val trimmed = timezone.trim()
-        val numericHours = trimmed.toDoubleOrNull()
-        if (numericHours != null) {
-            val totalSeconds = (numericHours * 3600.0).roundToInt()
-            ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-        } else {
-            ZoneId.systemDefault()
-        }
-    }
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
 }
 
 

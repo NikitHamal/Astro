@@ -13,13 +13,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 /**
  * ViewModel for Kakshya Transit Analysis Screen
@@ -206,18 +203,8 @@ class KakshaTransitViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt()
-                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: ZoneId.systemDefault()
     }
 }
 

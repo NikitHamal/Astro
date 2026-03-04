@@ -50,6 +50,7 @@ import com.astro.vajra.ephemeris.BhriguBinduCalculator.LifeArea
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.OverallStrength
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.RemedyCategory
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.RemedyPriority
+import com.astro.vajra.util.TimezoneSanitizer
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
@@ -58,11 +59,8 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.components.common.NeoVedicEmptyState
-import java.time.DateTimeException
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.ZoneOffset
-import kotlin.math.roundToInt
 import androidx.compose.foundation.BorderStroke
 
 /**
@@ -105,11 +103,9 @@ fun BhriguBinduScreen(
     
     // Use local resolveZoneId to avoid ambiguity
     val analysisDate = remember(chart) { 
-        try {
-            LocalDate.now(ZoneId.of(chart.birthData.timezone))
-        } catch (e: Exception) {
-            LocalDate.now()
-        }
+        val zoneId = TimezoneSanitizer.resolveZoneIdOrNull(chart.birthData.timezone)
+            ?: ZoneOffset.UTC
+        LocalDate.now(zoneId)
     }
 
     val tabs = listOf(
