@@ -102,6 +102,8 @@ Date: 2026-03-05
 - Upgraded Kaksha transit timing from static average motion to speed-aware movement:
   - `KakshaTransitCalculator` now prefers live transit speed per planet (with fallback to average motion only when speed is invalid/stationary).
   - Next-Kaksha timing now accounts for retrograde direction in boundary selection and Kaksha progression.
+- Replaced blanket auspicious-flag simplification in conjunction yoga evaluation:
+  - `ConjunctionYogaEvaluator` now derives `isAuspicious` from natural + functional benefic/malefic scoring with hard-malefic penalties and benefic anchor weighting.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 

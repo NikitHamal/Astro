@@ -65,8 +65,7 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\varshaphala\TajikaYogaCalculator.kt | 970 | Simplified | // Simplified chain finding |
 | app\src\main\java\com\astro\vajra\ephemeris\varshaphala\TajikaYogaCalculator.kt | 1000 | Simplified | // Simplified - return the sign where Muntha falls |
 | app\src\main\java\com\astro\vajra\ephemeris\varshaphala\TajikaYogaCalculator.kt | 1045 | Simplified | // Simplified monthly trend calculation based on Moon's nakshatra cycle |
-| app\src\main\java\com\astro\vajra\ephemeris\yoga\ConjunctionYogaEvaluator.kt | 90 | Simplified | isAuspicious = true, // Simplified |
-| app\src\main\java\com\astro\vajra\ephemeris\yoga\ConjunctionYogaEvaluator.kt | 116 | Fallback | else -> StringKeyYogaExpanded.YOGA_CONJUNCTION_TITLE // Fallback |
+| app\src\main\java\com\astro\vajra\ephemeris\yoga\ConjunctionYogaEvaluator.kt | 119 | Fallback | else -> StringKeyYogaExpanded.YOGA_CONJUNCTION_TITLE // Fallback |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\NabhasaYogaEvaluator.kt | 93 | Placeholder | descriptionKey = com.astro.vajra.core.common.StringKeyYogaExpanded.YOGA_CAT_NABHASA, // Placeholder or specific |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\PlanetaryYogaEvaluator.kt | 226 | approximate | // Pushkara Navamsha positions by sign (approximate) |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\PlanetaryYogaEvaluator.kt | 659 | Simplified | // Simplified: Jupiter in Kendra with strong dignity |

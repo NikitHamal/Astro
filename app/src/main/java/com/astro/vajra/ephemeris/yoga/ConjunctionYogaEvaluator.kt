@@ -3,6 +3,7 @@ package com.astro.vajra.ephemeris.yoga
 import com.astro.vajra.core.common.StringKeyYogaExpanded
 import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.VedicChart
+import com.astro.vajra.ephemeris.VedicAstrologyUtils
 
 /**
  * Conjunction Yoga Evaluator - Planetary Unions (Yuti)
@@ -76,6 +77,7 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
         val effects = effectKey?.en ?: "Conjunction of ${planet1.displayName} and ${planet2.displayName}"
         
         val strength = YogaHelpers.calculateYogaStrength(chart, listOf(p1, p2))
+        val isAuspicious = evaluateConjunctionAuspiciousness(listOf(planet1, planet2), chart)
         
         return Yoga(
             name = name,
@@ -87,7 +89,7 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
             effects = effects,
             strength = YogaHelpers.strengthFromPercentage(strength),
             strengthPercentage = strength,
-            isAuspicious = true, // Simplified
+            isAuspicious = isAuspicious,
             activationPeriod = "${planet1.displayName}-${planet2.displayName} period",
             cancellationFactors = emptyList(),
             
@@ -109,6 +111,7 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
         val name = "$count-Planet Conjunction in House $house"
         
         val strength = YogaHelpers.calculateYogaStrength(chart, positions)
+        val isAuspicious = evaluateConjunctionAuspiciousness(planets, chart)
         
         val nameKey = when (count) {
             3 -> StringKeyYogaExpanded.YOGA_CONJUNCTION_3_PLANETS
@@ -126,7 +129,7 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
             effects = "Complex mixing of energies. Results depend on the strongest planet in the group.",
             strength = YogaHelpers.strengthFromPercentage(strength),
             strengthPercentage = strength,
-            isAuspicious = true,
+            isAuspicious = isAuspicious,
             activationPeriod = "Dasha of strongest planet",
             cancellationFactors = emptyList(),
             
@@ -179,5 +182,25 @@ class ConjunctionYogaEvaluator : YogaEvaluator {
             }
             else -> null
         }
+    }
+
+    private fun evaluateConjunctionAuspiciousness(planets: List<Planet>, chart: VedicChart): Boolean {
+        var score = 0
+
+        planets.forEach { planet ->
+            if (VedicAstrologyUtils.isNaturalBenefic(planet)) score += 1
+            if (VedicAstrologyUtils.isNaturalMalefic(planet)) score -= 1
+
+            if (VedicAstrologyUtils.isFunctionalBenefic(planet, chart)) score += 1
+            if (VedicAstrologyUtils.isFunctionalMalefic(planet, chart)) score -= 1
+        }
+
+        val hardMalefics = listOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU)
+        val beneficAnchors = listOf(Planet.JUPITER, Planet.VENUS)
+
+        score -= planets.count { it in hardMalefics }
+        if (planets.any { it in beneficAnchors }) score += 1
+
+        return score >= 0
     }
 }
