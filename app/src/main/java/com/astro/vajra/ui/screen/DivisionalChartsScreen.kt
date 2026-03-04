@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,9 +38,6 @@ import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
-import com.astro.vajra.data.templates.TemplateSelector
-import com.astro.vajra.data.templates.TemplateTextResolver
-import com.astro.vajra.di.CoreEntryPoint
 import com.astro.vajra.ephemeris.varga.*
 import com.astro.vajra.ephemeris.varga.DivisionalChartAnalyzer
 import com.astro.vajra.ui.theme.AppTheme
@@ -53,7 +49,6 @@ import com.astro.vajra.ephemeris.DivisionalChartType
 import com.astro.vajra.ui.chart.ChartRenderer
 import com.astro.vajra.ui.components.FullScreenChartDialog
 import androidx.compose.ui.text.style.TextOverflow
-import dagger.hilt.android.EntryPointAccessors
 
 /**
  * Divisional Charts Analysis Screen (All 23 Vargas D-1 to D-144)
@@ -77,12 +72,6 @@ fun DivisionalChartsScreen(
     }
 
     val language = currentLanguage()
-    val context = LocalContext.current
-    val templateSelector = remember {
-        EntryPointAccessors
-            .fromApplication(context.applicationContext, CoreEntryPoint::class.java)
-            .templateSelector()
-    }
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var isCalculating by remember { mutableStateOf(true) }
@@ -166,7 +155,7 @@ fun DivisionalChartsScreen(
                     DivisionalChartType.D9_NAVAMSA -> navamsaAnalysis?.let { NavamsaTab(it, language) }
                     DivisionalChartType.D10_DASAMSA -> dashamsaAnalysis?.let { DashamsaTab(it, language) }
                     DivisionalChartType.D12_DWADASAMSA -> dwadasamsaAnalysis?.let { DwadasamsaTab(it, language) }
-                    else -> genericAnalysis?.let { GenericVargaTab(it, language, templateSelector) }
+                    else -> genericAnalysis?.let { GenericVargaTab(it, language) }
                 }
             }
         }
@@ -218,34 +207,7 @@ fun DivisionalChartsScreen(
 }
 
 @Composable
-private fun GenericVargaTab(
-    analysis: GenericVargaAnalysis,
-    language: Language,
-    templateSelector: TemplateSelector
-) {
-    val templateInsights = remember(analysis, language) {
-        val rankedPlanets = buildList {
-            analysis.dominantPlanet?.let { add(it) }
-            addAll(analysis.vargottamaPlanets)
-            addAll(
-                analysis.planetPositions
-                    .filter { it.house in listOf(1, 4, 5, 7, 9, 10) }
-                    .map { it.planet }
-            )
-        }.distinct().take(4)
-
-        rankedPlanets.mapNotNull { planet ->
-            val position = analysis.planetPositions.find { it.planet == planet } ?: return@mapNotNull null
-            TemplateTextResolver.resolveVargaText(
-                templateSelector = templateSelector,
-                varga = analysis.vargaType.shortName,
-                planet = planet,
-                sign = position.sign,
-                language = language
-            )
-        }.distinct()
-    }
-
+private fun GenericVargaTab(analysis: GenericVargaAnalysis, language: Language) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
@@ -290,37 +252,6 @@ private fun GenericVargaTab(
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(stringResource(StringKeyAnalysis.DIVISIONAL_DOMINANT_PLANET), fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11, color = AppTheme.TextMuted)
                             Text(analysis.dominantPlanet?.getLocalizedName(language) ?: stringResource(StringKeyAnalysis.UI_NONE), fontWeight = FontWeight.SemiBold, color = AppTheme.AccentTeal)
-                        }
-                    }
-                }
-            }
-        }
-
-        if (templateInsights.isNotEmpty()) {
-            item {
-                SectionHeader(
-                    title = "Template Insights",
-                    icon = Icons.Default.AutoAwesome,
-                    tint = AppTheme.AccentTeal
-                )
-                Card(
-                    modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    border = androidx.compose.foundation.BorderStroke(
-                        com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth,
-                        AppTheme.BorderColor
-                    )
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        templateInsights.forEach { insight ->
-                            Text(
-                                text = "\u2022 $insight",
-                                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
-                                color = AppTheme.TextSecondary,
-                                lineHeight = 20.sp,
-                                modifier = Modifier.padding(vertical = 3.dp)
-                            )
                         }
                     }
                 }

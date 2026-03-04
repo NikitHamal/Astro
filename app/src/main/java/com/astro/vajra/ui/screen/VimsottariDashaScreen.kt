@@ -57,7 +57,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -74,9 +73,6 @@ import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.data.localization.DateFormat
 import com.astro.vajra.data.localization.LocalDateSystem
 import com.astro.vajra.data.localization.LocalLanguage
-import com.astro.vajra.data.templates.TemplateSelector
-import com.astro.vajra.data.templates.TemplateTextResolver
-import com.astro.vajra.di.CoreEntryPoint
 import com.astro.vajra.data.localization.formatDate
 import com.astro.vajra.data.localization.formatDurationYearsMonths
 import com.astro.vajra.data.localization.stringResource
@@ -95,7 +91,6 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.DashaUiState
 import com.astro.vajra.ui.viewmodel.DashaViewModel
-import dagger.hilt.android.EntryPointAccessors
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -115,16 +110,10 @@ fun VimsottariDashaScreen(
     onBack: () -> Unit,
     viewModel: DashaViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
     val language = LocalLanguage.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var showInfoDialog by rememberSaveable { mutableStateOf(false) }
-    val templateSelector = remember {
-        EntryPointAccessors
-            .fromApplication(context.applicationContext, CoreEntryPoint::class.java)
-            .templateSelector()
-    }
 
     LaunchedEffect(chart) { viewModel.loadDashaTimeline(chart) }
 
@@ -194,11 +183,7 @@ fun VimsottariDashaScreen(
                     when (VimsottariTab.entries[selectedTab]) {
                         VimsottariTab.ABOUT -> VimsottariAboutTab(timeline = state.timeline)
                         VimsottariTab.TIMELINE -> VimsottariTimelineTab(timeline = state.timeline)
-                        VimsottariTab.INTERPRETATION -> VimsottariInterpretationTab(
-                            timeline = state.timeline,
-                            chart = chart,
-                            templateSelector = templateSelector
-                        )
+                        VimsottariTab.INTERPRETATION -> VimsottariInterpretationTab(timeline = state.timeline)
                     }
                 }
             }
@@ -885,11 +870,7 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
 }
 
 @Composable
-private fun VimsottariInterpretationTab(
-    timeline: DashaCalculator.DashaTimeline,
-    chart: VedicChart?,
-    templateSelector: TemplateSelector
-) {
+private fun VimsottariInterpretationTab(timeline: DashaCalculator.DashaTimeline) {
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
     val now = remember(timeline) { timeline.nowInTimelineZone() }
@@ -922,15 +903,7 @@ private fun VimsottariInterpretationTab(
                     planetName = md.planet.getLocalizedName(language),
                     dateRange = "${formatDate(md.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(md.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
                     progress = md.getProgressPercent(now).toFloat() / 100f,
-                    summary = chart?.let {
-                        TemplateTextResolver.resolveDashaText(
-                            templateSelector = templateSelector,
-                            chart = it,
-                            planet = md.planet,
-                            dashaLevel = 1,
-                            language = language
-                        )
-                    } ?: getMahadashaInterpretation(md.planet),
+                    summary = getMahadashaInterpretation(md.planet),
                     color = AppTheme.AccentPrimary
                 )
             }
@@ -943,15 +916,7 @@ private fun VimsottariInterpretationTab(
                     planetName = ad.planet.getLocalizedName(language),
                     dateRange = "${formatDate(ad.startDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)} - ${formatDate(ad.endDate.toLocalDate(), dateSystem, language, DateFormat.MONTH_YEAR)}",
                     progress = ad.getProgressPercent(now).toFloat() / 100f,
-                    summary = chart?.let {
-                        TemplateTextResolver.resolveDashaText(
-                            templateSelector = templateSelector,
-                            chart = it,
-                            planet = ad.planet,
-                            dashaLevel = 2,
-                            language = language
-                        )
-                    } ?: getAntardashaInterpretation(ad.planet),
+                    summary = getAntardashaInterpretation(ad.planet),
                     color = AppTheme.AccentTeal
                 )
             }
@@ -964,15 +929,7 @@ private fun VimsottariInterpretationTab(
                     planetName = pd.planet.getLocalizedName(language),
                     dateRange = "${formatDate(pd.startDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)} - ${formatDate(pd.endDate.toLocalDate(), dateSystem, language, DateFormat.DAY_MONTH)}",
                     progress = calculateProgress(pd.startDate.toLocalDate(), pd.endDate.toLocalDate(), today),
-                    summary = chart?.let {
-                        TemplateTextResolver.resolveDashaText(
-                            templateSelector = templateSelector,
-                            chart = it,
-                            planet = pd.planet,
-                            dashaLevel = 2,
-                            language = language
-                        )
-                    } ?: getPratyantardashaInterpretation(pd.planet),
+                    summary = getPratyantardashaInterpretation(pd.planet),
                     color = AppTheme.AccentGold
                 )
             }

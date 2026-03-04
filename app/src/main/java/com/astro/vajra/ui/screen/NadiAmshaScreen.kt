@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,8 +30,6 @@ import com.astro.vajra.core.common.StringKeyAdvanced
 import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
-import com.astro.vajra.data.templates.TemplateTextResolver
-import com.astro.vajra.di.CoreEntryPoint
 import com.astro.vajra.ephemeris.NadiAmshaCalculator
 import com.astro.vajra.ephemeris.NadiAmshaCalculator.NadiAmshaResult
 import com.astro.vajra.ui.components.common.ModernPillTabRow
@@ -49,7 +46,6 @@ import kotlinx.coroutines.delay
 import java.time.format.DateTimeFormatter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.BorderStroke
-import dagger.hilt.android.EntryPointAccessors
 
 private val nadiTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
@@ -169,21 +165,6 @@ private fun NadiAmshaContent(
     selectedTab: Int,
     onTabSelected: (Int) -> Unit
 ) {
-    val language = LocalLanguage.current
-    val context = LocalContext.current
-    val templateSelector = remember {
-        EntryPointAccessors
-            .fromApplication(context.applicationContext, CoreEntryPoint::class.java)
-            .templateSelector()
-    }
-    val nadiTemplateSummary = remember(result.chart, language) {
-        TemplateTextResolver.resolveNadiText(
-            templateSelector = templateSelector,
-            chart = result.chart,
-            language = language
-        )
-    }
-
     val tabs = listOf(
         TabItem(title = stringResource(StringKeyAdvanced.NADI_TAB_OVERVIEW), accentColor = AppTheme.AccentGold),
         TabItem(title = stringResource(StringKeyAdvanced.NADI_TAB_POSITIONS), accentColor = AppTheme.AccentTeal),
@@ -210,12 +191,7 @@ private fun NadiAmshaContent(
             when (selectedTab) {
                 0 -> {
                     item { NadiLagnaCard(result.ascendantNadi) }
-                    item {
-                        NadiSummaryCard(
-                            result = result,
-                            templateSummary = nadiTemplateSummary
-                        )
-                    }
+                    item { NadiSummaryCard(result) }
                 }
                 1 -> {
                     items(result.planetNadis) { position ->
@@ -295,10 +271,7 @@ private fun NadiInfoItem(label: String, value: String) {
 }
 
 @Composable
-private fun NadiSummaryCard(
-    result: NadiAmshaResult,
-    templateSummary: String?
-) {
+private fun NadiSummaryCard(result: NadiAmshaResult) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = AppTheme.CardBackground,
@@ -314,8 +287,9 @@ private fun NadiSummaryCard(
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16
             )
             Spacer(modifier = Modifier.height(8.dp))
+            // Example summary logic
             Text(
-                templateSummary ?: stringResource(
+                stringResource(
                     StringKeyAdvanced.NADI_SUMMARY_FMT,
                     result.ascendantNadi.nadiLord.getLocalizedName(LocalLanguage.current),
                     result.ascendantNadi.energyType.displayName

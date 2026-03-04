@@ -62,7 +62,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -73,8 +72,6 @@ import com.astro.vajra.data.localization.LocalLanguage
 import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.stringResource
-import com.astro.vajra.data.templates.TemplateTextResolver
-import com.astro.vajra.di.CoreEntryPoint
 import com.astro.vajra.ephemeris.YogaCalculator
 import com.astro.vajra.ephemeris.yoga.Yoga
 import com.astro.vajra.ephemeris.yoga.YogaAnalysis
@@ -83,7 +80,6 @@ import com.astro.vajra.ephemeris.yoga.YogaStrength
 import com.astro.vajra.ui.screen.chartdetail.ChartDetailColors
 import com.astro.vajra.ui.screen.chartdetail.components.StatusBadge
 import com.astro.vajra.ui.theme.LocalAppThemeColors
-import dagger.hilt.android.EntryPointAccessors
 
 /**
  * Yogas tab content displaying all detected yogas with filtering and analysis.
@@ -93,29 +89,8 @@ fun YogasTabContent(
     chart: VedicChart,
     onNavigateToDetailedYoga: (Yoga) -> Unit = {}
 ) {
-    val context = LocalContext.current
-    val language = LocalLanguage.current
-    val templateSelector = remember {
-        EntryPointAccessors
-            .fromApplication(context.applicationContext, CoreEntryPoint::class.java)
-            .templateSelector()
-    }
-
     val yogaAnalysis = remember(chart) {
         YogaCalculator.calculateYogas(chart)
-    }
-
-    val templateEffectsByKey = remember(yogaAnalysis, chart, language) {
-        yogaAnalysis.allYogas.associate { yoga ->
-            yoga.stableKey() to (
-                TemplateTextResolver.resolveYogaOrHouseLordText(
-                    templateSelector = templateSelector,
-                    chart = chart,
-                    yoga = yoga,
-                    language = language
-                ) ?: com.astro.vajra.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language)
-                )
-        }
     }
 
     var selectedCategory by remember { mutableStateOf<YogaCategory?>(null) }
@@ -160,8 +135,6 @@ fun YogasTabContent(
                 val yogaKey = remember(yoga) { yoga.stableKey() }
                 YogaCard(
                     yoga = yoga,
-                    resolvedEffects = templateEffectsByKey[yogaKey]
-                        ?: com.astro.vajra.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
                     isExpanded = yogaKey in expandedYogaKeys,
                     onToggleExpand = { expanded ->
                         if (expanded) {
@@ -405,7 +378,6 @@ private fun YogaCategoryFilter(
 @Composable
 private fun YogaCard(
     yoga: Yoga,
-    resolvedEffects: String,
     isExpanded: Boolean,
     onToggleExpand: (Boolean) -> Unit,
     onViewDeepAnalysis: () -> Unit
@@ -561,7 +533,7 @@ private fun YogaCard(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = resolvedEffects,
+                                text = com.astro.vajra.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                                 color = ChartDetailColors.TextPrimary,
                                 lineHeight = 20.sp
