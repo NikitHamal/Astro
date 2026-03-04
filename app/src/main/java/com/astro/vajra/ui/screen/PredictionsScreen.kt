@@ -1696,6 +1696,7 @@ private fun calculateLifeOverview(chart: VedicChart, dashaTimeline: DashaCalcula
 private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalculator.DashaTimeline, language: Language): CurrentPeriodAnalysis {
     val currentMahadasha = dashaTimeline.currentMahadasha
     val currentAntardasha = dashaTimeline.currentAntardasha
+    val asOf = dashaTimeline.nowInTimelineZone()
 
     val dashaInfo = currentMahadasha?.let { md ->
         val mdName = md.planet.getLocalizedName(language)
@@ -1732,7 +1733,7 @@ private fun calculateCurrentPeriod(chart: VedicChart, dashaTimeline: DashaCalcul
     }
 
     val period = currentMahadasha?.let { md ->
-        val remainingYears = md.getRemainingYears()
+        val remainingYears = md.getRemainingYears(asOf)
         StringResources.get(StringKeyPrediction.PRED_YEARS_REMAINING, language, remainingYears)
     } ?: ""
 

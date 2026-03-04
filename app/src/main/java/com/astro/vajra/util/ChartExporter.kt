@@ -1469,6 +1469,7 @@ class ChartExporter @Inject constructor(
         val currentMahadasha = dashaTimeline.currentMahadasha
         val currentAntardasha = dashaTimeline.currentAntardasha
         val currentPratyantardasha = dashaTimeline.currentPratyantardasha
+        val asOf = dashaTimeline.nowInTimelineZone()
 
         // Current Period Summary Card
         val cardHeight = 100f
@@ -1541,7 +1542,8 @@ class ChartExporter @Inject constructor(
             if (yPos > options.pageSize.height - 80) return@forEachIndexed
 
             // Highlight current dasha
-            if (dasha.isActive) {
+            val isCurrentDasha = dasha.isActiveOn(asOf)
+            if (isCurrentDasha) {
                 val highlightPaint = Paint().apply {
                     color = Color.argb(30, 212, 175, 55) // Light gold
                     style = Paint.Style.FILL
@@ -1550,7 +1552,7 @@ class ChartExporter @Inject constructor(
             }
 
             // Alternating background
-            if (index % 2 == 0 && !dasha.isActive) {
+            if (index % 2 == 0 && !isCurrentDasha) {
                 val rowBgPaint = Paint().apply {
                     color = COLOR_CARD_BG
                     style = Paint.Style.FILL
@@ -1559,7 +1561,7 @@ class ChartExporter @Inject constructor(
             }
 
             // Planet name
-            paint.color = if (dasha.isActive) COLOR_ACCENT else COLOR_PRIMARY
+            paint.color = if (isCurrentDasha) COLOR_ACCENT else COLOR_PRIMARY
             paint.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD)
             canvas.drawText(dasha.planet.getLocalizedName(locManager.currentLanguage), PDF_MARGIN.toFloat() + 8f, yPos + 14f, paint)
 
@@ -1576,8 +1578,8 @@ class ChartExporter @Inject constructor(
 
             // Status
             val status = when {
-                dasha.isActive -> StringKeyExport.EXPORT_STATUS_CURRENT
-                dasha.startDate.isAfter(java.time.LocalDateTime.now()) -> StringKeyExport.EXPORT_STATUS_UPCOMING
+                isCurrentDasha -> StringKeyExport.EXPORT_STATUS_CURRENT
+                dasha.startDate.isAfter(asOf) -> StringKeyExport.EXPORT_STATUS_UPCOMING
                 else -> StringKeyExport.EXPORT_STATUS_COMPLETED
             }
             val statusText = locManager.getString(status)

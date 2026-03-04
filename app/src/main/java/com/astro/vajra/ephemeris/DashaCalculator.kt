@@ -11,7 +11,6 @@ import com.astro.vajra.ephemeris.DashaUtils.coerceIn
 import com.astro.vajra.util.TimezoneSanitizer
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -473,11 +472,7 @@ object DashaCalculator {
         }
 
         fun nowInTimelineZone(): LocalDateTime {
-            val zone = try {
-                ZoneId.of(timezone)
-            } catch (_: DateTimeException) {
-                ZoneOffset.UTC
-            }
+            val zone = TimezoneSanitizer.resolveZoneIdOrNull(timezone) ?: ZoneId.systemDefault()
             return LocalDateTime.now(zone)
         }
 
@@ -561,7 +556,8 @@ object DashaCalculator {
         val balanceOfFirstDashaBd = firstDashaYearsBd.subtract(elapsedInFirstDashaBd, MATH_CONTEXT)
         val balanceOfFirstDasha = balanceOfFirstDashaBd.toDouble().coerceAtLeast(0.0)
 
-        val now = LocalDateTime.now(resolveZoneId(chart.birthData.timezone))
+        val timelineZone = resolveZoneId(chart.birthData.timezone)
+        val now = LocalDateTime.now(timelineZone)
 
         val mahadashas = calculateAllMahadashasOptimized(
             birthDate = birthDateTime,
@@ -602,7 +598,7 @@ object DashaCalculator {
 
         return DashaTimeline(
             birthDate = birthDateTime,
-            timezone = chart.birthData.timezone,
+            timezone = timelineZone.id,
             birthNakshatra = birthNakshatra,
             birthNakshatraPada = pada,
             birthNakshatraLord = nakshatraLord,
