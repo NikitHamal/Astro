@@ -16,6 +16,7 @@ import com.astro.vajra.data.localization.LocalizationManager
 import com.astro.vajra.core.common.Language
 import com.astro.vajra.core.common.StringResources
 import com.astro.vajra.data.templates.TemplateSelector
+import com.astro.vajra.data.templates.TemplateTextResolver
 import com.astro.vajra.util.TimezoneSanitizer
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -509,7 +510,14 @@ class TransitAnalyzer @Inject constructor(
                 baseEffect
             }
 
-            val interpretation = generateGocharaInterpretation(planet, houseFromMoon, finalEffect, isVedhaAffected, language)
+            val interpretation = generateGocharaInterpretation(
+                planet = planet,
+                transitSign = transitPos.sign,
+                houseFromMoon = houseFromMoon,
+                effect = finalEffect,
+                isVedhaAffected = isVedhaAffected,
+                language = language
+            )
 
             results.add(
                 GocharaResult(
@@ -787,6 +795,7 @@ class TransitAnalyzer @Inject constructor(
      */
     private fun generateGocharaInterpretation(
         planet: Planet,
+        transitSign: ZodiacSign,
         houseFromMoon: Int,
         effect: TransitEffect,
         isVedhaAffected: Boolean,
@@ -801,7 +810,15 @@ class TransitAnalyzer @Inject constructor(
             GOCHARA_UNFAVORABLE_KEYS[planet]?.get(houseFromMoon)
         }
 
-        val baseInterpretation = effectKey?.let { getString(it) } ?: run {
+        val templateInterpretation = TemplateTextResolver.resolveTransitText(
+            templateSelector = templateSelector,
+            transitPlanet = planet,
+            sign = transitSign,
+            house = houseFromMoon,
+            language = language
+        )
+
+        val baseInterpretation = templateInterpretation ?: effectKey?.let { getString(it) } ?: run {
             // Fallback if key missing
             val houseMattersKey = when (houseFromMoon) {
                 1 -> StringKeyTransit.GOCHARA_MATTERS_1

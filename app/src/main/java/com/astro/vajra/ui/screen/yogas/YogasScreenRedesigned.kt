@@ -81,6 +81,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -91,6 +92,8 @@ import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
+import com.astro.vajra.data.templates.TemplateTextResolver
+import com.astro.vajra.di.CoreEntryPoint
 import com.astro.vajra.ephemeris.YogaCalculator
 import com.astro.vajra.ephemeris.yoga.Yoga
 import com.astro.vajra.ephemeris.yoga.YogaAnalysis
@@ -102,6 +105,7 @@ import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import dagger.hilt.android.EntryPointAccessors
 
 /**
  * Redesigned Yogas Screen
@@ -120,7 +124,13 @@ fun YogasScreenRedesigned(
     onBack: () -> Unit,
     onNavigateToDetailedYoga: (Yoga) -> Unit = {}
 ) {
+    val context = LocalContext.current
     val language = LocalLanguage.current
+    val templateSelector = remember {
+        EntryPointAccessors
+            .fromApplication(context.applicationContext, CoreEntryPoint::class.java)
+            .templateSelector()
+    }
     var selectedCategory by rememberSaveable { mutableStateOf<YogaCategory?>(null) }
     var expandedYogaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
 
@@ -149,6 +159,21 @@ fun YogasScreenRedesigned(
     val categoryStats = remember(yogaAnalysis) {
         if (yogaAnalysis == null) return@remember emptyMap()
         yogaAnalysis.allYogas.groupBy { it.category }.mapValues { it.value.size }
+    }
+
+    val templateEffectsByKey = remember(yogaAnalysis, chart, language) {
+        val source = yogaAnalysis ?: return@remember emptyMap()
+        val currentChart = chart ?: return@remember emptyMap()
+        source.allYogas.associate { yoga ->
+            yoga.stableKey() to (
+                TemplateTextResolver.resolveYogaOrHouseLordText(
+                    templateSelector = templateSelector,
+                    chart = currentChart,
+                    yoga = yoga,
+                    language = language
+                ) ?: com.astro.vajra.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language)
+                )
+        }
     }
 
     Scaffold(
@@ -206,6 +231,8 @@ fun YogasScreenRedesigned(
 
                     YogaCard(
                         yoga = yoga,
+                        resolvedEffects = templateEffectsByKey[yoga.stableKey()]
+                            ?: com.astro.vajra.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
                         isExpanded = isExpanded,
                         onToggleExpand = { expanded ->
                             val key = yogaKey
@@ -223,6 +250,20 @@ fun YogasScreenRedesigned(
                 item { Spacer(modifier = Modifier.height(32.dp)) }
             }
         }
+    }
+}
+
+private fun Yoga.stableKey(): String {
+    return buildString {
+        append(category.name)
+        append('|')
+        append(name)
+        append('|')
+        append(sanskritName)
+        append('|')
+        append(planets.joinToString(",") { it.name })
+        append('|')
+        append(houses.sorted().joinToString(","))
     }
 }
 
@@ -554,6 +595,7 @@ private fun CategoryHeader(
 @Composable
 private fun YogaCard(
     yoga: Yoga,
+    resolvedEffects: String,
     isExpanded: Boolean,
     onToggleExpand: (Boolean) -> Unit,
     onViewDeepAnalysis: () -> Unit
@@ -834,7 +876,7 @@ private fun YogaCard(
                             }
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = com.astro.vajra.ephemeris.yoga.YogaLocalization.getLocalizedYogaEffects(yoga, language),
+                                text = resolvedEffects,
                                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13,
                                 fontFamily = PoppinsFontFamily,
                                 color = AppTheme.TextPrimary,

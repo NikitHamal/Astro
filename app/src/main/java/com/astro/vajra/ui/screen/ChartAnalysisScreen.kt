@@ -377,7 +377,10 @@ private fun DashasTabContentWrapper(chart: VedicChart) {
             .fillMaxSize()
             .background(AppTheme.ScreenBackground)
     ) {
-        DashasTabContent(timeline = timeline)
+        DashasTabContent(
+            timeline = timeline,
+            chart = chart
+        )
     }
 }
 

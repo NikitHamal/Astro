@@ -62,6 +62,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -86,8 +87,13 @@ import com.astro.vajra.data.localization.formatRemainingDuration
 import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.Planet
+import com.astro.vajra.core.model.VedicChart
+import com.astro.vajra.data.templates.TemplateSelector
+import com.astro.vajra.data.templates.TemplateTextResolver
+import com.astro.vajra.di.CoreEntryPoint
 import com.astro.vajra.ephemeris.DashaCalculator
 import com.astro.vajra.ui.screen.chartdetail.ChartDetailColors
+import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import java.time.LocalDate
@@ -137,10 +143,17 @@ private fun getDashaSizes(level: DashaLevel): DashaSizes = when (level) {
 @Composable
 fun DashasTabContent(
     timeline: DashaCalculator.DashaTimeline,
+    chart: VedicChart? = null,
     scrollToTodayEvent: SharedFlow<Unit>? = null,
     includeMicroLevels: Boolean = true,
     showInfoFooter: Boolean = true
 ) {
+    val context = LocalContext.current
+    val templateSelector = remember {
+        EntryPointAccessors
+            .fromApplication(context.applicationContext, CoreEntryPoint::class.java)
+            .templateSelector()
+    }
     val listState = rememberLazyListState()
     val asOf = remember(timeline) { timeline.nowInTimelineZone() }
     val asOfDate = asOf.toLocalDate()
@@ -179,7 +192,9 @@ fun DashasTabContent(
             CurrentPeriodCard(
                 timeline = timeline,
                 asOf = asOf,
-                includeMicroLevels = includeMicroLevels
+                includeMicroLevels = includeMicroLevels,
+                chart = chart,
+                templateSelector = templateSelector
             )
         }
 
@@ -244,7 +259,9 @@ fun DashasTabContent(
 private fun CurrentPeriodCard(
     timeline: DashaCalculator.DashaTimeline,
     asOf: LocalDateTime,
-    includeMicroLevels: Boolean
+    includeMicroLevels: Boolean,
+    chart: VedicChart?,
+    templateSelector: TemplateSelector
 ) {
     val currentMahadasha = timeline.currentMahadasha
     val currentAntardasha = timeline.currentAntardasha
@@ -400,7 +417,9 @@ private fun CurrentPeriodCard(
 
                 CurrentPeriodSummary(
                     mahadasha = currentMahadasha,
-                    antardasha = currentAntardasha
+                    antardasha = currentAntardasha,
+                    chart = chart,
+                    templateSelector = templateSelector
                 )
             } else {
                 EmptyDashaState()
@@ -930,12 +949,18 @@ private fun formatDehadashaDuration(durationMinutes: Long): String {
 @Composable
 private fun CurrentPeriodSummary(
     mahadasha: DashaCalculator.Mahadasha,
-    antardasha: DashaCalculator.Antardasha?
+    antardasha: DashaCalculator.Antardasha?,
+    chart: VedicChart?,
+    templateSelector: TemplateSelector
 ) {
-    val interpretation = remember(mahadasha, antardasha) {
+    val language = LocalLanguage.current
+    val interpretation = remember(mahadasha, antardasha, chart, language) {
         getDashaPeriodInterpretation(
-            mahadasha.planet,
-            antardasha?.planet
+            mahadashaPlanet = mahadasha.planet,
+            antardashaPlanet = antardasha?.planet,
+            chart = chart,
+            templateSelector = templateSelector,
+            language = language
         )
     }
 
@@ -1684,11 +1709,31 @@ private fun DashaDurationRow(planet: Planet, years: Int) {
 
 private fun getDashaPeriodInterpretation(
     mahadashaPlanet: Planet,
-    antardashaPlanet: Planet?
+    antardashaPlanet: Planet?,
+    chart: VedicChart?,
+    templateSelector: TemplateSelector,
+    language: Language
 ): String {
-    val mahaInterpretation = getMahadashaInterpretation(mahadashaPlanet)
+    val mahaInterpretation = chart?.let {
+        TemplateTextResolver.resolveDashaText(
+            templateSelector = templateSelector,
+            chart = it,
+            planet = mahadashaPlanet,
+            dashaLevel = 1,
+            language = language
+        )
+    } ?: getMahadashaInterpretation(mahadashaPlanet)
+
     return if (antardashaPlanet != null && antardashaPlanet != mahadashaPlanet) {
-        val antarInterpretation = getAntardashaInterpretation(antardashaPlanet)
+        val antarInterpretation = chart?.let {
+            TemplateTextResolver.resolveDashaText(
+                templateSelector = templateSelector,
+                chart = it,
+                planet = antardashaPlanet,
+                dashaLevel = 2,
+                language = language
+            )
+        } ?: getAntardashaInterpretation(antardashaPlanet)
         "$mahaInterpretation\n\n$antarInterpretation"
     } else {
         mahaInterpretation

@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.astro.vajra.core.common.*
 import com.astro.vajra.core.model.*
+import com.astro.vajra.data.templates.TemplateManager
+import com.astro.vajra.data.templates.TemplateSelector
+import com.astro.vajra.data.templates.TemplateTextResolver
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -27,6 +30,7 @@ class HoroscopeCalculator @Inject constructor(
     private val transitCache = LRUCache<TransitCacheKey, VedicChart>(MAX_TRANSIT_CACHE_SIZE)
     private val dailyHoroscopeCache = LRUCache<DailyHoroscopeCacheKey, DailyHoroscope>(MAX_HOROSCOPE_CACHE_SIZE)
     private val natalDataCache = LRUCache<String, NatalChartCachedData>(MAX_NATAL_CACHE_SIZE)
+    private val templateSelector by lazy { TemplateSelector(TemplateManager(context)) }
 
     private val isClosed = AtomicBoolean(false)
 
@@ -482,9 +486,19 @@ class HoroscopeCalculator @Inject constructor(
 
         val influenceBuilder = StringBuilder()
         var (baseInfluenceKey, baseStrength) = getGocharaInfluenceKey(planet, houseFromMoon, isFavorable)
-        
-        val localizedBaseInfluence = if (baseInfluenceKey == StringKey.HOROSCOPE_FAVORABLE_TRANSIT || 
-            baseInfluenceKey == StringKey.HOROSCOPE_UNFAVORABLE_TRANSIT) {
+
+        val templateInfluence = TemplateTextResolver.resolveTransitText(
+            templateSelector = templateSelector,
+            transitPlanet = planet,
+            sign = transitSign,
+            house = houseFromMoon,
+            language = language
+        )
+
+        val localizedBaseInfluence = templateInfluence ?: if (
+            baseInfluenceKey == StringKey.HOROSCOPE_FAVORABLE_TRANSIT ||
+            baseInfluenceKey == StringKey.HOROSCOPE_UNFAVORABLE_TRANSIT
+        ) {
             StringResources.get(baseInfluenceKey, language, planet.getLocalizedName(language), houseFromMoon)
         } else {
             StringResources.get(baseInfluenceKey, language)
@@ -611,6 +625,28 @@ class HoroscopeCalculator @Inject constructor(
             }
             
             val prediction = StringResources.get(predictionKey, language, dashaLordName)
+
+            val templateLifeArea = mapHoroscopeLifeArea(area)
+            val templatePlanet = dashaAtDate.antardasha?.planet
+                ?: dashaAtDate.mahadasha?.planet
+                ?: selectTemplatePlanetForArea(area, transitPlanetMap)
+            val templatePosition = templatePlanet?.let { natalData.planetMap[it] }
+            val templatePrediction = if (
+                templateLifeArea != null &&
+                templatePlanet != null &&
+                templatePosition != null
+            ) {
+                TemplateTextResolver.resolveLifeAreaText(
+                    templateSelector = templateSelector,
+                    lifeArea = templateLifeArea,
+                    planet = templatePlanet,
+                    sign = templatePosition.sign,
+                    house = templatePosition.house,
+                    language = language
+                )
+            } else {
+                null
+            }
             
             // For now, let's use the AREA_REC keys from StringKey.kt
             val areaRecKey = try {
@@ -621,8 +657,36 @@ class HoroscopeCalculator @Inject constructor(
             
             val advice = StringResources.get(areaRecKey, language)
 
-            LifeAreaPrediction(area = area, rating = rating, prediction = prediction, advice = advice)
+            LifeAreaPrediction(
+                area = area,
+                rating = rating,
+                prediction = templatePrediction ?: prediction,
+                advice = advice
+            )
         }
+    }
+
+    private fun mapHoroscopeLifeArea(area: LifeArea): com.astro.vajra.core.model.LifeArea? {
+        return when (area) {
+            LifeArea.CAREER -> com.astro.vajra.core.model.LifeArea.CAREER
+            LifeArea.LOVE -> com.astro.vajra.core.model.LifeArea.RELATIONSHIPS
+            LifeArea.HEALTH -> com.astro.vajra.core.model.LifeArea.HEALTH
+            LifeArea.FINANCE -> com.astro.vajra.core.model.LifeArea.FINANCE
+            LifeArea.FAMILY -> com.astro.vajra.core.model.LifeArea.FAMILY
+            LifeArea.SPIRITUALITY -> com.astro.vajra.core.model.LifeArea.SPIRITUAL
+        }
+    }
+
+    private fun selectTemplatePlanetForArea(
+        area: LifeArea,
+        transitPlanetMap: Map<Planet, PlanetPosition>
+    ): Planet? {
+        val areaKarakas = getAreaKarakas(area)
+        if (areaKarakas.isNotEmpty()) {
+            val transitKarakas = areaKarakas.filter { transitPlanetMap.containsKey(it) }
+            if (transitKarakas.isNotEmpty()) return transitKarakas.first()
+        }
+        return transitPlanetMap.keys.firstOrNull { it in Planet.MAIN_PLANETS }
     }
 
     private fun calculateDashaInfluenceOnArea(
