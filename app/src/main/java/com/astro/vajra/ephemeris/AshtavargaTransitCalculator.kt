@@ -9,6 +9,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 /**
  * Ashtavarga Transit Predictions Calculator
@@ -55,7 +56,8 @@ object AshtavargaTransitCalculator {
     )
 
     /**
-     * Average transit duration per sign for each planet (in days)
+     * Average transit duration per sign for each planet (in days).
+     * Used as fallback when speed-based timing cannot be derived reliably.
      */
     private val TRANSIT_DURATION_DAYS = mapOf(
         Planet.SUN to 30,           // ~1 month per sign
@@ -66,6 +68,18 @@ object AshtavargaTransitCalculator {
         Planet.VENUS to 28,         // ~1 month per sign (avg)
         Planet.SATURN to 912        // ~2.5 years per sign
     )
+
+    private val TRANSIT_DURATION_BOUNDS_DAYS = mapOf(
+        Planet.MOON to (1..4),
+        Planet.SUN to (25..35),
+        Planet.MERCURY to (12..90),
+        Planet.VENUS to (15..90),
+        Planet.MARS to (25..210),
+        Planet.JUPITER to (250..500),
+        Planet.SATURN to (700..1300)
+    )
+
+    private const val MIN_EFFECTIVE_SPEED = 1e-4
 
     /**
      * Complete Ashtavarga Transit Analysis Result
@@ -328,11 +342,11 @@ object AshtavargaTransitCalculator {
             val houseFromAsc = calculateHouse(sign, ascSign)
 
             // Estimate entry and exit dates
-            val durationDays = TRANSIT_DURATION_DAYS[planet] ?: 30
-            val degreeInSign = longitude % 30.0
+            val durationDays = estimateTransitDurationDays(planet, position.speed)
+            val degreeInSign = normalizedDegreeInSign(longitude)
             val progressPercent = (degreeInSign / 30.0) * 100
-            val daysElapsed = (durationDays * progressPercent / 100).toInt()
-            val daysRemaining = durationDays - daysElapsed
+            val daysElapsed = estimateDaysSinceSignEntry(position, durationDays)
+            val daysRemaining = estimateDaysToNextSignIngress(position, durationDays)
 
             val entryDate = analysisDate.minusDays(daysElapsed.toLong())
             val exitDate = analysisDate.plusDays(daysRemaining.toLong())
@@ -380,13 +394,10 @@ object AshtavargaTransitCalculator {
         TRANSIT_PLANETS.forEach { planet ->
             val currentPosition = transitPositions.find { it.planet == planet } ?: return@forEach
             val currentSign = currentPosition.sign
-            val longitude = currentPosition.longitude
-            val durationDays = TRANSIT_DURATION_DAYS[planet] ?: 30
+            val durationDays = estimateTransitDurationDays(planet, currentPosition.speed)
 
             // Calculate when current transit ends
-            val degreeInSign = longitude % 30.0
-            val progressPercent = degreeInSign / 30.0
-            val daysRemaining = (durationDays * (1 - progressPercent)).toInt()
+            val daysRemaining = estimateDaysToNextSignIngress(currentPosition, durationDays)
             var nextTransitDate = analysisDate.plusDays(daysRemaining.toLong())
             var nextSign = getNextSign(currentSign)
 
@@ -405,7 +416,8 @@ object AshtavargaTransitCalculator {
                     sign = nextSign,
                     bavScore = bavScore,
                     savScore = savScore,
-                    quality = quality
+                    quality = quality,
+                    durationDays = durationDays
                 )
 
                 upcomingTransits.add(
@@ -567,6 +579,64 @@ object AshtavargaTransitCalculator {
         return ZodiacSign.entries[prevIndex]
     }
 
+    private fun normalizedDegreeInSign(longitude: Double): Double {
+        return ((longitude % 30.0) + 30.0) % 30.0
+    }
+
+    private fun estimateTransitDurationDays(planet: Planet, speed: Double): Int {
+        val averageDays = TRANSIT_DURATION_DAYS[planet] ?: 30
+        if (!speed.isFinite()) return averageDays
+
+        val absoluteSpeed = kotlin.math.abs(speed)
+        if (absoluteSpeed < MIN_EFFECTIVE_SPEED) return averageDays
+
+        val rawDays = (30.0 / absoluteSpeed).toInt().coerceAtLeast(1)
+        val bounds = TRANSIT_DURATION_BOUNDS_DAYS[planet] ?: (1..5000)
+        return rawDays.coerceIn(bounds.first, bounds.last)
+    }
+
+    private fun estimateDaysSinceSignEntry(position: PlanetPosition, durationDays: Int): Int {
+        if (position.speed.isFinite() && position.speed > MIN_EFFECTIVE_SPEED) {
+            val degreeInSign = normalizedDegreeInSign(position.longitude)
+            return (degreeInSign / position.speed).toInt().coerceAtLeast(0)
+        }
+
+        val progressPercent = normalizedDegreeInSign(position.longitude) / 30.0
+        return (durationDays * progressPercent).toInt().coerceAtLeast(0)
+    }
+
+    private fun estimateDaysToNextSignIngress(position: PlanetPosition, durationDays: Int): Int {
+        val degreeInSign = normalizedDegreeInSign(position.longitude)
+        val speed = position.speed
+
+        if (!speed.isFinite() || kotlin.math.abs(speed) < MIN_EFFECTIVE_SPEED) {
+            val fallbackDays = (durationDays * (1.0 - (degreeInSign / 30.0))).toInt()
+            return fallbackDays.coerceAtLeast(1)
+        }
+
+        if (speed > 0.0) {
+            return ((30.0 - degreeInSign) / speed).toInt().coerceAtLeast(1)
+        }
+
+        val retrogradeDays = (degreeInSign / kotlin.math.abs(speed)).toInt().coerceAtLeast(1)
+        return (retrogradeDays + durationDays).coerceAtLeast(1)
+    }
+
+    private fun formatApproximateDurationText(durationDays: Int): String {
+        val safeDays = durationDays.coerceAtLeast(1)
+        return when {
+            safeDays >= 365 -> {
+                val years = safeDays / 365.25
+                "approximately ${String.format(Locale.US, "%.1f", years)} years"
+            }
+            safeDays >= 45 -> {
+                val months = safeDays / 30.44
+                "approximately ${String.format(Locale.US, "%.1f", months)} months"
+            }
+            else -> "approximately $safeDays days"
+        }
+    }
+
     /**
      * Determine if a transit is significant
      */
@@ -711,14 +781,10 @@ object AshtavargaTransitCalculator {
         sign: ZodiacSign,
         bavScore: Int,
         savScore: Int,
-        quality: TransitQuality
+        quality: TransitQuality,
+        durationDays: Int
     ): Pair<String, String> {
-        val durationText = when (planet) {
-            Planet.SATURN -> "approximately 2.5 years"
-            Planet.JUPITER -> "approximately 1 year"
-            Planet.MARS -> "approximately 1.5 months"
-            else -> "approximately 1 month"
-        }
+        val durationText = formatApproximateDurationText(durationDays)
 
         val durationTextNe = when (planet) {
             Planet.SATURN -> "लगभग २.५ वर्ष"

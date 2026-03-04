@@ -91,6 +91,10 @@ Date: 2026-03-05
 - Replaced always-true wealth yoga placeholder in native analysis:
   - `NativeAnalysisCalculator.checkDhanaYoga` now uses rule-based scoring from dhana house lords (2/5/9/11), associations/aspects, Jupiter reinforcement, and malefic affliction penalty.
   - `calculateWealthPotential` now grades by aggregated lord strength + detected yoga rather than a binary strong/moderate shortcut.
+- Refined Ashtavarga transit timing from fixed sign-duration constants toward speed-aware estimation:
+  - `AshtavargaTransitCalculator` now derives per-planet sign duration from current transit speed when valid (with bounded ranges and robust fallback).
+  - Current transit entry/exit and upcoming sign-ingress dates now use speed-aware day estimates instead of only static per-planet duration assumptions.
+  - Upcoming English interpretation duration text now reflects computed duration windows.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 

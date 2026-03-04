@@ -9,10 +9,12 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\AshtamangalaPrashnaCalculator.kt | 24 | randomization | * - Digital cowrie shell simulation with authentic randomization |
 | app\src\main\java\com\astro\vajra\ephemeris\AshtamangalaPrashnaCalculator.kt | 368 | randomization | * Simulate cowrie shell throw with authentic randomization |
 | app\src\main\java\com\astro\vajra\ephemeris\AshtamangalaPrashnaCalculator.kt | 371 | System.nanoTime | val random = seedValue?.let { Random(it) } ?: Random(System.nanoTime()) |
-| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 717 | approximate | Planet.SATURN -> "approximately 2.5 years" |
-| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 718 | approximate | Planet.JUPITER -> "approximately 1 year" |
-| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 719 | approximate | Planet.MARS -> "approximately 1.5 months" |
-| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 720 | approximate | else -> "approximately 1 month" |
+| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 60 | Fallback | * Used as fallback when speed-based timing cannot be derived reliably. |
+| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 613 | Fallback | val fallbackDays = (durationDays * (1.0 - (degreeInSign / 30.0))).toInt() |
+| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 614 | Fallback | return fallbackDays.coerceAtLeast(1) |
+| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 630 | approximate | "approximately ${String.format(Locale.US, "%.1f", years)} years" |
+| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 634 | approximate | "approximately ${String.format(Locale.US, "%.1f", months)} months" |
+| app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 636 | approximate | else -> "approximately $safeDays days" |
 | app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 114 | Simplified | * Analyze nodes (Rahu/Ketu) - simplified analysis |
 | app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 125 | Simplified | // Nodes use simplified avasthas |
 | app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 277 | Simplified | * Calculate simplified Deeptadi for nodes |
