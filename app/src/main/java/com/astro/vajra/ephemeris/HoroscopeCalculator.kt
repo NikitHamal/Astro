@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.astro.vajra.core.common.*
 import com.astro.vajra.core.model.*
+import com.astro.vajra.data.localization.LocalizedDisplayNames
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -925,8 +926,7 @@ class HoroscopeCalculator @Inject constructor(
             FAVORABLE_DAYS_KEYS[date.dayOfWeek]?.let { descKey ->
                 keyDates.add(KeyDate(
                     date = date,
-                    event = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(date.dayOfWeek.value.toString()) // Placeholder for localized day
-                            else date.dayOfWeek.name.lowercase().replaceFirstChar { it.uppercase() },
+                    event = getLocalizedWeekdayName(date.dayOfWeek, language),
                     significance = StringResources.get(descKey, language),
                     isPositive = true
                 ))
@@ -1051,8 +1051,7 @@ class HoroscopeCalculator @Inject constructor(
         }
 
         dailyHighlights.maxByOrNull { it.energy }?.let {
-            val dayName = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.dayOfWeek.value.toString()) // Placeholder
-                          else it.dayOfWeek.name
+            val dayName = getLocalizedWeekdayName(it.dayOfWeek, language)
             builder.append(StringResources.get(StringKeyHoroscope.WEEKLY_OVERVIEW_FAVORABLE, language, dayName))
         }
 
@@ -1083,6 +1082,10 @@ class HoroscopeCalculator @Inject constructor(
         }
 
         return builder.toString()
+    }
+
+    private fun getLocalizedWeekdayName(dayOfWeek: java.time.DayOfWeek, language: Language): String {
+        return LocalizedDisplayNames.getDayName(dayOfWeek.value, language)
     }
 
     fun clearCache() {

@@ -97,6 +97,8 @@ Date: 2026-03-05
   - Upcoming English interpretation duration text now reflects computed duration windows.
 - Removed Ascendant health-area hardcode in native analysis:
   - `NativeAnalysisCalculator.getHealthAreasForSign` now maps all 12 signs to their sign-specific health-area key, instead of always returning Aries.
+- Removed weekday-name placeholders in horoscope generation:
+  - `HoroscopeCalculator` now uses localized weekday names via `LocalizedDisplayNames.getDayName(...)` for key-date events and weekly-overview highlights.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
