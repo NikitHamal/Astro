@@ -80,6 +80,7 @@ import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.data.repository.SavedChart
 import com.astro.vajra.ui.theme.AppTheme
+import com.astro.vajra.ui.theme.NeoVedicTokens
 import java.time.format.DateTimeFormatter
 
 private val SpringSpec = spring<Color>(stiffness = Spring.StiffnessMedium)
@@ -123,7 +124,10 @@ fun ProfileSwitcherBottomSheet(
         sheetState = sheetState,
         containerColor = colors.BottomSheetBackground,
         contentColor = colors.TextPrimary,
-        shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
+        shape = RoundedCornerShape(
+            topStart = NeoVedicTokens.CardCornerRadius,
+            topEnd = NeoVedicTokens.CardCornerRadius
+        ),
         dragHandle = { ProfileSwitcherDragHandle() },
         windowInsets = WindowInsets(0.dp) // Handle insets manually for proper sizing
     ) {
@@ -131,13 +135,13 @@ fun ProfileSwitcherBottomSheet(
             modifier = Modifier
                 .fillMaxWidth()
                 .navigationBarsPadding()
-                .padding(bottom = 8.dp) // Extra padding to ensure content isn't cut off
+                .padding(bottom = NeoVedicTokens.SpaceXS)
         ) {
             ProfileSwitcherHeader()
 
             HorizontalDivider(
                 color = colors.DividerColor.copy(alpha = 0.5f),
-                thickness = 0.5.dp
+                thickness = NeoVedicTokens.ThinBorderWidth
             )
 
             if (uniqueCharts.isEmpty()) {
@@ -163,7 +167,7 @@ fun ProfileSwitcherBottomSheet(
 
             HorizontalDivider(
                 color = colors.DividerColor.copy(alpha = 0.5f),
-                thickness = 0.5.dp
+                thickness = NeoVedicTokens.ThinBorderWidth
             )
 
             AddNewChartButton(
@@ -174,7 +178,7 @@ fun ProfileSwitcherBottomSheet(
             )
 
             // Extra spacer for navigation bar area
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SectionSpacing))
         }
     }
 
@@ -205,7 +209,7 @@ private fun DeleteChartConfirmationDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         containerColor = colors.CardBackground,
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
         title = {
             Text(
                 text = stringResource(StringKey.PROFILE_DELETE_TITLE),
@@ -243,10 +247,10 @@ private fun DeleteChartConfirmationDialog(
 private fun ProfileSwitcherDragHandle() {
     Box(
         modifier = Modifier
-            .padding(vertical = 14.dp)
+            .padding(vertical = NeoVedicTokens.SpaceMD)
             .width(36.dp)
             .height(4.dp)
-            .clip(RoundedCornerShape(2.dp))
+            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .background(AppTheme.BottomSheetHandle.copy(alpha = 0.4f))
     )
 }
@@ -258,7 +262,10 @@ private fun ProfileSwitcherHeader() {
         style = MaterialTheme.typography.titleMedium,
         fontWeight = FontWeight.SemiBold,
         color = AppTheme.TextPrimary,
-        modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp)
+        modifier = Modifier.padding(
+            horizontal = NeoVedicTokens.SectionHorizontalPadding,
+            vertical = NeoVedicTokens.ScreenPadding
+        )
     )
 }
 
@@ -267,12 +274,12 @@ private fun ProfileSwitcherEmptyState() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 56.dp),
+            .padding(vertical = 52.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceSM)
         ) {
             Box(
                 modifier = Modifier
@@ -317,7 +324,7 @@ private fun ProfileChartsList(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(max = 380.dp),
-        contentPadding = PaddingValues(vertical = 8.dp)
+        contentPadding = PaddingValues(vertical = NeoVedicTokens.SpaceXS)
     ) {
         items(
             items = charts,
@@ -385,7 +392,12 @@ private fun ProfileItem(
                 selected = isSelected
                 role = Role.Button
             }
-            .padding(start = 24.dp, end = 8.dp, top = 10.dp, bottom = 10.dp),
+            .padding(
+                start = NeoVedicTokens.SectionHorizontalPadding,
+                end = NeoVedicTokens.SpaceXS,
+                top = NeoVedicTokens.SpaceSM,
+                bottom = NeoVedicTokens.SpaceSM
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProfileAvatar(
@@ -394,7 +406,7 @@ private fun ProfileItem(
             size = 48.dp
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(NeoVedicTokens.ScreenPadding))
 
         Column(
             modifier = Modifier.weight(1f),
@@ -436,7 +448,7 @@ private fun ProfileItem(
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
-                    tint = Color.White,
+                    tint = AppTheme.ButtonText,
                     modifier = Modifier.size(14.dp)
                 )
             }
@@ -445,7 +457,7 @@ private fun ProfileItem(
         // Edit button
         IconButton(
             onClick = onEdit,
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.size(NeoVedicTokens.TopBarIconSize)
         ) {
             Icon(
                 imageVector = Icons.Default.Edit,
@@ -458,7 +470,7 @@ private fun ProfileItem(
         // Delete button
         IconButton(
             onClick = onDelete,
-            modifier = Modifier.size(40.dp)
+            modifier = Modifier.size(NeoVedicTokens.TopBarIconSize)
         ) {
             Icon(
                 imageVector = Icons.Default.Delete,
@@ -549,7 +561,10 @@ private fun AddNewChartButton(onClick: () -> Unit) {
             .semantics {
                 contentDescription = addNewChartDesc
             }
-            .padding(horizontal = 24.dp, vertical = 16.dp),
+            .padding(
+                horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                vertical = NeoVedicTokens.ScreenPadding
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -558,7 +573,7 @@ private fun AddNewChartButton(onClick: () -> Unit) {
                 .clip(CircleShape)
                 .background(AppTheme.AccentPrimary.copy(alpha = 0.08f))
                 .border(
-                    width = 1.5.dp,
+                    width = NeoVedicTokens.BorderWidth,
                     color = AppTheme.AccentPrimary.copy(alpha = 0.4f),
                     shape = CircleShape
                 ),
@@ -572,7 +587,7 @@ private fun AddNewChartButton(onClick: () -> Unit) {
             )
         }
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(NeoVedicTokens.ScreenPadding))
 
         Text(
             text = addNewChartDesc,
@@ -602,7 +617,7 @@ fun ProfileHeaderRow(
 
     Row(
         modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
+            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .clickable(
                 interactionSource = interactionSource,
                 indication = rememberRipple(
@@ -618,7 +633,10 @@ fun ProfileHeaderRow(
             .semantics {
                 contentDescription = accessibilityDesc
             }
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(
+                horizontal = NeoVedicTokens.SpaceSM,
+                vertical = NeoVedicTokens.SpaceXS
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (currentChart != null) {
@@ -628,7 +646,7 @@ fun ProfileHeaderRow(
                 size = 32.dp
             )
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceSM))
 
             Text(
                 text = currentChart.name,
@@ -656,7 +674,7 @@ fun ProfileHeaderRow(
                 )
             }
 
-            Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceSM))
 
             Text(
                 text = selectProfileText,

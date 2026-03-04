@@ -34,7 +34,6 @@ import androidx.compose.material.icons.filled.HourglassEmpty
 import androidx.compose.material.icons.filled.ZoomIn
 import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -55,16 +54,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.StringKeyAnalysis
-import com.astro.vajra.core.common.StringKeyUIExtra
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.DivisionalChartData
 import com.astro.vajra.ui.chart.ChartRenderer
+import com.astro.vajra.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -132,7 +129,7 @@ fun FullScreenChartDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)
-                        .padding(16.dp)
+                        .padding(NeoVedicTokens.ScreenPadding)
                 ) {
                     if (divisionalChartData != null) {
                         chartRenderer.drawDivisionalChart(
@@ -159,7 +156,7 @@ fun FullScreenChartDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(DialogColors.DialogBackground.copy(alpha = 0.9f))
-                    .padding(16.dp)
+                    .padding(NeoVedicTokens.ScreenPadding)
                     .align(Alignment.TopCenter),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -193,7 +190,7 @@ fun FullScreenChartDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(DialogColors.DialogBackground.copy(alpha = 0.9f))
-                    .padding(16.dp)
+                    .padding(NeoVedicTokens.ScreenPadding)
                     .align(Alignment.BottomCenter),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
@@ -261,7 +258,11 @@ fun FullScreenChartDialog(
                 exit = fadeOut()
             ) {
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+                    border = androidx.compose.foundation.BorderStroke(
+                        NeoVedicTokens.ThinBorderWidth,
+                        DialogColors.DividerColor.copy(alpha = 0.6f)
+                    ),
                     color = DialogColors.DialogSurface.copy(alpha = 0.8f)
                 ) {
                     Text(
@@ -286,17 +287,17 @@ private fun ActionButton(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .clickable(enabled = enabled, onClick = onClick)
-            .padding(8.dp)
+            .padding(NeoVedicTokens.SpaceXS)
     ) {
         Icon(
             icon,
             contentDescription = label,
             tint = if (enabled) DialogColors.AccentGold else DialogColors.TextMuted,
-            modifier = Modifier.size(28.dp)
+            modifier = Modifier.size(26.dp)
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
         Text(
             text = label,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,

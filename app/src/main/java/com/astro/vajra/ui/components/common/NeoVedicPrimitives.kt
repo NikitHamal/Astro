@@ -234,14 +234,14 @@ fun NeoVedicTimelineItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size(10.dp)
+                    .size(NeoVedicTokens.SpaceSM)
                     .background(AppTheme.ScreenBackground, CircleShape)
                     .border(NeoVedicTokens.BorderWidth, severityColor, CircleShape)
             )
             if (showConnector) {
                 Spacer(
                     modifier = Modifier
-                        .height(56.dp)
+                        .height(NeoVedicTokens.TimelineConnectorHeight)
                         .width(NeoVedicTokens.ThinBorderWidth)
                         .background(AppTheme.BorderColor.copy(alpha = 0.45f))
                 )
@@ -267,7 +267,7 @@ fun NeoVedicTimelineItem(
                     Box(
                         modifier = Modifier
                             .width(2.dp)
-                            .height(56.dp)
+                            .height(NeoVedicTokens.TimelineConnectorHeight)
                             .background(severityColor, RoundedCornerShape(NeoVedicTokens.ChipCornerRadius))
                     )
                     Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
@@ -414,7 +414,7 @@ fun NeoVedicEphemerisTransitItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size(8.dp)
+                    .size(NeoVedicTokens.SpaceXS)
                     .background(
                         if (isHighlighted) statusColor else AppTheme.BorderColor,
                         CircleShape
@@ -423,8 +423,8 @@ fun NeoVedicEphemerisTransitItem(
             if (showConnector) {
                 Spacer(
                     modifier = Modifier
-                        .height(48.dp)
-                        .width(1.dp)
+                        .height(NeoVedicTokens.ListItemMinHeight)
+                        .width(NeoVedicTokens.BorderWidth)
                         .background(AppTheme.BorderColor.copy(alpha = 0.4f))
                 )
             }
@@ -511,7 +511,7 @@ fun NeoVedicEphemerisTransitItem(
             Box(
                 modifier = Modifier
                     .width(3.dp)
-                    .height(56.dp)
+                    .height(NeoVedicTokens.TimelineConnectorHeight)
                     .background(statusColor, RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             )
         }
@@ -610,7 +610,7 @@ fun NeoVedicPlanetCard(
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(48.dp)
+                            .size(NeoVedicTokens.ListItemMinHeight)
                             .background(accentColor.copy(alpha = 0.12f), CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
@@ -725,7 +725,7 @@ fun NeoVedicSectionDivider(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .height(1.dp)
+                    .height(NeoVedicTokens.BorderWidth)
                     .background(AppTheme.DividerColor)
             )
             Text(
@@ -737,7 +737,7 @@ fun NeoVedicSectionDivider(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .height(1.dp)
+                    .height(NeoVedicTokens.BorderWidth)
                     .background(AppTheme.DividerColor)
             )
         }
@@ -745,7 +745,7 @@ fun NeoVedicSectionDivider(
         Box(
             modifier = modifier
                 .fillMaxWidth()
-                .height(1.dp)
+                .height(NeoVedicTokens.BorderWidth)
                 .background(AppTheme.DividerColor)
         )
     }
@@ -899,4 +899,3 @@ fun NeoVedicButton(
         }
     }
 }
-

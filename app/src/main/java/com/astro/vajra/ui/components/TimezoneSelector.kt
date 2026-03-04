@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,8 +33,6 @@ import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -77,6 +76,7 @@ import java.util.TimeZone
 import com.astro.vajra.ui.theme.LocalAppThemeColors
 import com.astro.vajra.ui.theme.AppThemeColors
 import com.astro.vajra.ui.components.common.NeoVedicCard
+import com.astro.vajra.ui.theme.NeoVedicTokens
 
 /**
  * Production-grade Searchable Timezone Selector Dialog
@@ -235,15 +235,15 @@ fun TimezonePickerDialog(
                 .fillMaxWidth(0.95f)
                 .heightIn(max = 600.dp)
                 .imePadding(),
-            shape = RoundedCornerShape(24.dp),
-            color = colors.CardBackground
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            color = colors.CardBackground,
+            border = BorderStroke(NeoVedicTokens.BorderWidth, colors.BorderColor)
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 // Header
                 TimezoneDialogHeader(
-                    language = language,
                     colors = colors,
                     onDismiss = onDismiss
                 )
@@ -256,7 +256,6 @@ fun TimezonePickerDialog(
                     onQueryChange = { searchQuery = it },
                     focusRequester = searchFocusRequester,
                     onClear = { searchQuery = "" },
-                    language = language,
                     colors = colors
                 )
 
@@ -266,7 +265,10 @@ fun TimezonePickerDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(
+                            horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                            vertical = NeoVedicTokens.SpaceXS
+                        ),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -309,7 +311,10 @@ fun TimezonePickerDialog(
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = colors.AccentPrimary,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                                modifier = Modifier.padding(
+                                    horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                                    vertical = NeoVedicTokens.SpaceXS
+                                )
                             )
                         }
                     }
@@ -337,7 +342,10 @@ fun TimezonePickerDialog(
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.SemiBold,
                                     color = colors.AccentPrimary,
-                                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                                    modifier = Modifier.padding(
+                                        horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                                        vertical = NeoVedicTokens.SpaceSM
+                                    )
                                 )
                             }
                         }
@@ -379,14 +387,13 @@ fun TimezonePickerDialog(
 
 @Composable
 private fun TimezoneDialogHeader(
-    language: Language,
     colors: AppThemeColors,
     onDismiss: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(NeoVedicTokens.ScreenPadding),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -424,18 +431,23 @@ private fun TimezoneSearchField(
     onQueryChange: (String) -> Unit,
     focusRequester: FocusRequester,
     onClear: () -> Unit,
-    language: Language,
     colors: AppThemeColors
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(
+                horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                vertical = NeoVedicTokens.SpaceSM
+            )
             .background(
                 color = colors.ChipBackground,
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(
+                horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                vertical = NeoVedicTokens.SpaceSM
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -445,7 +457,7 @@ private fun TimezoneSearchField(
             modifier = Modifier.size(20.dp)
         )
 
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceSM))
 
         BasicTextField(
             value = query,
@@ -506,14 +518,23 @@ private fun TimezoneItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 8.dp, vertical = 2.dp),
+            .padding(
+                horizontal = NeoVedicTokens.SpaceXS,
+                vertical = NeoVedicTokens.SpaceXXS
+            ),
         color = if (isSelected) colors.ChipBackground else Color.Transparent,
-        shape = RoundedCornerShape(12.dp)
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        border = if (isSelected) {
+            BorderStroke(NeoVedicTokens.ThinBorderWidth, colors.AccentPrimary.copy(alpha = 0.35f))
+        } else null
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(
+                    horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                    vertical = NeoVedicTokens.SpaceSM
+                ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -623,7 +644,7 @@ fun TimezoneSelector(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(NeoVedicTokens.ScreenPadding),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -637,7 +658,7 @@ fun TimezoneSelector(
                     tint = colors.AccentPrimary,
                     modifier = Modifier.size(20.dp)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceSM))
                 Column {
                     Text(
                         text = stringResource(StringKey.INPUT_TIMEZONE),

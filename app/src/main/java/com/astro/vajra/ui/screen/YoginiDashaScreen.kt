@@ -1485,14 +1485,14 @@ private fun YoginiDashaErrorContent(
                 modifier = Modifier
                     .size(80.dp)
                     .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
-                    .background(MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f)),
+                    .background(AppTheme.ErrorColor.copy(alpha = 0.12f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ErrorOutline,
                     contentDescription = null,
                     modifier = Modifier.size(40.dp),
-                    tint = MaterialTheme.colorScheme.error
+                    tint = AppTheme.ErrorColor
                 )
             }
             Spacer(modifier = Modifier.height(24.dp))

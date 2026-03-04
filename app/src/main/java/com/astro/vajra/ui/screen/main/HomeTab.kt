@@ -23,9 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -40,7 +38,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,6 +59,7 @@ import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
 import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -86,7 +84,6 @@ private object HomeDesignTokens {
     val QuickActionIconSize = 18.dp
     val HeroCardMinHeight = 160.dp
     val SnapshotCardMinHeight = 148.dp
-    val CornerMarkerLength = 12.dp       // L-shaped corner markers
     val BorderWidth = NeoVedicTokens.BorderWidth
 }
 
@@ -269,36 +266,6 @@ fun HomeTab(
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
-}
-
-// ============================================================================
-// VEDIC CORNER MARKERS
-// L-shaped corner accents on cards for that engraved/stamped feel
-// ============================================================================
-private fun Modifier.vedicCornerMarkers(
-    color: Color,
-    cornerLength: Dp = HomeDesignTokens.CornerMarkerLength,
-    strokeWidth: Dp = 1.dp
-) = this.drawWithContent {
-    drawContent()
-    val len = cornerLength.toPx()
-    val sw = strokeWidth.toPx()
-
-    // Top-left
-    drawLine(color, Offset(0f, sw / 2), Offset(len, sw / 2), sw)
-    drawLine(color, Offset(sw / 2, 0f), Offset(sw / 2, len), sw)
-
-    // Top-right
-    drawLine(color, Offset(size.width - len, sw / 2), Offset(size.width, sw / 2), sw)
-    drawLine(color, Offset(size.width - sw / 2, 0f), Offset(size.width - sw / 2, len), sw)
-
-    // Bottom-left
-    drawLine(color, Offset(0f, size.height - sw / 2), Offset(len, size.height - sw / 2), sw)
-    drawLine(color, Offset(sw / 2, size.height - len), Offset(sw / 2, size.height), sw)
-
-    // Bottom-right
-    drawLine(color, Offset(size.width - len, size.height - sw / 2), Offset(size.width, size.height - sw / 2), sw)
-    drawLine(color, Offset(size.width - sw / 2, size.height - len), Offset(size.width - sw / 2, size.height), sw)
 }
 
 // ============================================================================

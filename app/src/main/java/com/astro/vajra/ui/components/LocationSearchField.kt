@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -39,6 +40,7 @@ import com.astro.vajra.core.common.StringKeyUIExtra
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.ui.theme.LocalAppThemeColors
 import com.astro.vajra.ui.components.common.NeoVedicTextField
+import com.astro.vajra.ui.theme.NeoVedicTokens
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -117,7 +119,7 @@ fun LocationSearchField(
             trailingIcon = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(end = 4.dp)
+                    modifier = Modifier.padding(end = NeoVedicTokens.SpaceXXS)
                 ) {
                     AnimatedVisibility(visible = searchState.isSearching) {
                         CircularProgressIndicator(
@@ -163,7 +165,10 @@ fun LocationSearchField(
                 text = errorMessage ?: "",
                 color = colors.ErrorColor,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
-                modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                modifier = Modifier.padding(
+                    start = NeoVedicTokens.SectionHorizontalPadding,
+                    top = NeoVedicTokens.SpaceXXS
+                )
             )
         }
 
@@ -175,11 +180,12 @@ fun LocationSearchField(
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 4.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .padding(top = NeoVedicTokens.SpaceXXS),
+                shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                 color = colors.CardBackground,
-                shadowElevation = 8.dp,
-                tonalElevation = 2.dp
+                shadowElevation = NeoVedicTokens.SurfaceElevation,
+                tonalElevation = NeoVedicTokens.SurfaceElevation,
+                border = BorderStroke(NeoVedicTokens.BorderWidth, colors.BorderColor)
             ) {
                 LazyColumn(
                     modifier = Modifier
@@ -204,8 +210,8 @@ fun LocationSearchField(
 
                         if (index < searchState.results.lastIndex) {
                             HorizontalDivider(
-                                modifier = Modifier.padding(horizontal = 16.dp),
-                                thickness = 0.5.dp,
+                                modifier = Modifier.padding(horizontal = NeoVedicTokens.SectionHorizontalPadding),
+                                thickness = NeoVedicTokens.ThinBorderWidth,
                                 color = colors.BorderColor.copy(alpha = 0.5f)
                             )
                         }
@@ -227,14 +233,17 @@ private fun LocationResultItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 14.dp)
+            .padding(
+                horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                vertical = NeoVedicTokens.SpaceMD
+            )
             .semantics { contentDescription = selectText },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .clip(RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
                 .background(colors.AccentPrimary.copy(alpha = 0.12f)),
             contentAlignment = Alignment.Center
         ) {
@@ -246,7 +255,7 @@ private fun LocationResultItem(
             )
         }
 
-        Spacer(modifier = Modifier.width(14.dp))
+        Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceMD))
 
         Column(modifier = Modifier.weight(1f)) {
             val parts = result.displayName.split(",").map { it.trim() }
@@ -266,7 +275,7 @@ private fun LocationResultItem(
             )
 
             if (details.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
                 Text(
                     text = details,
                     color = colors.TextSecondary,
@@ -276,7 +285,7 @@ private fun LocationResultItem(
                 )
             }
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
             Text(
                 text = String.format(
                     Locale.US,

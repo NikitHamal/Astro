@@ -2,6 +2,7 @@
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +44,7 @@ import com.astro.vajra.data.localization.LocalLanguage
 import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.ui.screen.chartdetail.ChartDetailColors
+import com.astro.vajra.ui.theme.NeoVedicTokens
 
 /**
  * Info row displaying a label-value pair.
@@ -57,7 +59,7 @@ fun InfoRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = NeoVedicTokens.SpaceXXS),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -89,7 +91,7 @@ fun StatusBadge(
     ) {
         Box(
             modifier = Modifier
-                .size(48.dp)
+                .size(NeoVedicTokens.ListItemMinHeight)
                 .background(color.copy(alpha = 0.15f), CircleShape),
             contentAlignment = Alignment.Center
         ) {
@@ -100,7 +102,7 @@ fun StatusBadge(
                 color = color
             )
         }
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
         Text(
             text = label,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
@@ -147,15 +149,19 @@ fun ConditionChip(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = color.copy(alpha = 0.15f),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.25f)),
         modifier = modifier
     ) {
         Text(
             text = label,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
             color = color,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+            modifier = Modifier.padding(
+                horizontal = NeoVedicTokens.SpaceXS,
+                vertical = NeoVedicTokens.SpaceXXS
+            )
         )
     }
 }
@@ -175,10 +181,10 @@ fun LegendChip(
     ) {
         Box(
             modifier = Modifier
-                .size(8.dp)
+                .size(NeoVedicTokens.SpaceXS)
                 .background(color, CircleShape)
         )
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXXS))
         Text(
             text = label,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
@@ -207,10 +213,14 @@ fun ExpandableSectionCard(
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        color = ChartDetailColors.CardBackground,
+        border = BorderStroke(
+            NeoVedicTokens.BorderWidth,
+            ChartDetailColors.DividerColor.copy(alpha = 0.5f)
+        )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -225,7 +235,7 @@ fun ExpandableSectionCard(
                         tint = iconTint,
                         modifier = Modifier.size(20.dp)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
                     Text(
                         text = title,
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
@@ -240,7 +250,7 @@ fun ExpandableSectionCard(
                             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S11,
                             color = ChartDetailColors.TextMuted
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
                     }
                     Icon(
                         Icons.Default.ExpandMore,
@@ -256,7 +266,7 @@ fun ExpandableSectionCard(
                 enter = androidx.compose.animation.expandVertically() + androidx.compose.animation.fadeIn(),
                 exit = androidx.compose.animation.shrinkVertically() + androidx.compose.animation.fadeOut()
             ) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
+                Column(modifier = Modifier.padding(top = NeoVedicTokens.SpaceSM)) {
                     content()
                 }
             }
@@ -278,13 +288,17 @@ fun SectionCard(
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        color = ChartDetailColors.CardBackground,
+        border = BorderStroke(
+            NeoVedicTokens.BorderWidth,
+            ChartDetailColors.DividerColor.copy(alpha = 0.5f)
+        )
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(NeoVedicTokens.ScreenPadding)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = NeoVedicTokens.SpaceSM)
             ) {
                 Icon(
                     icon,
@@ -292,7 +306,7 @@ fun SectionCard(
                     tint = iconTint,
                     modifier = Modifier.size(24.dp)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceSM))
                 Column {
                     Text(
                         text = title,
@@ -335,7 +349,7 @@ fun LabeledProgressIndicator(
             color = color,
             trackColor = ChartDetailColors.DividerColor
         )
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(NeoVedicTokens.SpaceXXS))
         Text(
             text = label,
             fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
@@ -395,7 +409,7 @@ fun StrengthProgressRow(
 @Composable
 fun StyledDivider(
     modifier: Modifier = Modifier,
-    verticalPadding: Dp = 8.dp
+    verticalPadding: Dp = NeoVedicTokens.SpaceXS
 ) {
     HorizontalDivider(
         color = ChartDetailColors.DividerColor,

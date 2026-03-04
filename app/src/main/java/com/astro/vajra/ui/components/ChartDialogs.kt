@@ -290,7 +290,7 @@ fun FullScreenChartDialog(
                 exit = fadeOut()
             ) {
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
                     color = AppTheme.CardBackground.copy(alpha = 0.8f)
                 ) {
                     Text(
@@ -315,7 +315,7 @@ private fun ActionButton(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .clickable(enabled = enabled, onClick = onClick)
             .padding(8.dp)
     ) {
@@ -436,7 +436,7 @@ fun PlanetDetailDialog(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
             color = AppTheme.ScreenBackground
         ) {
             Column {
@@ -595,7 +595,7 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(8.dp)
-                        .clip(RoundedCornerShape(4.dp)),
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                     color = when {
                         shadbala.percentageOfRequired >= 100 -> DialogColors.AccentGreen
                         shadbala.percentageOfRequired >= 85 -> DialogColors.AccentOrange
@@ -845,7 +845,7 @@ private fun StatusChip(label: String, value: String, color: Color) {
     ) {
         Text(text = label, fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S13, color = AppTheme.TextSecondary, fontFamily = SpaceGroteskFamily)
         Surface(
-            shape = RoundedCornerShape(6.dp),
+            shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
             color = color.copy(alpha = 0.15f)
         ) {
             Text(
@@ -925,7 +925,7 @@ fun NakshatraDetailDialog(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
             color = AppTheme.ScreenBackground
         ) {
             Column {
@@ -1068,7 +1068,7 @@ fun HouseDetailDialog(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.85f),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
             color = AppTheme.ScreenBackground
         ) {
             Column {
@@ -1216,7 +1216,7 @@ fun ShadbalaDialog(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
             color = AppTheme.ScreenBackground
         ) {
             Column {
@@ -1320,7 +1320,7 @@ private fun SummaryBadge(label: String, value: String, color: Color) {
 private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -1390,7 +1390,7 @@ private fun PlanetStrengthCard(shadbala: PlanetaryShadbala, language: Language) 
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = when {
                     shadbala.isStrong -> AppTheme.SuccessColor
                     shadbala.percentageOfRequired >= 85 -> AppTheme.WarningColor

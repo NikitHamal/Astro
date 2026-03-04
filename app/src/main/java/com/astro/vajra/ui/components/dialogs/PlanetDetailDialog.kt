@@ -2,7 +2,6 @@ package com.astro.vajra.ui.components.dialogs
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.theme.PoppinsFontFamily
@@ -91,16 +90,17 @@ fun PlanetDetailDialog(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .fillMaxHeight(0.9f),
-            shape = RoundedCornerShape(20.dp),
-            color = DialogColors.DialogBackground
+            shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+            color = DialogColors.DialogBackground,
+            border = BorderStroke(NeoVedicTokens.BorderWidth, DialogColors.DividerColor.copy(alpha = 0.6f))
         ) {
             Column {
                 PlanetDialogHeader(planetPosition, onDismiss)
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
+                    verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.ScreenPadding)
                 ) {
                     item { PlanetPositionCard(planetPosition) }
                     item { ShadbalaCard(shadbala) }
@@ -128,7 +128,7 @@ private fun PlanetDialogHeader(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(NeoVedicTokens.ScreenPadding),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -218,7 +218,7 @@ private fun ShadbalaCard(shadbala: PlanetaryShadbala) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(8.dp)
-                        .clip(RoundedCornerShape(4.dp)),
+                        .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                     color = color,
                     trackColor = DialogColors.DividerColor
                 )

@@ -1,7 +1,5 @@
 package com.astro.vajra.ui.components.dialogs
 
-import androidx.compose.foundation.BorderStroke
-import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.components.common.NeoVedicCard
@@ -33,7 +31,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
 /**
  * Reusable dialog card with icon and title.
@@ -123,7 +120,7 @@ fun StatusChip(
             fontFamily = SpaceGroteskFamily
         )
         Surface(
-            shape = RoundedCornerShape(6.dp),
+            shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
             color = color.copy(alpha = 0.15f)
         ) {
             Text(
@@ -131,7 +128,10 @@ fun StatusChip(
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                 fontWeight = FontWeight.SemiBold,
                 color = color,
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                modifier = Modifier.padding(
+                    horizontal = NeoVedicTokens.SpaceSM,
+                    vertical = NeoVedicTokens.SpaceXXS
+                ),
                 fontFamily = SpaceGroteskFamily
             )
         }
@@ -164,11 +164,11 @@ fun StrengthRow(
                 modifier = Modifier
                     .width(60.dp)
                     .height(4.dp)
-                    .clip(RoundedCornerShape(2.dp)),
+                    .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
                 color = DialogColors.AccentTeal,
                 trackColor = DialogColors.DividerColor
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(NeoVedicTokens.SpaceXS))
             Text(
                 text = String.format("%.1f", value),
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
@@ -212,6 +212,6 @@ fun SummaryBadge(
 fun DialogDivider() {
     HorizontalDivider(
         color = DialogColors.DividerColor,
-        modifier = Modifier.padding(vertical = 8.dp)
+        modifier = Modifier.padding(vertical = NeoVedicTokens.SpaceXS)
     )
 }

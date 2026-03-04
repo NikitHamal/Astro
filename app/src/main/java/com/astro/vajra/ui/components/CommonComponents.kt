@@ -48,20 +48,23 @@ fun SectionHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(
+                horizontal = NeoVedicTokens.SectionHorizontalPadding,
+                vertical = NeoVedicTokens.SpaceXS
+            ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
         ) {
             if (icon != null) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
                     tint = AppTheme.AccentPrimary,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(NeoVedicTokens.SpaceLG)
                 )
             }
             Text(
@@ -93,7 +96,7 @@ fun InfoCard(
         backgroundColor = backgroundColor
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.SpaceXS)
         ) {
             items.forEach { (label, value) ->
                 Row(
@@ -135,11 +138,11 @@ fun LoadingState(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.ScreenPadding)
         ) {
             CircularProgressIndicator(
                 color = AppTheme.AccentPrimary,
-                strokeWidth = 3.dp
+                strokeWidth = 2.dp
             )
             Text(
                 text = message,
@@ -170,12 +173,12 @@ fun EmptyState(
         modifier = modifier
             .fillMaxSize()
             .background(AppTheme.ScreenBackground)
-            .padding(32.dp),
+            .padding(NeoVedicTokens.SectionSpacing),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(NeoVedicTokens.ScreenPadding)
         ) {
             Icon(
                 imageVector = icon,
@@ -219,11 +222,18 @@ fun Chip(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
-        color = backgroundColor
+        color = backgroundColor,
+        border = BorderStroke(
+            width = NeoVedicTokens.ThinBorderWidth,
+            color = textColor.copy(alpha = 0.35f)
+        )
     ) {
         Text(
             text = text,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.padding(
+                horizontal = NeoVedicTokens.SpaceXS,
+                vertical = NeoVedicTokens.SpaceXXS
+            ),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Medium,
             color = textColor
@@ -250,7 +260,7 @@ fun RatingBar(
 
     Box(
         modifier = modifier
-            .height(8.dp)
+            .height(6.dp)
             .fillMaxWidth()
             .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .background(backgroundColor)
