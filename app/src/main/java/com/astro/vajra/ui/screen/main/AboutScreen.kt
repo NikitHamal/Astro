@@ -2,7 +2,6 @@ package com.astro.vajra.ui.screen.main
 
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,22 +30,16 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -63,73 +56,54 @@ import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.NeoVedicFontSizes
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
-import kotlinx.coroutines.launch
 
 @Composable
 fun AboutScreen(
     onBack: () -> Unit
 ) {
     val context = LocalContext.current
-    val clipboard = LocalClipboardManager.current
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
 
     val socialActions = listOf(
         SocialAction(
             label = "Instagram",
             icon = Icons.Outlined.PhotoCamera,
             accent = AppTheme.LifeAreaLove,
-            url = "https://instagram.com/nikithamal",
-            copyValue = "@nikithamal"
+            url = "https://instagram.com/nikithamal"
         ),
         SocialAction(
             label = "Facebook",
             icon = Icons.Outlined.ThumbUp,
             accent = AppTheme.AccentPrimary,
-            url = "https://facebook.com/thenikithamal",
-            copyValue = "thenikithamal"
+            url = "https://facebook.com/thenikithamal"
         ),
         SocialAction(
             label = "TikTok",
             icon = Icons.Outlined.MusicNote,
             accent = AppTheme.AccentGold,
-            url = "https://tiktok.com/@nikithamal",
-            copyValue = "@nikithamal"
+            url = "https://tiktok.com/@nikithamal"
         ),
         SocialAction(
             label = "Email",
             icon = Icons.Outlined.Email,
             accent = AppTheme.AccentTeal,
-            url = "mailto:nikithamalofficial@gmail.com",
-            copyValue = "nikithamalofficial@gmail.com"
+            url = "mailto:nikithamalofficial@gmail.com"
         ),
         SocialAction(
             label = "WhatsApp",
             icon = Icons.Outlined.Chat,
             accent = AppTheme.SuccessColor,
-            url = "https://wa.me/9779765324034",
-            copyValue = "+9779765324034"
+            url = "https://wa.me/9779765324034"
         )
     )
 
-    val launchAndCopy: (SocialAction) -> Unit = { action ->
-        clipboard.setText(AnnotatedString(action.copyValue))
-        val opened = runCatching {
+    val openSocial: (SocialAction) -> Unit = { action ->
+        runCatching {
             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action.url)))
-        }.isSuccess
-
-        if (!opened) {
-            Toast.makeText(context, "Could not open ${action.label}", Toast.LENGTH_SHORT).show()
-        }
-
-        scope.launch {
-            snackbarHostState.showSnackbar("${action.label} copied")
         }
     }
 
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             NeoVedicPageHeader(
                 title = stringResource(StringKey.SETTINGS_ABOUT_APP),
@@ -264,6 +238,27 @@ fun AboutScreen(
                         fontSize = NeoVedicFontSizes.S13,
                         color = AppTheme.AccentGold
                     )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(86.dp)
+                            .border(
+                                width = 1.5.dp,
+                                color = AppTheme.AccentGold.copy(alpha = 0.7f),
+                                shape = CircleShape
+                            )
+                            .padding(3.dp)
+                            .clip(CircleShape)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.developer),
+                            contentDescription = "Developer",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
                 }
             }
 
@@ -290,13 +285,6 @@ fun AboutScreen(
                         letterSpacing = 1.2.sp,
                         color = AppTheme.TextMuted
                     )
-                    Text(
-                        text = "Tap any icon to open and copy details.",
-                        fontFamily = SpaceGroteskFamily,
-                        fontSize = NeoVedicFontSizes.S12,
-                        color = AppTheme.TextSecondary
-                    )
-
                     socialActions.chunked(3).forEach { row ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -305,7 +293,7 @@ fun AboutScreen(
                             row.forEach { action ->
                                 SocialActionCard(
                                     action = action,
-                                    onClick = { launchAndCopy(action) },
+                                    onClick = { openSocial(action) },
                                     modifier = Modifier.weight(1f)
                                 )
                             }
@@ -384,6 +372,5 @@ private data class SocialAction(
     val label: String,
     val icon: ImageVector,
     val accent: Color,
-    val url: String,
-    val copyValue: String
+    val url: String
 )

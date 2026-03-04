@@ -79,7 +79,7 @@ private object HomeDesignTokens {
     val SectionSpacing = NeoVedicTokens.SectionSpacing
     val CardSpacing = NeoVedicTokens.CardSpacing
     val CardCornerRadius = NeoVedicTokens.CardCornerRadius
-    val QuickActionCardHeight = 84.dp
+    val QuickActionCardHeight = 74.dp
     val QuickActionIconContainer = 34.dp
     val QuickActionIconSize = 18.dp
     val HeroCardMinHeight = 160.dp
@@ -468,8 +468,8 @@ private fun HeroDashaCard(
 }
 
 // ============================================================================
-// QUICK ACTIONS - Compact 3x2 Grid
-// Dense access row while retaining Neo-Vedic visual language
+// QUICK ACTIONS - Compact 2-column Grid
+// Dense vertical rhythm while preserving the original two-item horizontal layout
 // ============================================================================
 @Composable
 private fun QuickActionsSection(
@@ -494,7 +494,7 @@ private fun QuickActionsSection(
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        val actionRows = quickActions.chunked(3)
+        val actionRows = quickActions.chunked(2)
         Column(
             verticalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
         ) {
@@ -513,7 +513,7 @@ private fun QuickActionsSection(
                             modifier = Modifier.weight(1f)
                         )
                     }
-                    repeat((3 - row.size).coerceAtLeast(0)) {
+                    repeat((2 - row.size).coerceAtLeast(0)) {
                         Spacer(modifier = Modifier.weight(1f))
                     }
                 }
