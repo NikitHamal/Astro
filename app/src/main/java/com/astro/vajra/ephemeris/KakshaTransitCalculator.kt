@@ -51,6 +51,7 @@ object KakshaTransitCalculator {
         Planet.RAHU to -0.0530,
         Planet.KETU to -0.0530
     )
+    private const val MIN_EFFECTIVE_MOTION = 1e-4
 
     /** Kakshya lords in traditional sequence */
     private val KAKSHYA_LORDS = listOf(
@@ -239,12 +240,17 @@ object KakshaTransitCalculator {
                 val quality = determineKakshaQuality(bavScore, hasBinbu)
 
                 // Calculate time to next Kakshya
-                val dailyMotion = AVERAGE_DAILY_MOTION[position.planet] ?: 1.0
-                val degreesToNext = kakshaDetails.degreeEnd - kakshaDetails.degreeInSign
+                val movingBackward = isRetrogradeMotion(position.speed)
+                val dailyMotion = effectiveDailyMotion(position)
+                val degreesToNext = distanceToNextKakshaBoundary(
+                    degreeInSign = kakshaDetails.degreeInSign,
+                    kakshaNumber = kakshaDetails.kakshaNumber,
+                    movingBackward = movingBackward
+                )
                 val hoursToNext = (degreesToNext / dailyMotion * 24).toLong().coerceAtLeast(1)
 
                 // Next Kakshya lord
-                val nextKakshaNum = if (kakshaDetails.kakshaNumber >= 8) 1 else kakshaDetails.kakshaNumber + 1
+                val nextKakshaNum = getAdjacentKakshaNumber(kakshaDetails.kakshaNumber, movingBackward)
                 val nextKakshaLord = if (nextKakshaNum <= 7) {
                     KAKSHYA_LORDS[nextKakshaNum - 1].displayName
                 } else {
@@ -313,6 +319,56 @@ object KakshaTransitCalculator {
         )
     }
 
+    private fun effectiveDailyMotion(position: PlanetPosition): Double {
+        val fallbackMotion = kotlin.math.abs(AVERAGE_DAILY_MOTION[position.planet] ?: 1.0)
+        val speedBasedMotion = kotlin.math.abs(position.speed)
+        if (!speedBasedMotion.isFinite() || speedBasedMotion < MIN_EFFECTIVE_MOTION) {
+            return fallbackMotion
+        }
+        return speedBasedMotion
+    }
+
+    private fun isRetrogradeMotion(speed: Double): Boolean {
+        return speed.isFinite() && speed < -MIN_EFFECTIVE_MOTION
+    }
+
+    private fun getAdjacentKakshaNumber(currentKaksha: Int, movingBackward: Boolean): Int {
+        return if (movingBackward) {
+            if (currentKaksha <= 1) 8 else currentKaksha - 1
+        } else {
+            if (currentKaksha >= 8) 1 else currentKaksha + 1
+        }
+    }
+
+    private fun distanceToNextKakshaBoundary(
+        degreeInSign: Double,
+        kakshaNumber: Int,
+        movingBackward: Boolean
+    ): Double {
+        val start = (kakshaNumber - 1) * KAKSHYA_SIZE_DEGREES
+        val end = kakshaNumber * KAKSHYA_SIZE_DEGREES
+        val rawDistance = if (movingBackward) {
+            degreeInSign - start
+        } else {
+            end - degreeInSign
+        }
+        return rawDistance.coerceAtLeast(0.01)
+    }
+
+    private fun getNextTransitSign(
+        currentSign: ZodiacSign,
+        currentKaksha: Int,
+        movingBackward: Boolean
+    ): ZodiacSign {
+        return when {
+            !movingBackward && currentKaksha >= 8 ->
+                ZodiacSign.entries[(currentSign.ordinal + 1) % 12]
+            movingBackward && currentKaksha <= 1 ->
+                ZodiacSign.entries[(currentSign.ordinal + 11) % 12]
+            else -> currentSign
+        }
+    }
+
     /**
      * Get BAV score for a planet in a specific Kakshya
      */
@@ -359,23 +415,29 @@ object KakshaTransitCalculator {
             .filter { it.planet in ashtakavargaPlanets }
             .forEach { position ->
                 val kakshaDetails = calculateKakshaDetails(position.longitude, chart, analysis)
-                val dailyMotion = AVERAGE_DAILY_MOTION[position.planet] ?: 1.0
+                val movingBackward = isRetrogradeMotion(position.speed)
+                val dailyMotion = effectiveDailyMotion(position)
 
                 // Calculate next few Kakshya changes (up to 3 per planet)
                 var currentDegree = kakshaDetails.degreeInSign
                 var currentKaksha = kakshaDetails.kakshaNumber
+                var currentSign = kakshaDetails.sign
                 var accumulatedHours = 0L
 
-                repeat(3) {
-                    val nextKaksha = if (currentKaksha >= 8) 1 else currentKaksha + 1
-                    val degreesToNext = if (currentKaksha >= 8) {
-                        // Moving to next sign
-                        30.0 - currentDegree + (nextKaksha - 1) * KAKSHYA_SIZE_DEGREES
+                repeat(3) { step ->
+                    val nextKaksha = getAdjacentKakshaNumber(currentKaksha, movingBackward)
+                    val nextSign = getNextTransitSign(currentSign, currentKaksha, movingBackward)
+                    val degreesToNext = if (step == 0) {
+                        distanceToNextKakshaBoundary(
+                            degreeInSign = currentDegree,
+                            kakshaNumber = currentKaksha,
+                            movingBackward = movingBackward
+                        )
                     } else {
-                        nextKaksha * KAKSHYA_SIZE_DEGREES - currentDegree
+                        KAKSHYA_SIZE_DEGREES
                     }
 
-                    val hoursToNext = (degreesToNext / dailyMotion * 24).toLong()
+                    val hoursToNext = (degreesToNext / dailyMotion * 24).toLong().coerceAtLeast(1)
                     accumulatedHours += hoursToNext
 
                     // Only include changes within 7 days
@@ -387,11 +449,6 @@ object KakshaTransitCalculator {
                         }
 
                         // Check if next Kakshya will have bindu
-                        val nextSign = if (currentKaksha >= 8) {
-                            ZodiacSign.entries[(kakshaDetails.sign.ordinal + 1) % 12]
-                        } else {
-                            kakshaDetails.sign
-                        }
                         val nextBav = getBavScoreForKaksha(position.planet, nextSign, nextKaksha, analysis)
                         val willHaveBindu = nextBav >= 4
 
@@ -401,7 +458,7 @@ object KakshaTransitCalculator {
 
                         changes.add(KakshaChange(
                             planet = position.planet,
-                            currentSign = kakshaDetails.sign,
+                            currentSign = currentSign,
                             currentKaksha = currentKaksha,
                             nextKaksha = nextKaksha,
                             nextKakshaLord = nextKakshaLord,
@@ -413,8 +470,13 @@ object KakshaTransitCalculator {
                         ))
                     }
 
-                    currentDegree = nextKaksha * KAKSHYA_SIZE_DEGREES
+                    currentDegree = if (movingBackward) {
+                        nextKaksha * KAKSHYA_SIZE_DEGREES
+                    } else {
+                        (nextKaksha - 1) * KAKSHYA_SIZE_DEGREES
+                    }
                     currentKaksha = nextKaksha
+                    currentSign = nextSign
                 }
             }
 
@@ -439,7 +501,7 @@ object KakshaTransitCalculator {
 
             val position = transitPositions.find { it.planet == planet } ?: return@forEach
             val kakshaDetails = calculateKakshaDetails(position.longitude, chart, analysis)
-            val dailyMotion = AVERAGE_DAILY_MOTION[planet] ?: 1.0
+            val dailyMotion = effectiveDailyMotion(position)
 
             // Check current and next few Kakshas for favorable ones
             var scanDegree = kakshaDetails.degreeInSign

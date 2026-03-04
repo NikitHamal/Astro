@@ -99,6 +99,9 @@ Date: 2026-03-05
   - `NativeAnalysisCalculator.getHealthAreasForSign` now maps all 12 signs to their sign-specific health-area key, instead of always returning Aries.
 - Removed weekday-name placeholders in horoscope generation:
   - `HoroscopeCalculator` now uses localized weekday names via `LocalizedDisplayNames.getDayName(...)` for key-date events and weekly-overview highlights.
+- Upgraded Kaksha transit timing from static average motion to speed-aware movement:
+  - `KakshaTransitCalculator` now prefers live transit speed per planet (with fallback to average motion only when speed is invalid/stationary).
+  - Next-Kaksha timing now accounts for retrograde direction in boundary selection and Kaksha progression.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 

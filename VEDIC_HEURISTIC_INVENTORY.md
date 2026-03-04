@@ -29,6 +29,8 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 179 | Simplified | // Check latitude (declination) - simplified as we may not have exact declination |
 | app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 236 | Simplified | // Simplified: if separation would decrease based on relative speeds |
 | app\src\main\java\com\astro\vajra\ephemeris\KakshaTransitCalculator.kt | 42 | approximate | /** Average planetary speeds in degrees per day (approximate) */ |
+| app\src\main\java\com\astro\vajra\ephemeris\KakshaTransitCalculator.kt | 323 | Fallback | val fallbackMotion = kotlin.math.abs(AVERAGE_DAILY_MOTION[position.planet] ?: 1.0) |
+| app\src\main\java\com\astro\vajra\ephemeris\KakshaTransitCalculator.kt | 326 | Fallback | return fallbackMotion |
 | app\src\main\java\com\astro\vajra\ephemeris\KalachakraDashaCalculator.kt | 1282 | Fallback | areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.vajra.core.common.StringKey.VARSHAPHALA_KEY_DATES, language)}") // Fallback to... |
 | app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 194 | approximate | // Approximate ascendant speed for first-pass rectification search. |
 | app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 197 | approximate | // Check +/- 5 Nadis (approx +/- 4 minutes) |
