@@ -583,13 +583,6 @@ private fun QuickActionItem(
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
                 )
-
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = colors.TextMuted,
-                    modifier = Modifier.size(14.dp)
-                )
             }
         }
     }

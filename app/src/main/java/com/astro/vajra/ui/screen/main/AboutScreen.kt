@@ -232,25 +232,19 @@ fun AboutScreen(
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
-                    Text(
-                        text = "Vibe Coder",
-                        fontFamily = SpaceGroteskFamily,
-                        fontSize = NeoVedicFontSizes.S13,
-                        color = AppTheme.AccentGold
-                    )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Box(
                         modifier = Modifier
-                            .size(86.dp)
+                            .size(104.dp)
                             .border(
                                 width = 1.5.dp,
                                 color = AppTheme.AccentGold.copy(alpha = 0.7f),
-                                shape = CircleShape
+                                shape = RoundedCornerShape(14.dp)
                             )
                             .padding(3.dp)
-                            .clip(CircleShape)
+                            .clip(RoundedCornerShape(12.dp))
                     ) {
                         Image(
                             painter = painterResource(id = R.drawable.developer),
