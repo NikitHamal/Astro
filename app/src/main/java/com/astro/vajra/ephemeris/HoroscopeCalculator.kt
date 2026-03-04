@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.astro.vajra.core.common.*
 import com.astro.vajra.core.model.*
-import com.astro.vajra.data.localization.LocalizedDisplayNames
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -1085,7 +1084,7 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun getLocalizedWeekdayName(dayOfWeek: java.time.DayOfWeek, language: Language): String {
-        return LocalizedDisplayNames.getDayName(dayOfWeek.value, language)
+        return getDayName(dayOfWeek.value, language)
     }
 
     fun clearCache() {
