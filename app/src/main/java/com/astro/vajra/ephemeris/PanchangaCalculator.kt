@@ -12,17 +12,14 @@ import swisseph.SweConst
 import swisseph.SweDate
 import swisseph.SwissEph
 import java.io.Closeable
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.floor
-import kotlin.math.roundToInt
 
 class PanchangaCalculator(context: Context) : Closeable {
 
@@ -185,18 +182,8 @@ class PanchangaCalculator(context: Context) : Closeable {
     private fun calculateJulianDay(y: Int, m: Int, d: Int, h: Int, min: Int, s: Int): Double = SweDate(y, m, d, h + min / 60.0 + s / 3600.0, SweDate.SE_GREG_CAL).julDay
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt()
-                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: throw IllegalArgumentException("Invalid timezone: $timezone")
     }
 
     override fun close() { if (!isClosed) { swissEph.swe_close(); isClosed = true } }

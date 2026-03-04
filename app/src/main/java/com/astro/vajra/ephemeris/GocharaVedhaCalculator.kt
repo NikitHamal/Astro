@@ -937,8 +937,8 @@ class GocharaVedhaCalculator @Inject constructor(
         }
     }
     private fun resolveZoneId(timezone: String?): ZoneId {
-        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-        return runCatching { ZoneId.of(timezone.trim()) }.getOrElse { ZoneId.systemDefault() }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: ZoneId.systemDefault()
     }
 }
 

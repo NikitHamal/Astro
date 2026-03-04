@@ -5,13 +5,10 @@ import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
 import com.astro.vajra.ephemeris.VedicAstrologyUtils
-import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 /**
  * DrigDashaCalculator - Jaimini Drig (Sthira) Dasha System for Longevity
@@ -314,16 +311,8 @@ object DrigDashaCalculator {
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val numericHours = timezone.trim().toDoubleOrNull()
-            if (numericHours != null) {
-                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: throw IllegalArgumentException("Invalid timezone: $timezone")
     }
 
     /**

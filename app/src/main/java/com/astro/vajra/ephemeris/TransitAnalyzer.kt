@@ -684,55 +684,85 @@ class TransitAnalyzer @Inject constructor(
         language: Language
     ): List<SignificantPeriod> {
         val periods = mutableListOf<SignificantPeriod>()
-
-        // Check for significant Saturn, Jupiter, and Rahu/Ketu transits
+        val horizonDays = 30L
         val significantPlanets = listOf(Planet.SATURN, Planet.JUPITER, Planet.RAHU, Planet.KETU)
-
         val natalMoon = natalChart.planetPositions.find { it.planet == Planet.MOON } ?: return periods
-
-        // Analyze transit for next 30 days (sample every 7 days)
-        for (dayOffset in listOf(0, 7, 14, 21, 28)) {
-            val checkDate = startDate.plusDays(dayOffset.toLong())
-            val transitPositions = getTransitPositionsForDateTime(checkDate, natalChart.birthData.timezone)
-
-            significantPlanets.forEach { planet ->
-                val transitPos = transitPositions.find { it.planet == planet } ?: return@forEach
-                val houseFromMoon = calculateHouseFromSign(transitPos.sign, natalMoon.sign)
-
-                // Check for significant house transits
-                val isSignificant = when (planet) {
-                    Planet.SATURN -> houseFromMoon in listOf(1, 4, 7, 8, 10, 12) // Sade Sati, Ashtama Shani, etc.
-                    Planet.JUPITER -> houseFromMoon in listOf(1, 5, 9) // Guru in Kendra/Trikona
-                    Planet.RAHU, Planet.KETU -> houseFromMoon in listOf(1, 7) // Node on axis
-                    else -> false
-                }
-
-                if (isSignificant) {
-                    val description = generatePeriodDescription(planet, houseFromMoon, language)
-                    val intensity = when {
-                        planet == Planet.SATURN && houseFromMoon == 8 -> 5 // Ashtama Shani
-                        planet == Planet.SATURN && houseFromMoon in listOf(1, 12) -> 4 // Sade Sati peak/end
-                        planet == Planet.JUPITER && houseFromMoon in listOf(1, 5, 9) -> 4
-                        else -> 3
-                    }
-
-                    // Find period duration (simplified - actual implementation would track sign changes)
-                    val endDate = checkDate.plusDays(7)
-
-                    periods.add(
-                        SignificantPeriod(
-                            startDate = checkDate,
-                            endDate = endDate,
-                            description = description,
-                            planets = listOf(planet),
-                            intensity = intensity
-                        )
-                    )
-                }
-            }
+        val dailySamples = (0L..horizonDays).map { dayOffset ->
+            val sampleDate = startDate.plusDays(dayOffset)
+            sampleDate to getTransitPositionsForDateTime(sampleDate, natalChart.birthData.timezone)
         }
 
-        return periods.distinctBy { it.description }
+        significantPlanets.forEach { planet ->
+            var activeStart: LocalDateTime? = null
+            var activeHouse: Int? = null
+
+            fun closeActivePeriod(endDateExclusive: LocalDateTime) {
+                val start = activeStart ?: return
+                val house = activeHouse ?: return
+                periods.add(
+                    SignificantPeriod(
+                        startDate = start,
+                        endDate = endDateExclusive,
+                        description = generatePeriodDescription(planet, house, language),
+                        planets = listOf(planet),
+                        intensity = calculateSignificantPeriodIntensity(planet, house)
+                    )
+                )
+                activeStart = null
+                activeHouse = null
+            }
+
+            for ((checkDate, transitPositions) in dailySamples) {
+                val transitPos = transitPositions.find { it.planet == planet }
+                if (transitPos == null) {
+                    closeActivePeriod(checkDate)
+                    continue
+                }
+                val houseFromMoon = calculateHouseFromSign(transitPos.sign, natalMoon.sign)
+                val isSignificant = isSignificantTransitHouse(planet, houseFromMoon)
+
+                if (!isSignificant) {
+                    closeActivePeriod(checkDate)
+                    continue
+                }
+
+                when {
+                    activeStart == null -> {
+                        activeStart = checkDate
+                        activeHouse = houseFromMoon
+                    }
+                    activeHouse != houseFromMoon -> {
+                        closeActivePeriod(checkDate)
+                        activeStart = checkDate
+                        activeHouse = houseFromMoon
+                    }
+                }
+            }
+            closeActivePeriod(startDate.plusDays(horizonDays + 1))
+        }
+
+        return periods.sortedWith(
+            compareByDescending<SignificantPeriod> { it.intensity }
+                .thenBy { it.startDate }
+        )
+    }
+
+    private fun isSignificantTransitHouse(planet: Planet, houseFromMoon: Int): Boolean {
+        return when (planet) {
+            Planet.SATURN -> houseFromMoon in listOf(1, 4, 7, 8, 10, 12)
+            Planet.JUPITER -> houseFromMoon in listOf(1, 5, 9)
+            Planet.RAHU, Planet.KETU -> houseFromMoon in listOf(1, 7)
+            else -> false
+        }
+    }
+
+    private fun calculateSignificantPeriodIntensity(planet: Planet, houseFromMoon: Int): Int {
+        return when {
+            planet == Planet.SATURN && houseFromMoon == 8 -> 5
+            planet == Planet.SATURN && houseFromMoon in listOf(1, 12) -> 4
+            planet == Planet.JUPITER && houseFromMoon in listOf(1, 5, 9) -> 4
+            else -> 3
+        }
     }
 
     /**

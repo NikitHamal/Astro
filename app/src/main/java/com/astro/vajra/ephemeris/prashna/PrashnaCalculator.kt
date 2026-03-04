@@ -19,12 +19,9 @@ import com.astro.vajra.ephemeris.prashna.PrashnaHelpers.calculateJulianDay
 import com.astro.vajra.ephemeris.prashna.PrashnaHelpers.determineHouse
 import com.astro.vajra.ephemeris.prashna.PrashnaHelpers.normalizeDegrees
 import swisseph.SwissEph
-import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.ZonedDateTime
-import kotlin.math.roundToInt
 
 /**
  * PrashnaCalculator - Refactored Production-grade Vedic Horary Astrology Engine
@@ -228,18 +225,8 @@ class PrashnaCalculator(context: Context) {
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt()
-                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: throw IllegalArgumentException("Invalid timezone: $timezone")
     }
 }
 

@@ -10,7 +10,6 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.DateTimeException
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
@@ -341,20 +340,8 @@ class HoroscopeCalculator @Inject constructor(
     }
 
     private fun resolveZoneId(timezone: String?): ZoneId {
-        if (timezone.isNullOrBlank()) return ZoneOffset.UTC
-        return try {
-            ZoneId.of(timezone.trim())
-        } catch (_: DateTimeException) {
-            val normalized = timezone.trim()
-                .replace("UTC", "", ignoreCase = true)
-                .replace("GMT", "", ignoreCase = true)
-                .trim()
-            if (normalized.isNotEmpty()) {
-                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneOffset.UTC }
-            } else {
-                ZoneOffset.UTC
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: ZoneOffset.UTC
     }
 
     private fun getOrCalculateTransitChart(birthData: BirthData, date: LocalDate): VedicChart {

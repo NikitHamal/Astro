@@ -8,11 +8,8 @@ import com.astro.vajra.core.common.Language
 import com.astro.vajra.core.common.StringResources
 import com.astro.vajra.core.common.StringKeyAnalysis
 import com.astro.vajra.core.common.StringKeyDosha
-import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
-import kotlin.math.roundToInt
 
 /**
  * Upachaya House Transit Tracker
@@ -81,18 +78,8 @@ object UpachayaTransitTracker {
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt()
-                ZoneOffset.ofTotalSeconds(totalSeconds.coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: ZoneId.systemDefault()
     }
 
     /**

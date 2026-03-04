@@ -11,13 +11,10 @@ import com.astro.vajra.ephemeris.shoola.ShoolaDashaEvaluator.assessPeriodNature
 import com.astro.vajra.ephemeris.shoola.ShoolaDashaEvaluator.calculateLongevityAssessment
 import com.astro.vajra.ephemeris.shoola.ShoolaHelpers.aspectsPoint
 import com.astro.vajra.ephemeris.shoola.ShoolaTriMurtiAnalyzer.calculateTriMurti
-import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 object ShoolaDashaCalculator {
 
@@ -174,16 +171,8 @@ object ShoolaDashaCalculator {
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val numericHours = timezone.trim().toDoubleOrNull()
-            if (numericHours != null) {
-                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                throw IllegalArgumentException("Invalid timezone: $timezone")
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: throw IllegalArgumentException("Invalid timezone: $timezone")
     }
 
     private fun findPlanets(chart: VedicChart, sign: ZodiacSign): List<Planet> = chart.planetPositions.filter { ZodiacSign.fromLongitude(it.longitude) == sign || aspectsPoint(it.planet, it.longitude, (sign.number - 1) * 30.0 + 15.0) }.map { it.planet }.distinct()

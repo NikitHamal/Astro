@@ -7,7 +7,6 @@ import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
-import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
@@ -645,20 +644,8 @@ object KakshaTransitCalculator {
         }
     }
     private fun resolveZoneId(timezone: String?): ZoneId {
-        if (timezone.isNullOrBlank()) return ZoneId.systemDefault()
-        return try {
-            ZoneId.of(timezone.trim())
-        } catch (_: DateTimeException) {
-            val normalized = timezone.trim()
-                .replace("UTC", "", ignoreCase = true)
-                .replace("GMT", "", ignoreCase = true)
-                .trim()
-            if (normalized.isNotEmpty()) {
-                runCatching { ZoneId.of("UTC$normalized") }.getOrElse { ZoneId.systemDefault() }
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: ZoneId.systemDefault()
     }
 }
 

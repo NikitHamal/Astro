@@ -38,6 +38,25 @@ Date: 2026-03-05
   - `YoginiDashaCalculator`
   - `DashaSandhiAnalyzer`
   - `SudarshanaChakraDashaCalculator`
+- Extended timezone sanitization unification across remaining manual parsers:
+  - `AshtamangalaPrashnaCalculator`
+  - `AshtavargaTransitCalculator`
+  - `BhriguBinduCalculator`
+  - `HoroscopeCalculator`
+  - `KakshaTransitCalculator`
+  - `PanchangaCalculator`
+  - `SadeSatiCalculator`
+  - `SarvatobhadraChakraCalculator`
+  - `GocharaVedhaCalculator`
+  - `TarabalaCalculator`
+  - `UpachayaTransitTracker`
+  - `jaimini/DrigDashaCalculator`
+  - `muhurta/MuhurtaCalculator`
+  - `prashna/PrashnaCalculator`
+  - `shoola/ShoolaDashaCalculator`
+  - `varshaphala/MuddaDashaCalculator`
+  - `varshaphala/VarshaphalaHelpers`
+- Replaced 7-day fixed significant transit period buckets with daily sampled, contiguous sign-window period detection in `TransitAnalyzer`.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
@@ -66,8 +85,6 @@ Date: 2026-03-05
   - Simplified boundary handling and approximation comments in rectification path.
 - `app/src/main/java/com/astro/vajra/ephemeris/SarvatobhadraChakraCalculator.kt`
   - Simplified tithi calculation marker.
-- `app/src/main/java/com/astro/vajra/ephemeris/TransitAnalyzer.kt`
-  - Simplified period duration marker.
 - `app/src/main/java/com/astro/vajra/ephemeris/SadeSatiCalculator.kt`
   - Approximate timeline framing requires formalization or explicit confidence labeling.
 

@@ -11,13 +11,10 @@ import com.astro.vajra.ephemeris.varshaphala.VarshaphalaConstants.EXALTATION_DEG
 import com.astro.vajra.ephemeris.varshaphala.VarshaphalaConstants.FRIENDSHIPS
 import com.astro.vajra.ephemeris.varshaphala.VarshaphalaConstants.NEUTRALS
 import swisseph.SweDate
-import java.time.DateTimeException
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 object VarshaphalaHelpers {
 
@@ -52,32 +49,8 @@ object VarshaphalaHelpers {
     }
 
     fun resolveZoneId(timezone: String): ZoneId {
-        try {
-            return ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val trimmed = timezone.trim()
-            val numericHours = trimmed.toDoubleOrNull()
-            if (numericHours != null) {
-                val totalSeconds = (numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600)
-                return ZoneOffset.ofTotalSeconds(totalSeconds)
-            }
-            val normalized = when {
-                trimmed.startsWith("UTC", ignoreCase = true) && trimmed.length > 3 ->
-                    trimmed.removePrefix("UTC").removePrefix("utc")
-                else -> trimmed
-            }
-            val offset = if (normalized.matches(Regex("^[+-]\\d{1,2}(?::\\d{2})?$"))) {
-                val parts = normalized.split(":")
-                if (parts.size == 1) {
-                    val hours = parts[0].toIntOrNull()
-                    if (hours != null && abs(hours) <= 18) String.format("%+03d:00", hours) else null
-                } else normalized
-            } else null
-            if (offset != null) {
-                return ZoneOffset.of(offset)
-            }
-            throw IllegalArgumentException("Invalid timezone: $timezone")
-        }
+        return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+            ?: throw IllegalArgumentException("Invalid timezone: $timezone")
     }
 
     fun normalizeAngle(angle: Double): Double = VedicAstrologyUtils.normalizeDegree(angle)
