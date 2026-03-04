@@ -696,6 +696,7 @@ private fun SnapshotCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val colors = AppTheme.current
+    val language = LocalLanguage.current
 
     Surface(
         modifier = modifier.heightIn(min = HomeDesignTokens.SnapshotCardMinHeight),

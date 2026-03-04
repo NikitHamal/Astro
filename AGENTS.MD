@@ -24,6 +24,8 @@
     - `ui/screen/main/HomeTab.kt`
     - `ui/screen/main/SettingsTab.kt`
     - `ui/components/common/NeoVedicPrimitives.kt`
+- Applied CI compile hotfix for Nepali patch:
+  - fixed missing `language` binding inside `SnapshotCard(...)` in `ui/screen/main/HomeTab.kt` (`Unresolved reference: language`).
 
 ## Architecture Decisions
 - Maintain modular ephemeris engines and feature-specific calculators.

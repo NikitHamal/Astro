@@ -13,6 +13,12 @@ Fix Nepali readability regression where UI text appears optically smaller than E
 
 ## State:
 - Done:
+  - CI hotfix for Nepali readability patch (2026-03-04):
+    - issue:
+      - release compile failed with `Unresolved reference: language` in `HomeTab.kt` around snapshot-card label rendering.
+    - updated:
+      - `app/src/main/java/com/astro/vajra/ui/screen/main/HomeTab.kt`
+        - added missing `val language = LocalLanguage.current` inside `SnapshotCard(...)`.
   - Implemented Nepali readability patch set:
     - `app/src/main/java/com/astro/vajra/ui/theme/Theme.kt`
       - added Nepali-only typography scale (`1.12x`) through `CompositionLocalProvider(LocalDensity ...)`.
@@ -26,9 +32,9 @@ Fix Nepali readability regression where UI text appears optically smaller than E
     - `app/src/main/java/com/astro/vajra/ui/components/common/NeoVedicPrimitives.kt`
       - `NeoVedicSectionDivider` now avoids uppercase in Nepali.
 - Now:
-  - Commit and push Nepali readability patch.
+  - Commit and push CI hotfix for `HomeTab.kt`.
 - Next:
-  - Ask user to verify Nepali visual size/spacing in Home/Insights/Settings shell screens.
+  - Ask user to rerun release CI and verify successful Kotlin compile.
 
 ## Open Questions (UNCONFIRMED if needed):
 - None.
