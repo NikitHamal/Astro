@@ -54,6 +54,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -96,7 +97,9 @@ import com.astro.vajra.ui.theme.NeoVedicFontSizes
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import kotlinx.coroutines.delay
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 /**
@@ -109,6 +112,37 @@ import java.time.temporal.ChronoUnit
  * - Complete dasha sequence
  * - Sign-wise dasha periods with interpretations
  */
+private data class CharaActivePeriod(
+    val mahadasha: CharaDashaCalculator.CharaMahadasha?,
+    val antardasha: CharaDashaCalculator.CharaAntardasha?
+)
+
+@Composable
+private fun rememberZonedDate(
+    zoneId: ZoneId,
+    refreshMs: Long = 60_000L
+): LocalDate {
+    val today by produceState(initialValue = LocalDate.now(zoneId), key1 = zoneId) {
+        while (true) {
+            value = LocalDate.now(zoneId)
+            delay(refreshMs)
+        }
+    }
+    return today
+}
+
+private fun resolveActiveCharaPeriod(
+    result: CharaDashaCalculator.CharaDashaResult,
+    asOfDate: LocalDate
+): CharaActivePeriod {
+    val currentMahadasha = result.mahadashas.find { it.isActiveOn(asOfDate) }
+    val currentAntardasha = currentMahadasha?.getAntardashaOn(asOfDate)
+    return CharaActivePeriod(
+        mahadasha = currentMahadasha,
+        antardasha = currentAntardasha
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharaDashaScreen(
@@ -117,11 +151,16 @@ fun CharaDashaScreen(
 ) {
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
+    val zoneId = remember(chart?.birthData?.timezone) { resolveZoneId(chart?.birthData?.timezone) }
+    val asOfDate = rememberZonedDate(zoneId)
 
     var isCalculating by remember { mutableStateOf(false) }
     var calculationError by remember { mutableStateOf<String?>(null) }
     var charaDashaResult by remember { mutableStateOf<CharaDashaCalculator.CharaDashaResult?>(null) }
     val errorString = stringResource(StringKeyAnalysis.CHARA_DASHA_CALC_ERROR)
+    val activePeriod = remember(charaDashaResult, asOfDate) {
+        charaDashaResult?.let { resolveActiveCharaPeriod(it, asOfDate) }
+    }
 
     // Calculate Chara Dasha on chart change
     LaunchedEffect(chart) {
@@ -146,8 +185,8 @@ fun CharaDashaScreen(
         topBar = {
             CharaDashaTopBar(
                 chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
-                currentMahadasha = charaDashaResult?.currentMahadasha,
-                currentAntardasha = charaDashaResult?.currentAntardasha,
+                currentMahadasha = activePeriod?.mahadasha,
+                currentAntardasha = activePeriod?.antardasha,
                 isCalculating = isCalculating,
                 hasError = calculationError != null,
                 onBack = onBack
@@ -215,9 +254,20 @@ fun CharaDashaScreen(
 
                             // Tab content
                             when (selectedTabIndex) {
-                                0 -> CurrentCharaDashaTab(result, language, dateSystem)
+                                0 -> CurrentCharaDashaTab(
+                                    result = result,
+                                    language = language,
+                                    dateSystem = dateSystem,
+                                    activePeriod = activePeriod,
+                                    asOfDate = asOfDate
+                                )
                                 1 -> CharaKarakasTab(result, language)
-                                2 -> CharaDashaTimelineTab(result, language, dateSystem)
+                                2 -> CharaDashaTimelineTab(
+                                    result = result,
+                                    language = language,
+                                    activePeriod = activePeriod,
+                                    asOfDate = asOfDate
+                                )
                             }
                         }
                     }
@@ -254,10 +304,12 @@ private fun CharaDashaTopBar(
 private fun CurrentCharaDashaTab(
     result: CharaDashaCalculator.CharaDashaResult,
     language: Language,
-    dateSystem: DateSystem
+    dateSystem: DateSystem,
+    activePeriod: CharaActivePeriod?,
+    asOfDate: LocalDate
 ) {
-    val currentMaha = result.currentMahadasha
-    val currentAntar = result.currentAntardasha
+    val currentMaha = activePeriod?.mahadasha
+    val currentAntar = activePeriod?.antardasha
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -269,9 +321,9 @@ private fun CurrentCharaDashaTab(
             CurrentCharaDashaPeriodCard(
                 currentMaha = currentMaha,
                 currentAntar = currentAntar,
-                result = result,
                 language = language,
-                dateSystem = dateSystem
+                dateSystem = dateSystem,
+                asOfDate = asOfDate
             )
         }
 
@@ -326,7 +378,8 @@ private fun CharaKarakasTab(
 private fun CharaDashaTimelineTab(
     result: CharaDashaCalculator.CharaDashaResult,
     language: Language,
-    dateSystem: DateSystem
+    activePeriod: CharaActivePeriod?,
+    asOfDate: LocalDate
 ) {
     var expandedMahadashaIds by rememberSaveable { mutableStateOf(setOf<String>()) }
 
@@ -347,14 +400,14 @@ private fun CharaDashaTimelineTab(
         ) { index, mahadasha ->
             val mahadashaId = "${mahadasha.sign.name}_${mahadasha.startDate.toEpochDay()}"
             val isExpanded = mahadashaId in expandedMahadashaIds
-            val isCurrent = mahadasha == result.currentMahadasha
+            val isCurrent = mahadasha == activePeriod?.mahadasha
 
             CharaMahadashaCard(
                 mahadasha = mahadasha,
                 isCurrent = isCurrent,
                 isExpanded = isExpanded,
                 language = language,
-                dateSystem = dateSystem,
+                asOfDate = asOfDate,
                 onToggleExpand = { expanded ->
                     expandedMahadashaIds = if (expanded) {
                         expandedMahadashaIds + mahadashaId
@@ -375,9 +428,9 @@ private fun CharaDashaTimelineTab(
 private fun CurrentCharaDashaPeriodCard(
     currentMaha: CharaDashaCalculator.CharaMahadasha?,
     currentAntar: CharaDashaCalculator.CharaAntardasha?,
-    result: CharaDashaCalculator.CharaDashaResult,
     language: Language,
-    dateSystem: DateSystem
+    dateSystem: DateSystem,
+    asOfDate: LocalDate
 ) {
     Surface(
         modifier = Modifier
@@ -443,8 +496,8 @@ private fun CurrentCharaDashaPeriodCard(
                     lord = currentMaha.signLord,
                     startDate = currentMaha.startDate,
                     endDate = currentMaha.endDate,
-                    progress = currentMaha.getProgressPercent().toFloat() / 100f,
-                    remainingText = "${currentMaha.getRemainingDays()} ${stringResource(StringKeyMatch.MISC_DAYS_LEFT)}",
+                    progress = currentMaha.getProgressPercent(asOfDate).toFloat() / 100f,
+                    remainingText = "${currentMaha.getRemainingDays(asOfDate)} ${stringResource(StringKeyMatch.MISC_DAYS_LEFT)}",
                     language = language,
                     dateSystem = dateSystem,
                     isLarger = true
@@ -458,7 +511,7 @@ private fun CurrentCharaDashaPeriodCard(
                         lord = antar.signLord,
                         startDate = antar.startDate,
                         endDate = antar.endDate,
-                        progress = antar.getProgressPercent().toFloat() / 100f,
+                        progress = antar.getProgressPercent(asOfDate).toFloat() / 100f,
                         remainingText = "${antar.durationMonths.toInt()} ${stringResource(StringKeyMatch.MISC_MONTHS)}",
                         language = language,
                         dateSystem = dateSystem,
@@ -1076,7 +1129,7 @@ private fun CharaMahadashaCard(
     isCurrent: Boolean,
     isExpanded: Boolean,
     language: Language,
-    dateSystem: DateSystem,
+    asOfDate: LocalDate,
     onToggleExpand: (Boolean) -> Unit
 ) {
     val rotationAngle by animateFloatAsState(
@@ -1183,7 +1236,7 @@ private fun CharaMahadashaCard(
             if (isCurrent) {
                 Spacer(modifier = Modifier.height(8.dp))
                 LinearProgressIndicator(
-                    progress = { mahadasha.getProgressPercent().toFloat() / 100f },
+                    progress = { mahadasha.getProgressPercent(asOfDate).toFloat() / 100f },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(5.dp)
@@ -1235,8 +1288,7 @@ private fun CharaMahadashaCard(
                         mahadasha.antardashas.take(12).forEach { antar ->
                             AntardashaRow(
                                 antardasha = antar,
-                                language = language,
-                                dateSystem = dateSystem
+                                language = language
                             )
                         }
                     }
@@ -1249,8 +1301,7 @@ private fun CharaMahadashaCard(
 @Composable
 private fun AntardashaRow(
     antardasha: CharaDashaCalculator.CharaAntardasha,
-    language: Language,
-    dateSystem: DateSystem
+    language: Language
 ) {
     Row(
         modifier = Modifier
@@ -1479,8 +1530,8 @@ private fun CharaDashaEmptyContent(onBack: () -> Unit) {
     }
 }
 
-
-
-
-
+private fun resolveZoneId(timezone: String?): ZoneId {
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
+}
 
