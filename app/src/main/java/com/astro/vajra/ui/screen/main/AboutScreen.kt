@@ -74,45 +74,43 @@ fun AboutScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    val socialActions = remember {
-        listOf(
-            SocialAction(
-                label = "Instagram",
-                icon = Icons.Outlined.PhotoCamera,
-                accent = AppTheme.LifeAreaLove,
-                url = "https://instagram.com/nikithamal",
-                copyValue = "@nikithamal"
-            ),
-            SocialAction(
-                label = "Facebook",
-                icon = Icons.Outlined.ThumbUp,
-                accent = AppTheme.AccentPrimary,
-                url = "https://facebook.com/thenikithamal",
-                copyValue = "thenikithamal"
-            ),
-            SocialAction(
-                label = "TikTok",
-                icon = Icons.Outlined.MusicNote,
-                accent = AppTheme.AccentGold,
-                url = "https://tiktok.com/@nikithamal",
-                copyValue = "@nikithamal"
-            ),
-            SocialAction(
-                label = "Email",
-                icon = Icons.Outlined.Email,
-                accent = AppTheme.AccentTeal,
-                url = "mailto:nikithamalofficial@gmail.com",
-                copyValue = "nikithamalofficial@gmail.com"
-            ),
-            SocialAction(
-                label = "WhatsApp",
-                icon = Icons.Outlined.Chat,
-                accent = AppTheme.SuccessColor,
-                url = "https://wa.me/9779765324034",
-                copyValue = "+9779765324034"
-            )
+    val socialActions = listOf(
+        SocialAction(
+            label = "Instagram",
+            icon = Icons.Outlined.PhotoCamera,
+            accent = AppTheme.LifeAreaLove,
+            url = "https://instagram.com/nikithamal",
+            copyValue = "@nikithamal"
+        ),
+        SocialAction(
+            label = "Facebook",
+            icon = Icons.Outlined.ThumbUp,
+            accent = AppTheme.AccentPrimary,
+            url = "https://facebook.com/thenikithamal",
+            copyValue = "thenikithamal"
+        ),
+        SocialAction(
+            label = "TikTok",
+            icon = Icons.Outlined.MusicNote,
+            accent = AppTheme.AccentGold,
+            url = "https://tiktok.com/@nikithamal",
+            copyValue = "@nikithamal"
+        ),
+        SocialAction(
+            label = "Email",
+            icon = Icons.Outlined.Email,
+            accent = AppTheme.AccentTeal,
+            url = "mailto:nikithamalofficial@gmail.com",
+            copyValue = "nikithamalofficial@gmail.com"
+        ),
+        SocialAction(
+            label = "WhatsApp",
+            icon = Icons.Outlined.Chat,
+            accent = AppTheme.SuccessColor,
+            url = "https://wa.me/9779765324034",
+            copyValue = "+9779765324034"
         )
-    }
+    )
 
     val launchAndCopy: (SocialAction) -> Unit = { action ->
         clipboard.setText(AnnotatedString(action.copyValue))
