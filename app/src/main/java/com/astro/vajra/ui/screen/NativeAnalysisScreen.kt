@@ -2480,8 +2480,8 @@ private fun JyotishAvasthaCard(planet: Planet, avastha: com.astro.vajra.ephemeri
             }
             Spacer(modifier = Modifier.height(12.dp))
             
-            val baladi = avastha.baladiAvastha.state.name
-            val jagradadi = avastha.jagradadiAvastha.state.name
+            val baladi = avastha.baladiAvastha.name
+            val jagradadi = avastha.jagradadiAvastha.name
             
             Text(
                 text = "${planet.getLocalizedName(language)} is in $baladi (Age) and $jagradadi (Alertness) states.",

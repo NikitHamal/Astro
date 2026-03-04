@@ -23,7 +23,7 @@ object NativeAnalysisCalculator {
         val avasthas = AvasthaCalculator.analyzeAvasthas(chart, Language.ENGLISH)
         val ashtakavarga = AshtakavargaCalculator.calculateAshtakavarga(chart)
         val sav = ashtakavarga.sarvashtakavarga.binduMatrix
-        val yogas = YogaEvaluator.evaluate(chart)
+        val yogas = com.astro.vajra.ephemeris.YogaCalculator.calculateYogas(chart).allYogas
 
         val character = analyzeCharacter(chart, avasthas, sav, yogas)
         val career = analyzeCareer(chart, avasthas, sav, yogas)
@@ -47,12 +47,12 @@ object NativeAnalysisCalculator {
         val s = when { d == PlanetaryDignity.EXALTED -> StrengthLevel.EXCELLENT; d == PlanetaryDignity.OWN_SIGN || d == PlanetaryDignity.MOOLATRIKONA -> StrengthLevel.STRONG; d == PlanetaryDignity.DEBILITATED -> StrengthLevel.AFFLICTED; else -> StrengthLevel.MODERATE }
         val el = calculateDominantElement(chart)
         val nakName = moon?.nakshatra?.displayName ?: "Unknown"
-        val nakLord = moon?.nakshatra?.lord?.displayName ?: "Unknown"
+        val nakLord = moon?.nakshatra?.ruler?.displayName ?: "Unknown"
         val nakPada = moon?.nakshatraPada ?: 1
         
         val lagnaLordAvastha = avasthas.planetaryAvasthas.find { it.planet == asc.ruler }
         val lagnaBindus = sav[asc] ?: 0
-        val personalityYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.ROYAL || it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.PERSONALITY || it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.MAHAPURUSHA }
+        val personalityYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.RAJA_YOGA || it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.MAHAPURUSHA_YOGA }
 
         return CharacterAnalysis(asc, ms, chart.planetPositions.find { it.planet == Planet.SUN }?.sign ?: asc, getAscendantTrait(asc), getMoonSignTrait(ms), 
             "Your birth nakshatra $nakName (Pada $nakPada) ruled by $nakLord shapes your deeper personality traits.", 
@@ -84,8 +84,8 @@ object NativeAnalysisCalculator {
         val tenthLordAvastha = avasthas.planetaryAvasthas.find { it.planet == lord }
         val d10Ascendant = d10.ascendantSign
         val d10TenthSignNum = (d10Ascendant.number + 9) % 12
-        val d10TenthLord = ZodiacSign.fromNumber(if (d10TenthSignNum == 0) 12 else d10TenthSignNum).ruler
-        val careerYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.ROYAL || it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.LUNAR } // Simplified logic
+        val d10TenthLord = ZodiacSign.values()[((if (d10TenthSignNum == 0) 12 else d10TenthSignNum) - 1).coerceIn(0, 11)].ruler
+        val careerYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.RAJA_YOGA || it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.CHANDRA_YOGA } // Simplified logic
         
         return CareerAnalysis(lord, pos?.house ?: 10, d, tenthPlanets, tenthLordAvastha, d10Ascendant, d10TenthLord, tenthHouseBindus, careerYogas, indicators, fields.distinct(), fieldsNe.distinct(), s, "10th lord ${lord.displayName} in ${d.displayName} dignity. Potential is ${s.displayName.lowercase()}.", "${lord.displayName} १०औं भावको स्वामी ${d.displayNameNe} छ। क्षमता ${s.displayNameNe} छ।")
     }
@@ -107,7 +107,7 @@ object NativeAnalysisCalculator {
         val d9 = DivisionalChartCalculator.calculateNavamsa(chart)
         val d9Ascendant = d9.ascendantSign
         val d9SeventhSignNum = (d9Ascendant.number + 6) % 12
-        val d9SeventhLord = ZodiacSign.fromNumber(if (d9SeventhSignNum == 0) 12 else d9SeventhSignNum).ruler
+        val d9SeventhLord = ZodiacSign.values()[((if (d9SeventhSignNum == 0) 12 else d9SeventhSignNum) - 1).coerceIn(0, 11)].ruler
         val seventhSign = VedicAstrologyUtils.getHouseSign(chart, 7)
         val seventhHouseBindus = sav[seventhSign] ?: 0
         val venusAvastha = avasthas.planetaryAvasthas.find { it.planet == Planet.VENUS }
@@ -137,7 +137,7 @@ object NativeAnalysisCalculator {
         val eighthSign = VedicAstrologyUtils.getHouseSign(chart, 8)
         val sixthHouseBindus = sav[sixthSign] ?: 0
         val eighthHouseBindus = sav[eighthSign] ?: 0
-        val healthYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.MALEFIC }
+        val healthYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.NEGATIVE_YOGA }
         
         return HealthAnalysis(s, VedicAstrologyUtils.getHouseLord(chart, 6), VedicAstrologyUtils.getHouseLord(chart, 8), lagnaLordAvastha, sixthHouseBindus, eighthHouseBindus, healthYogas, if (s.value >= 4) ConstitutionType.STRONG else ConstitutionType.MODERATE, getHealthAreasForSign(asc), if (s.value >= 4) LongevityIndicator.LONG else LongevityIndicator.MEDIUM, c, cn, "Health is ${s.displayName.lowercase()}.", "स्वास्थ्य ${s.displayNameNe} छ।")
     }
@@ -151,7 +151,7 @@ object NativeAnalysisCalculator {
         val l2 = VedicAstrologyUtils.getHouseLord(chart, 2); val l11 = VedicAstrologyUtils.getHouseLord(chart, 11)
         val s2 = dignityToStrength(chart.planetPositions.find { it.planet == l2 }?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
         val s11 = dignityToStrength(chart.planetPositions.find { it.planet == l11 }?.let { getDignity(it) } ?: PlanetaryDignity.NEUTRAL_SIGN)
-        val wealthYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.WEALTH }
+        val wealthYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.DHANA_YOGA }
         val dy = wealthYogas.isNotEmpty()
         val p = calculateWealthPotential(s2, s11, dy)
         
@@ -182,7 +182,7 @@ object NativeAnalysisCalculator {
         val fourthHouseBindus = sav[fourthSign] ?: 0
         val fifthHouseBindus = sav[fifthSign] ?: 0
         val mercuryAvastha = avasthas.planetaryAvasthas.find { it.planet == Planet.MERCURY }
-        val educationYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.LUNAR } // Simplified
+        val educationYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.CHANDRA_YOGA } // Simplified
         
         return EducationAnalysis(l4, l5, ms, mercuryAvastha, fourthHouseBindus, fifthHouseBindus, d24Ascendant, educationYogas, true, listOf("Knowledge"), listOf("ज्ञान"), StrengthLevel.STRONG, "Education is favorable.", "शिक्षा अनुकूल छ।")
     }
@@ -191,7 +191,7 @@ object NativeAnalysisCalculator {
         val l9 = VedicAstrologyUtils.getHouseLord(chart, 9); val l12 = VedicAstrologyUtils.getHouseLord(chart, 12)
         val ninthSign = VedicAstrologyUtils.getHouseSign(chart, 9)
         val ninthHouseBindus = sav[ninthSign] ?: 0
-        val spiritualYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.SPIRITUAL }
+        val spiritualYogas = yogas.filter { it.category == com.astro.vajra.ephemeris.yoga.YogaCategory.SPECIAL_YOGA }
         
         return SpiritualAnalysis(l9, l12, chart.planetPositions.find { it.planet == Planet.KETU }, StrengthLevel.MODERATE, ninthHouseBindus, spiritualYogas, StrengthLevel.STRONG, listOf("Meditation"), listOf("ध्यान"), "Spiritual growth indicated.", "आध्यात्मिक प्रगति संकेत गरिएको छ।")
     }
