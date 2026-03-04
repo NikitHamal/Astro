@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,6 +42,7 @@ import com.astro.vajra.data.localization.currentLanguage
 import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.Planet
+import com.astro.vajra.core.model.BirthData
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.BhriguBinduCalculator
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.AspectType
@@ -50,6 +52,7 @@ import com.astro.vajra.ephemeris.BhriguBinduCalculator.LifeArea
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.OverallStrength
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.RemedyCategory
 import com.astro.vajra.ephemeris.BhriguBinduCalculator.RemedyPriority
+import com.astro.vajra.ephemeris.SwissEphemerisEngine
 import com.astro.vajra.util.TimezoneSanitizer
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.theme.NeoVedicTokens
@@ -60,6 +63,8 @@ import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import com.astro.vajra.ui.components.common.NeoVedicEmptyState
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneOffset
 import androidx.compose.foundation.BorderStroke
 
@@ -96,6 +101,7 @@ fun BhriguBinduScreen(
     }
 
     val language = currentLanguage()
+    val context = LocalContext.current
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var expandedFactor by remember { mutableStateOf<Int?>(null) }
@@ -116,9 +122,29 @@ fun BhriguBinduScreen(
     )
 
     // Calculate Bhrigu Bindu analysis
-    val bbAnalysis = remember(chart, analysisDate) {
+    val bbAnalysis = remember(chart, analysisDate, context) {
         try {
-            BhriguBinduCalculator.analyzeBhriguBindu(chart, analysisDate)
+            val zoneId = TimezoneSanitizer.resolveZoneIdOrNull(chart.birthData.timezone)
+                ?: ZoneOffset.UTC
+
+            val transitBirthData = BirthData(
+                name = "Transit",
+                dateTime = LocalDateTime.of(analysisDate, LocalTime.NOON),
+                latitude = chart.birthData.latitude,
+                longitude = chart.birthData.longitude,
+                timezone = zoneId.id,
+                location = chart.birthData.location
+            )
+
+            val currentTransitPositions = runCatching {
+                SwissEphemerisEngine.getInstance(context).calculateVedicChart(transitBirthData).planetPositions
+            }.getOrNull()
+
+            BhriguBinduCalculator.analyzeBhriguBindu(
+                chart = chart,
+                currentDate = analysisDate,
+                currentTransitPositions = currentTransitPositions
+            )
         } catch (e: Exception) {
             null
         }

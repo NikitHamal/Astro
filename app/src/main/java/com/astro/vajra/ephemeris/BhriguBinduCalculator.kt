@@ -2,12 +2,14 @@ package com.astro.vajra.ephemeris
 
 import com.astro.vajra.core.model.Nakshatra
 import com.astro.vajra.core.model.Planet
+import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import kotlin.math.abs
 
 /**
  * Bhrigu Bindu Calculator
@@ -284,7 +286,8 @@ object BhriguBinduCalculator {
      */
     fun analyzeBhriguBindu(
         chart: VedicChart,
-        currentDate: LocalDate = LocalDate.now(resolveZoneId(chart.birthData.timezone))
+        currentDate: LocalDate = LocalDate.now(resolveZoneId(chart.birthData.timezone)),
+        currentTransitPositions: List<PlanetPosition>? = null
     ): BhriguBinduAnalysis {
         val rahuPosition = chart.planetPositions.find { it.planet == Planet.RAHU }
             ?: throw IllegalArgumentException("Rahu position not found in chart")
@@ -308,7 +311,12 @@ object BhriguBinduCalculator {
         val strengthAssessment = assessStrength(chart, bhriguBindu, bbSign, bbNakshatra, bbHouse)
 
         // Transit analysis
-        val transitAnalysis = analyzeTransits(chart, bhriguBindu, currentDate)
+        val transitAnalysis = analyzeTransits(
+            chart = chart,
+            bhriguBindu = bhriguBindu,
+            currentDate = currentDate,
+            currentTransitPositions = currentTransitPositions
+        )
 
         // Generate interpretation
         val interpretation = generateInterpretation(
@@ -674,18 +682,15 @@ object BhriguBinduCalculator {
     private fun analyzeTransits(
         chart: VedicChart,
         bhriguBindu: Double,
-        currentDate: LocalDate
+        currentDate: LocalDate,
+        currentTransitPositions: List<PlanetPosition>? = null
     ): TransitAnalysis {
-        // Note: In a production app, you would get current planetary positions
-        // from an ephemeris. Here we provide the structure for analysis.
-
         val currentTransits = mutableListOf<TransitingPlanet>()
         val upcomingTransits = mutableListOf<UpcomingTransit>()
         val significantPeriods = mutableListOf<SignificantPeriod>()
+        val transitPositions = currentTransitPositions ?: chart.planetPositions
 
-        // For demonstration, analyze natal positions as proxy for transits
-        // In production, use SwissEphemerisEngine to get current positions
-        for (position in chart.planetPositions) {
+        for (position in transitPositions) {
             val distance = calculateAngularDistance(position.longitude, bhriguBindu)
             val aspectType = getAspectInfo(position.planet, distance)?.first
 
@@ -701,23 +706,32 @@ object BhriguBinduCalculator {
             )
         }
 
-        // Calculate upcoming significant transits
-        // Jupiter transit over BB is highly significant (happens every ~12 years)
+        val jupiterPosition = transitPositions.firstOrNull { it.planet == Planet.JUPITER }
         upcomingTransits.add(
             UpcomingTransit(
                 planet = Planet.JUPITER,
                 transitType = TransitType.CONJUNCTION,
-                estimatedDate = currentDate.plusMonths(6), // Placeholder
+                estimatedDate = estimateNextConjunctionDate(
+                    planetPosition = jupiterPosition,
+                    bhriguBindu = bhriguBindu,
+                    currentDate = currentDate,
+                    fallbackDays = 180L
+                ),
                 significance = TransitSignificance.HIGHLY_SIGNIFICANT
             )
         )
 
-        // Saturn transit is also significant
+        val saturnPosition = transitPositions.firstOrNull { it.planet == Planet.SATURN }
         upcomingTransits.add(
             UpcomingTransit(
                 planet = Planet.SATURN,
                 transitType = TransitType.CONJUNCTION,
-                estimatedDate = currentDate.plusYears(1), // Placeholder
+                estimatedDate = estimateNextConjunctionDate(
+                    planetPosition = saturnPosition,
+                    bhriguBindu = bhriguBindu,
+                    currentDate = currentDate,
+                    fallbackDays = 365L
+                ),
                 significance = TransitSignificance.SIGNIFICANT
             )
         )
@@ -727,6 +741,29 @@ object BhriguBinduCalculator {
             upcomingTransits = upcomingTransits,
             significantPeriods = significantPeriods
         )
+    }
+
+    private fun estimateNextConjunctionDate(
+        planetPosition: PlanetPosition?,
+        bhriguBindu: Double,
+        currentDate: LocalDate,
+        fallbackDays: Long
+    ): LocalDate {
+        val position = planetPosition ?: return currentDate.plusDays(fallbackDays)
+        val speed = position.speed
+        if (!speed.isFinite() || speed == 0.0) return currentDate.plusDays(fallbackDays)
+
+        val distanceToConjunction = if (speed >= 0.0) {
+            normalizeAngle(bhriguBindu - position.longitude)
+        } else {
+            normalizeAngle(position.longitude - bhriguBindu)
+        }
+
+        val daysUntil = (distanceToConjunction / abs(speed))
+            .toLong()
+            .coerceIn(1L, 30L * 365L)
+
+        return currentDate.plusDays(daysUntil)
     }
 
     /**

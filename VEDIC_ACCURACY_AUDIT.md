@@ -75,6 +75,10 @@ Date: 2026-03-05
 - Removed fabricated house-target placeholder from `DrigBalaCalculator`:
   - `AspectInfo.aspectedPlanet` now supports house-only contexts as nullable.
   - House-aspect generation no longer injects `Planet.SUN` as a stand-in target.
+- Replaced fixed placeholder upcoming dates in `BhriguBinduCalculator` with dynamic conjunction estimates:
+  - Uses current transit position + speed when available.
+  - UI now attempts to provide real current transit positions via `SwissEphemerisEngine`.
+  - Applies bounded fallback days only if live transit position is unavailable.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
@@ -95,8 +99,6 @@ Date: 2026-03-05
   - Previously random by `System.nanoTime()`. Now configurable deterministic/random mode; next step is adding explicit provenance display in UI.
 
 ### P1: Placeholder/Approximation Markers Affecting Practical Usefulness
-- `app/src/main/java/com/astro/vajra/ephemeris/BhriguBinduCalculator.kt`
-  - Placeholder estimated dates.
 - `app/src/main/java/com/astro/vajra/ephemeris/NadiAmshaCalculator.kt`
   - Simplified boundary handling and approximation comments in rectification path.
 - `app/src/main/java/com/astro/vajra/ephemeris/SarvatobhadraChakraCalculator.kt`

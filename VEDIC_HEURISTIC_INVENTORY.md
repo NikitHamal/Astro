@@ -18,10 +18,12 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 277 | simplified | * Calculate simplified Deeptadi for nodes |
 | app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 360 | Simplified | // Simplified: if in enemy sign and watery |
 | app\src\main\java\com\astro\vajra\ephemeris\BadhakaCalculator.kt | 612 | approximate | // Note: In a full impl we'd check owned houses, here we approximate with aspects/position |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 419 | approximate | // Mars special aspect to 4th and 8th houses (90 and 210 degrees approximately) |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 679 | production app | // Note: In a production app, you would get current planetary positions |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 710 | Placeholder | estimatedDate = currentDate.plusMonths(6), // Placeholder |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 720 | Placeholder | estimatedDate = currentDate.plusYears(1), // Placeholder |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 427 | approximate | // Mars special aspect to 4th and 8th houses (90 and 210 degrees approximately) |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 718 | fallback | fallbackDays = 180L |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 733 | fallback | fallbackDays = 365L |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 750 | fallback | fallbackDays: Long |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 752 | fallback | val position = planetPosition ?: return currentDate.plusDays(fallbackDays) |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 754 | fallback | if (!speed.isFinite() \|\| speed == 0.0) return currentDate.plusDays(fallbackDays) |
 | app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 179 | simplified | // Check latitude (declination) - simplified as we may not have exact declination |
 | app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 236 | Simplified | // Simplified: if separation would decrease based on relative speeds |
 | app\src\main\java\com\astro\vajra\ephemeris\HoroscopeCalculator.kt | 928 | Placeholder | event = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(date.dayOfWeek.value.toString())... |
