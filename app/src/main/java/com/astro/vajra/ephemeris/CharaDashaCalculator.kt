@@ -5,14 +5,13 @@ import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
+import com.astro.vajra.util.TimezoneSanitizer
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
-import kotlin.math.roundToInt
 
 /**
  * Chara Dasha Calculator (Jaimini System)
@@ -289,16 +288,7 @@ object CharaDashaCalculator {
     }
 
     private fun resolveZoneId(timezone: String): ZoneId {
-        return try {
-            ZoneId.of(timezone)
-        } catch (_: DateTimeException) {
-            val numericHours = timezone.trim().toDoubleOrNull()
-            if (numericHours != null) {
-                ZoneOffset.ofTotalSeconds((numericHours * 3600.0).roundToInt().coerceIn(-18 * 3600, 18 * 3600))
-            } else {
-                ZoneId.systemDefault()
-            }
-        }
+        return TimezoneSanitizer.resolveZoneIdOrNull(timezone) ?: ZoneId.systemDefault()
     }
 
     /**

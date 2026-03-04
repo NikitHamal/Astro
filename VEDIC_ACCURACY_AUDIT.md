@@ -30,6 +30,14 @@ Date: 2026-03-05
   - `AspectCalculator`
   - `DrigBalaCalculator`
   - `RetrogradeCombustionCalculator`
+- Replaced duplicated timezone fallback parsing with centralized `TimezoneSanitizer` across dasha-related engines:
+  - `DashaCalculator`
+  - `AshtottariDashaCalculator`
+  - `CharaDashaCalculator`
+  - `KalachakraDashaCalculator`
+  - `YoginiDashaCalculator`
+  - `DashaSandhiAnalyzer`
+  - `SudarshanaChakraDashaCalculator`
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
