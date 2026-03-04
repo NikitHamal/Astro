@@ -79,8 +79,9 @@ private object HomeDesignTokens {
     val SectionSpacing = NeoVedicTokens.SectionSpacing
     val CardSpacing = NeoVedicTokens.CardSpacing
     val CardCornerRadius = NeoVedicTokens.CardCornerRadius
-    val QuickActionSize = 72.dp
-    val QuickActionIconSize = 26.dp
+    val QuickActionCardHeight = 84.dp
+    val QuickActionIconContainer = 34.dp
+    val QuickActionIconSize = 18.dp
     val HeroCardMinHeight = 160.dp
     val SnapshotCardMinHeight = 148.dp
     val CornerMarkerLength = 12.dp       // L-shaped corner markers
@@ -467,8 +468,8 @@ private fun HeroDashaCard(
 }
 
 // ============================================================================
-// QUICK ACTIONS - 2x2 Bento Grid
-// Sharp square cards, hairline borders, Space Grotesk labels
+// QUICK ACTIONS - Compact 3x2 Grid
+// Dense access row while retaining Neo-Vedic visual language
 // ============================================================================
 @Composable
 private fun QuickActionsSection(
@@ -480,7 +481,9 @@ private fun QuickActionsSection(
         QuickAction(InsightFeature.FULL_CHART, Icons.Outlined.GridView, colors.AccentPrimary),
         QuickAction(InsightFeature.YOGAS, Icons.Outlined.AutoAwesome, colors.AccentGold),
         QuickAction(InsightFeature.PREDICTIONS, Icons.Outlined.TipsAndUpdates, colors.LifeAreaSpiritual),
-        QuickAction(InsightFeature.MATCHMAKING, Icons.Outlined.Favorite, colors.LifeAreaLove)
+        QuickAction(InsightFeature.MATCHMAKING, Icons.Outlined.Favorite, colors.LifeAreaLove),
+        QuickAction(InsightFeature.REMEDIES, Icons.Outlined.Spa, colors.LifeAreaHealth),
+        QuickAction(InsightFeature.LAL_KITAB, Icons.Outlined.MenuBook, colors.AccentTeal)
     )
 
     Column(
@@ -488,41 +491,31 @@ private fun QuickActionsSection(
     ) {
         SectionHeader(
             title = stringResource(StringKey.QUICK_ACTIONS),
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 12.dp)
         )
 
-        // 2x2 bento grid
+        val actionRows = quickActions.chunked(3)
         Column(
             verticalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
-            ) {
-                quickActions.take(2).forEach { action ->
-                    QuickActionItem(
-                        feature = action.feature,
-                        icon = action.icon,
-                        accentColor = action.color,
-                        language = language,
-                        onClick = { onFeatureClick(action.feature) },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
-            ) {
-                quickActions.drop(2).forEach { action ->
-                    QuickActionItem(
-                        feature = action.feature,
-                        icon = action.icon,
-                        accentColor = action.color,
-                        language = language,
-                        onClick = { onFeatureClick(action.feature) },
-                        modifier = Modifier.weight(1f)
-                    )
+            actionRows.forEach { row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(HomeDesignTokens.CardSpacing)
+                ) {
+                    row.forEach { action ->
+                        QuickActionItem(
+                            feature = action.feature,
+                            icon = action.icon,
+                            accentColor = action.color,
+                            language = language,
+                            onClick = { onFeatureClick(action.feature) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    repeat((3 - row.size).coerceAtLeast(0)) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
                 }
             }
         }
@@ -542,7 +535,7 @@ private fun QuickActionItem(
 
     Surface(
         modifier = modifier
-            .aspectRatio(1.3f),
+            .heightIn(min = HomeDesignTokens.QuickActionCardHeight),
         shape = RoundedCornerShape(HomeDesignTokens.CardCornerRadius),
         color = colors.CardBackground,
         border = androidx.compose.foundation.BorderStroke(
@@ -556,28 +549,48 @@ private fun QuickActionItem(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalArrangement = Arrangement.Center
         ) {
-            // Icon at top
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = accentColor,
-                modifier = Modifier.size(HomeDesignTokens.QuickActionIconSize)
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(HomeDesignTokens.QuickActionIconContainer)
+                        .clip(CircleShape)
+                        .background(accentColor.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = accentColor,
+                        modifier = Modifier.size(HomeDesignTokens.QuickActionIconSize)
+                    )
+                }
 
-            // Label at bottom - Space Grotesk
-            Text(
-                text = feature.getLocalizedTitle(language),
-                fontFamily = SpaceGroteskFamily,
-                fontWeight = FontWeight.Medium,
-                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
-                letterSpacing = 0.5.sp,
-                color = colors.TextPrimary,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Text(
+                    text = feature.getLocalizedTitle(language),
+                    fontFamily = SpaceGroteskFamily,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    letterSpacing = 0.2.sp,
+                    color = colors.TextPrimary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = colors.TextMuted,
+                    modifier = Modifier.size(14.dp)
+                )
+            }
         }
     }
 }

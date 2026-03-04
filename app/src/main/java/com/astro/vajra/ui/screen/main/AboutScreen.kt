@@ -2,40 +2,60 @@ package com.astro.vajra.ui.screen.main
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.*
+import androidx.compose.material.icons.outlined.Chat
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.MusicNote
+import androidx.compose.material.icons.outlined.PhotoCamera
+import androidx.compose.material.icons.outlined.ThumbUp
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.astro.vajra.BuildConfig
 import com.astro.vajra.R
-import com.astro.vajra.core.common.Language
-import com.astro.vajra.data.localization.LocalLanguage
-import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.StringKeyMatch
+import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
 import com.astro.vajra.ui.components.common.vedicCornerMarkers
 import com.astro.vajra.ui.theme.AppTheme
@@ -43,22 +63,75 @@ import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.NeoVedicFontSizes
 import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
+import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(
     onBack: () -> Unit
 ) {
-    val language = LocalLanguage.current
     val context = LocalContext.current
-    
-    val openUrl = { url: String ->
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        context.startActivity(intent)
+    val clipboard = LocalClipboardManager.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    val socialActions = remember {
+        listOf(
+            SocialAction(
+                label = "Instagram",
+                icon = Icons.Outlined.PhotoCamera,
+                accent = AppTheme.LifeAreaLove,
+                url = "https://instagram.com/nikithamal",
+                copyValue = "@nikithamal"
+            ),
+            SocialAction(
+                label = "Facebook",
+                icon = Icons.Outlined.ThumbUp,
+                accent = AppTheme.AccentPrimary,
+                url = "https://facebook.com/thenikithamal",
+                copyValue = "thenikithamal"
+            ),
+            SocialAction(
+                label = "TikTok",
+                icon = Icons.Outlined.MusicNote,
+                accent = AppTheme.AccentGold,
+                url = "https://tiktok.com/@nikithamal",
+                copyValue = "@nikithamal"
+            ),
+            SocialAction(
+                label = "Email",
+                icon = Icons.Outlined.Email,
+                accent = AppTheme.AccentTeal,
+                url = "mailto:nikithamalofficial@gmail.com",
+                copyValue = "nikithamalofficial@gmail.com"
+            ),
+            SocialAction(
+                label = "WhatsApp",
+                icon = Icons.Outlined.Chat,
+                accent = AppTheme.SuccessColor,
+                url = "https://wa.me/9779765324034",
+                copyValue = "+9779765324034"
+            )
+        )
+    }
+
+    val launchAndCopy: (SocialAction) -> Unit = { action ->
+        clipboard.setText(AnnotatedString(action.copyValue))
+        val opened = runCatching {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action.url)))
+        }.isSuccess
+
+        if (!opened) {
+            Toast.makeText(context, "Could not open ${action.label}", Toast.LENGTH_SHORT).show()
+        }
+
+        scope.launch {
+            snackbarHostState.showSnackbar("${action.label} copied")
+        }
     }
 
     Scaffold(
         containerColor = AppTheme.ScreenBackground,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             NeoVedicPageHeader(
                 title = stringResource(StringKey.SETTINGS_ABOUT_APP),
@@ -70,34 +143,34 @@ fun AboutScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = NeoVedicTokens.ScreenPadding),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
-            
-            // App Branding
+            Spacer(modifier = Modifier.height(24.dp))
+
             Box(
                 modifier = Modifier
-                    .size(100.dp)
-                    .background(
-                        brush = Brush.radialGradient(
-                            colors = listOf(
-                                AppTheme.AccentGold.copy(alpha = 0.3f),
-                                AppTheme.AccentGold.copy(alpha = 0.05f),
-                                Color.Transparent
-                            )
-                        )
+                    .size(108.dp)
+                    .clip(CircleShape)
+                    .background(AppTheme.CardBackgroundElevated)
+                    .border(
+                        width = 1.5.dp,
+                        color = AppTheme.AccentGold.copy(alpha = 0.75f),
+                        shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Default.Code,
-                    contentDescription = null,
-                    tint = AppTheme.AccentGold,
-                    modifier = Modifier.size(48.dp)
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_launcher_round),
+                    contentDescription = "AstroVajra Logo",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(92.dp).clip(CircleShape)
                 )
             }
-            
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Text(
                 text = "AstroVajra",
                 fontFamily = CinzelDecorativeFamily,
@@ -105,233 +178,214 @@ fun AboutScreen(
                 fontWeight = FontWeight.Bold,
                 color = AppTheme.TextPrimary
             )
-            
             Text(
                 text = stringResource(StringKey.SETTINGS_APP_TAGLINE),
                 fontFamily = SpaceGroteskFamily,
-                fontSize = NeoVedicFontSizes.S14,
+                fontSize = NeoVedicFontSizes.S13,
                 color = AppTheme.AccentGold,
-                letterSpacing = 2.sp,
-                modifier = Modifier.padding(top = 4.dp, bottom = 24.dp)
+                letterSpacing = 1.6.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 4.dp)
             )
-            
-            // Developer Card
+
+            Spacer(modifier = Modifier.height(18.dp))
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
                     .vedicCornerMarkers(color = AppTheme.AccentPrimary),
                 colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
                 shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-                border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+                border = androidx.compose.foundation.BorderStroke(
+                    NeoVedicTokens.BorderWidth,
+                    AppTheme.BorderColor
+                )
             ) {
                 Column(
-                    modifier = Modifier.padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier.padding(18.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     Text(
-                        text = if (language == Language.ENGLISH) "DEVELOPED BY" else "विकासकर्ता",
+                        text = "About The App",
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = NeoVedicFontSizes.S12,
-                        color = AppTheme.TextMuted,
-                        letterSpacing = 2.sp
+                        fontSize = NeoVedicFontSizes.S11,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 1.2.sp,
+                        color = AppTheme.AccentPrimary
                     )
-                    
-                    Spacer(modifier = Modifier.height(20.dp))
-                    
-                    // Circular shaped image using clip
-                    Box(
-                        modifier = Modifier
-                            .size(120.dp)
-                            .border(2.dp, AppTheme.AccentGold, CircleShape)
-                            .padding(4.dp)
-                            .clip(CircleShape)
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.developer),
-                            contentDescription = "Nikit Hamal",
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
+                    Text(
+                        text = "AstroVajra is a modern Vedic astrology workspace focused on practical clarity. It combines classical systems like Dashas, Yogas, Panchanga, transit layers and divisional analysis into one clean, high-speed interface.",
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S13,
+                        lineHeight = 21.sp,
+                        color = AppTheme.TextSecondary
+                    )
+                    Text(
+                        text = "The design language follows a Neo-Vedic aesthetic: precise structure, balanced density, and calm visual hierarchy for daily interpretation and deeper study.",
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S13,
+                        lineHeight = 21.sp,
+                        color = AppTheme.TextSecondary
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(
+                    NeoVedicTokens.BorderWidth,
+                    AppTheme.BorderColor
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(18.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    Text(
+                        text = "Built By",
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 1.2.sp,
+                        color = AppTheme.TextMuted
+                    )
                     Text(
                         text = "Nikit Hamal",
                         fontFamily = CinzelDecorativeFamily,
-                        fontSize = 24.sp,
+                        fontSize = NeoVedicFontSizes.S21,
                         fontWeight = FontWeight.Bold,
                         color = AppTheme.TextPrimary
                     )
-                    
                     Text(
-                        text = "Software Engineer",
+                        text = "Vibe Coder",
                         fontFamily = SpaceGroteskFamily,
-                        fontSize = NeoVedicFontSizes.S14,
-                        color = AppTheme.TextSecondary,
-                        modifier = Modifier.padding(top = 4.dp, bottom = 24.dp)
+                        fontSize = NeoVedicFontSizes.S13,
+                        color = AppTheme.AccentGold
                     )
-                    
-                    HorizontalDivider(color = AppTheme.DividerColor)
-                    
-                    Spacer(modifier = Modifier.height(24.dp))
-                    
-                    // Social Links Grid
-                    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        SocialLink(
-                            icon = "IG", 
-                            label = "Instagram", 
-                            handle = "@nikithamal",
-                            onClick = { openUrl("https://instagram.com/nikithamal") }
-                        )
-                        SocialLink(
-                            icon = "FB", 
-                            label = "Facebook", 
-                            handle = "thenikithamal",
-                            onClick = { openUrl("https://facebook.com/thenikithamal") }
-                        )
-                        SocialLink(
-                            icon = "TT", 
-                            label = "TikTok", 
-                            handle = "@nikithamal",
-                            onClick = { openUrl("https://tiktok.com/@nikithamal") }
-                        )
-                        ContactLink(
-                            icon = Icons.Default.Email, 
-                            label = "Email", 
-                            value = "nikithamalofficial@gmail.com",
-                            onClick = { openUrl("mailto:nikithamalofficial@gmail.com") }
-                        )
-                        ContactLink(
-                            icon = Icons.Default.Phone, 
-                            label = "WhatsApp", 
-                            value = "+977 9765324034",
-                            onClick = { openUrl("https://wa.me/9779765324034") }
-                        )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+                shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(
+                    NeoVedicTokens.BorderWidth,
+                    AppTheme.BorderColor
+                )
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        text = "Connect",
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S11,
+                        fontWeight = FontWeight.SemiBold,
+                        letterSpacing = 1.2.sp,
+                        color = AppTheme.TextMuted
+                    )
+                    Text(
+                        text = "Tap any icon to open and copy details.",
+                        fontFamily = SpaceGroteskFamily,
+                        fontSize = NeoVedicFontSizes.S12,
+                        color = AppTheme.TextSecondary
+                    )
+
+                    socialActions.chunked(3).forEach { row ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            row.forEach { action ->
+                                SocialActionCard(
+                                    action = action,
+                                    onClick = { launchAndCopy(action) },
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                            repeat((3 - row.size).coerceAtLeast(0)) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
                     }
                 }
             }
-            
-            Spacer(modifier = Modifier.height(40.dp))
-            
+
+            Spacer(modifier = Modifier.height(20.dp))
+
             Text(
-                text = stringResource(StringKeyMatch.SETTINGS_VERSION).replace("{0}", "1.0.0"),
+                text = stringResource(StringKeyMatch.SETTINGS_VERSION).replace("{0}", BuildConfig.VERSION_NAME),
                 fontFamily = SpaceGroteskFamily,
                 fontSize = NeoVedicFontSizes.S12,
                 color = AppTheme.TextMuted
             )
-            
-            Spacer(modifier = Modifier.height(32.dp))
+
+            Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }
 
 @Composable
-private fun SocialLink(
-    icon: String,
-    label: String,
-    handle: String,
-    onClick: () -> Unit
+private fun SocialActionCard(
+    action: SocialAction,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
+    Card(
+        modifier = modifier
             .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
             .clickable(onClick = onClick),
-        color = AppTheme.CardBackgroundElevated,
         shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor)
+        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackgroundElevated),
+        border = androidx.compose.foundation.BorderStroke(
+            NeoVedicTokens.ThinBorderWidth,
+            AppTheme.BorderColor
+        )
     ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .background(AppTheme.AccentPrimary.copy(alpha = 0.1f), CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = icon,
-                    fontFamily = SpaceGroteskFamily,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    color = AppTheme.AccentPrimary
-                )
-            }
-            
-            Spacer(modifier = Modifier.width(16.dp))
-            
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = label,
-                    fontFamily = SpaceGroteskFamily,
-                    fontSize = NeoVedicFontSizes.S12,
-                    color = AppTheme.TextMuted
-                )
-                Text(
-                    text = handle,
-                    fontSize = NeoVedicFontSizes.S14,
-                    color = AppTheme.TextPrimary,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ContactLink(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    label: String,
-    value: String,
-    onClick: () -> Unit
-) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius))
-            .clickable(onClick = onClick),
-        color = AppTheme.CardBackgroundElevated,
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor)
-    ) {
-        Row(
-            modifier = Modifier.padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .background(AppTheme.AccentGold.copy(alpha = 0.1f), CircleShape),
+                    .size(34.dp)
+                    .clip(CircleShape)
+                    .background(action.accent.copy(alpha = 0.14f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = icon,
-                    contentDescription = label,
-                    tint = AppTheme.AccentGold,
+                    imageVector = action.icon,
+                    contentDescription = action.label,
+                    tint = action.accent,
                     modifier = Modifier.size(18.dp)
                 )
             }
-            
-            Spacer(modifier = Modifier.width(16.dp))
-            
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = label,
-                    fontFamily = SpaceGroteskFamily,
-                    fontSize = NeoVedicFontSizes.S12,
-                    color = AppTheme.TextMuted
-                )
-                Text(
-                    text = value,
-                    fontSize = NeoVedicFontSizes.S14,
-                    color = AppTheme.TextPrimary,
-                    fontWeight = FontWeight.Medium
-                )
-            }
+            Text(
+                text = action.label,
+                fontFamily = SpaceGroteskFamily,
+                fontSize = NeoVedicFontSizes.S11,
+                color = AppTheme.TextPrimary,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
+
+private data class SocialAction(
+    val label: String,
+    val icon: ImageVector,
+    val accent: Color,
+    val url: String,
+    val copyValue: String
+)
