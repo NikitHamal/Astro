@@ -48,6 +48,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -267,8 +268,7 @@ private fun PanchangaTopBar(
     onInfoClick: () -> Unit
 ) {
     Surface(
-        color = AppTheme.ScreenBackground,
-        shadowElevation = 2.dp
+        color = AppTheme.ScreenBackground
     ) {
         NeoVedicPageHeader(
                 title = stringResource(StringKey.FEATURE_PANCHANGA),
@@ -337,14 +337,13 @@ private fun TodaySummaryCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = AppTheme.AccentPrimary.copy(alpha = 0.1f),
-                spotColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
+            .vedicCornerMarkers(
+                color = AppTheme.AccentPrimary,
+                strokeWidth = com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth
             ),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             // Header
@@ -451,7 +450,8 @@ private fun PanchangaQuickItem(
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = color.copy(alpha = 0.1f)
+        color = color.copy(alpha = 0.05f),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.ThinBorderWidth, color.copy(alpha = 0.2f))
     ) {
         Row(
             modifier = Modifier.padding(12.dp),
@@ -492,7 +492,8 @@ private fun FiveLimbsCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
@@ -643,7 +644,8 @@ private fun AuspiciousTimingCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
@@ -748,7 +750,8 @@ private fun SunMoonCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Text(
@@ -896,14 +899,13 @@ private fun BirthSummaryCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = AppTheme.AccentGold.copy(alpha = 0.1f),
-                spotColor = AppTheme.AccentGold.copy(alpha = 0.1f)
+            .vedicCornerMarkers(
+                color = AppTheme.AccentGold,
+                strokeWidth = com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth
             ),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -955,7 +957,8 @@ private fun BirthSummaryCard(
             Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                color = AppTheme.CardBackgroundElevated
+                color = AppTheme.CardBackgroundElevated,
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Row(
@@ -1018,7 +1021,8 @@ private fun BirthDayInterpretationCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1151,7 +1155,8 @@ private fun ElementDetailCard(
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = AppTheme.CardBackground
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             // Header
@@ -1228,7 +1233,8 @@ private fun ElementDetailCard(
                         Surface(
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                            color = AppTheme.CardBackgroundElevated
+                            color = AppTheme.CardBackgroundElevated,
+                            border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                         ) {
                             Column(
                                 modifier = Modifier.padding(10.dp),
@@ -1258,7 +1264,8 @@ private fun ElementDetailCard(
                         Surface(
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                            color = AppTheme.CardBackgroundElevated
+                            color = AppTheme.CardBackgroundElevated,
+                            border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                         ) {
                             Column(
                                 modifier = Modifier.padding(10.dp),

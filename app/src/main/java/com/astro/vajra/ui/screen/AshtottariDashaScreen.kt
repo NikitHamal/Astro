@@ -118,7 +118,7 @@ private data class AshtottariActivePeriod(
 @Composable
 private fun rememberZonedNow(
     zoneId: ZoneId,
-    refreshMs: Long = 5_000L
+    refreshMs: Long = 60_000L
 ): LocalDateTime {
     val now by produceState(initialValue = LocalDateTime.now(zoneId), key1 = zoneId) {
         while (true) {

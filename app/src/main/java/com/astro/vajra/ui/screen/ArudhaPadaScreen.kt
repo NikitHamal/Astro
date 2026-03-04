@@ -693,10 +693,10 @@ private fun ArudhaPadaCard(
         ArudhaStrength.VERY_WEAK -> AppTheme.ErrorColor
     }
 
-    Card(
+    Surface(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
         border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {

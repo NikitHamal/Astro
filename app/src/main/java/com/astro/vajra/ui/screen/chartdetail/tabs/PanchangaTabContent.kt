@@ -169,9 +169,9 @@ private fun PanchangaSummaryCard(panchanga: PanchangaData) {
         modifier = Modifier
             .fillMaxWidth()
             .semantics { contentDescription = "Panchanga summary for birth time" },
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
         color = ChartDetailColors.CardBackground,
-        tonalElevation = 2.dp
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -624,9 +624,9 @@ private fun ExpandableDetailCard(
             .fillMaxWidth()
             .clickable { onToggleExpand(!isExpanded) }
             .semantics { contentDescription = "$title: $value. Tap to ${if (isExpanded) "collapse" else "expand"}" },
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
         color = ChartDetailColors.CardBackground,
-        tonalElevation = 1.dp
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, ChartDetailColors.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -893,9 +893,9 @@ private fun PanchangaInfoCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
         color = ChartDetailColors.CardBackground,
-        tonalElevation = 1.dp
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, ChartDetailColors.BorderColor)
     ) {
         Column(
             modifier = Modifier

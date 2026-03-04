@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.material3.IconButton
 import com.astro.vajra.ui.components.common.NeoVedicPageHeader
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
 import com.astro.vajra.ui.components.common.ModernPillTabRow
 import com.astro.vajra.ui.components.common.TabItem
 import androidx.compose.runtime.*
@@ -270,12 +271,7 @@ private fun DailyStrengthScoreCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = scoreColor.copy(alpha = 0.15f),
-                spotColor = scoreColor.copy(alpha = 0.15f)
-            ),
+            .vedicCornerMarkers(color = scoreColor, strokeWidth = NeoVedicTokens.BorderWidth),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         color = AppTheme.CardBackground,
         border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)

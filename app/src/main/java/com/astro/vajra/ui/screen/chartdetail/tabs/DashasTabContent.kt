@@ -89,6 +89,7 @@ import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.Planet
 import com.astro.vajra.ephemeris.DashaCalculator
 import com.astro.vajra.ui.screen.chartdetail.ChartDetailColors
+import com.astro.vajra.ui.components.common.vedicCornerMarkers
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.delay
@@ -121,7 +122,7 @@ private enum class DashaLevel {
 @Composable
 private fun rememberTimelineNow(
     timeline: DashaCalculator.DashaTimeline,
-    refreshMs: Long = 5_000L
+    refreshMs: Long = 60_000L
 ): LocalDateTime {
     val now by produceState(initialValue = timeline.nowInTimelineZone(), key1 = timeline) {
         while (true) {
@@ -278,14 +279,13 @@ private fun CurrentPeriodCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 4.dp,
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = ChartDetailColors.AccentGold.copy(alpha = 0.1f),
-                spotColor = ChartDetailColors.AccentGold.copy(alpha = 0.1f)
+            .vedicCornerMarkers(
+                color = ChartDetailColors.AccentGold,
+                strokeWidth = com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth
             ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row(
@@ -1000,13 +1000,13 @@ private fun DashaTimelineCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(
-                elevation = 2.dp,
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                ambientColor = ChartDetailColors.AccentTeal.copy(alpha = 0.05f)
+            .vedicCornerMarkers(
+                color = ChartDetailColors.AccentTeal,
+                strokeWidth = com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth
             ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, ChartDetailColors.BorderColor)
     ) {
         Column(modifier = Modifier.padding(18.dp)) {
             Row(
@@ -1449,13 +1449,13 @@ private fun DashaInfoCard(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = rememberRipple()
-            ) { onToggleExpand(!isExpanded) },
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        color = ChartDetailColors.CardBackground
+            .vedicCornerMarkers(
+                color = ChartDetailColors.AccentTeal,
+                strokeWidth = com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth
+            ),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        color = ChartDetailColors.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, ChartDetailColors.BorderColor)
     ) {
         Column(
             modifier = Modifier

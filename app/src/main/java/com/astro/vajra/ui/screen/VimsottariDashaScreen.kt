@@ -110,7 +110,7 @@ private data class CurrentVimsottariPeriodInfo(
 @Composable
 private fun rememberTimelineNow(
     timeline: DashaCalculator.DashaTimeline,
-    refreshMs: Long = 5_000L
+    refreshMs: Long = 60_000L
 ): LocalDateTime {
     val now by produceState(initialValue = timeline.nowInTimelineZone(), key1 = timeline) {
         while (true) {

@@ -220,12 +220,13 @@ private fun AgeSelector(
 ) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
@@ -405,12 +406,11 @@ private fun TripleViewContent(result: SudarshanaChakraResult) {
 private fun CurrentSignsCard(result: SudarshanaChakraResult) {
     val language = currentLanguage()
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
     ) {
         Column(
             modifier = Modifier.padding(com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding)
@@ -517,12 +517,13 @@ private fun ChakraCard(
     val language = currentLanguage()
     var isExpanded by remember { mutableStateOf(false) }
 
-    Card(
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { isExpanded = !isExpanded },
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier.padding(com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding)
@@ -795,15 +796,14 @@ private fun ConvergenceCard(result: SudarshanaChakraResult) {
         else -> stringResource(StringKeyDosha.SUDARSHANA_WEAK_CONVERGENCE)
     }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = if (synthesis.combinedStrengthScore >= 60)
-                AppTheme.SuccessColor.copy(alpha = 0.1f)
-            else
-                AppTheme.WarningColor.copy(alpha = 0.1f)
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = if (synthesis.combinedStrengthScore >= 60)
+            AppTheme.SuccessColor.copy(alpha = 0.1f)
+        else
+            AppTheme.WarningColor.copy(alpha = 0.1f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, if (synthesis.combinedStrengthScore >= 60) AppTheme.SuccessColor.copy(alpha = 0.2f) else AppTheme.WarningColor.copy(alpha = 0.2f))
     ) {
         Column(
             modifier = Modifier.padding(com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding)
@@ -925,15 +925,14 @@ private fun TimelineYearCard(
     }
 
     result?.let { chakraResult ->
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = if (isCurrent)
-                    AppTheme.AccentPrimary.copy(alpha = 0.15f)
-                else
-                    AppTheme.CardBackground
-            ),
-            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+            color = if (isCurrent)
+                AppTheme.AccentPrimary.copy(alpha = 0.15f)
+            else
+                AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, if (isCurrent) AppTheme.AccentPrimary.copy(alpha = 0.3f) else AppTheme.BorderColor)
         ) {
             Row(
                 modifier = Modifier
@@ -1035,10 +1034,11 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
     ) {
         // Overall Assessment
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding)) {
                     Text(
@@ -1060,10 +1060,11 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
         // Three Chakra Contributions
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -1097,12 +1098,11 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
         // Primary and Secondary Focus
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-                ),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
@@ -1149,12 +1149,11 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
         // Recommendations
         if (result.recommendations.isNotEmpty()) {
             item {
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)
-                    ),
-                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                    color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                    shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                    border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1195,10 +1194,11 @@ private fun SynthesisContent(result: SudarshanaChakraResult) {
 
         // Yearly Progression
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(

@@ -102,6 +102,11 @@ object ChartDetailColors {
         @ReadOnlyComposable
         get() = LocalAppThemeColors.current.DividerColor
 
+    val BorderColor: Color
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppThemeColors.current.BorderColor
+
     // Status colors - theme-aware
     val SuccessColor: Color
         @Composable

@@ -125,7 +125,7 @@ private fun shoolaMonthYearFormatter(language: Language): DateTimeFormatter =
 @Composable
 private fun rememberZonedNow(
     zoneId: ZoneId,
-    refreshMs: Long = 5_000L
+    refreshMs: Long = 60_000L
 ): LocalDateTime {
     val now by produceState(initialValue = LocalDateTime.now(zoneId), key1 = zoneId) {
         while (true) {
@@ -730,10 +730,11 @@ private fun ShoolaStatCard(
     color: Color,
     modifier: Modifier = Modifier
 ) {
-    Card(
+    Surface(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(
             modifier = Modifier
@@ -1025,10 +1026,11 @@ private fun ShoolaHealthSection(
                 VulnerabilityCard(vulnerability = vulnerability, language = language)
             }
         } else {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.SuccessColor.copy(alpha = 0.1f)),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.SuccessColor.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.SuccessColor.copy(alpha = 0.2f))
             ) {
                 Column(
                     modifier = Modifier
@@ -1064,10 +1066,11 @@ private fun HealthConcernsCard(
     period: ShoolaDashaPeriod,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -1138,12 +1141,11 @@ private fun VulnerabilityCard(
 ) {
     val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = getSeverityColor(vulnerability.severity).copy(alpha = 0.08f)
-        ),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = getSeverityColor(vulnerability.severity).copy(alpha = 0.08f),
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, getSeverityColor(vulnerability.severity).copy(alpha = 0.2f))
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
@@ -1210,10 +1212,11 @@ private fun LongevityFactorsCard(
     longevity: LongevityAssessment,
     language: Language
 ) {
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -1284,10 +1287,11 @@ private fun ShoolaRemediesSection(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         if (result.remedies.isEmpty()) {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius)
+                color = AppTheme.CardBackground,
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(
                     modifier = Modifier
@@ -1580,7 +1584,6 @@ private fun resolveZoneId(timezone: String?): ZoneId {
     return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
         ?: ZoneId.systemDefault()
 }
-
 
 
 

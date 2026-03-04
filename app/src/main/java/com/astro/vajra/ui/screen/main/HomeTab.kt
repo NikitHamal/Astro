@@ -114,7 +114,7 @@ private fun homeLabelSize(default: TextUnit, language: Language, nepaliScale: Fl
 private fun rememberZonedNow(
     timeline: DashaCalculator.DashaTimeline?,
     fallbackZone: ZoneId,
-    refreshMs: Long = 5_000L
+    refreshMs: Long = 60_000L
 ): LocalDateTime {
     val now by produceState(
         initialValue = timeline?.nowInTimelineZone() ?: LocalDateTime.now(fallbackZone),

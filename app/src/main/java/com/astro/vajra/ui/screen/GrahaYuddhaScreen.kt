@@ -696,10 +696,10 @@ private fun WarCard(war: GrahaYuddhaResult) {
         WarIntensity.MILD -> AppTheme.TextMuted
     }
 
-    Card(
+    Surface(
         onClick = { isExpanded = !isExpanded },
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+        color = AppTheme.CardBackground,
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = BorderStroke(NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {

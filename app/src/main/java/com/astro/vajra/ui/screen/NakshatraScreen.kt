@@ -782,9 +782,9 @@ private fun NakshatraOverviewTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Birth Nakshatra Card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
@@ -845,9 +845,9 @@ private fun NakshatraOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Deity and Symbol Card
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
+            color = AppTheme.CardElevated,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
@@ -877,9 +877,9 @@ private fun NakshatraOverviewTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Characteristics
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
@@ -1104,9 +1104,9 @@ private fun NakshatraCompatibilityTab(
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         // Tarabala section
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
@@ -1144,9 +1144,9 @@ private fun NakshatraCompatibilityTab(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Rajju
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardElevated),
+            color = AppTheme.CardElevated,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {
@@ -1312,12 +1312,12 @@ private fun NakshatraRemediesTab(
 
         // Gemstone
         if (analysis.remedy.gemstone != null) {
-            Card(
-                modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
-                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
-            ) {
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = AppTheme.CardBackground,
+            shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+            border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+        ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -1411,9 +1411,9 @@ private fun NakshatraRemediesTab(
         Spacer(modifier = Modifier.height(12.dp))
 
         // Favorable Days
-        Card(
+        Surface(
             modifier = Modifier.fillMaxWidth().vedicCornerMarkers(color = AppTheme.AccentGold),
-            colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground),
+            color = AppTheme.CardBackground,
             shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
         border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
         ) {

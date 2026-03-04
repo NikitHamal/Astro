@@ -118,7 +118,7 @@ private fun drigShortDateFormatter(language: Language): DateTimeFormatter =
 @Composable
 private fun rememberZonedNow(
     zoneId: ZoneId,
-    refreshMs: Long = 5_000L
+    refreshMs: Long = 60_000L
 ): LocalDateTime {
     val now by produceState(initialValue = LocalDateTime.now(zoneId), key1 = zoneId) {
         while (true) {
@@ -992,12 +992,11 @@ private fun MarakaAnalysisTab(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.WarningColor.copy(alpha = 0.1f)
-                )
+                color = AppTheme.WarningColor.copy(alpha = 0.1f),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.WarningColor.copy(alpha = 0.2f))
             ) {
                 Row(
                     modifier = Modifier
@@ -1033,10 +1032,11 @@ private fun MarakaAnalysisTab(
         val marakaPeriods = analysis.drigDashaSequence.filter { it.isMarakaPeriod }
         if (marakaPeriods.isEmpty()) {
             item {
-                Card(
+                Surface(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                    colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+                    color = AppTheme.CardBackground,
+                    border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
                 ) {
                     Column(
                         modifier = Modifier
@@ -1068,10 +1068,11 @@ private fun MarakaAnalysisTab(
 
         // Rudra Sign Analysis
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+                color = AppTheme.CardBackground,
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
             ) {
                 Column(
                     modifier = Modifier
@@ -1120,10 +1121,11 @@ private fun MarakaPeriodCard(
 ) {
     val dateFormatter = remember(language) { drigMonthYearFormatter(language) }
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier
@@ -1183,12 +1185,11 @@ private fun SthiraKarakasTab(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Card(
+            Surface(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-                colors = CardDefaults.cardColors(
-                    containerColor = AppTheme.AccentPrimary.copy(alpha = 0.1f)
-                )
+                color = AppTheme.AccentPrimary.copy(alpha = 0.1f),
+                border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.AccentPrimary.copy(alpha = 0.2f))
             ) {
                 Row(
                     modifier = Modifier
@@ -1233,10 +1234,11 @@ private fun SthiraKarakaCard(
 ) {
     val signColor = getSignColor(karakaInfo.position.sign)
 
-    Card(
+    Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.CardBackground)
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
     ) {
         Row(
             modifier = Modifier

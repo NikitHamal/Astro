@@ -72,12 +72,6 @@ fun ModernCard(
 ) {
     NeoVedicCard(
         modifier = modifier
-            .shadow(
-                elevation = elevation,
-                shape = RoundedCornerShape(cornerRadius),
-                ambientColor = (accentColor ?: AppTheme.AccentPrimary).copy(alpha = 0.1f),
-                spotColor = (accentColor ?: AppTheme.AccentPrimary).copy(alpha = 0.1f)
-            )
             .then(
                 if (onClick != null) {
                     Modifier

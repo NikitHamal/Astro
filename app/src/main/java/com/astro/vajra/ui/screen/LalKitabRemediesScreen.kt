@@ -332,10 +332,8 @@ private fun OverviewTab(analysis: LalKitabAnalysis, language: Language) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         analysis.systemNote,
-                        fontSize = 12.sp,
-                        fontFamily = PoppinsFontFamily,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 18.sp
+                        style = NeoVedicTypeScale.BodyCompact,
+                        color = AppTheme.TextSecondary
                     )
                 }
             }
@@ -395,9 +393,10 @@ private fun SectionHeader(title: String, icon: ImageVector, tint: Color) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             title,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 16.sp,
-            fontFamily = CinzelDecorativeFamily,
+            style = NeoVedicTypeScale.SectionTitle.copy(
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.SemiBold
+            ),
             color = AppTheme.TextPrimary
         )
     }
@@ -448,9 +447,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                     ) {
                         Text(
                             affliction.planet.displayName.take(2),
+                            style = NeoVedicTypeScale.DataValue,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
-                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.getPlanetColor(affliction.planet)
                         )
                     }
@@ -458,15 +456,13 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                     Column {
                         Text(
                             affliction.planet.getLocalizedName(language),
+                            style = NeoVedicTypeScale.CardTitle,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 14.sp,
-                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             "House ${affliction.house} \u2022 $afflictionTypeName",
-                            fontSize = 12.sp,
-                            fontFamily = SpaceGroteskFamily,
+                            style = NeoVedicTypeScale.DataLabel,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -479,9 +475,10 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                     Text(
                         affliction.severity.name,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                        fontSize = 10.sp,
-                        fontFamily = SpaceGroteskFamily,
-                        fontWeight = FontWeight.Medium,
+                        style = NeoVedicTypeScale.ChipLabel.copy(
+                            fontFamily = SpaceGroteskFamily,
+                            fontWeight = FontWeight.Medium
+                        ),
                         color = severityColor
                     )
                 }
@@ -495,9 +492,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                     if (affliction.effects.isNotEmpty()) {
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
+                            style = NeoVedicTypeScale.DataLabel,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -510,10 +506,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
-                                    fontSize = 12.sp,
-                                    fontFamily = PoppinsFontFamily,
-                                    color = AppTheme.TextSecondary,
-                                    lineHeight = 18.sp
+                                    style = NeoVedicTypeScale.BodyCompact,
+                                    color = AppTheme.TextSecondary
                                 )
                             }
                         }
@@ -523,9 +517,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_SECTION_REMEDIES),
+                            style = NeoVedicTypeScale.DataLabel,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.SuccessColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -543,10 +536,8 @@ private fun PlanetaryAfflictionCard(affliction: PlanetaryAffliction, language: L
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     remedy,
-                                    fontSize = 12.sp,
-                                    fontFamily = PoppinsFontFamily,
-                                    color = AppTheme.TextSecondary,
-                                    lineHeight = 18.sp
+                                    style = NeoVedicTypeScale.BodyCompact,
+                                    color = AppTheme.TextSecondary
                                 )
                             }
                         }
@@ -576,10 +567,9 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     remedy.remedy,
+                    style = NeoVedicTypeScale.CardTitle,
                     fontWeight = FontWeight.SemiBold,
-                    color = AppTheme.TextPrimary,
-                    fontSize = 14.sp,
-                    fontFamily = PoppinsFontFamily
+                    color = AppTheme.TextPrimary
                 )
             }
 
@@ -588,10 +578,8 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
             if (remedy.method.isNotEmpty()) {
                 Text(
                     remedy.method,
-                    fontSize = 12.sp,
-                    fontFamily = PoppinsFontFamily,
-                    color = AppTheme.TextSecondary,
-                    lineHeight = 18.sp
+                    style = NeoVedicTypeScale.BodyCompact,
+                    color = AppTheme.TextSecondary
                 )
             }
 
@@ -612,8 +600,7 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             remedy.frequency,
-                            fontSize = 10.sp,
-                            fontFamily = SpaceGroteskFamily,
+                            style = NeoVedicTypeScale.ChipLabel.copy(fontFamily = SpaceGroteskFamily),
                             color = AppTheme.TextMuted
                         )
                     }
@@ -626,8 +613,7 @@ private fun RemedyCard(remedy: LalKitabRemedy, language: Language) {
                         Text(
                             remedy.effectiveness,
                             modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                            fontSize = 10.sp,
-                            fontFamily = SpaceGroteskFamily,
+                            style = NeoVedicTypeScale.ChipLabel.copy(fontFamily = SpaceGroteskFamily),
                             color = AppTheme.SuccessColor
                         )
                     }
@@ -656,9 +642,10 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     stringResource(StringKeyDosha.LAL_KITAB_GENERAL_PRINCIPLES),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    fontFamily = CinzelDecorativeFamily,
+                    style = NeoVedicTypeScale.SectionTitle.copy(
+                        fontFamily = CinzelDecorativeFamily,
+                        fontWeight = FontWeight.Bold
+                    ),
                     color = AppTheme.TextPrimary
                 )
             }
@@ -674,10 +661,8 @@ private fun GeneralRecommendationsCard(recommendations: List<String>) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(
                         rec,
-                        fontSize = 12.sp,
-                        fontFamily = PoppinsFontFamily,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 18.sp
+                        style = NeoVedicTypeScale.BodyCompact,
+                        color = AppTheme.TextSecondary
                     )
                 }
             }
@@ -703,18 +688,17 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_RIN_TITLE),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        fontFamily = CinzelDecorativeFamily,
+                        style = NeoVedicTypeScale.SectionTitle.copy(
+                            fontFamily = CinzelDecorativeFamily,
+                            fontWeight = FontWeight.Bold
+                        ),
                         color = AppTheme.TextPrimary
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_RIN_DESC),
-                        fontSize = 12.sp,
-                        fontFamily = PoppinsFontFamily,
-                        color = AppTheme.TextSecondary,
-                        lineHeight = 20.sp
+                        style = NeoVedicTypeScale.BodyCompact,
+                        color = AppTheme.TextSecondary
                     )
                 }
             }
@@ -747,15 +731,13 @@ private fun KarmicDebtsTab(analysis: LalKitabAnalysis, language: Language) {
                         Column {
                             Text(
                                 stringResource(StringKeyDosha.LAL_KITAB_RIN_NONE_TITLE),
+                                style = NeoVedicTypeScale.CardTitle,
                                 fontWeight = FontWeight.SemiBold,
-                                fontSize = 14.sp,
-                                fontFamily = PoppinsFontFamily,
                                 color = AppTheme.TextPrimary
                             )
                             Text(
                                 stringResource(StringKeyDosha.LAL_KITAB_RIN_NONE_DESC),
-                                fontSize = 12.sp,
-                                fontFamily = PoppinsFontFamily,
+                                style = NeoVedicTypeScale.BodyCompact,
                                 color = AppTheme.TextMuted
                             )
                         }
@@ -815,15 +797,13 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                     Column {
                         Text(
                             title,
+                            style = NeoVedicTypeScale.CardTitle,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 14.sp,
-                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             debt.description,
-                            fontSize = 12.sp,
-                            fontFamily = PoppinsFontFamily,
+                            style = NeoVedicTypeScale.BodyCompact,
                             color = AppTheme.TextMuted
                         )
                     }
@@ -844,9 +824,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                     if (debt.indicators.isNotEmpty()) {
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_INDICATORS),
+                            style = NeoVedicTypeScale.DataLabel,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.TextPrimary
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -864,8 +843,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     indicator,
-                                    fontSize = 12.sp,
-                                    fontFamily = PoppinsFontFamily,
+                                    style = NeoVedicTypeScale.BodyCompact,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -876,9 +854,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             stringResource(StringKeyDosha.EFFECTS_LABEL),
+                            style = NeoVedicTypeScale.DataLabel,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.WarningColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -891,8 +868,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     effect,
-                                    fontSize = 12.sp,
-                                    fontFamily = PoppinsFontFamily,
+                                    style = NeoVedicTypeScale.BodyCompact,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -903,9 +879,8 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                         Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             stringResource(StringKeyDosha.LAL_KITAB_REMEDIES_LABEL),
+                            style = NeoVedicTypeScale.DataLabel,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            fontFamily = SpaceGroteskFamily,
                             color = AppTheme.SuccessColor
                         )
                         Spacer(modifier = Modifier.height(8.dp))
@@ -923,8 +898,7 @@ private fun KarmicDebtCard(debt: KarmicDebt, language: Language) {
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     remedy,
-                                    fontSize = 12.sp,
-                                    fontFamily = PoppinsFontFamily,
+                                    style = NeoVedicTypeScale.BodyCompact,
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -947,9 +921,10 @@ private fun DebtTypesReferenceCard() {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_TYPES_TITLE),
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                fontFamily = CinzelDecorativeFamily,
+                style = NeoVedicTypeScale.SectionTitle.copy(
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold
+                ),
                 color = AppTheme.TextPrimary
             )
 
@@ -977,15 +952,13 @@ private fun DebtTypesReferenceCard() {
                     Column {
                         Text(
                             name,
+                            style = NeoVedicTypeScale.BodyCompact,
                             fontWeight = FontWeight.Medium,
-                            fontSize = 12.sp,
-                            fontFamily = PoppinsFontFamily,
                             color = AppTheme.TextPrimary
                         )
                         Text(
                             desc,
-                            fontSize = 10.sp,
-                            fontFamily = SpaceGroteskFamily,
+                            style = NeoVedicTypeScale.ChipLabel.copy(fontFamily = SpaceGroteskFamily),
                             color = AppTheme.TextMuted
                         )
                     }
@@ -1005,16 +978,16 @@ private fun WeeklyScheduleTab(analysis: LalKitabAnalysis, language: Language) {
         item {
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_WEEKLY_SCHEDULE),
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                fontFamily = CinzelDecorativeFamily,
+                style = NeoVedicTypeScale.SectionTitle.copy(
+                    fontFamily = CinzelDecorativeFamily,
+                    fontWeight = FontWeight.Bold
+                ),
                 color = AppTheme.TextPrimary,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Text(
                 stringResource(StringKeyDosha.LAL_KITAB_DAILY_REMEDIES_DESC),
-                fontSize = 12.sp,
-                fontFamily = PoppinsFontFamily,
+                style = NeoVedicTypeScale.BodyCompact,
                 color = AppTheme.TextMuted,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
@@ -1047,9 +1020,8 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
             ) {
                 Text(
                     entry.day.take(3),
+                    style = NeoVedicTypeScale.DataValue,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp,
-                    fontFamily = SpaceGroteskFamily,
                     color = AppTheme.getPlanetColor(entry.planet)
                 )
             }
@@ -1063,9 +1035,8 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                 ) {
                     Text(
                         entry.day,
+                        style = NeoVedicTypeScale.CardTitle,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 14.sp,
-                        fontFamily = PoppinsFontFamily,
                         color = AppTheme.TextPrimary
                     )
                     Surface(
@@ -1075,9 +1046,10 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                         Text(
                             entry.planet.getLocalizedName(language),
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                            fontSize = 10.sp,
-                            fontFamily = SpaceGroteskFamily,
-                            fontWeight = FontWeight.Medium,
+                            style = NeoVedicTypeScale.ChipLabel.copy(
+                                fontFamily = SpaceGroteskFamily,
+                                fontWeight = FontWeight.Medium
+                            ),
                             color = AppTheme.getPlanetColor(entry.planet)
                         )
                     }
@@ -1097,13 +1069,11 @@ private fun WeeklyRemedyCard(entry: AnnualRemedyEntry, language: Language) {
                             modifier = Modifier.size(6.dp).padding(top = 6.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            remedy,
-                            fontSize = 12.sp,
-                            fontFamily = PoppinsFontFamily,
-                            color = AppTheme.TextSecondary,
-                            lineHeight = 18.sp
-                        )
+                                Text(
+                                    remedy,
+                                    style = NeoVedicTypeScale.BodyCompact,
+                                    color = AppTheme.TextSecondary
+                                )
                     }
                 }
             }
@@ -1174,9 +1144,8 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     remedy.planet.getLocalizedName(language),
+                    style = NeoVedicTypeScale.CardTitle,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
-                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -1190,10 +1159,11 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Column {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_FAVORABLE),
-                        fontSize = 10.sp,
-                        fontFamily = SpaceGroteskFamily,
-                        color = AppTheme.SuccessColor,
-                        fontWeight = FontWeight.Medium
+                        style = NeoVedicTypeScale.ChipLabel.copy(
+                            fontFamily = SpaceGroteskFamily,
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = AppTheme.SuccessColor
                     )
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         items(remedy.favorableColors) { color ->
@@ -1204,8 +1174,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                                 Text(
                                     color,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                    fontSize = 10.sp,
-                                    fontFamily = SpaceGroteskFamily,
+                                    style = NeoVedicTypeScale.ChipLabel.copy(fontFamily = SpaceGroteskFamily),
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1216,10 +1185,11 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
                         stringResource(StringKeyDosha.LAL_KITAB_AVOID),
-                        fontSize = 10.sp,
-                        fontFamily = SpaceGroteskFamily,
-                        color = AppTheme.ErrorColor,
-                        fontWeight = FontWeight.Medium
+                        style = NeoVedicTypeScale.ChipLabel.copy(
+                            fontFamily = SpaceGroteskFamily,
+                            fontWeight = FontWeight.Medium
+                        ),
+                        color = AppTheme.ErrorColor
                     )
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         items(remedy.avoidColors) { color ->
@@ -1230,8 +1200,7 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                                 Text(
                                     color,
                                     modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                                    fontSize = 10.sp,
-                                    fontFamily = SpaceGroteskFamily,
+                                    style = NeoVedicTypeScale.ChipLabel.copy(fontFamily = SpaceGroteskFamily),
                                     color = AppTheme.TextSecondary
                                 )
                             }
@@ -1244,10 +1213,8 @@ private fun ColorRemedyCard(remedy: ColorRemedy, language: Language) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     remedy.application,
-                    fontSize = 12.sp,
-                    fontFamily = PoppinsFontFamily,
-                    color = AppTheme.TextMuted,
-                    fontStyle = androidx.compose.ui.text.font.FontStyle.Italic
+                    style = NeoVedicTypeScale.BodyCompact.copy(fontStyle = androidx.compose.ui.text.font.FontStyle.Italic),
+                    color = AppTheme.TextMuted
                 )
             }
         }
@@ -1281,9 +1248,8 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                 Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     remedy.planet.getLocalizedName(language),
+                    style = NeoVedicTypeScale.CardTitle,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
-                    fontFamily = PoppinsFontFamily,
                     color = AppTheme.TextPrimary
                 )
             }
@@ -1304,7 +1270,7 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         remedy.favorableDirection,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = NeoVedicTypeScale.BodyCompact,
                         color = AppTheme.SuccessColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1320,7 +1286,7 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         remedy.avoidDirection,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = NeoVedicTypeScale.BodyCompact,
                         color = AppTheme.ErrorColor,
                         fontWeight = FontWeight.Medium
                     )
@@ -1331,7 +1297,7 @@ private fun DirectionRemedyCard(remedy: DirectionRemedy, language: Language) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     remedy.application,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = NeoVedicTypeScale.BodyCompact,
                     color = AppTheme.TextMuted
                 )
             }
