@@ -3,6 +3,7 @@
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -149,6 +150,8 @@ fun AshtamangalaPrashnaScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            AshtamangalaModeDisclosure(mode = ashtamangalaMode)
+
             // Show tabs only after reading is generated
             if (currentReading != null) {
                 val tabItems = tabs.map { TabItem(title = it, accentColor = AppTheme.AccentGold) }
@@ -197,6 +200,44 @@ fun AshtamangalaPrashnaScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun AshtamangalaModeDisclosure(mode: AshtamangalaMode) {
+    val modeKey = if (mode == AshtamangalaMode.CLASSIC_RANDOM) {
+        StringKey.SETTINGS_ASHTAMANGALA_CLASSIC_RANDOM
+    } else {
+        StringKey.SETTINGS_ASHTAMANGALA_DETERMINISTIC
+    }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius),
+        border = BorderStroke(NeoVedicTokens.ThinBorderWidth, AppTheme.BorderColor)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(StringKey.SETTINGS_ASHTAMANGALA_MODE),
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextSecondary
+            )
+            Text(
+                text = stringResource(modeKey),
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.AccentPrimary
+            )
         }
     }
 }

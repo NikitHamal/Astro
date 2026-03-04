@@ -79,6 +79,7 @@ Date: 2026-03-05
   - Uses current transit position + speed when available.
   - UI now attempts to provide real current transit positions via `SwissEphemerisEngine`.
   - Applies bounded fallback days only if live transit position is unavailable.
+- Added explicit mode disclosure in `AshtamangalaPrashnaScreen` so users can see active shell-generation policy (deterministic daily vs classic random) before interpreting results.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
