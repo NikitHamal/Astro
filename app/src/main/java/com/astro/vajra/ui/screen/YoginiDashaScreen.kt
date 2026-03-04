@@ -60,6 +60,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -107,9 +108,41 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.YoginiDashaUiState
 import com.astro.vajra.ui.viewmodel.YoginiDashaViewModel
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
+
+private data class YoginiActivePeriod(
+    val mahadasha: YoginiDashaCalculator.YoginiMahadasha?,
+    val antardasha: YoginiDashaCalculator.YoginiAntardasha?
+)
+
+@Composable
+private fun rememberZonedDate(
+    zoneId: ZoneId,
+    refreshMs: Long = 60_000L
+): LocalDate {
+    val today by produceState(initialValue = LocalDate.now(zoneId), key1 = zoneId) {
+        while (true) {
+            value = LocalDate.now(zoneId)
+            delay(refreshMs)
+        }
+    }
+    return today
+}
+
+private fun resolveActiveYoginiPeriod(
+    result: YoginiDashaCalculator.YoginiDashaResult,
+    asOfDate: LocalDate
+): YoginiActivePeriod {
+    val currentMahadasha = result.mahadashas.find { it.isActiveOn(asOfDate) }
+    val currentAntardasha = currentMahadasha?.getAntardashaOn(asOfDate)
+    return YoginiActivePeriod(
+        mahadasha = currentMahadasha,
+        antardasha = currentAntardasha
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -119,7 +152,8 @@ fun YoginiDashaScreen(
     viewModel: YoginiDashaViewModel = hiltViewModel()
 ) {
     val language = LocalLanguage.current
-    val asOfDate = remember(chart) { LocalDate.now(resolveZoneId(chart?.birthData?.timezone)) }
+    val zoneId = remember(chart?.birthData?.timezone) { resolveZoneId(chart?.birthData?.timezone) }
+    val asOfDate = rememberZonedDate(zoneId)
 
     val chartKey = remember(chart) {
         chart?.generateUniqueKey()
@@ -130,9 +164,14 @@ fun YoginiDashaScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val activePeriod = remember(uiState, asOfDate) {
+        (uiState as? YoginiDashaUiState.Success)?.result?.let { result ->
+            resolveActiveYoginiPeriod(result, asOfDate)
+        }
+    }
 
-    val currentPeriodInfo = remember(uiState, language) {
-        extractCurrentYoginiPeriodInfo(uiState, language)
+    val currentPeriodInfo = remember(uiState, language, activePeriod) {
+        extractCurrentYoginiPeriodInfo(uiState, language, activePeriod)
     }
 
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
@@ -173,8 +212,16 @@ fun YoginiDashaScreen(
                                 onTabSelected = { selectedTab = it }
                             )
                             when (selectedTab) {
-                                0 -> CurrentYoginiTab(result = state.result, asOfDate = asOfDate)
-                                1 -> TimelineYoginiTab(result = state.result, asOfDate = asOfDate)
+                                0 -> CurrentYoginiTab(
+                                    result = state.result,
+                                    asOfDate = asOfDate,
+                                    activePeriod = activePeriod
+                                )
+                                1 -> TimelineYoginiTab(
+                                    result = state.result,
+                                    asOfDate = asOfDate,
+                                    activePeriod = activePeriod
+                                )
                                 2 -> DetailsYoginiTab(result = state.result)
                             }
                         }
@@ -222,12 +269,13 @@ private data class CurrentYoginiPeriodInfo(
 
 private fun extractCurrentYoginiPeriodInfo(
     uiState: YoginiDashaUiState,
-    language: Language
+    language: Language,
+    activePeriod: YoginiActivePeriod?
 ): CurrentYoginiPeriodInfo {
     return when (uiState) {
         is YoginiDashaUiState.Success -> {
-            val md = uiState.result.currentMahadasha
-            val ad = uiState.result.currentAntardasha
+            val md = activePeriod?.mahadasha ?: uiState.result.currentMahadasha
+            val ad = activePeriod?.antardasha ?: uiState.result.currentAntardasha
             CurrentYoginiPeriodInfo(
                 mahadasha = md?.yogini?.getLocalizedName(language),
                 antardasha = ad?.yogini?.getLocalizedName(language),
@@ -280,7 +328,8 @@ private fun YoginiDashaTabRow(
 @Composable
 private fun CurrentYoginiTab(
     result: YoginiDashaCalculator.YoginiDashaResult,
-    asOfDate: LocalDate
+    asOfDate: LocalDate,
+    activePeriod: YoginiActivePeriod?
 ) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
@@ -295,7 +344,10 @@ private fun CurrentYoginiTab(
         verticalArrangement = Arrangement.spacedBy(com.astro.vajra.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "current_period") {
-            CurrentYoginiPeriodCard(result = result, asOfDate = asOfDate)
+            CurrentYoginiPeriodCard(
+                asOfDate = asOfDate,
+                activePeriod = activePeriod
+            )
         }
 
         item(key = "birth_balance") {
@@ -323,7 +375,8 @@ private fun CurrentYoginiTab(
 @Composable
 private fun TimelineYoginiTab(
     result: YoginiDashaCalculator.YoginiDashaResult,
-    asOfDate: LocalDate
+    asOfDate: LocalDate,
+    activePeriod: YoginiActivePeriod?
 ) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
@@ -347,8 +400,8 @@ private fun TimelineYoginiTab(
         ) { mahadasha ->
             YoginiMahadashaCard(
                 mahadasha = mahadasha,
-                isCurrent = mahadasha == result.currentMahadasha,
-                currentAntardasha = if (mahadasha == result.currentMahadasha) result.currentAntardasha else null,
+                isCurrent = mahadasha == activePeriod?.mahadasha,
+                currentAntardasha = if (mahadasha == activePeriod?.mahadasha) activePeriod.antardasha else null,
                 language = language,
                 asOfDate = asOfDate
             )
@@ -389,12 +442,12 @@ private fun DetailsYoginiTab(result: YoginiDashaCalculator.YoginiDashaResult) {
 
 @Composable
 private fun CurrentYoginiPeriodCard(
-    result: YoginiDashaCalculator.YoginiDashaResult,
-    asOfDate: LocalDate
+    asOfDate: LocalDate,
+    activePeriod: YoginiActivePeriod?
 ) {
     val language = LocalLanguage.current
-    val currentMahadasha = result.currentMahadasha
-    val currentAntardasha = result.currentAntardasha
+    val currentMahadasha = activePeriod?.mahadasha
+    val currentAntardasha = activePeriod?.antardasha
 
     Surface(
         modifier = Modifier
