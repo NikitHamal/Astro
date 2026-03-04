@@ -50,6 +50,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -109,6 +110,43 @@ private val Planet.abbreviation: String
         else -> name.take(2)
     }
 
+private data class AshtottariActivePeriod(
+    val mahadasha: AshtottariMahadasha?,
+    val antardasha: AshtottariAntardasha?
+)
+
+@Composable
+private fun rememberZonedNow(
+    zoneId: ZoneId,
+    refreshMs: Long = 5_000L
+): LocalDateTime {
+    val now by produceState(initialValue = LocalDateTime.now(zoneId), key1 = zoneId) {
+        while (true) {
+            value = LocalDateTime.now(zoneId)
+            delay(refreshMs)
+        }
+    }
+    return now
+}
+
+private fun resolveActiveAshtottariPeriod(
+    result: AshtottariDashaResult,
+    asOf: LocalDateTime
+): AshtottariActivePeriod {
+    val currentMahadasha = result.mahadashas.find { md ->
+        !asOf.isBefore(md.startDate) && asOf.isBefore(md.endDate)
+    }
+    val currentAntardasha = currentMahadasha?.let { md ->
+        AshtottariDashaCalculator.calculateAntardashas(md, asOf).find { ad ->
+            !asOf.isBefore(ad.startDate) && asOf.isBefore(ad.endDate)
+        }
+    }
+    return AshtottariActivePeriod(
+        mahadasha = currentMahadasha,
+        antardasha = currentAntardasha
+    )
+}
+
 /**
  * Ashtottari Dasha Screen
  *
@@ -138,8 +176,8 @@ fun AshtottariDashaScreen(
         return
     }
 
-    val language = LocalLanguage.current
-    val asOf = remember(chart) { LocalDateTime.now(resolveZoneId(chart.birthData.timezone)) }
+    val zoneId = remember(chart.birthData.timezone) { resolveZoneId(chart.birthData.timezone) }
+    val asOf = rememberZonedNow(zoneId)
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
     var isCalculating by remember { mutableStateOf(true) }
@@ -165,6 +203,10 @@ fun AshtottariDashaScreen(
             // Handle error silently
         }
         isCalculating = false
+    }
+
+    val activePeriod = remember(dashaResult, asOf) {
+        dashaResult?.let { resolveActiveAshtottariPeriod(it, asOf) }
     }
 
     if (showInfoDialog) {
@@ -200,12 +242,17 @@ fun AshtottariDashaScreen(
 
                 // Content based on selected tab
                 when (selectedTab) {
-                    0 -> ApplicabilityContent(dashaResult!!, chart, asOf)
+                    0 -> ApplicabilityContent(
+                        result = dashaResult!!,
+                        asOf = asOf,
+                        activePeriod = activePeriod
+                    )
                     1 -> TimelineContent(
                         result = dashaResult!!,
                         expandedIndex = expandedMahadashaIndex,
                         onExpandChange = { expandedMahadashaIndex = if (expandedMahadashaIndex == it) -1 else it },
-                        asOf = asOf
+                        asOf = asOf,
+                        activePeriod = activePeriod
                     )
                     2 -> InterpretationContent(dashaResult!!)
                 }
@@ -295,11 +342,9 @@ private fun TabSelector(
 @Composable
 private fun ApplicabilityContent(
     result: AshtottariDashaResult,
-    chart: VedicChart,
-    asOf: LocalDateTime
+    asOf: LocalDateTime,
+    activePeriod: AshtottariActivePeriod?
 ) {
-    val language = LocalLanguage.current
-
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(com.astro.vajra.ui.theme.NeoVedicTokens.ScreenPadding),
@@ -316,9 +361,12 @@ private fun ApplicabilityContent(
         }
 
         // Current Period Card if applicable
-        if (result.currentMahadasha != null) {
+        if (activePeriod?.mahadasha != null) {
             item {
-                CurrentPeriodCard(result, asOf)
+                CurrentPeriodCard(
+                    asOf = asOf,
+                    activePeriod = activePeriod
+                )
             }
         }
 
@@ -493,12 +541,12 @@ private fun ConditionDetailsCard(result: AshtottariDashaResult) {
 
 @Composable
 private fun CurrentPeriodCard(
-    result: AshtottariDashaResult,
-    asOf: LocalDateTime
+    asOf: LocalDateTime,
+    activePeriod: AshtottariActivePeriod
 ) {
     val language = LocalLanguage.current
-    val mahadasha = result.currentMahadasha ?: return
-    val antardasha = result.currentAntardasha
+    val mahadasha = activePeriod.mahadasha ?: return
+    val antardasha = activePeriod.antardasha
     val locale = if (language == Language.NEPALI) Locale("ne", "NP") else Locale.ENGLISH
     val dateFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy", locale)
 
@@ -783,10 +831,9 @@ private fun TimelineContent(
     result: AshtottariDashaResult,
     expandedIndex: Int,
     onExpandChange: (Int) -> Unit,
-    asOf: LocalDateTime
+    asOf: LocalDateTime,
+    activePeriod: AshtottariActivePeriod?
 ) {
-    val language = LocalLanguage.current
-
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(NeoVedicTokens.ScreenPadding),
@@ -797,7 +844,8 @@ private fun TimelineContent(
                 mahadasha = mahadasha,
                 isExpanded = expandedIndex == index,
                 onExpandChange = { onExpandChange(index) },
-                isCurrent = mahadasha.isCurrentlyRunning,
+                isCurrent = mahadasha == activePeriod?.mahadasha,
+                currentAntardasha = if (mahadasha == activePeriod?.mahadasha) activePeriod.antardasha else null,
                 asOf = asOf
             )
         }
@@ -810,6 +858,7 @@ private fun MahadashaTimelineCard(
     isExpanded: Boolean,
     onExpandChange: () -> Unit,
     isCurrent: Boolean,
+    currentAntardasha: AshtottariAntardasha?,
     asOf: LocalDateTime
 ) {
     val language = LocalLanguage.current
@@ -962,7 +1011,10 @@ private fun MahadashaTimelineCard(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     antardashas.forEach { antardasha ->
-                        AntardashaRow(antardasha)
+                        AntardashaRow(
+                            antardasha = antardasha,
+                            isCurrent = antardasha == currentAntardasha
+                        )
                     }
                 }
             }
@@ -971,7 +1023,10 @@ private fun MahadashaTimelineCard(
 }
 
 @Composable
-private fun AntardashaRow(antardasha: AshtottariAntardasha) {
+private fun AntardashaRow(
+    antardasha: AshtottariAntardasha,
+    isCurrent: Boolean
+) {
     val language = LocalLanguage.current
     val locale = if (language == Language.NEPALI) Locale.forLanguageTag("ne-NP") else Locale.ENGLISH
     val dateFormatter = remember(language) { DateTimeFormatter.ofPattern("dd/MM/yy", locale) }
@@ -981,7 +1036,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .background(
-                if (antardasha.isCurrentlyRunning)
+                if (isCurrent)
                     AppTheme.AccentPrimary.copy(alpha = 0.08f)
                 else
                     Color.Transparent,
@@ -996,7 +1051,7 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
                 modifier = Modifier
                     .size(8.dp)
                     .background(
-                        color = if (antardasha.isCurrentlyRunning) AppTheme.AccentPrimary else AppTheme.DividerColor, 
+                        color = if (isCurrent) AppTheme.AccentPrimary else AppTheme.DividerColor, 
                         shape = CircleShape
                     )
             )
@@ -1004,8 +1059,8 @@ private fun AntardashaRow(antardasha: AshtottariAntardasha) {
             Text(
                 text = antardasha.antardashaLord.getLocalizedName(language),
                 fontFamily = PoppinsFontFamily,
-                color = if (antardasha.isCurrentlyRunning) AppTheme.TextPrimary else AppTheme.TextSecondary,
-                fontWeight = if (antardasha.isCurrentlyRunning) FontWeight.Bold else FontWeight.Medium,
+                color = if (isCurrent) AppTheme.TextPrimary else AppTheme.TextSecondary,
+                fontWeight = if (isCurrent) FontWeight.Bold else FontWeight.Medium,
                 fontSize = NeoVedicFontSizes.S14
             )
         }

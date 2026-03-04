@@ -231,8 +231,14 @@ object AshtottariDashaCalculator {
             val antarPeriod = ASHTOTTARI_PERIODS[antarPlanet] ?: continue
 
             val proportion = antarPeriod / TOTAL_CYCLE_YEARS
-            val antarDays = (totalDays * proportion).toLong()
-            val endDate = currentDate.plusDays(antarDays)
+            val suggestedAntarDays = (totalDays * proportion).toLong()
+            val endDate = if (i == ASHTOTTARI_SEQUENCE.lastIndex) {
+                mahadasha.endDate
+            } else {
+                val tentative = currentDate.plusDays(suggestedAntarDays)
+                if (tentative.isAfter(mahadasha.endDate)) mahadasha.endDate else tentative
+            }
+            val actualAntarDays = ChronoUnit.DAYS.between(currentDate, endDate)
 
             val relationship = getPlanetRelationship(mahadasha.planet, antarPlanet)
 
@@ -240,7 +246,7 @@ object AshtottariDashaCalculator {
                 AshtottariAntardasha(
                     mahadashaLord = mahadasha.planet,
                     antardashaLord = antarPlanet,
-                    periodYears = (antarDays / daysPerYear()),
+                    periodYears = (actualAntarDays / daysPerYear()),
                     startDate = currentDate,
                     endDate = endDate,
                     relationship = relationship,
