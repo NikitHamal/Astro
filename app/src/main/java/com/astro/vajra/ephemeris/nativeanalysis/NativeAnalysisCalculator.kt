@@ -103,8 +103,56 @@ object NativeAnalysisCalculator {
         return WealthAnalysis(l2, s2, l11, s11, StrengthLevel.MODERATE, dy, listOf("Multiple sources"), listOf("विविध स्रोत"), p, "Wealth potential is ${p.displayName.lowercase()}.", "धन क्षमता ${p.displayNameNe} छ।")
     }
 
-    private fun checkDhanaYoga(c: VedicChart): Boolean = true // Simplified
-    private fun calculateWealthPotential(s2: StrengthLevel, s11: StrengthLevel, dy: Boolean): StrengthLevel = if (dy && s2.value >= 4) StrengthLevel.STRONG else StrengthLevel.MODERATE
+    private fun checkDhanaYoga(c: VedicChart): Boolean {
+        val wealthHouses = setOf(2, 5, 9, 11)
+        val wealthLords = wealthHouses.map { VedicAstrologyUtils.getHouseLord(c, it) }.distinct()
+        val wealthLordPositions = wealthLords.mapNotNull { lord -> c.planetPositions.find { it.planet == lord } }
+        if (wealthLordPositions.size < 2) return false
+
+        var yogaScore = 0
+
+        val wealthLordOccupancy = wealthLordPositions.count { it.house in wealthHouses }
+        if (wealthLordOccupancy >= 2) yogaScore += 2 else if (wealthLordOccupancy == 1) yogaScore += 1
+
+        var associationScore = 0
+        for (i in wealthLordPositions.indices) {
+            for (j in (i + 1) until wealthLordPositions.size) {
+                val first = wealthLordPositions[i]
+                val second = wealthLordPositions[j]
+                if (first.house == second.house) {
+                    associationScore += 1
+                    continue
+                }
+                if (aspectsHouse(first, second.house, c) || aspectsHouse(second, first.house, c)) {
+                    associationScore += 1
+                }
+            }
+        }
+        if (associationScore > 0) yogaScore += 2
+
+        val jupiterPos = c.planetPositions.find { it.planet == Planet.JUPITER }
+        if (jupiterPos != null) {
+            if (jupiterPos.house in wealthHouses) yogaScore += 1
+            if (wealthHouses.any { targetHouse -> aspectsHouse(jupiterPos, targetHouse, c) }) yogaScore += 1
+        }
+
+        val maleficAfflictionCount = c.planetPositions.count {
+            it.house in wealthHouses && it.planet in setOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU)
+        }
+        if (maleficAfflictionCount >= 3) yogaScore -= 1
+
+        return yogaScore >= 3
+    }
+
+    private fun calculateWealthPotential(s2: StrengthLevel, s11: StrengthLevel, dy: Boolean): StrengthLevel {
+        val aggregate = ((s2.value + s11.value) / 2.0) + if (dy) 1.0 else 0.0
+        return when {
+            aggregate >= 4.5 -> StrengthLevel.EXCELLENT
+            aggregate >= 3.8 -> StrengthLevel.STRONG
+            aggregate >= 2.8 -> StrengthLevel.MODERATE
+            else -> StrengthLevel.WEAK
+        }
+    }
 
     private fun analyzeEducation(chart: VedicChart): EducationAnalysis {
         val l4 = VedicAstrologyUtils.getHouseLord(chart, 4); val l5 = VedicAstrologyUtils.getHouseLord(chart, 5)

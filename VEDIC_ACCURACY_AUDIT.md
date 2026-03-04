@@ -84,6 +84,13 @@ Date: 2026-03-05
   - `NadiAmshaCalculator` now supports injected ascendant resolver for deterministic recalculation by adjusted minute.
   - `NadiAmshaViewModel` now supplies resolver using `SwissEphemerisEngine`.
   - Legacy approximate rectification path retained only as fallback when no resolver is provided.
+- Refined Sade Sati timeline estimation to reduce fixed-duration drift:
+  - `SadeSatiCalculator` now accepts optional live Saturn speed for timeline calculations.
+  - Timeline/end-date estimate now uses speed-aware days-to-sign-boundary logic and retrograde-aware penalty handling.
+  - Export pipeline (`ChartExporter`) now passes Saturn speed when available.
+- Replaced always-true wealth yoga placeholder in native analysis:
+  - `NativeAnalysisCalculator.checkDhanaYoga` now uses rule-based scoring from dhana house lords (2/5/9/11), associations/aspects, Jupiter reinforcement, and malefic affliction penalty.
+  - `calculateWealthPotential` now grades by aggregated lord strength + detected yoga rather than a binary strong/moderate shortcut.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
@@ -107,7 +114,7 @@ Date: 2026-03-05
 - `app/src/main/java/com/astro/vajra/ephemeris/SarvatobhadraChakraCalculator.kt`
   - Simplified tithi calculation marker.
 - `app/src/main/java/com/astro/vajra/ephemeris/SadeSatiCalculator.kt`
-  - Approximate timeline framing requires formalization or explicit confidence labeling.
+  - Timeline now incorporates live speed when available; next step is event-boundary ephemeris scanning for exact sign-ingress dates.
 
 ### P2: Simplified Classical Logic Requiring Upgrade Path
 - `app/src/main/java/com/astro/vajra/ephemeris/AvasthaCalculator.kt`

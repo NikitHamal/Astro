@@ -13,42 +13,40 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 718 | approximate | Planet.JUPITER -> "approximately 1 year" |
 | app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 719 | approximate | Planet.MARS -> "approximately 1.5 months" |
 | app\src\main\java\com\astro\vajra\ephemeris\AshtavargaTransitCalculator.kt | 720 | approximate | else -> "approximately 1 month" |
-| app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 114 | simplified | * Analyze nodes (Rahu/Ketu) - simplified analysis |
-| app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 125 | simplified | // Nodes use simplified avasthas |
-| app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 277 | simplified | * Calculate simplified Deeptadi for nodes |
+| app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 114 | Simplified | * Analyze nodes (Rahu/Ketu) - simplified analysis |
+| app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 125 | Simplified | // Nodes use simplified avasthas |
+| app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 277 | Simplified | * Calculate simplified Deeptadi for nodes |
 | app\src\main\java\com\astro\vajra\ephemeris\AvasthaCalculator.kt | 360 | Simplified | // Simplified: if in enemy sign and watery |
 | app\src\main\java\com\astro\vajra\ephemeris\BadhakaCalculator.kt | 612 | approximate | // Note: In a full impl we'd check owned houses, here we approximate with aspects/position |
 | app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 427 | approximate | // Mars special aspect to 4th and 8th houses (90 and 210 degrees approximately) |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 718 | fallback | fallbackDays = 180L |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 733 | fallback | fallbackDays = 365L |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 750 | fallback | fallbackDays: Long |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 752 | fallback | val position = planetPosition ?: return currentDate.plusDays(fallbackDays) |
-| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 754 | fallback | if (!speed.isFinite() \|\| speed == 0.0) return currentDate.plusDays(fallbackDays) |
-| app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 179 | simplified | // Check latitude (declination) - simplified as we may not have exact declination |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 718 | Fallback | fallbackDays = 180L |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 733 | Fallback | fallbackDays = 365L |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 750 | Fallback | fallbackDays: Long |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 752 | Fallback | val position = planetPosition ?: return currentDate.plusDays(fallbackDays) |
+| app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 754 | Fallback | if (!speed.isFinite() \\|\\| speed == 0.0) return currentDate.plusDays(fallbackDays) |
+| app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 179 | Simplified | // Check latitude (declination) - simplified as we may not have exact declination |
 | app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 236 | Simplified | // Simplified: if separation would decrease based on relative speeds |
-| app\src\main\java\com\astro\vajra\ephemeris\HoroscopeCalculator.kt | 928 | Placeholder | event = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(date.dayOfWeek.value.toString())... |
-| app\src\main\java\com\astro\vajra\ephemeris\HoroscopeCalculator.kt | 1054 | Placeholder | val dayName = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.dayOfWeek.value.toStrin... |
+| app\src\main\java\com\astro\vajra\ephemeris\HoroscopeCalculator.kt | 928 | Placeholder | event = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(date.dayOfWeek.value.toString()) // Placeholder for localiz... |
+| app\src\main\java\com\astro\vajra\ephemeris\HoroscopeCalculator.kt | 1054 | Placeholder | val dayName = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.dayOfWeek.value.toString()) // Placeholder |
 | app\src\main\java\com\astro\vajra\ephemeris\KakshaTransitCalculator.kt | 42 | approximate | /** Average planetary speeds in degrees per day (approximate) */ |
-| app\src\main\java\com\astro\vajra\ephemeris\KalachakraDashaCalculator.kt | 1282 | Fallback | areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.vajra.core.common.StringKey.VARSHAPHALA_KEY_DATES, ... |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 143 | Approximate | generateApproximateRectificationCandidates(chart) |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 187 | Approximate | private fun generateApproximateRectificationCandidates(chart: VedicChart): List<RectificationCandidate> { |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 194 | Approximate | // Approximate ascendant speed for first-pass rectification search. |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 197 | approx | // Check +/- 5 Nadis (approx +/- 4 minutes) |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 213 | simplified | // Handle boundary crossing (very simplified, assumes same sign for small shifts) |
-| app\src\main\java\com\astro\vajra\ephemeris\nativeanalysis\NativeAnalysisCalculator.kt | 106 | Simplified | private fun checkDhanaYoga(c: VedicChart): Boolean = true // Simplified |
+| app\src\main\java\com\astro\vajra\ephemeris\KalachakraDashaCalculator.kt | 1282 | Fallback | areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.vajra.core.common.StringKey.VARSHAPHALA_KEY_DATES, language)}") // Fallback to... |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 194 | approximate | // Approximate ascendant speed for first-pass rectification search. |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 197 | approximate | // Check +/- 5 Nadis (approx +/- 4 minutes) |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 213 | Simplified | // Handle boundary crossing (very simplified, assumes same sign for small shifts) |
 | app\src\main\java\com\astro\vajra\ephemeris\prashna\PrashnaConstants.kt | 23 | approximate | // Moon movement per day (approximately 13.2 degrees) |
 | app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 24 | approximate | * Total duration: approximately 7.5 years (Sade = 7, Sati = half) |
-| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 37 | Approximate | * - Approximate timeline calculation |
+| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 37 | approximate | * - Approximate timeline calculation |
 | app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 51 | approximate | * Saturn takes approximately 29.5 years to complete one zodiac cycle |
 | app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 128 | approximate | val approximateDaysRemaining: Int, |
 | app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 129 | approximate | val approximateEndDate: LocalDate?, |
-| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 265 | approximate | approximateDaysRemaining = daysRemaining, |
-| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 266 | approximate | approximateEndDate = endDate, |
-| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 585 | approximate | approximateDaysRemaining = 0, |
-| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 586 | approximate | approximateEndDate = null, |
-| app\src\main\java\com\astro\vajra\ephemeris\SarvatobhadraChakraCalculator.kt | 510 | simplified | // Calculate tithi (simplified) |
-| app\src\main\java\com\astro\vajra\ephemeris\ShadbalaCalculator.kt | 790 | approx | // Obliquity of the ecliptic (Earth's axial tilt) - approx 23.44° for modern era |
-| app\src\main\java\com\astro\vajra\ephemeris\SwissEphemerisEngine.kt | 563 | approx | // Precision threshold for boundary detection (approx 1 arc second) |
+| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 267 | approximate | approximateDaysRemaining = daysRemaining, |
+| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 268 | approximate | approximateEndDate = endDate, |
+| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 601 | approximate | approximateDaysRemaining = 0, |
+| app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 602 | approximate | approximateEndDate = null, |
+| app\src\main\java\com\astro\vajra\ephemeris\SarvatobhadraChakraCalculator.kt | 510 | Simplified | // Calculate tithi (simplified) |
+| app\src\main\java\com\astro\vajra\ephemeris\ShadbalaCalculator.kt | 692 | approximate | * a standard 6 AM sunrise / 6 PM sunset approximation. |
+| app\src\main\java\com\astro\vajra\ephemeris\ShadbalaCalculator.kt | 790 | approximate | // Obliquity of the ecliptic (Earth's axial tilt) - approx 23.44Â° for modern era |
+| app\src\main\java\com\astro\vajra\ephemeris\SwissEphemerisEngine.kt | 563 | approximate | // Precision threshold for boundary detection (approx 1 arc second) |
 | app\src\main\java\com\astro\vajra\ephemeris\SwissEphemerisEngine.kt | 571 | Fallback | // Fallback for edge cases exactly on the 12th house cusp boundary |
 | app\src\main\java\com\astro\vajra\ephemeris\TransitAnalyzer.kt | 835 | Fallback | // Fallback if key missing |
 | app\src\main\java\com\astro\vajra\ephemeris\UpachayaTransitTracker.kt | 129 | approximate | approximateDuration = duration, |
@@ -70,9 +68,9 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\NabhasaYogaEvaluator.kt | 93 | Placeholder | descriptionKey = com.astro.vajra.core.common.StringKeyYogaExpanded.YOGA_CAT_NABHASA, // Placeholder or specific |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\PlanetaryYogaEvaluator.kt | 226 | approximate | // Pushkara Navamsha positions by sign (approximate) |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\PlanetaryYogaEvaluator.kt | 659 | Simplified | // Simplified: Jupiter in Kendra with strong dignity |
-| app\src\main\java\com\astro\vajra\ephemeris\yoga\PlanetaryYogaEvaluator.kt | 1236 | simplified | // Determine winner based on brightness (simplified - Venus > Jupiter > Mars > Saturn > Mercury) |
-| app\src\main\java\com\astro\vajra\ephemeris\yoga\YogaHelpers.kt | 622 | fallback | * Get house significations (English fallback) |
+| app\src\main\java\com\astro\vajra\ephemeris\yoga\PlanetaryYogaEvaluator.kt | 1236 | Simplified | // Determine winner based on brightness (simplified - Venus > Jupiter > Mars > Saturn > Mercury) |
+| app\src\main\java\com\astro\vajra\ephemeris\yoga\YogaHelpers.kt | 622 | Fallback | * Get house significations (English fallback) |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\YogaLocalization.kt | 80 | Fallback | return yoga.description // Fallback to original English |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\YogaLocalization.kt | 100 | Simplified | Planet.SUN -> StringKeyYogaExpanded.LORD_1 // Simplified mapping, ideally should be house-based |
 | app\src\main\java\com\astro\vajra\ephemeris\yoga\YogaLocalization.kt | 268 | Fallback | else -> return englishName // Fallback to English name |
-| app\src\main\java\com\astro\vajra\ephemeris\yoga\YogaModels.kt | 306 | fallback | // Basic localization or fallback |
+| app\src\main\java\com\astro\vajra\ephemeris\yoga\YogaModels.kt | 306 | Fallback | // Basic localization or fallback |

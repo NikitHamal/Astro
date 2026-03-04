@@ -183,6 +183,7 @@ object SadeSatiCalculator {
     fun calculateSadeSati(
         natalChart: VedicChart,
         currentSaturnLongitude: Double,
+        currentSaturnSpeed: Double? = null,
         currentDate: LocalDate = LocalDate.now(resolveZoneId(natalChart.birthData.timezone))
     ): SadeSatiAnalysis {
         val moonPosition = VedicAstrologyUtils.getMoonPosition(natalChart)
@@ -230,6 +231,7 @@ object SadeSatiCalculator {
         // Calculate timeline
         val (daysRemaining, endDate) = calculateTimeline(
             currentSaturnLongitude = currentSaturnLongitude,
+            currentSaturnSpeed = currentSaturnSpeed,
             saturnSign = saturnSign,
             moonSign = moonSign,
             sadeSatiPhase = sadeSatiPhase,
@@ -344,12 +346,13 @@ object SadeSatiCalculator {
         currentSaturnLongitude: Double,
         saturnSign: ZodiacSign
     ): Double {
-        val degreeInSign = currentSaturnLongitude % 30.0
+        val degreeInSign = ((currentSaturnLongitude % 30.0) + 30.0) % 30.0
         return (degreeInSign / 30.0) * 100.0
     }
 
     private fun calculateTimeline(
         currentSaturnLongitude: Double,
+        currentSaturnSpeed: Double?,
         saturnSign: ZodiacSign,
         moonSign: ZodiacSign,
         sadeSatiPhase: SadeSatiPhase?,
@@ -359,12 +362,11 @@ object SadeSatiCalculator {
             return Pair(0, null)
         }
 
-        val degreeInSign = currentSaturnLongitude % 30.0
-        val remainingDegreesInSign = 30.0 - degreeInSign
-
-        // Calculate days to complete current sign
-        val daysPerDegree = SATURN_TRANSIT_DAYS_PER_SIGN / 30.0
-        val daysToCompleteCurrentSign = (remainingDegreesInSign * daysPerDegree).toInt()
+        val degreeInSign = ((currentSaturnLongitude % 30.0) + 30.0) % 30.0
+        val daysToCompleteCurrentSign = estimateDaysToSignBoundary(
+            degreeInSign = degreeInSign,
+            saturnSpeed = currentSaturnSpeed
+        )
 
         // Calculate remaining signs in Sade Sati
         val remainingSigns = when (sadeSatiPhase) {
@@ -373,12 +375,26 @@ object SadeSatiCalculator {
             SadeSatiPhase.SETTING -> 0 // Only current sign remaining
         }
 
+        val retrogradePenaltySigns = if ((currentSaturnSpeed ?: 0.0) < 0.0) 1 else 0
         val totalDaysRemaining = daysToCompleteCurrentSign +
-            (remainingSigns * SATURN_TRANSIT_DAYS_PER_SIGN).toInt()
+            ((remainingSigns + retrogradePenaltySigns) * SATURN_TRANSIT_DAYS_PER_SIGN).toInt()
 
         val endDate = currentDate.plusDays(totalDaysRemaining.toLong())
 
         return Pair(totalDaysRemaining, endDate)
+    }
+
+    private fun estimateDaysToSignBoundary(
+        degreeInSign: Double,
+        saturnSpeed: Double?
+    ): Int {
+        val speed = saturnSpeed ?: return ((30.0 - degreeInSign) * (SATURN_TRANSIT_DAYS_PER_SIGN / 30.0)).toInt()
+        if (!speed.isFinite() || kotlin.math.abs(speed) < 1e-4) {
+            return ((30.0 - degreeInSign) * (SATURN_TRANSIT_DAYS_PER_SIGN / 30.0)).toInt()
+        }
+
+        val degreesToBoundary = if (speed >= 0.0) 30.0 - degreeInSign else degreeInSign
+        return (degreesToBoundary / kotlin.math.abs(speed)).toInt().coerceAtLeast(0)
     }
 
     private fun gatherFavorableFactors(
@@ -604,6 +620,7 @@ object SadeSatiCalculator {
     fun willSadeSatiStartSoon(
         natalChart: VedicChart,
         currentSaturnLongitude: Double,
+        currentSaturnSpeed: Double? = null,
         daysAhead: Int = 180
     ): Boolean {
         val moonPosition = VedicAstrologyUtils.getMoonPosition(natalChart) ?: return false
@@ -620,10 +637,14 @@ object SadeSatiCalculator {
         val preRisingSign = ZodiacSign.entries[preRisingSignIndex]
 
         if (currentSaturnSign == preRisingSign) {
-            val degreeInSign = currentSaturnLongitude % 30.0
-            val degreesToNextSign = 30.0 - degreeInSign
-            val daysPerDegree = SATURN_TRANSIT_DAYS_PER_SIGN / 30.0
-            val daysToRisingSign = degreesToNextSign * daysPerDegree
+            val degreeInSign = ((currentSaturnLongitude % 30.0) + 30.0) % 30.0
+            val daysToRisingSign = if ((currentSaturnSpeed ?: 0.0) > 0.0) {
+                val speed = currentSaturnSpeed ?: 0.0
+                (30.0 - degreeInSign) / speed
+            } else {
+                val daysPerDegree = SATURN_TRANSIT_DAYS_PER_SIGN / 30.0
+                (30.0 - degreeInSign) * daysPerDegree
+            }
 
             return daysToRisingSign <= daysAhead
         }

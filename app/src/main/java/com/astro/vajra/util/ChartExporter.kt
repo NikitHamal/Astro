@@ -1862,7 +1862,11 @@ class ChartExporter @Inject constructor(
 
         // Sade Sati Status
         val saturnPosition = VedicAstrologyUtils.getPlanetPosition(chart, Planet.SATURN)
-        val sadeSatiResult = SadeSatiCalculator.calculateSadeSati(chart, saturnPosition?.longitude ?: 0.0)
+        val sadeSatiResult = SadeSatiCalculator.calculateSadeSati(
+            chart,
+            saturnPosition?.longitude ?: 0.0,
+            saturnPosition?.speed
+        )
         val sadeSatiCardHeight = 100f
 
         canvas.drawRect(PDF_MARGIN.toFloat(), yPos, (pageWidth - PDF_MARGIN), yPos + sadeSatiCardHeight, cardPaint)
