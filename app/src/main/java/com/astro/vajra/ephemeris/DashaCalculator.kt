@@ -54,6 +54,24 @@ object DashaCalculator {
 
     private const val MAX_MAHADASHAS = 18 // Allow for more than 120 years (Vimshottari is based on 120 but people live longer sometimes)
 
+    private fun isWithinPeriod(
+        date: LocalDateTime,
+        start: LocalDateTime,
+        end: LocalDateTime
+    ): Boolean = !date.isBefore(start) && date.isBefore(end)
+
+    private fun clampSubPeriodEnd(
+        index: Int,
+        totalPeriods: Int,
+        start: LocalDateTime,
+        parentEnd: LocalDateTime,
+        suggestedSeconds: Long
+    ): LocalDateTime {
+        if (index == totalPeriods - 1) return parentEnd
+        val tentativeEnd = start.plusSeconds(suggestedSeconds)
+        return if (tentativeEnd.isAfter(parentEnd)) parentEnd else tentativeEnd
+    }
+
     fun getDashaYears(planet: Planet): Double {
         return DASHA_YEARS[planet]?.toDouble() ?: 0.0
     }
@@ -639,7 +657,7 @@ object DashaCalculator {
 
         val firstDashaSeconds = yearsToSeconds(balanceOfFirstDashaBd)
         val firstDashaEndDate = currentStartDate.plusSeconds(firstDashaSeconds)
-        val isFirstActive = !targetDate.isBefore(currentStartDate) && !targetDate.isAfter(firstDashaEndDate)
+        val isFirstActive = isWithinPeriod(targetDate, currentStartDate, firstDashaEndDate)
 
         val firstAntardashas = calculateAntardashasOptimized(
             mahadashaPlanet = startingDashaLord,
@@ -667,7 +685,7 @@ object DashaCalculator {
             val dashaYearsBd = DASHA_YEARS[planet] ?: BigDecimal.ZERO
             val dashaSeconds = yearsToSeconds(dashaYearsBd)
             val endDate = currentStartDate.plusSeconds(dashaSeconds)
-            val isActive = !targetDate.isBefore(currentStartDate) && !targetDate.isAfter(endDate)
+            val isActive = isWithinPeriod(targetDate, currentStartDate, endDate)
 
             val antardashas = calculateAntardashasOptimized(
                 mahadashaPlanet = planet,
@@ -715,11 +733,18 @@ object DashaCalculator {
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(mahadashaDurationYearsBd, MATH_CONTEXT)
 
-            val antarSeconds = yearsToSeconds(proportionalDurationBd)
-            val antarEnd = currentStart.plusSeconds(antarSeconds)
+            val suggestedAntarSeconds = yearsToSeconds(proportionalDurationBd)
+            val antarEnd = clampSubPeriodEnd(
+                index = i,
+                totalPeriods = DASHA_SEQUENCE.size,
+                start = currentStart,
+                parentEnd = mahadashaEnd,
+                suggestedSeconds = suggestedAntarSeconds
+            )
+            val antarSeconds = ChronoUnit.SECONDS.between(currentStart, antarEnd).coerceAtLeast(0L)
 
             val pratyantardashas = if (isCurrentMahadasha && 
-                !targetDate.isBefore(currentStart) && !targetDate.isAfter(antarEnd)) {
+                isWithinPeriod(targetDate, currentStart, antarEnd)) {
                 calculatePratyantardashasInternal(
                     mahadashaPlanet = mahadashaPlanet,
                     antardashaPlanet = antarPlanet,
@@ -783,8 +808,15 @@ object DashaCalculator {
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(antarDurationYearsBd, MATH_CONTEXT)
 
-            val pratyantarSeconds = yearsToSeconds(proportionalDurationBd)
-            val pratyantarEnd = currentStart.plusSeconds(pratyantarSeconds)
+            val suggestedPratyantarSeconds = yearsToSeconds(proportionalDurationBd)
+            val pratyantarEnd = clampSubPeriodEnd(
+                index = i,
+                totalPeriods = DASHA_SEQUENCE.size,
+                start = currentStart,
+                parentEnd = antarEnd,
+                suggestedSeconds = suggestedPratyantarSeconds
+            )
+            val pratyantarSeconds = ChronoUnit.SECONDS.between(currentStart, pratyantarEnd).coerceAtLeast(0L)
 
             pratyantardashas.add(
                 Pratyantardasha(
@@ -841,8 +873,15 @@ object DashaCalculator {
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(pratyantarDurationYearsBd, MATH_CONTEXT)
 
-            val sookshmaSeconds = yearsToSeconds(proportionalDurationBd)
-            val sookshmaEnd = currentStart.plusSeconds(sookshmaSeconds)
+            val suggestedSookshmaSeconds = yearsToSeconds(proportionalDurationBd)
+            val sookshmaEnd = clampSubPeriodEnd(
+                index = i,
+                totalPeriods = DASHA_SEQUENCE.size,
+                start = currentStart,
+                parentEnd = pratyantarEnd,
+                suggestedSeconds = suggestedSookshmaSeconds
+            )
+            val sookshmaSeconds = ChronoUnit.SECONDS.between(currentStart, sookshmaEnd).coerceAtLeast(0L)
 
             sookshmadashas.add(
                 Sookshmadasha(
@@ -897,13 +936,19 @@ object DashaCalculator {
             val pranaPlanet = DASHA_SEQUENCE[planetIndex]
 
             val pranaYearsBd = DASHA_YEARS[pranaPlanet] ?: BigDecimal.ZERO
-            val proportionalSeconds = pranaYearsBd
+            val suggestedPranaSeconds = pranaYearsBd
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(BigDecimal(sookshmaDurationSeconds), MATH_CONTEXT)
+                .setScale(0, RoundingMode.HALF_EVEN)
                 .toLong()
-                .coerceAtLeast(1L)
-
-            val pranaEnd = currentStart.plusSeconds(proportionalSeconds)
+            val pranaEnd = clampSubPeriodEnd(
+                index = i,
+                totalPeriods = DASHA_SEQUENCE.size,
+                start = currentStart,
+                parentEnd = sookshmaEnd,
+                suggestedSeconds = suggestedPranaSeconds
+            )
+            val proportionalSeconds = ChronoUnit.SECONDS.between(currentStart, pranaEnd).coerceAtLeast(0L)
 
             pranadashas.add(
                 Pranadasha(
@@ -961,13 +1006,19 @@ object DashaCalculator {
             val dehaPlanet = DASHA_SEQUENCE[planetIndex]
 
             val dehaYearsBd = DASHA_YEARS[dehaPlanet] ?: BigDecimal.ZERO
-            val proportionalSeconds = dehaYearsBd
+            val suggestedDehaSeconds = dehaYearsBd
                 .divide(TOTAL_CYCLE_YEARS_BD, MATH_CONTEXT)
                 .multiply(BigDecimal(pranaDurationSeconds), MATH_CONTEXT)
+                .setScale(0, RoundingMode.HALF_EVEN)
                 .toLong()
-                .coerceAtLeast(1L)
-
-            val dehaEnd = currentStart.plusSeconds(proportionalSeconds)
+            val dehaEnd = clampSubPeriodEnd(
+                index = i,
+                totalPeriods = DASHA_SEQUENCE.size,
+                start = currentStart,
+                parentEnd = pranaEnd,
+                suggestedSeconds = suggestedDehaSeconds
+            )
+            val proportionalSeconds = ChronoUnit.SECONDS.between(currentStart, dehaEnd).coerceAtLeast(0L)
 
             dehadashas.add(
                 Dehadasha(

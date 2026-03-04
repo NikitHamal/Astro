@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import com.astro.vajra.core.common.Language
 import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.common.StringKeyAdvanced
+import com.astro.vajra.core.common.StringKeyDosha
 import com.astro.vajra.core.common.StringKeyInterface
 import com.astro.vajra.core.common.StringKeyUICommon
 import com.astro.vajra.core.common.StringKeyShadbala
@@ -1216,7 +1217,7 @@ enum class InsightFeature(
         isImplemented = true
     ),
     DASHAS(
-        titleKey = StringKey.FEATURE_DASHAS,
+        titleKey = StringKeyDosha.DASHA_TITLE_VIMSOTTARI,
         descriptionKey = StringKey.FEATURE_DASHAS_DESC,
         icon = Icons.Outlined.Timeline,
         colorToken = FeatureColorToken.LifeAreaSpiritual,

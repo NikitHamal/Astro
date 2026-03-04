@@ -51,6 +51,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -90,6 +91,7 @@ import com.astro.vajra.ephemeris.DashaCalculator
 import com.astro.vajra.ui.screen.chartdetail.ChartDetailColors
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -114,6 +116,20 @@ private val VIMSHOTTARI_SEQUENCE: List<VimshottariPeriod> = listOf(
 
 private enum class DashaLevel {
     MAHADASHA, ANTARDASHA, PRATYANTARDASHA, SOOKSHMADASHA, PRANADASHA, DEHADASHA
+}
+
+@Composable
+private fun rememberTimelineNow(
+    timeline: DashaCalculator.DashaTimeline,
+    refreshMs: Long = 5_000L
+): LocalDateTime {
+    val now by produceState(initialValue = timeline.nowInTimelineZone(), key1 = timeline) {
+        while (true) {
+            value = timeline.nowInTimelineZone()
+            delay(refreshMs)
+        }
+    }
+    return now
 }
 
 @Stable
@@ -142,8 +158,9 @@ fun DashasTabContent(
     showInfoFooter: Boolean = true
 ) {
     val listState = rememberLazyListState()
-    val asOf = remember(timeline) { timeline.nowInTimelineZone() }
+    val asOf = rememberTimelineNow(timeline)
     val asOfDate = asOf.toLocalDate()
+    val currentPeriod = remember(timeline, asOf) { timeline.getDashaAtDate(asOf) }
 
     var expandedMahadashaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
     var isDashaInfoExpanded by rememberSaveable { mutableStateOf(false) }
@@ -153,8 +170,8 @@ fun DashasTabContent(
         timeline.getUpcomingSandhisWithin(90, asOf)
     }
 
-    val currentMahadashaIndex = remember(timeline) {
-        timeline.mahadashas.indexOfFirst { it == timeline.currentMahadasha }
+    val currentMahadashaIndex = remember(timeline, currentPeriod.mahadasha) {
+        timeline.mahadashas.indexOfFirst { it == currentPeriod.mahadasha }
     }
 
     LaunchedEffect(scrollToTodayEvent) {
@@ -205,12 +222,12 @@ fun DashasTabContent(
             }
         ) { index, mahadasha ->
             val mahadashaKey = "${mahadasha.planet.symbol}_${mahadasha.startDate.toLocalDate().toEpochDay()}"
-            val isCurrentMahadasha = mahadasha == timeline.currentMahadasha
+            val isCurrentMahadasha = mahadasha == currentPeriod.mahadasha
             val isExpanded = mahadashaKey in expandedMahadashaKeys
 
             MahadashaCard(
                 mahadasha = mahadasha,
-                currentAntardasha = if (isCurrentMahadasha) timeline.currentAntardasha else null,
+                currentAntardasha = if (isCurrentMahadasha) currentPeriod.antardasha else null,
                 isCurrentMahadasha = isCurrentMahadasha,
                 isExpanded = isExpanded,
                 asOf = asOf,
@@ -246,12 +263,13 @@ private fun CurrentPeriodCard(
     asOf: LocalDateTime,
     includeMicroLevels: Boolean
 ) {
-    val currentMahadasha = timeline.currentMahadasha
-    val currentAntardasha = timeline.currentAntardasha
-    val currentPratyantardasha = timeline.currentPratyantardasha
-    val currentSookshmadasha = timeline.currentSookshmadasha
-    val currentPranadasha = timeline.currentPranadasha
-    val currentDehadasha = timeline.currentDehadasha
+    val currentPeriod = remember(timeline, asOf) { timeline.getDashaAtDate(asOf) }
+    val currentMahadasha = currentPeriod.mahadasha
+    val currentAntardasha = currentPeriod.antardasha
+    val currentPratyantardasha = currentPeriod.pratyantardasha
+    val currentSookshmadasha = currentPeriod.sookshmadasha
+    val currentPranadasha = currentPeriod.pranadasha
+    val currentDehadasha = currentPeriod.dehadasha
 
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
@@ -306,7 +324,7 @@ private fun CurrentPeriodCard(
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = getLocalizedShortDescription(timeline, language),
+                        text = getLocalizedShortDescription(currentMahadasha, currentAntardasha, language),
                         fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                         color = ChartDetailColors.TextMuted,
                         fontWeight = FontWeight.Medium
@@ -1757,12 +1775,10 @@ private fun formatNumber(number: Int, language: Language): String {
  * Get localized short description for the dasha timeline
  */
 private fun getLocalizedShortDescription(
-    timeline: DashaCalculator.DashaTimeline,
+    mahadasha: DashaCalculator.Mahadasha?,
+    antardasha: DashaCalculator.Antardasha?,
     language: Language
 ): String {
-    val mahadasha = timeline.currentMahadasha
-    val antardasha = timeline.currentAntardasha
-
     return if (mahadasha != null && antardasha != null) {
         "${mahadasha.planet.getLocalizedName(language)}-${antardasha.planet.getLocalizedName(language)}"
     } else if (mahadasha != null) {

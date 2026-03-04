@@ -46,6 +46,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -92,7 +93,9 @@ import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.DashaUiState
 import com.astro.vajra.ui.viewmodel.DashaViewModel
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import kotlinx.coroutines.delay
 
 private enum class VimsottariTab { ABOUT, TIMELINE, INTERPRETATION }
 
@@ -103,6 +106,20 @@ private data class CurrentVimsottariPeriodInfo(
     val isLoading: Boolean,
     val hasError: Boolean
 )
+
+@Composable
+private fun rememberTimelineNow(
+    timeline: DashaCalculator.DashaTimeline,
+    refreshMs: Long = 5_000L
+): LocalDateTime {
+    val now by produceState(initialValue = timeline.nowInTimelineZone(), key1 = timeline) {
+        while (true) {
+            value = timeline.nowInTimelineZone()
+            delay(refreshMs)
+        }
+    }
+    return now
+}
 
 @Composable
 fun VimsottariDashaScreen(
@@ -233,7 +250,7 @@ private fun VimsottariTabRow(
 private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
-    val now = remember(timeline) { timeline.nowInTimelineZone() }
+    val now = rememberTimelineNow(timeline)
     val nextMahadasha = remember(timeline, now) { timeline.getNextMahadasha(now) }
     val sequence = remember {
         listOf(
@@ -417,14 +434,15 @@ private fun VimsottariAboutTab(timeline: DashaCalculator.DashaTimeline) {
 @Composable
 private fun ActiveDashaCard(
     timeline: DashaCalculator.DashaTimeline,
-    now: java.time.LocalDateTime
+    now: LocalDateTime
 ) {
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
+    val currentPeriod = remember(timeline, now) { timeline.getDashaAtDate(now) }
 
-    val maha = timeline.currentMahadasha
-    val antar = timeline.currentAntardasha
-    val praty = timeline.currentPratyantardasha
+    val maha = currentPeriod.mahadasha
+    val antar = currentPeriod.antardasha
+    val praty = currentPeriod.pratyantardasha
 
     Surface(
         modifier = Modifier
@@ -605,7 +623,11 @@ private fun HierarchyRow(level: String, name: String, desc: String, color: Color
 private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
-    val now = remember(timeline) { timeline.nowInTimelineZone() }
+    val now = rememberTimelineNow(timeline)
+    val currentPeriod = remember(timeline, now) { timeline.getDashaAtDate(now) }
+    val currentMahadasha = currentPeriod.mahadasha
+    val currentAntardasha = currentPeriod.antardasha
+    val currentPratyantardasha = currentPeriod.pratyantardasha
     var expandedMahadashaKeys by rememberSaveable { mutableStateOf(setOf<String>()) }
 
     LazyColumn(
@@ -647,9 +669,9 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
         ) { _, mahadasha ->
             val cardKey = "${mahadasha.planet.symbol}_${mahadasha.startDate.toLocalDate().toEpochDay()}"
             val isExpanded = cardKey in expandedMahadashaKeys
-            val isCurrent = mahadasha == timeline.currentMahadasha
-            val currentAntardasha = if (isCurrent) timeline.currentAntardasha else null
-            val currentPratyantardasha = if (isCurrent) timeline.currentPratyantardasha else null
+            val isCurrent = mahadasha == currentMahadasha
+            val activeAntardasha = if (isCurrent) currentAntardasha else null
+            val activePratyantardasha = if (isCurrent) currentPratyantardasha else null
             val expandRotation by animateFloatAsState(
                 targetValue = if (isExpanded) 180f else 0f,
                 animationSpec = tween(220),
@@ -763,7 +785,7 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
                         Spacer(modifier = Modifier.height(16.dp))
 
                         mahadasha.antardashas.forEach { antardasha ->
-                            val isCurrentAntardasha = antardasha == currentAntardasha
+                            val isCurrentAntardasha = antardasha == activeAntardasha
                             val adPlanetColor = ChartDetailColors.getPlanetColor(antardasha.planet)
                             
                             Row(
@@ -819,7 +841,7 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
                                         if (antardasha.pratyantardashas.isNotEmpty()) {
                                             Spacer(modifier = Modifier.height(12.dp))
                                             antardasha.pratyantardashas.forEach { praty ->
-                                                val isCurrentPraty = praty == currentPratyantardasha
+                                                val isCurrentPraty = praty == activePratyantardasha
                                                 Row(
                                                     modifier = Modifier.padding(start = 8.dp, bottom = 4.dp),
                                                     verticalAlignment = Alignment.CenterVertically
@@ -873,11 +895,12 @@ private fun VimsottariTimelineTab(timeline: DashaCalculator.DashaTimeline) {
 private fun VimsottariInterpretationTab(timeline: DashaCalculator.DashaTimeline) {
     val language = LocalLanguage.current
     val dateSystem = LocalDateSystem.current
-    val now = remember(timeline) { timeline.nowInTimelineZone() }
+    val now = rememberTimelineNow(timeline)
+    val currentPeriod = remember(timeline, now) { timeline.getDashaAtDate(now) }
     val today = now.toLocalDate()
-    val maha = timeline.currentMahadasha
-    val antar = timeline.currentAntardasha
-    val prat = timeline.currentPratyantardasha
+    val maha = currentPeriod.mahadasha
+    val antar = currentPeriod.antardasha
+    val prat = currentPeriod.pratyantardasha
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
