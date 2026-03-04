@@ -22,7 +22,6 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 679 | production app | // Note: In a production app, you would get current planetary positions |
 | app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 710 | Placeholder | estimatedDate = currentDate.plusMonths(6), // Placeholder |
 | app\src\main\java\com\astro\vajra\ephemeris\BhriguBinduCalculator.kt | 720 | Placeholder | estimatedDate = currentDate.plusYears(1), // Placeholder |
-| app\src\main\java\com\astro\vajra\ephemeris\DrigBalaCalculator.kt | 301 | Placeholder | aspectedPlanet = Planet.SUN, // Placeholder for house |
 | app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 179 | simplified | // Check latitude (declination) - simplified as we may not have exact declination |
 | app\src\main\java\com\astro\vajra\ephemeris\GrahaYuddhaCalculator.kt | 236 | Simplified | // Simplified: if separation would decrease based on relative speeds |
 | app\src\main\java\com\astro\vajra\ephemeris\HoroscopeCalculator.kt | 928 | Placeholder | event = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(date.dayOfWeek.value.toString())... |

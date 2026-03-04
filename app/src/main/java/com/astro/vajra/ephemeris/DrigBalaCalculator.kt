@@ -60,7 +60,7 @@ object DrigBalaCalculator {
      */
     data class AspectInfo(
         val aspectingPlanet: Planet,
-        val aspectedPlanet: Planet,
+        val aspectedPlanet: Planet?,
         val houseDistance: Int,
         val aspectType: AspectType,
         val isSpecialAspect: Boolean,
@@ -298,7 +298,7 @@ object DrigBalaCalculator {
                 aspectingPlanets.add(
                     AspectInfo(
                         aspectingPlanet = position.planet,
-                        aspectedPlanet = Planet.SUN, // Placeholder for house
+                        aspectedPlanet = null,
                         houseDistance = distance,
                         aspectType = aspectType,
                         isSpecialAspect = isSpecialAspect(position.planet, distance),
@@ -494,8 +494,10 @@ object DrigBalaCalculator {
             .flatMap { it.aspectsReceived }
             .filter { it.aspectingPlanet == Planet.JUPITER }
         if (jupiterAspects.isNotEmpty()) {
-            val aspected = jupiterAspects.map { it.aspectedPlanet.displayName }.distinct().take(3)
-            insights.add("Jupiter's protective aspects benefit ${aspected.joinToString()}")
+            val aspected = jupiterAspects.mapNotNull { it.aspectedPlanet?.displayName }.distinct().take(3)
+            if (aspected.isNotEmpty()) {
+                insights.add("Jupiter's protective aspects benefit ${aspected.joinToString()}")
+            }
         }
 
         return insights.take(5)

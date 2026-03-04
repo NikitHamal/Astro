@@ -622,14 +622,14 @@ private fun AspectDetailRow(aspect: DrigBalaCalculator.AspectInfo) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = aspect.aspectedPlanet.localizedAbbr(),
+                text = aspect.aspectedPlanet?.localizedAbbr() ?: "H",
                 fontFamily = CinzelDecorativeFamily,
                 fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S16,
                 color = AppTheme.TextPrimary
             )
             Column {
                 Text(
-                    text = aspect.aspectedPlanet.displayName,
+                    text = aspect.aspectedPlanet?.displayName ?: stringResource(StringKeyAnalysis.TRANSIT_HOUSE_LABEL),
                     fontFamily = PoppinsFontFamily,
                     fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
                     color = AppTheme.TextPrimary

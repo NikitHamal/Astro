@@ -72,6 +72,9 @@ Date: 2026-03-05
   - `ui/viewmodel/InsightsViewModel`
   - `ui/viewmodel/KakshaTransitViewModel`
 - Replaced 7-day fixed significant transit period buckets with daily sampled, contiguous sign-window period detection in `TransitAnalyzer`.
+- Removed fabricated house-target placeholder from `DrigBalaCalculator`:
+  - `AspectInfo.aspectedPlanet` now supports house-only contexts as nullable.
+  - House-aspect generation no longer injects `Planet.SUN` as a stand-in target.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
@@ -94,8 +97,6 @@ Date: 2026-03-05
 ### P1: Placeholder/Approximation Markers Affecting Practical Usefulness
 - `app/src/main/java/com/astro/vajra/ephemeris/BhriguBinduCalculator.kt`
   - Placeholder estimated dates.
-- `app/src/main/java/com/astro/vajra/ephemeris/DrigBalaCalculator.kt`
-  - Placeholder substitution for house aspect data path.
 - `app/src/main/java/com/astro/vajra/ephemeris/NadiAmshaCalculator.kt`
   - Simplified boundary handling and approximation comments in rectification path.
 - `app/src/main/java/com/astro/vajra/ephemeris/SarvatobhadraChakraCalculator.kt`
