@@ -30,6 +30,12 @@ enum class StringKeyNative(override val en: String, override val ne: String) : S
     LABEL_HOUSE_ANALYSIS("House Analysis", "भाव विश्लेषण"),
     LABEL_PREDICTIONS("Predictions", "भविष्यवाणी"),
 
+    // Core Jyotish Metrics
+    LABEL_PLANETARY_AVASTHA("Avastha", "अवस्था"),
+    LABEL_ASHTAKAVARGA_BINDUS("Ashtakavarga (Bindus)", "अष्टकवर्ग (बिन्दु)"),
+    LABEL_VARGA_ANALYSIS("Divisional Chart", "वर्ग कुण्डली"),
+    LABEL_YOGAS_PRESENT("Yogas Present", "उपस्थित योगहरू"),
+
     // Native Analysis UI Specific Titles
     TITLE_ASCENDANT_TRAITS("Ascendant Traits", "लग्नका विशेषताहरू"),
     TITLE_MOON_SIGN_INFLUENCE("Moon Sign Influence", "चन्द्र राशिको प्रभाव"),

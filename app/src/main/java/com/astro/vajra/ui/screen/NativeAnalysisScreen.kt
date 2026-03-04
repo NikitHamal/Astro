@@ -707,6 +707,30 @@ private fun NativeCharacterSection(
 
         PersonalityStrengthCard(character.personalityStrength, language)
 
+        // NEW: Core Jyotish Metrics
+        if (character.lagnaLordAvastha != null) {
+            JyotishAvasthaCard(
+                planet = character.lagnaLordAvastha.planet,
+                avastha = character.lagnaLordAvastha,
+                language = language
+            )
+        }
+
+        JyotishAshtakavargaCard(
+            houseName = "Ascendant (Lagna)",
+            bindus = character.lagnaBindus,
+            language = language
+        )
+
+        if (character.personalityYogas.isNotEmpty()) {
+            JyotishYogasCard(
+                title = stringResource(StringKeyNative.LABEL_YOGAS_PRESENT),
+                yogas = character.personalityYogas,
+                language = language
+            )
+        }
+        // END NEW
+
         TraitCard(
             title = stringResource(StringKeyNative.TITLE_ASCENDANT_TRAITS),
             content = if (language == Language.NEPALI) character.ascendantTrait.ne else character.ascendantTrait.en,
@@ -803,6 +827,39 @@ private fun NativeCareerSection(
             strength = career.careerStrength,
             language = language
         )
+
+        // NEW: Core Jyotish Metrics
+        if (career.tenthLordAvastha != null) {
+            JyotishAvasthaCard(
+                planet = career.tenthLord,
+                avastha = career.tenthLordAvastha,
+                language = language
+            )
+        }
+
+        if (career.d10Ascendant != null && career.d10TenthLord != null) {
+            JyotishVargaCard(
+                vargaName = "Dashamsha (D-10)",
+                ascendant = career.d10Ascendant.displayName,
+                lord = career.d10TenthLord.displayName,
+                language = language
+            )
+        }
+
+        JyotishAshtakavargaCard(
+            houseName = "10th House",
+            bindus = career.tenthHouseBindus,
+            language = language
+        )
+
+        if (career.careerYogas.isNotEmpty()) {
+            JyotishYogasCard(
+                title = stringResource(StringKeyNative.LABEL_YOGAS_PRESENT),
+                yogas = career.careerYogas,
+                language = language
+            )
+        }
+        // END NEW
 
         HouseLordCard(
             houseNumber = 10,
@@ -932,6 +989,39 @@ private fun NativeMarriageSection(
             strength = marriage.relationshipStrength,
             language = language
         )
+
+        // NEW: Core Jyotish Metrics
+        if (marriage.venusAvastha != null) {
+            JyotishAvasthaCard(
+                planet = Planet.VENUS,
+                avastha = marriage.venusAvastha,
+                language = language
+            )
+        }
+
+        if (marriage.d9Ascendant != null && marriage.d9SeventhLord != null) {
+            JyotishVargaCard(
+                vargaName = "Navamsha (D-9)",
+                ascendant = marriage.d9Ascendant.displayName,
+                lord = marriage.d9SeventhLord.displayName,
+                language = language
+            )
+        }
+
+        JyotishAshtakavargaCard(
+            houseName = "7th House",
+            bindus = marriage.seventhHouseBindus,
+            language = language
+        )
+
+        if (marriage.marriageYogas.isNotEmpty()) {
+            JyotishYogasCard(
+                title = stringResource(StringKeyNative.LABEL_YOGAS_PRESENT),
+                yogas = marriage.marriageYogas,
+                language = language
+            )
+        }
+        // END NEW
 
         HouseLordCard(
             houseNumber = 7,
@@ -1101,6 +1191,30 @@ private fun NativeHealthSection(
         )
 
         ConstitutionCard(health.constitution, language)
+
+        // NEW: Core Jyotish Metrics
+        if (health.lagnaLordAvastha != null) {
+            JyotishAvasthaCard(
+                planet = health.lagnaLordAvastha.planet,
+                avastha = health.lagnaLordAvastha,
+                language = language
+            )
+        }
+
+        JyotishAshtakavargaCard(
+            houseName = "6th House",
+            bindus = health.sixthHouseBindus,
+            language = language
+        )
+
+        if (health.healthYogas.isNotEmpty()) {
+            JyotishYogasCard(
+                title = stringResource(StringKeyNative.LABEL_YOGAS_PRESENT),
+                yogas = health.healthYogas,
+                language = language
+            )
+        }
+        // END NEW
 
         LongevityCard(health.longevityIndicator, language)
 
@@ -1312,9 +1426,31 @@ private fun NativeWealthSection(
             language = language
         )
 
-        if (wealth.dhanaYogaPresent) {
+        // NEW: Core Jyotish Metrics
+        if (wealth.jupiterAvastha != null) {
+            JyotishAvasthaCard(
+                planet = Planet.JUPITER,
+                avastha = wealth.jupiterAvastha,
+                language = language
+            )
+        }
+
+        JyotishAshtakavargaCard(
+            houseName = "2nd & 11th Houses",
+            bindus = (wealth.secondHouseBindus + wealth.eleventhHouseBindus) / 2, // Average or show both
+            language = language
+        )
+
+        if (wealth.wealthYogas.isNotEmpty()) {
+            JyotishYogasCard(
+                title = stringResource(StringKeyNative.LABEL_DHANA_YOGA_PRESENT),
+                yogas = wealth.wealthYogas,
+                language = language
+            )
+        } else if (wealth.dhanaYogaPresent) {
             DhanaYogaCard()
         }
+        // END NEW
 
         WealthLordsCard(wealth, language)
 
@@ -1523,6 +1659,39 @@ private fun NativeEducationSection(
             language = language
         )
 
+        // NEW: Core Jyotish Metrics
+        if (education.mercuryAvastha != null) {
+            JyotishAvasthaCard(
+                planet = Planet.MERCURY,
+                avastha = education.mercuryAvastha,
+                language = language
+            )
+        }
+
+        if (education.d24Ascendant != null) {
+            JyotishVargaCard(
+                vargaName = "Chaturvimshamsha (D-24)",
+                ascendant = education.d24Ascendant.displayName,
+                lord = education.d24Ascendant.ruler.displayName,
+                language = language
+            )
+        }
+
+        JyotishAshtakavargaCard(
+            houseName = "5th House",
+            bindus = education.fifthHouseBindus,
+            language = language
+        )
+
+        if (education.educationYogas.isNotEmpty()) {
+            JyotishYogasCard(
+                title = stringResource(StringKeyNative.LABEL_YOGAS_PRESENT),
+                yogas = education.educationYogas,
+                language = language
+            )
+        }
+        // END NEW
+
         MercuryStrengthCard(education.mercuryStrength, language)
 
         if (education.jupiterAspectOnEducation) {
@@ -1688,6 +1857,22 @@ private fun NativeSpiritualSection(
             strength = spiritual.spiritualInclination,
             language = language
         )
+
+        // NEW: Core Jyotish Metrics
+        JyotishAshtakavargaCard(
+            houseName = "9th House",
+            bindus = spiritual.ninthHouseBindus,
+            language = language
+        )
+
+        if (spiritual.spiritualYogas.isNotEmpty()) {
+            JyotishYogasCard(
+                title = stringResource(StringKeyNative.LABEL_YOGAS_PRESENT),
+                yogas = spiritual.spiritualYogas,
+                language = language
+            )
+        }
+        // END NEW
 
         SpiritualLordsCard(spiritual, language)
 
@@ -2263,3 +2448,181 @@ private fun NativeInfoDialog(onDismiss: () -> Unit) {
 
 
 
+
+// -----------------------------------------------------------------------------
+// CORE JYOTISH METRICS CARDS (NEW)
+// -----------------------------------------------------------------------------
+
+@Composable
+private fun JyotishAvasthaCard(planet: Planet, avastha: com.astro.vajra.ephemeris.AvasthaCalculator.PlanetaryAvastha, language: Language) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.Psychology,
+                    contentDescription = null,
+                    tint = AppTheme.AccentPrimary,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(StringKeyNative.LABEL_PLANETARY_AVASTHA),
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            val baladi = avastha.baladiAvastha.state.name
+            val jagradadi = avastha.jagradadiAvastha.state.name
+            
+            Text(
+                text = "${planet.getLocalizedName(language)} is in $baladi (Age) and $jagradadi (Alertness) states.",
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                color = AppTheme.TextSecondary
+            )
+        }
+    }
+}
+
+@Composable
+private fun JyotishVargaCard(vargaName: String, ascendant: String, lord: String, language: Language) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.AutoAwesome,
+                    contentDescription = null,
+                    tint = AppTheme.AccentGold,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(StringKeyNative.LABEL_VARGA_ANALYSIS),
+                    fontFamily = CinzelDecorativeFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                    fontWeight = FontWeight.SemiBold,
+                    color = AppTheme.TextPrimary
+                )
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "$vargaName Ascendant is $ascendant, ruled by $lord.",
+                fontFamily = PoppinsFontFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                color = AppTheme.TextSecondary
+            )
+        }
+    }
+}
+
+@Composable
+private fun JyotishAshtakavargaCard(houseName: String, bindus: Int, language: Language) {
+    val strengthLabel = when {
+        bindus >= 30 -> "Excellent"
+        bindus >= 25 -> "Good"
+        bindus >= 20 -> "Average"
+        else -> "Weak"
+    }
+    val strengthColor = when {
+        bindus >= 30 -> AppTheme.SuccessColor
+        bindus >= 25 -> AppTheme.AccentTeal
+        bindus >= 20 -> AppTheme.WarningColor
+        else -> AppTheme.ErrorColor
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(
+                    text = stringResource(StringKeyNative.LABEL_ASHTAKAVARGA_BINDUS),
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                    color = AppTheme.TextMuted
+                )
+                Text(
+                    text = "$houseName: $bindus points",
+                    fontFamily = PoppinsFontFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                    fontWeight = FontWeight.Medium,
+                    color = AppTheme.TextPrimary
+                )
+            }
+            Surface(
+                shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.ElementCornerRadius),
+                color = strengthColor.copy(alpha = 0.1f)
+            ) {
+                Text(
+                    text = strengthLabel,
+                    fontFamily = SpaceGroteskFamily,
+                    fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S10,
+                    fontWeight = FontWeight.Bold,
+                    color = strengthColor,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun JyotishYogasCard(title: String, yogas: List<com.astro.vajra.ephemeris.yoga.Yoga>, language: Language) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        shape = RoundedCornerShape(com.astro.vajra.ui.theme.NeoVedicTokens.CardCornerRadius),
+        border = androidx.compose.foundation.BorderStroke(com.astro.vajra.ui.theme.NeoVedicTokens.BorderWidth, AppTheme.BorderColor)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = title,
+                fontFamily = CinzelDecorativeFamily,
+                fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S15,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            yogas.take(3).forEach { yoga ->
+                Column(modifier = Modifier.padding(bottom = 8.dp)) {
+                    Text(
+                        text = "• ${yoga.sanskritName}",
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S14,
+                        fontWeight = FontWeight.Medium,
+                        color = if (yoga.isAuspicious) AppTheme.SuccessColor else AppTheme.WarningColor
+                    )
+                    Text(
+                        text = yoga.effects,
+                        fontFamily = PoppinsFontFamily,
+                        fontSize = com.astro.vajra.ui.theme.NeoVedicFontSizes.S12,
+                        color = AppTheme.TextSecondary,
+                        modifier = Modifier.padding(start = 12.dp)
+                    )
+                }
+            }
+        }
+    }
+}
