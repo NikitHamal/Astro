@@ -63,6 +63,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -112,6 +113,7 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.KalachakraDashaUiState
 import com.astro.vajra.ui.viewmodel.KalachakraDashaViewModel
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -133,7 +135,8 @@ fun KalachakraDashaScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val language = LocalLanguage.current
-    val asOfDate = remember(chart) { LocalDate.now(resolveZoneId(chart?.birthData?.timezone)) }
+    val zoneId = remember(chart?.birthData?.timezone) { resolveZoneId(chart?.birthData?.timezone) }
+    val asOfDate = rememberZonedDate(zoneId)
 
     val chartKey = remember(chart, language) {
         chart?.let {
@@ -153,8 +156,14 @@ fun KalachakraDashaScreen(
         viewModel.loadKalachakraDasha(chart, language)
     }
 
-    val currentPeriodInfo = remember(uiState, language) {
-        extractCurrentPeriodInfo(uiState, language)
+    val activePeriod = remember(uiState, asOfDate) {
+        (uiState as? KalachakraDashaUiState.Success)?.result?.let { result ->
+            resolveActiveKalachakraPeriod(result, asOfDate)
+        }
+    }
+
+    val currentPeriodInfo = remember(uiState, language, activePeriod) {
+        extractCurrentPeriodInfo(uiState, language, activePeriod)
     }
 
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
@@ -195,9 +204,17 @@ fun KalachakraDashaScreen(
                                 onTabSelected = { selectedTab = it }
                             )
                             when (selectedTab) {
-                                0 -> CurrentPeriodTab(result = state.result, asOfDate = asOfDate)
+                                0 -> CurrentPeriodTab(
+                                    result = state.result,
+                                    asOfDate = asOfDate,
+                                    activePeriod = activePeriod
+                                )
                                 1 -> DehaJeevaTab(result = state.result)
-                                2 -> TimelineTab(result = state.result, asOfDate = asOfDate)
+                                2 -> TimelineTab(
+                                    result = state.result,
+                                    asOfDate = asOfDate,
+                                    activePeriod = activePeriod
+                                )
                             }
                         }
                     }
@@ -232,14 +249,46 @@ private data class CurrentPeriodInfo(
     val hasError: Boolean
 )
 
+private data class KalachakraActivePeriod(
+    val mahadasha: KalachakraDashaCalculator.KalachakraMahadasha?,
+    val antardasha: KalachakraDashaCalculator.KalachakraAntardasha?
+)
+
+@Composable
+private fun rememberZonedDate(
+    zoneId: ZoneId,
+    refreshMs: Long = 60_000L
+): LocalDate {
+    val today by produceState(initialValue = LocalDate.now(zoneId), key1 = zoneId) {
+        while (true) {
+            value = LocalDate.now(zoneId)
+            delay(refreshMs)
+        }
+    }
+    return today
+}
+
+private fun resolveActiveKalachakraPeriod(
+    result: KalachakraDashaCalculator.KalachakraDashaResult,
+    asOfDate: LocalDate
+): KalachakraActivePeriod {
+    val currentMahadasha = result.mahadashas.find { it.isActiveOn(asOfDate) }
+    val currentAntardasha = currentMahadasha?.getAntardashaOn(asOfDate)
+    return KalachakraActivePeriod(
+        mahadasha = currentMahadasha,
+        antardasha = currentAntardasha
+    )
+}
+
 private fun extractCurrentPeriodInfo(
     uiState: KalachakraDashaUiState,
-    language: Language
+    language: Language,
+    activePeriod: KalachakraActivePeriod?
 ): CurrentPeriodInfo {
     return when (uiState) {
         is KalachakraDashaUiState.Success -> {
-            val md = uiState.result.currentMahadasha
-            val ad = uiState.result.currentAntardasha
+            val md = activePeriod?.mahadasha
+            val ad = activePeriod?.antardasha
             CurrentPeriodInfo(
                 mahadasha = md?.sign?.getLocalizedName(language),
                 antardasha = ad?.sign?.getLocalizedName(language),
@@ -296,7 +345,8 @@ private fun KalachakraTabRow(
 @Composable
 private fun CurrentPeriodTab(
     result: KalachakraDashaCalculator.KalachakraDashaResult,
-    asOfDate: LocalDate
+    asOfDate: LocalDate,
+    activePeriod: KalachakraActivePeriod?
 ) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
@@ -311,7 +361,7 @@ private fun CurrentPeriodTab(
         verticalArrangement = Arrangement.spacedBy(com.astro.vajra.ui.theme.NeoVedicTokens.SpaceMD)
     ) {
         item(key = "current_period") {
-            CurrentPeriodCard(result = result, language = language, asOfDate = asOfDate)
+            CurrentPeriodCard(activePeriod = activePeriod, language = language, asOfDate = asOfDate)
         }
 
         item(key = "nakshatra_info") {
@@ -319,7 +369,7 @@ private fun CurrentPeriodTab(
         }
 
         item(key = "health_indicator") {
-            HealthIndicatorCard(result = result, language = language)
+            HealthIndicatorCard(currentMahadasha = activePeriod?.mahadasha, language = language)
         }
 
         item(key = "interpretation") {
@@ -338,12 +388,12 @@ private fun CurrentPeriodTab(
 
 @Composable
 private fun CurrentPeriodCard(
-    result: KalachakraDashaCalculator.KalachakraDashaResult,
+    activePeriod: KalachakraActivePeriod?,
     language: Language,
     asOfDate: LocalDate
 ) {
-    val currentMahadasha = result.currentMahadasha
-    val currentAntardasha = result.currentAntardasha
+    val currentMahadasha = activePeriod?.mahadasha
+    val currentAntardasha = activePeriod?.antardasha
 
     Surface(
         modifier = Modifier
@@ -635,10 +685,10 @@ private fun NakshatraGroupCard(
 
 @Composable
 private fun HealthIndicatorCard(
-    result: KalachakraDashaCalculator.KalachakraDashaResult,
+    currentMahadasha: KalachakraDashaCalculator.KalachakraMahadasha?,
     language: Language
 ) {
-    val currentMahadasha = result.currentMahadasha ?: return
+    currentMahadasha ?: return
     val healthIndicator = currentMahadasha.healthIndicator
     val healthColor = getHealthColor(healthIndicator)
 
@@ -1329,7 +1379,8 @@ private fun RecommendationsCard(
 @Composable
 private fun TimelineTab(
     result: KalachakraDashaCalculator.KalachakraDashaResult,
-    asOfDate: LocalDate
+    asOfDate: LocalDate,
+    activePeriod: KalachakraActivePeriod?
 ) {
     val language = LocalLanguage.current
     val listState = rememberLazyListState()
@@ -1353,8 +1404,8 @@ private fun TimelineTab(
         ) { mahadasha ->
             MahadashaCard(
                 mahadasha = mahadasha,
-                isCurrent = mahadasha == result.currentMahadasha,
-                currentAntardasha = if (mahadasha == result.currentMahadasha) result.currentAntardasha else null,
+                isCurrent = mahadasha == activePeriod?.mahadasha,
+                currentAntardasha = if (mahadasha == activePeriod?.mahadasha) activePeriod.antardasha else null,
                 dehaRashi = result.dehaRashi,
                 jeevaRashi = result.jeevaRashi,
                 language = language,
