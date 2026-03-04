@@ -54,13 +54,11 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.astro.vajra.core.common.Language
@@ -79,17 +77,6 @@ import java.util.TimeZone
 import com.astro.vajra.ui.theme.LocalAppThemeColors
 import com.astro.vajra.ui.theme.AppThemeColors
 import com.astro.vajra.ui.components.common.NeoVedicCard
- *
- * Features:
- * - Fast lazy loading with virtualized list
- * - Real-time search/filter as you type
- * - Common timezones at the top for quick access
- * - Shows current time in each timezone
- * - UTC offset display
- * - Keyboard support with proper focus management
- * - Smooth animations
- * - Memory efficient with derived state
- */
 
 /**
  * Production-grade Searchable Timezone Selector Dialog
@@ -152,7 +139,6 @@ fun TimezonePickerDialog(
     onTimezoneSelected: (String) -> Unit
 ) {
     val language = LocalLanguage.current
-    val focusManager = LocalFocusManager.current
     val searchFocusRequester = remember { FocusRequester() }
 
     var searchQuery by remember { mutableStateOf("") }
