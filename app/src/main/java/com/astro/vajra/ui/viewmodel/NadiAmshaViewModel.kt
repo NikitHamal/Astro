@@ -6,6 +6,7 @@ import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.NadiAmshaCalculator
 import com.astro.vajra.ephemeris.NadiAmshaCalculator.NadiAmshaResult
 import com.astro.vajra.ephemeris.NadiAmshaCalculator.RectificationCandidate
+import com.astro.vajra.ephemeris.SwissEphemerisEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,9 @@ import javax.inject.Inject
  * ViewModel for Nadi Amsha (D-150) Analysis Screen
  */
 @HiltViewModel
-class NadiAmshaViewModel @Inject constructor() : ViewModel() {
+class NadiAmshaViewModel @Inject constructor(
+    private val ephemerisEngine: SwissEphemerisEngine
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<NadiAmshaUiState>(NadiAmshaUiState.Loading)
     val uiState: StateFlow<NadiAmshaUiState> = _uiState.asStateFlow()
@@ -36,7 +39,13 @@ class NadiAmshaViewModel @Inject constructor() : ViewModel() {
             _uiState.value = NadiAmshaUiState.Loading
             try {
                 val result = withContext(Dispatchers.Default) {
-                    NadiAmshaCalculator.calculateNadiAmsha(chart)
+                    NadiAmshaCalculator.calculateNadiAmsha(
+                        chart = chart,
+                        ascendantResolver = { adjustedTime ->
+                            val adjustedBirthData = chart.birthData.copy(dateTime = adjustedTime)
+                            ephemerisEngine.calculateVedicChart(adjustedBirthData).ascendant
+                        }
+                    )
                 }
                 _uiState.value = NadiAmshaUiState.Success(result)
             } catch (e: Exception) {

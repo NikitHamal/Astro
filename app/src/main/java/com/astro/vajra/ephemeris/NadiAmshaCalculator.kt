@@ -1,15 +1,11 @@
 package com.astro.vajra.ephemeris
 
 import com.astro.vajra.core.common.Language
-import com.astro.vajra.core.common.StringKeyAdvanced
-import com.astro.vajra.core.common.StringResources
 import com.astro.vajra.core.common.getLocalizedName
 import com.astro.vajra.core.model.Planet
-import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import kotlin.math.abs
 
 /**
@@ -26,7 +22,6 @@ import kotlin.math.abs
  */
 object NadiAmshaCalculator {
 
-    private const val DEGREES_IN_SIGN = 30.0
     private const val NADI_PART_DEGREES = 30.0 / 150.0 // 0.2 degrees or 12 minutes
 
     data class NadiAmshaResult(
@@ -64,17 +59,20 @@ object NadiAmshaCalculator {
     /**
      * Calculate comprehensive Nadi Amsha analysis
      */
-    fun calculateNadiAmsha(chart: VedicChart): NadiAmshaResult {
+    fun calculateNadiAmsha(
+        chart: VedicChart,
+        ascendantResolver: ((LocalDateTime) -> Double)? = null
+    ): NadiAmshaResult {
         // 1. Calculate Ascendant Nadi
-        val ascendantNadi = calculateNadiPosition(null, chart.ascendant, chart.birthData.dateTime)
+        val ascendantNadi = calculateNadiPosition(null, chart.ascendant)
 
         // 2. Calculate Planet Nadis
         val planetNadis = chart.planetPositions.map { position ->
-            calculateNadiPosition(position.planet, position.longitude, chart.birthData.dateTime)
+            calculateNadiPosition(position.planet, position.longitude)
         }
 
-        // 3. Generate rectification candidates (simple +/- nearby Nadis)
-        val rectificationCandidates = generateRectificationCandidates(chart)
+        // 3. Generate rectification candidates
+        val rectificationCandidates = generateRectificationCandidates(chart, ascendantResolver)
 
         return NadiAmshaResult(
             chart = chart,
@@ -89,8 +87,7 @@ object NadiAmshaCalculator {
      */
     private fun calculateNadiPosition(
         planet: Planet?,
-        longitude: Double,
-        dateTime: LocalDateTime
+        longitude: Double
     ): NadiPosition {
         val normalizedLong = ((longitude % 360.0) + 360.0) % 360.0
         val signIndex = (normalizedLong / 30.0).toInt()
@@ -127,8 +124,8 @@ object NadiAmshaCalculator {
             nadiNumber = nadiNumber,
             nadiSign = nadiSign,
             nadiLord = nadiLord,
-            description = "Nadi #$nadiNumber in ${sign.displayName}", // Placeholder for specific Nadi name
-            descriptionNe = "${sign.getLocalizedName(Language.NEPALI)} मा नाडी #$nadiNumber",
+            description = "Nadi #$nadiNumber (${nadiSign.displayName}, ${nadiLord.displayName})",
+            descriptionNe = "नाडी #$nadiNumber (${nadiSign.getLocalizedName(Language.NEPALI)}, ${nadiLord.getLocalizedName(Language.NEPALI)})",
             energyType = energyType
         )
     }
@@ -136,7 +133,58 @@ object NadiAmshaCalculator {
     /**
      * Generate potential birth time rectifications based on Ascendant Nadi changes
      */
-    private fun generateRectificationCandidates(chart: VedicChart): List<RectificationCandidate> {
+    private fun generateRectificationCandidates(
+        chart: VedicChart,
+        ascendantResolver: ((LocalDateTime) -> Double)? = null
+    ): List<RectificationCandidate> {
+        return if (ascendantResolver != null) {
+            generateEphemerisRectificationCandidates(chart, ascendantResolver)
+        } else {
+            generateApproximateRectificationCandidates(chart)
+        }
+    }
+
+    private fun generateEphemerisRectificationCandidates(
+        chart: VedicChart,
+        ascendantResolver: (LocalDateTime) -> Double
+    ): List<RectificationCandidate> {
+        val candidates = mutableListOf<RectificationCandidate>()
+        val currentNadiNumber = calculateNadiPosition(
+            planet = null,
+            longitude = chart.ascendant
+        ).nadiNumber
+        val seenNadis = mutableSetOf<Int>()
+
+        for (minuteShift in -15..15) {
+            if (minuteShift == 0) continue
+            val adjustedTime = chart.birthData.dateTime.plusMinutes(minuteShift.toLong())
+            val adjustedAscendant = ascendantResolver(adjustedTime)
+            val adjustedNadi = calculateNadiPosition(
+                planet = null,
+                longitude = adjustedAscendant
+            )
+
+            if (adjustedNadi.nadiNumber == currentNadiNumber) continue
+            if (!seenNadis.add(adjustedNadi.nadiNumber)) continue
+
+            val confidence = (100 - abs(minuteShift) * 4).coerceIn(35, 99)
+            val shiftPrefix = if (minuteShift > 0) "+" else ""
+
+            candidates.add(
+                RectificationCandidate(
+                    timeAdjustmentMinutes = minuteShift,
+                    adjustedTime = adjustedTime,
+                    nadiNumber = adjustedNadi.nadiNumber,
+                    description = "Shift to Nadi #${adjustedNadi.nadiNumber} (${adjustedNadi.nadiSign.displayName}) [$shiftPrefix$minuteShift min]",
+                    confidence = confidence
+                )
+            )
+        }
+
+        return candidates.sortedBy { abs(it.timeAdjustmentMinutes) }.take(7)
+    }
+
+    private fun generateApproximateRectificationCandidates(chart: VedicChart): List<RectificationCandidate> {
         val candidates = mutableListOf<RectificationCandidate>()
         val currentAscendant = chart.ascendant
         val currentSignIndex = (currentAscendant / 30.0).toInt()
@@ -178,9 +226,6 @@ object NadiAmshaCalculator {
 
         return candidates
     }
-
-    // Reference data for Nadi names could be added here in future
-    // private val NADI_NAMES = listOf(...)
 }
 
 

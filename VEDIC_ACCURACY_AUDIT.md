@@ -80,6 +80,10 @@ Date: 2026-03-05
   - UI now attempts to provide real current transit positions via `SwissEphemerisEngine`.
   - Applies bounded fallback days only if live transit position is unavailable.
 - Added explicit mode disclosure in `AshtamangalaPrashnaScreen` so users can see active shell-generation policy (deterministic daily vs classic random) before interpreting results.
+- Upgraded Nadi rectification from approximate sign-local shifting to ephemeris-backed ascendant recomputation in active UI flow:
+  - `NadiAmshaCalculator` now supports injected ascendant resolver for deterministic recalculation by adjusted minute.
+  - `NadiAmshaViewModel` now supplies resolver using `SwissEphemerisEngine`.
+  - Legacy approximate rectification path retained only as fallback when no resolver is provided.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
@@ -100,8 +104,6 @@ Date: 2026-03-05
   - Previously random by `System.nanoTime()`. Now configurable deterministic/random mode; next step is adding explicit provenance display in UI.
 
 ### P1: Placeholder/Approximation Markers Affecting Practical Usefulness
-- `app/src/main/java/com/astro/vajra/ephemeris/NadiAmshaCalculator.kt`
-  - Simplified boundary handling and approximation comments in rectification path.
 - `app/src/main/java/com/astro/vajra/ephemeris/SarvatobhadraChakraCalculator.kt`
   - Simplified tithi calculation marker.
 - `app/src/main/java/com/astro/vajra/ephemeris/SadeSatiCalculator.kt`

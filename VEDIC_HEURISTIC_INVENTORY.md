@@ -30,10 +30,11 @@ Generated: 2026-03-05
 | app\src\main\java\com\astro\vajra\ephemeris\HoroscopeCalculator.kt | 1054 | Placeholder | val dayName = if (language == Language.NEPALI) com.astro.vajra.core.common.BikramSambatConverter.toNepaliNumerals(it.dayOfWeek.value.toStrin... |
 | app\src\main\java\com\astro\vajra\ephemeris\KakshaTransitCalculator.kt | 42 | approximate | /** Average planetary speeds in degrees per day (approximate) */ |
 | app\src\main\java\com\astro\vajra\ephemeris\KalachakraDashaCalculator.kt | 1282 | Fallback | areas.add("${getLocalizedPlanetName(signLord, language)}-${StringResources.get(com.astro.vajra.core.common.StringKey.VARSHAPHALA_KEY_DATES, ... |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 130 | Placeholder | description = "Nadi #$nadiNumber in ${sign.displayName}", // Placeholder for specific Nadi name |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 146 | Approximate | // Approximate ascendant speed for first-pass rectification search. |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 149 | approx | // Check +/- 5 Nadis (approx +/- 4 minutes) |
-| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 165 | simplified | // Handle boundary crossing (very simplified, assumes same sign for small shifts) |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 143 | Approximate | generateApproximateRectificationCandidates(chart) |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 187 | Approximate | private fun generateApproximateRectificationCandidates(chart: VedicChart): List<RectificationCandidate> { |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 194 | Approximate | // Approximate ascendant speed for first-pass rectification search. |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 197 | approx | // Check +/- 5 Nadis (approx +/- 4 minutes) |
+| app\src\main\java\com\astro\vajra\ephemeris\NadiAmshaCalculator.kt | 213 | simplified | // Handle boundary crossing (very simplified, assumes same sign for small shifts) |
 | app\src\main\java\com\astro\vajra\ephemeris\nativeanalysis\NativeAnalysisCalculator.kt | 106 | Simplified | private fun checkDhanaYoga(c: VedicChart): Boolean = true // Simplified |
 | app\src\main\java\com\astro\vajra\ephemeris\prashna\PrashnaConstants.kt | 23 | approximate | // Moon movement per day (approximately 13.2 degrees) |
 | app\src\main\java\com\astro\vajra\ephemeris\SadeSatiCalculator.kt | 24 | approximate | * Total duration: approximately 7.5 years (Sade = 7, Sati = half) |
