@@ -52,6 +52,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -94,6 +95,7 @@ import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -113,6 +115,20 @@ private fun drigMonthYearFormatter(language: Language): DateTimeFormatter =
 private fun drigShortDateFormatter(language: Language): DateTimeFormatter =
     DateTimeFormatter.ofPattern("MMM yy", drigLocale(language))
 
+@Composable
+private fun rememberZonedNow(
+    zoneId: ZoneId,
+    refreshMs: Long = 5_000L
+): LocalDateTime {
+    val now by produceState(initialValue = LocalDateTime.now(zoneId), key1 = zoneId) {
+        while (true) {
+            value = LocalDateTime.now(zoneId)
+            delay(refreshMs)
+        }
+    }
+    return now
+}
+
 /**
  * DrigDashaScreen - Jaimini Drig (Sthira) Dasha System Screen
  *
@@ -126,10 +142,15 @@ fun DrigDashaScreen(
     onBack: () -> Unit
 ) {
     val language = LocalLanguage.current
-    val asOf = remember(chart) { LocalDateTime.now(resolveZoneId(chart?.birthData?.timezone)) }
+    val zoneId = remember(chart?.birthData?.timezone) { resolveZoneId(chart?.birthData?.timezone) }
+    val asOf = rememberZonedNow(zoneId)
     var analysis by remember { mutableStateOf<DrigDashaAnalysis?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    val liveCurrentDasha = remember(analysis, asOf) {
+        analysis?.drigDashaSequence?.find { it.contains(asOf) }
+    }
 
     // Calculate Drig Dasha Analysis
     LaunchedEffect(chart) {
@@ -170,6 +191,7 @@ fun DrigDashaScreen(
                 analysis = analysis!!,
                 language = language,
                 asOf = asOf,
+                currentDasha = liveCurrentDasha,
                 modifier = Modifier.padding(padding)
             )
         }
@@ -195,6 +217,7 @@ private fun DrigDashaContent(
     analysis: DrigDashaAnalysis,
     language: Language,
     asOf: LocalDateTime,
+    currentDasha: DrigDashaPeriod?,
     modifier: Modifier = Modifier
 ) {
     var selectedTab by remember { mutableStateOf(0) }
@@ -229,8 +252,8 @@ private fun DrigDashaContent(
 
         // Tab Content
         when (selectedTab) {
-            0 -> OverviewTab(analysis, language, asOf)
-            1 -> DashaPeriodTab(analysis, language)
+            0 -> OverviewTab(analysis, language, asOf, currentDasha)
+            1 -> DashaPeriodTab(analysis, language, currentDasha)
             2 -> MarakaAnalysisTab(analysis, language)
             3 -> SthiraKarakasTab(analysis, language)
         }
@@ -241,7 +264,8 @@ private fun DrigDashaContent(
 private fun OverviewTab(
     analysis: DrigDashaAnalysis,
     language: Language,
-    asOf: LocalDateTime
+    asOf: LocalDateTime,
+    currentDasha: DrigDashaPeriod?
 ) {
     val dateFormatter = remember(language) { drigLongDateFormatter(language) }
 
@@ -256,10 +280,10 @@ private fun OverviewTab(
         }
 
         // Current Period Card
-        analysis.currentDasha?.let { currentDasha ->
+        currentDasha?.let { activePeriod ->
             item {
                 CurrentPeriodCard(
-                    period = currentDasha,
+                    period = activePeriod,
                     language = language,
                     dateFormatter = dateFormatter,
                     asOf = asOf
@@ -316,8 +340,8 @@ private fun OverviewTab(
                             com.astro.vajra.core.common.StringKeyDosha.DRIG_RUDRA_SIGN_DESC,
                             analysis.longevitySpan.displayName
                         ) + " (${analysis.longevitySpan.minYears}-${analysis.longevitySpan.maxYears} " + stringResource(com.astro.vajra.core.common.StringKeyDosha.DRIG_YEARS) + "). " +
-                                stringResource(com.astro.vajra.core.common.StringKeyDosha.DRIG_CURRENT_DASHA) + " is ruled by ${analysis.currentDasha?.signLord?.getLocalizedName(language) ?: stringResource(com.astro.vajra.core.common.StringKeyMatch.MISC_UNKNOWN)}, " +
-                                stringResource(com.astro.vajra.core.common.StringKeyUICommon.FOR) + " ${analysis.currentDasha?.interpretation ?: stringResource(com.astro.vajra.core.common.StringKeyAnalysis.DASHA_KW_GENERAL)}.",
+                                stringResource(com.astro.vajra.core.common.StringKeyDosha.DRIG_CURRENT_DASHA) + " is ruled by ${currentDasha?.signLord?.getLocalizedName(language) ?: stringResource(com.astro.vajra.core.common.StringKeyMatch.MISC_UNKNOWN)}, " +
+                                stringResource(com.astro.vajra.core.common.StringKeyUICommon.FOR) + " ${currentDasha?.interpretation ?: stringResource(com.astro.vajra.core.common.StringKeyAnalysis.DASHA_KW_GENERAL)}.",
                         fontSize = NeoVedicFontSizes.S13,
                         color = AppTheme.TextSecondary,
                         lineHeight = 22.sp,
@@ -701,7 +725,8 @@ private fun TrimurtiSignItem(
 @Composable
 private fun DashaPeriodTab(
     analysis: DrigDashaAnalysis,
-    language: Language
+    language: Language,
+    currentDasha: DrigDashaPeriod?
 ) {
     val dateFormatter = remember(language) { drigMonthYearFormatter(language) }
     var expandedIndex by remember { mutableStateOf<Int?>(null) }
@@ -728,7 +753,7 @@ private fun DashaPeriodTab(
                 language = language,
                 dateFormatter = dateFormatter,
                 isExpanded = expandedIndex == index,
-                isCurrentPeriod = period == analysis.currentDasha,
+                isCurrentPeriod = period == currentDasha,
                 onExpandClick = {
                     expandedIndex = if (expandedIndex == index) null else index
                 }
