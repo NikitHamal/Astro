@@ -61,6 +61,7 @@ import com.astro.vajra.ui.theme.NeoVedicTokens
 import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.components.common.vedicCornerMarkers
+import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -109,6 +110,25 @@ private fun homeLabelSpacing(default: TextUnit, language: Language): TextUnit =
 private fun homeLabelSize(default: TextUnit, language: Language, nepaliScale: Float = 1.15f): TextUnit =
     if (language == Language.NEPALI) (default.value * nepaliScale).sp else default
 
+@Composable
+private fun rememberZonedNow(
+    timeline: DashaCalculator.DashaTimeline?,
+    fallbackZone: ZoneId,
+    refreshMs: Long = 5_000L
+): LocalDateTime {
+    val now by produceState(
+        initialValue = timeline?.nowInTimelineZone() ?: LocalDateTime.now(fallbackZone),
+        key1 = timeline,
+        key2 = fallbackZone
+    ) {
+        while (true) {
+            value = timeline?.nowInTimelineZone() ?: LocalDateTime.now(fallbackZone)
+            delay(refreshMs)
+        }
+    }
+    return now
+}
+
 // ============================================================================
 // MAIN HOME TAB COMPOSABLE - CELESTIAL DASHBOARD
 // ============================================================================
@@ -140,7 +160,12 @@ fun HomeTab(
             null
         }
     }
-    val currentDasha = dashaTimeline?.currentMahadasha
+    val fallbackZone = remember(chart.birthData.timezone) { resolveZoneId(chart.birthData.timezone) }
+    val now = rememberZonedNow(timeline = dashaTimeline, fallbackZone = fallbackZone)
+    val today = now.toLocalDate()
+    val currentDasha = remember(dashaTimeline, now) {
+        dashaTimeline?.getDashaAtDate(now)?.mahadasha
+    }
 
     LazyColumn(
         state = listState,
@@ -153,8 +178,8 @@ fun HomeTab(
         // Hero Section - Current Maha Dasha
         item(key = "hero_dasha") {
             HeroDashaCard(
-                chart = chart,
                 currentDasha = currentDasha,
+                today = today,
                 language = language,
                 onClick = { onFeatureClick(InsightFeature.DASHAS) }
             )
@@ -171,7 +196,7 @@ fun HomeTab(
         // Today's Snapshot - Panchanga Strip
         item(key = "today_snapshot") {
             TodaySnapshotSection(
-                chart = chart,
+                today = today,
                 language = language,
                 onPanchangaClick = { onFeatureClick(InsightFeature.PANCHANGA) },
                 onTransitsClick = { onFeatureClick(InsightFeature.TRANSITS) }
@@ -272,13 +297,12 @@ fun HomeTab(
 // ============================================================================
 @Composable
 private fun HeroDashaCard(
-    chart: VedicChart,
     currentDasha: DashaCalculator.Mahadasha?,
+    today: LocalDate,
     language: Language,
     onClick: () -> Unit
 ) {
     val colors = AppTheme.current
-    val today = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
 
     val planetColor = currentDasha?.planet?.let { getPlanetDisplayColor(it) } ?: AppTheme.AccentGold
 
@@ -580,13 +604,12 @@ private data class QuickAction(
 // ============================================================================
 @Composable
 private fun TodaySnapshotSection(
-    chart: VedicChart,
+    today: LocalDate,
     language: Language,
     onPanchangaClick: () -> Unit,
     onTransitsClick: () -> Unit
 ) {
     val colors = AppTheme.current
-    val today = remember(chart) { LocalDate.now(resolveZoneId(chart.birthData.timezone)) }
 
     Column(
         modifier = Modifier.padding(horizontal = HomeDesignTokens.ScreenPadding)
