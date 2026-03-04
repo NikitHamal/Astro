@@ -58,7 +58,6 @@ import kotlin.math.roundToInt
 object KalachakraDashaCalculator {
 
     private val MATH_CONTEXT = DashaUtils.MATH_CONTEXT
-    private val DAYS_PER_YEAR = DashaUtils.DAYS_PER_YEAR
 
     // ============================================
     // KALACHAKRA DASHA CONSTANTS (from BPHS)

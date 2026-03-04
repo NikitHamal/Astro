@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.DashaCalculator
+import com.astro.vajra.ephemeris.DashaUtils
 import com.astro.vajra.util.ChartUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
@@ -105,6 +106,8 @@ class DashaViewModel @Inject constructor() : ViewModel() {
      * Uses shared ChartUtils for consistent cache key generation across ViewModels.
      */
     private fun generateChartKey(chart: VedicChart): String = ChartUtils.generateChartKey(chart)
+        .plus("|basis|")
+        .plus(DashaUtils.getDefaultYearBasis().name)
 
     override fun onCleared() {
         super.onCleared()

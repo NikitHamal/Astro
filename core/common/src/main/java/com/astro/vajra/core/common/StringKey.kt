@@ -629,6 +629,12 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     SETTINGS_NODE_CALCULATION("Node Calculation", "राहु-केतु गणना"),
     SETTINGS_NODE_MEAN("Mean Node", "मध्यम राहु"),
     SETTINGS_NODE_TRUE("True Node", "स्पष्ट राहु"),
+    SETTINGS_DASHA_YEAR_BASIS("Dasha Year Basis", "दशा वर्ष आधार"),
+    SETTINGS_DASHA_YEAR_SAVANA("Savana (360 days)", "सावन (३६० दिन)"),
+    SETTINGS_DASHA_YEAR_TROPICAL("Tropical (365.24219 days)", "ट्रपिकल (३६५.२४२१९ दिन)"),
+    SETTINGS_ASHTAMANGALA_MODE("Ashtamangala Mode", "अष्टमङ्गल मोड"),
+    SETTINGS_ASHTAMANGALA_DETERMINISTIC("Deterministic (daily)", "नियत (दैनिक)"),
+    SETTINGS_ASHTAMANGALA_CLASSIC_RANDOM("Classic random throw", "परम्परागत यादृच्छिक फाल"),
 
     // Theme options
     THEME_LIGHT("Light", "उज्यालो"),

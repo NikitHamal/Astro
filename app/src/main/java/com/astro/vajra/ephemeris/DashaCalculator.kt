@@ -19,13 +19,13 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.roundToInt
 
 private val MATH_CONTEXT = DashaUtils.MATH_CONTEXT
-private val DAYS_PER_YEAR_BD = DashaUtils.DAYS_PER_YEAR
 private val NAKSHATRA_SPAN_BD = DashaUtils.NAKSHATRA_SPAN
 private val TOTAL_CYCLE_YEARS_BD = BigDecimal("120")
 
 private fun yearsToRoundedDays(years: Double): Long = DashaUtils.yearsToRoundedDays(years)
 private fun yearsToRoundedDays(years: BigDecimal): Long = DashaUtils.yearsToRoundedDays(years)
 private fun yearsToSeconds(years: BigDecimal): Long = DashaUtils.yearsToSeconds(years)
+private fun secondsPerDashaYear(): Double = DashaUtils.DAYS_PER_YEAR.toDouble() * 24 * 3600
 
 object DashaCalculator {
 
@@ -95,7 +95,7 @@ object DashaCalculator {
             if (asOf.isBefore(startDate)) return 0.0
             if (!asOf.isBefore(endDate)) return durationYears
             val elapsedSeconds = ChronoUnit.SECONDS.between(startDate, asOf)
-            return elapsedSeconds / (DashaUtils.DAYS_PER_YEAR.toDouble() * 24 * 3600)
+            return elapsedSeconds / secondsPerDashaYear()
         }
 
         fun getRemainingYears(asOf: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)): Double {
@@ -117,7 +117,7 @@ object DashaCalculator {
         val pratyantardashas: List<Pratyantardasha> = emptyList()
     ) {
         val durationYears: Double
-            get() = durationSeconds / (DashaUtils.DAYS_PER_YEAR.toDouble() * 24 * 3600)
+            get() = durationSeconds / secondsPerDashaYear()
 
         fun isActiveOn(date: LocalDateTime): Boolean {
             return !date.isBefore(startDate) && date.isBefore(endDate)
@@ -821,7 +821,7 @@ object DashaCalculator {
             return pratyantardasha.sookshmadashas
         }
 
-        val pratyantarDurationYearsBd = BigDecimal((pratyantardasha.durationSeconds.toDouble() / (DashaUtils.DAYS_PER_YEAR.toDouble() * 24 * 3600)).toString())
+        val pratyantarDurationYearsBd = BigDecimal((pratyantardasha.durationSeconds.toDouble() / secondsPerDashaYear()).toString())
         return calculateSookshmadashasInternal(
             mahadashaPlanet = pratyantardasha.mahadashaPlanet,
             antardashaPlanet = pratyantardasha.antardashaPlanet,

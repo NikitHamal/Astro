@@ -25,8 +25,8 @@ object AshtottariDashaCalculator {
     /** Total Ashtottari cycle: 108 years */
     const val TOTAL_CYCLE_YEARS = 108.0
 
-    /** Days per year for calculations */
-    private val DAYS_PER_YEAR = DashaUtils.DAYS_PER_YEAR.toDouble()
+    /** Days per year for calculations (resolved dynamically from timing settings). */
+    private fun daysPerYear(): Double = DashaUtils.DAYS_PER_YEAR.toDouble()
 
     /**
      * Ashtottari Dasha periods in years
@@ -191,7 +191,7 @@ object AshtottariDashaCalculator {
                 val period = ASHTOTTARI_PERIODS[planet] ?: continue
 
                 val actualPeriod = if (mahadashas.isEmpty()) balanceInFirst else period
-                val endDate = currentDate.plusDays((actualPeriod * DAYS_PER_YEAR).toLong())
+                val endDate = currentDate.plusDays((actualPeriod * daysPerYear()).toLong())
 
                 mahadashas.add(
                     AshtottariMahadasha(
@@ -241,7 +241,7 @@ object AshtottariDashaCalculator {
                 AshtottariAntardasha(
                     mahadashaLord = mahadasha.planet,
                     antardashaLord = antarPlanet,
-                    periodYears = (antarDays / DAYS_PER_YEAR),
+                    periodYears = (antarDays / daysPerYear()),
                     startDate = currentDate,
                     endDate = endDate,
                     relationship = relationship,

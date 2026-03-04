@@ -40,6 +40,7 @@ import com.astro.vajra.ephemeris.DivisionalChartCalculator
 import com.astro.vajra.ephemeris.DivisionalChartData
 import com.astro.vajra.ephemeris.DivisionalChartType
 import com.astro.vajra.ephemeris.DashaCalculator
+import com.astro.vajra.ephemeris.DashaUtils
 import com.astro.vajra.ui.chart.ChartColorConfig
 import com.astro.vajra.ui.chart.ChartRenderer
 import com.astro.vajra.ui.components.FullScreenChartDialog
@@ -371,7 +372,8 @@ private fun YogasTabContentWrapper(
 
 @Composable
 private fun DashasTabContentWrapper(chart: VedicChart) {
-    val timeline = remember(chart) { DashaCalculator.calculateDashaTimeline(chart) }
+    val activeYearBasis = DashaUtils.getDefaultYearBasis()
+    val timeline = remember(chart, activeYearBasis) { DashaCalculator.calculateDashaTimeline(chart) }
     Box(
         modifier = Modifier
             .fillMaxSize()

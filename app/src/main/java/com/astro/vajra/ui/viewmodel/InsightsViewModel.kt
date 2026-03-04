@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.astro.vajra.core.common.StringKey
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.DashaCalculator
+import com.astro.vajra.ephemeris.DashaUtils
 import com.astro.vajra.ephemeris.HoroscopeCalculator
 import com.astro.vajra.util.ChartUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -79,6 +80,8 @@ class InsightsViewModel @Inject constructor(
      * Uses shared ChartUtils for consistent cache key generation across ViewModels.
      */
     private fun getChartId(chart: VedicChart): String = ChartUtils.generateChartKey(chart)
+        .plus("|basis|")
+        .plus(DashaUtils.getDefaultYearBasis().name)
 
     private fun isCacheValid(chartId: String, today: LocalDate, language: com.astro.vajra.core.common.Language): Boolean {
         return cachedData?.let {

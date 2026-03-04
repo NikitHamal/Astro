@@ -9,6 +9,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.util.Locale
 import kotlin.math.abs
 import kotlin.random.Random
 
@@ -272,6 +273,17 @@ object AshtamangalaPrashnaCalculator {
 
     enum class RemedyType { DEITY_WORSHIP, MANTRA, DIRECTION, COLOR, DAY, DONATION, ACTION }
 
+    /**
+     * Shell generation mode for Ashtamangala readings.
+     *
+     * DETERMINISTIC_DAILY keeps the same result for the same query category and chart on a given day.
+     * CLASSIC_RANDOM uses a non-deterministic throw each time.
+     */
+    enum class ShellGenerationMode {
+        DETERMINISTIC_DAILY,
+        CLASSIC_RANDOM
+    }
+
     // ============================================
     // MAIN CALCULATION FUNCTIONS
     // ============================================
@@ -282,13 +294,21 @@ object AshtamangalaPrashnaCalculator {
     fun generateReading(
         category: QueryCategory,
         chart: VedicChart? = null,
-        seedValue: Long? = null
+        seedValue: Long? = null,
+        generationMode: ShellGenerationMode = ShellGenerationMode.DETERMINISTIC_DAILY
     ): AshtamangalaReading {
         val queryZone = resolveZoneId(chart?.birthData?.timezone)
         val queryTime = LocalDateTime.now(queryZone)
 
+        val effectiveSeed = seedValue
+            ?: if (generationMode == ShellGenerationMode.DETERMINISTIC_DAILY) {
+                deriveDeterministicDailySeed(category, chart, queryTime)
+            } else {
+                null
+            }
+
         // Generate cowrie throw
-        val cowrieThrow = simulateCowrieThrow(seedValue)
+        val cowrieThrow = simulateCowrieThrow(effectiveSeed)
 
         // Analyze all 8 positions
         val positionAnalysis = analyzePositions(cowrieThrow, category)
@@ -378,6 +398,37 @@ object AshtamangalaPrashnaCalculator {
             numericalStrength = numericalStrength,
             interpretation = interpretation
         )
+    }
+
+    private fun deriveDeterministicDailySeed(
+        category: QueryCategory,
+        chart: VedicChart?,
+        queryTime: LocalDateTime
+    ): Long {
+        val stableIdentity = buildString {
+            append(category.name)
+            append('|')
+            append(queryTime.toLocalDate().toEpochDay())
+
+            chart?.birthData?.let { birth ->
+                append('|')
+                append(birth.dateTime.toLocalDate())
+                append('|')
+                append((birth.latitude * 10_000).toInt())
+                append('|')
+                append((birth.longitude * 10_000).toInt())
+                append('|')
+                append(birth.timezone)
+                append('|')
+                append(birth.name.trim().lowercase(Locale.ROOT))
+            }
+        }
+
+        var hash = 1125899906842597L // prime seed
+        stableIdentity.forEach { ch ->
+            hash = 31L * hash + ch.code.toLong()
+        }
+        return hash
     }
 
     /**

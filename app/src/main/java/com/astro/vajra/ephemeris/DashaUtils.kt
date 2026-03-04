@@ -3,6 +3,7 @@ package com.astro.vajra.ephemeris
 import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Shared utility functions for Dasha calculations.
@@ -12,6 +13,11 @@ import java.math.RoundingMode
  */
 object DashaUtils {
 
+    enum class DashaYearBasis {
+        SAVANA_360,
+        TROPICAL_365_24219
+    }
+
     /**
      * Standard math context for high-precision Dasha calculations.
      * Uses 20 decimal places with HALF_EVEN rounding (banker's rounding).
@@ -19,20 +25,36 @@ object DashaUtils {
     val MATH_CONTEXT = MathContext(20, RoundingMode.HALF_EVEN)
 
     /**
-     * Average days per year used in Dasha calculations.
-     * Uses 365.24219 (tropical year) for high precision.
-     */
-    val DAYS_PER_YEAR = BigDecimal("365.24219")
-
-    /**
      * Savana year (360 days) often used in Dasha calculations
      */
     val DAYS_PER_SAVANA_YEAR = BigDecimal("360")
 
     /**
+     * Tropical year used by many modern timing implementations.
+     */
+    val DAYS_PER_TROPICAL_YEAR = BigDecimal("365.24219")
+
+    private val defaultYearBasis = AtomicReference(DashaYearBasis.SAVANA_360)
+
+    /**
+     * Dynamically resolved days-per-year used by default in Dasha calculations.
+     */
+    val DAYS_PER_YEAR: BigDecimal
+        get() = when (defaultYearBasis.get()) {
+            DashaYearBasis.SAVANA_360 -> DAYS_PER_SAVANA_YEAR
+            DashaYearBasis.TROPICAL_365_24219 -> DAYS_PER_TROPICAL_YEAR
+        }
+
+    /**
      * Span of one Nakshatra in degrees (360 / 27 = 13.333...).
      */
     val NAKSHATRA_SPAN = BigDecimal("13.333333333333333333")
+
+    fun setDefaultYearBasis(basis: DashaYearBasis) {
+        defaultYearBasis.set(basis)
+    }
+
+    fun getDefaultYearBasis(): DashaYearBasis = defaultYearBasis.get()
 
     /**
      * Convert years (BigDecimal) to seconds for higher precision sub-day timing

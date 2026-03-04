@@ -7,6 +7,7 @@ import com.astro.vajra.core.common.Language
 import com.astro.vajra.core.common.StringKeyDosha
 import com.astro.vajra.core.common.StringResources
 import com.astro.vajra.ephemeris.YoginiDashaCalculator
+import com.astro.vajra.ephemeris.DashaUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
@@ -115,6 +116,8 @@ class YoginiDashaViewModel @Inject constructor() : ViewModel() {
             append(chart.ayanamsaName)
             append("|yogini|")
             append(language.name)
+            append("|basis|")
+            append(DashaUtils.getDefaultYearBasis().name)
         }
     }
 

@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,6 +38,8 @@ import com.astro.vajra.core.common.StringKeyAshtamangala
 import com.astro.vajra.core.common.StringKeyUIExtra
 import com.astro.vajra.core.common.BikramSambatConverter
 import com.astro.vajra.core.common.Language
+import com.astro.vajra.data.preferences.AshtamangalaMode
+import com.astro.vajra.data.preferences.AstrologySettingsManager
 import com.astro.vajra.data.localization.currentLanguage
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.VedicChart
@@ -86,6 +89,9 @@ fun AshtamangalaPrashnaScreen(
     chart: VedicChart?,
     onBack: () -> Unit
 ) {
+    val context = LocalContext.current
+    val astroSettings = remember { AstrologySettingsManager.getInstance(context) }
+    val ashtamangalaMode by astroSettings.ashtamangalaMode.collectAsState()
     val language = currentLanguage()
     var showInfoDialog by remember { mutableStateOf(false) }
     var selectedTab by remember { mutableIntStateOf(0) }
@@ -174,7 +180,12 @@ fun AshtamangalaPrashnaScreen(
                             currentReading = reading
                             isThrowingShells = false
                         },
-                        chart = chart
+                        chart = chart,
+                        shellMode = if (ashtamangalaMode == AshtamangalaMode.CLASSIC_RANDOM) {
+                            AshtamangalaPrashnaCalculator.ShellGenerationMode.CLASSIC_RANDOM
+                        } else {
+                            AshtamangalaPrashnaCalculator.ShellGenerationMode.DETERMINISTIC_DAILY
+                        }
                     )
                 }
                 currentReading != null -> {
@@ -357,7 +368,8 @@ private fun CowrieThrowContent(
     isThrowingShells: Boolean,
     onThrowShells: () -> Unit,
     onReadingGenerated: (AshtamangalaReading) -> Unit,
-    chart: VedicChart?
+    chart: VedicChart?,
+    shellMode: AshtamangalaPrashnaCalculator.ShellGenerationMode
 ) {
     var animationProgress by remember { mutableFloatStateOf(0f) }
     var shellStates by remember { mutableStateOf(List(8) { false }) }
@@ -374,7 +386,8 @@ private fun CowrieThrowContent(
             delay(200)
             val reading = AshtamangalaPrashnaCalculator.generateReading(
                 category = category,
-                chart = chart
+                chart = chart,
+                generationMode = shellMode
             )
             onReadingGenerated(reading)
         }

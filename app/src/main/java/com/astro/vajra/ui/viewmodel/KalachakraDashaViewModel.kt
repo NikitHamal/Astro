@@ -3,6 +3,7 @@ package com.astro.vajra.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.astro.vajra.core.model.VedicChart
+import com.astro.vajra.ephemeris.DashaUtils
 import com.astro.vajra.ephemeris.KalachakraDashaCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
@@ -130,6 +131,8 @@ class KalachakraDashaViewModel @Inject constructor() : ViewModel() {
             append(chart.ayanamsaName)
             append("|kalachakra|")
             append(language.name)
+            append("|basis|")
+            append(DashaUtils.getDefaultYearBasis().name)
         }
     }
 

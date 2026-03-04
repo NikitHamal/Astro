@@ -37,7 +37,9 @@ import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.Ayanamsa
 import com.astro.vajra.core.model.HouseSystem
 import com.astro.vajra.core.model.VedicChart
+import com.astro.vajra.data.preferences.AshtamangalaMode
 import com.astro.vajra.data.preferences.AstrologySettingsManager
+import com.astro.vajra.data.preferences.DashaYearBasis
 import com.astro.vajra.data.preferences.NodeCalculationMode
 import com.astro.vajra.data.preferences.ThemeManager
 import com.astro.vajra.data.preferences.ThemeMode
@@ -150,6 +152,14 @@ fun SettingsTab(
 
         item {
             NodeSetting()
+        }
+
+        item {
+            DashaYearBasisSetting()
+        }
+
+        item {
+            AshtamangalaModeSetting()
         }
 
         // About Section
@@ -1079,6 +1089,214 @@ private fun NodeSetting() {
                             text = stringResource(nameKey),
                             style = MaterialTheme.typography.bodyMedium,
                             color = if (mode == currentNodeMode) AppTheme.TextPrimary else AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DashaYearBasisSetting() {
+    val context = LocalContext.current
+    val astroSettings = remember { AstrologySettingsManager.getInstance(context) }
+    val currentBasis by astroSettings.dashaYearBasis.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
+
+    val options = listOf(
+        DashaYearBasis.SAVANA_360 to StringKey.SETTINGS_DASHA_YEAR_SAVANA,
+        DashaYearBasis.TROPICAL_365_24219 to StringKey.SETTINGS_DASHA_YEAR_TROPICAL
+    )
+
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(SettingsDesignTokens.IconShape)
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Schedule,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(StringKey.SETTINGS_DASHA_YEAR_BASIS),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = stringResource(
+                            if (currentBasis == DashaYearBasis.TROPICAL_365_24219) {
+                                StringKey.SETTINGS_DASHA_YEAR_TROPICAL
+                            } else {
+                                StringKey.SETTINGS_DASHA_YEAR_SAVANA
+                            }
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                options.forEach { (basis, nameKey) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                astroSettings.setDashaYearBasis(basis)
+                                expanded = false
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = basis == currentBasis,
+                            onClick = {
+                                astroSettings.setDashaYearBasis(basis)
+                                expanded = false
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = AppTheme.AccentPrimary,
+                                unselectedColor = AppTheme.TextMuted
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(nameKey),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (basis == currentBasis) AppTheme.TextPrimary else AppTheme.TextSecondary
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AshtamangalaModeSetting() {
+    val context = LocalContext.current
+    val astroSettings = remember { AstrologySettingsManager.getInstance(context) }
+    val currentMode by astroSettings.ashtamangalaMode.collectAsState()
+    var expanded by remember { mutableStateOf(false) }
+
+    val options = listOf(
+        AshtamangalaMode.DETERMINISTIC_DAILY to StringKey.SETTINGS_ASHTAMANGALA_DETERMINISTIC,
+        AshtamangalaMode.CLASSIC_RANDOM to StringKey.SETTINGS_ASHTAMANGALA_CLASSIC_RANDOM
+    )
+
+    NeoVedicCard(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+    ) {
+        Column {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { expanded = !expanded },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(SettingsDesignTokens.IconShape)
+                        .background(AppTheme.ChipBackground),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Animation,
+                        contentDescription = null,
+                        tint = AppTheme.AccentPrimary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = stringResource(StringKey.SETTINGS_ASHTAMANGALA_MODE),
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        color = AppTheme.TextPrimary
+                    )
+                    Text(
+                        text = stringResource(
+                            if (currentMode == AshtamangalaMode.CLASSIC_RANDOM) {
+                                StringKey.SETTINGS_ASHTAMANGALA_CLASSIC_RANDOM
+                            } else {
+                                StringKey.SETTINGS_ASHTAMANGALA_DETERMINISTIC
+                            }
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.AccentPrimary
+                    )
+                }
+
+                Icon(
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextMuted
+                )
+            }
+
+            if (expanded) {
+                HorizontalDivider(color = AppTheme.DividerColor)
+
+                options.forEach { (mode, nameKey) ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                astroSettings.setAshtamangalaMode(mode)
+                                expanded = false
+                            }
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = mode == currentMode,
+                            onClick = {
+                                astroSettings.setAshtamangalaMode(mode)
+                                expanded = false
+                            },
+                            colors = RadioButtonDefaults.colors(
+                                selectedColor = AppTheme.AccentPrimary,
+                                unselectedColor = AppTheme.TextMuted
+                            )
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(nameKey),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = if (mode == currentMode) AppTheme.TextPrimary else AppTheme.TextSecondary
                         )
                     }
                 }
