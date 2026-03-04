@@ -93,7 +93,20 @@ object NativeAnalysisCalculator {
     }
 
     private fun identifyHealthConcerns(c: VedicChart, a: ZodiacSign): Pair<List<String>, List<String>> = listOf("General health awareness") to listOf("सामान्य स्वास्थ्य सचेतना")
-    private fun getHealthAreasForSign(s: ZodiacSign): StringKeyNative = StringKeyNative.HEALTH_ARIES_AREAS // Simplification
+    private fun getHealthAreasForSign(s: ZodiacSign): StringKeyNative = when (s) {
+        ZodiacSign.ARIES -> StringKeyNative.HEALTH_ARIES_AREAS
+        ZodiacSign.TAURUS -> StringKeyNative.HEALTH_TAURUS_AREAS
+        ZodiacSign.GEMINI -> StringKeyNative.HEALTH_GEMINI_AREAS
+        ZodiacSign.CANCER -> StringKeyNative.HEALTH_CANCER_AREAS
+        ZodiacSign.LEO -> StringKeyNative.HEALTH_LEO_AREAS
+        ZodiacSign.VIRGO -> StringKeyNative.HEALTH_VIRGO_AREAS
+        ZodiacSign.LIBRA -> StringKeyNative.HEALTH_LIBRA_AREAS
+        ZodiacSign.SCORPIO -> StringKeyNative.HEALTH_SCORPIO_AREAS
+        ZodiacSign.SAGITTARIUS -> StringKeyNative.HEALTH_SAGITTARIUS_AREAS
+        ZodiacSign.CAPRICORN -> StringKeyNative.HEALTH_CAPRICORN_AREAS
+        ZodiacSign.AQUARIUS -> StringKeyNative.HEALTH_AQUARIUS_AREAS
+        ZodiacSign.PISCES -> StringKeyNative.HEALTH_PISCES_AREAS
+    }
 
     private fun analyzeWealth(chart: VedicChart): WealthAnalysis {
         val l2 = VedicAstrologyUtils.getHouseLord(chart, 2); val l11 = VedicAstrologyUtils.getHouseLord(chart, 11)

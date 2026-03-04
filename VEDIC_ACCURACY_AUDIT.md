@@ -95,6 +95,8 @@ Date: 2026-03-05
   - `AshtavargaTransitCalculator` now derives per-planet sign duration from current transit speed when valid (with bounded ranges and robust fallback).
   - Current transit entry/exit and upcoming sign-ingress dates now use speed-aware day estimates instead of only static per-planet duration assumptions.
   - Upcoming English interpretation duration text now reflects computed duration windows.
+- Removed Ascendant health-area hardcode in native analysis:
+  - `NativeAnalysisCalculator.getHealthAreasForSign` now maps all 12 signs to their sign-specific health-area key, instead of always returning Aries.
 
 ## High-Priority Heuristic/Incomplete Hotspots
 
