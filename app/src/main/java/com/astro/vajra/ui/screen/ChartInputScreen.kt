@@ -70,6 +70,7 @@ import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
+import kotlinx.coroutines.delay
 
 private val chartInputDateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 private val chartInputTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -112,6 +113,8 @@ fun ChartInputScreen(
     var latitude by rememberSaveable { mutableStateOf("") }
     var longitude by rememberSaveable { mutableStateOf("") }
     var selectedTimezone by rememberSaveable { mutableStateOf(ZoneId.systemDefault().id) }
+    var timezoneManuallySelectedForCoordinates by rememberSaveable(editChartId) { mutableStateOf(isEditMode) }
+    var lastCoordinateKey by rememberSaveable(editChartId) { mutableStateOf<String?>(null) }
 
     // Track if we've initialized from edit data (to prevent re-initialization)
     var hasInitializedFromEdit by rememberSaveable { mutableStateOf(false) }
@@ -155,6 +158,8 @@ fun ChartInputScreen(
             latitude = String.format(java.util.Locale.US, "%.6f", chartToEdit.latitude)
             longitude = String.format(java.util.Locale.US, "%.6f", chartToEdit.longitude)
             selectedTimezone = chartToEdit.timezone
+            lastCoordinateKey = coordinateKey(chartToEdit.latitude, chartToEdit.longitude)
+            timezoneManuallySelectedForCoordinates = true
             hasInitializedFromEdit = true
         }
     }
@@ -162,6 +167,40 @@ fun ChartInputScreen(
     LaunchedEffect(Unit) {
         if (!isEditMode) {
             viewModel.resetState()
+        }
+    }
+
+    LaunchedEffect(latitude, longitude) {
+        if (isEditMode && !hasInitializedFromEdit) return@LaunchedEffect
+
+        val lat = parseCoordinate(latitude) ?: return@LaunchedEffect
+        val lon = parseCoordinate(longitude) ?: return@LaunchedEffect
+        if (lat !in -90.0..90.0 || lon !in -180.0..180.0) {
+            return@LaunchedEffect
+        }
+
+        val currentCoordinateKey = coordinateKey(lat, lon)
+        if (currentCoordinateKey != lastCoordinateKey) {
+            lastCoordinateKey = currentCoordinateKey
+            timezoneManuallySelectedForCoordinates = false
+        }
+    }
+
+    LaunchedEffect(lastCoordinateKey, timezoneManuallySelectedForCoordinates) {
+        if (isEditMode && !hasInitializedFromEdit) return@LaunchedEffect
+        if (timezoneManuallySelectedForCoordinates) return@LaunchedEffect
+
+        val lat = parseCoordinate(latitude) ?: return@LaunchedEffect
+        val lon = parseCoordinate(longitude) ?: return@LaunchedEffect
+        if (lat !in -90.0..90.0 || lon !in -180.0..180.0) {
+            return@LaunchedEffect
+        }
+
+        delay(250L)
+        val detectedTimezone = viewModel.resolveTimezoneFromCoordinates(lat, lon).getOrNull() ?: return@LaunchedEffect
+        val currentTimezone = TimezoneSanitizer.resolveZoneIdOrNull(selectedTimezone)?.id ?: selectedTimezone
+        if (detectedTimezone != currentTimezone) {
+            selectedTimezone = detectedTimezone
         }
     }
 
@@ -239,6 +278,7 @@ fun ChartInputScreen(
                     locationLabel = location
                     latitude = String.format(java.util.Locale.US, "%.6f", lat)
                     longitude = String.format(java.util.Locale.US, "%.6f", lon)
+                    timezoneManuallySelectedForCoordinates = false
                 },
                 onSearch = viewModel::searchLocation,
                 label = stringResource(StringKey.INPUT_LOCATION),
@@ -261,7 +301,10 @@ fun ChartInputScreen(
                     }
                 },
                 onShowTimePicker = { showTimePicker = true },
-                onTimezoneSelected = { selectedTimezone = it },
+                onTimezoneSelected = {
+                    selectedTimezone = it
+                    timezoneManuallySelectedForCoordinates = true
+                },
                 onToggleDateSystem = { useBSPicker = !useBSPicker }
             )
 
@@ -479,6 +522,10 @@ private fun parseCoordinate(value: String): Double? {
         .trim()
 
     return cleaned.toDoubleOrNull()
+}
+
+private fun coordinateKey(latitude: Double, longitude: Double): String {
+    return String.format(java.util.Locale.US, "%.6f|%.6f", latitude, longitude)
 }
 
 @Suppress("UNUSED_PARAMETER")

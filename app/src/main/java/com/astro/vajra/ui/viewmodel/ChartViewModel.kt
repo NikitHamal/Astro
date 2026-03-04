@@ -11,6 +11,7 @@ import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.data.api.GeocodingService
 import com.astro.vajra.data.repository.ChartRepository
 import com.astro.vajra.data.repository.SavedChart
+import com.astro.vajra.data.timezone.CoordinateTimezoneResolver
 import com.astro.vajra.di.IoDispatcher
 import com.astro.vajra.ephemeris.HoroscopeCalculator
 import com.astro.vajra.ephemeris.SwissEphemerisEngine
@@ -43,6 +44,7 @@ class ChartViewModel @Inject constructor(
     private val repository: ChartRepository,
     private val ephemerisEngine: SwissEphemerisEngine,
     private val geocodingService: GeocodingService,
+    private val coordinateTimezoneResolver: CoordinateTimezoneResolver,
     private val chartExporter: ChartExporter,
     private val transitAnalyzer: TransitAnalyzer,
     private val horoscopeCalculator: HoroscopeCalculator,
@@ -116,6 +118,23 @@ class ChartViewModel @Inject constructor(
      */
     suspend fun searchLocation(query: String): Result<List<GeocodingService.GeocodingResult>> {
         return geocodingService.searchLocation(query)
+    }
+
+    /**
+     * Resolve timezone id from coordinates using an offline timezone boundary lookup.
+     */
+    suspend fun resolveTimezoneFromCoordinates(
+        latitude: Double,
+        longitude: Double
+    ): Result<String> = withContext(ioDispatcher) {
+        val resolved = coordinateTimezoneResolver.resolveTimezoneIdOrNull(latitude, longitude)
+        if (resolved.isNullOrBlank()) {
+            Result.failure(
+                IllegalStateException("No timezone found for coordinate: $latitude, $longitude")
+            )
+        } else {
+            Result.success(resolved)
+        }
     }
 
     /**

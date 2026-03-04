@@ -131,6 +131,12 @@ dependencies {
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
+    // Offline timezone lookup from coordinates (timezone-boundary data)
+    implementation("us.dustinj.timezonemap:timezonemap:4.5") {
+        exclude(group = "com.github.luben", module = "zstd-jni")
+    }
+    implementation("com.github.luben:zstd-jni:1.4.9-5@aar")
+
     // Hilt
     implementation("com.google.dagger:hilt-android:2.51")
     ksp("com.google.dagger:hilt-android-compiler:2.51")
