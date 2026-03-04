@@ -59,6 +59,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -108,7 +109,11 @@ import com.astro.vajra.ui.theme.PoppinsFontFamily
 import com.astro.vajra.ui.theme.SpaceGroteskFamily
 import com.astro.vajra.ui.viewmodel.ShoolaDashaUiState
 import com.astro.vajra.ui.viewmodel.ShoolaDashaViewModel
+import kotlinx.coroutines.delay
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 private fun shoolaLocale(language: Language): Locale =
@@ -116,6 +121,32 @@ private fun shoolaLocale(language: Language): Locale =
 
 private fun shoolaMonthYearFormatter(language: Language): DateTimeFormatter =
     DateTimeFormatter.ofPattern("MMM yyyy", shoolaLocale(language))
+
+@Composable
+private fun rememberZonedNow(
+    zoneId: ZoneId,
+    refreshMs: Long = 5_000L
+): LocalDateTime {
+    val now by produceState(initialValue = LocalDateTime.now(zoneId), key1 = zoneId) {
+        while (true) {
+            value = LocalDateTime.now(zoneId)
+            delay(refreshMs)
+        }
+    }
+    return now
+}
+
+private fun isShoolaPeriodActive(period: ShoolaDashaPeriod, asOf: LocalDateTime): Boolean {
+    return !asOf.isBefore(period.startDate) && asOf.isBefore(period.endDate)
+}
+
+private fun calculateShoolaProgress(period: ShoolaDashaPeriod, asOf: LocalDateTime): Double {
+    if (asOf.isBefore(period.startDate)) return 0.0
+    if (!asOf.isBefore(period.endDate)) return 1.0
+    val totalSeconds = ChronoUnit.SECONDS.between(period.startDate, period.endDate).coerceAtLeast(1L)
+    val elapsedSeconds = ChronoUnit.SECONDS.between(period.startDate, asOf).coerceAtLeast(0L)
+    return (elapsedSeconds.toDouble() / totalSeconds.toDouble()).coerceIn(0.0, 1.0)
+}
 
 /**
  * Shoola Dasha Screen
@@ -135,6 +166,14 @@ fun ShoolaDashaScreen(
 ) {
     val language = LocalLanguage.current
     val uiState by viewModel.uiState.collectAsState()
+    val zoneId = remember(chart?.birthData?.timezone) { resolveZoneId(chart?.birthData?.timezone) }
+    val asOf = rememberZonedNow(zoneId)
+    val currentMahadasha = remember(uiState, asOf) {
+        (uiState as? ShoolaDashaUiState.Success)
+            ?.result
+            ?.mahadashas
+            ?.find { period -> isShoolaPeriodActive(period, asOf) }
+    }
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var showInfoDialog by remember { mutableStateOf(false) }
 
@@ -154,8 +193,6 @@ fun ShoolaDashaScreen(
         topBar = {
             ShoolaDashaTopBar(
                 chartName = chart?.birthData?.name ?: stringResource(StringKeyMatch.MISC_UNKNOWN),
-                result = (uiState as? ShoolaDashaUiState.Success)?.result,
-                isCalculating = uiState is ShoolaDashaUiState.Loading,
                 onBack = onBack,
                 onInfoClick = { showInfoDialog = true }
             )
@@ -195,9 +232,16 @@ fun ShoolaDashaScreen(
                         )
                     }
                     when (selectedTab) {
-                        0 -> item { ShoolaOverviewSection(state.result, language) }
-                        1 -> item { ShoolaPeriodsSection(state.result, language) }
-                        2 -> item { ShoolaHealthSection(state.result, language) }
+                        0 -> item {
+                            ShoolaOverviewSection(
+                                result = state.result,
+                                language = language,
+                                currentMahadasha = currentMahadasha,
+                                asOf = asOf
+                            )
+                        }
+                        1 -> item { ShoolaPeriodsSection(result = state.result, language = language, asOf = asOf) }
+                        2 -> item { ShoolaHealthSection(result = state.result, language = language, currentMahadasha = currentMahadasha) }
                         3 -> item { ShoolaRemediesSection(state.result, language) }
                     }
                 }
@@ -213,8 +257,6 @@ fun ShoolaDashaScreen(
 @Composable
 private fun ShoolaDashaTopBar(
     chartName: String,
-    result: ShoolaDashaResult?,
-    isCalculating: Boolean,
     onBack: () -> Unit,
     onInfoClick: () -> Unit
 ) {
@@ -252,7 +294,9 @@ private fun ShoolaTabSelector(
 @Composable
 private fun ShoolaOverviewSection(
     result: ShoolaDashaResult,
-    language: Language
+    language: Language,
+    currentMahadasha: ShoolaDashaPeriod?,
+    asOf: LocalDateTime
 ) {
     Column(
         modifier = Modifier
@@ -267,8 +311,8 @@ private fun ShoolaOverviewSection(
         TriMurtiCard(result.triMurti, language)
 
         // Current Period Card
-        result.currentMahadasha?.let { current ->
-            CurrentPeriodCard(current, language)
+        currentMahadasha?.let { current ->
+            CurrentPeriodCard(period = current, language = language, asOf = asOf)
         }
 
         // Quick Stats
@@ -508,7 +552,8 @@ private fun TriMurtiRow(
 @Composable
 private fun CurrentPeriodCard(
     period: ShoolaDashaPeriod,
-    language: Language
+    language: Language,
+    asOf: LocalDateTime
 ) {
     val natureColor = when (period.nature) {
         PeriodNature.FAVORABLE -> AppTheme.SuccessColor
@@ -519,6 +564,7 @@ private fun CurrentPeriodCard(
     }
 
     val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
+    val progress = remember(period, asOf) { calculateShoolaProgress(period, asOf) }
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -570,7 +616,7 @@ private fun CurrentPeriodCard(
             // Progress bar
             Column {
                 LinearProgressIndicator(
-                    progress = { period.progress.toFloat() },
+                    progress = { progress.toFloat() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(6.dp)
@@ -591,7 +637,7 @@ private fun CurrentPeriodCard(
                         color = AppTheme.TextMuted
                     )
                     Text(
-                        text = "${(period.progress * 100).toInt()}%",
+                        text = "${(progress * 100).toInt()}%",
                         fontFamily = SpaceGroteskFamily,
                         fontSize = NeoVedicFontSizes.S11,
                         fontWeight = FontWeight.Bold,
@@ -716,7 +762,8 @@ private fun ShoolaStatCard(
 @Composable
 private fun ShoolaPeriodsSection(
     result: ShoolaDashaResult,
-    language: Language
+    language: Language,
+    asOf: LocalDateTime
 ) {
     Column(
         modifier = Modifier
@@ -732,7 +779,7 @@ private fun ShoolaPeriodsSection(
         )
 
         result.mahadashas.forEach { period ->
-            ShoolaPeriodCard(period = period, language = language)
+            ShoolaPeriodCard(period = period, language = language, asOf = asOf)
         }
     }
 }
@@ -740,9 +787,12 @@ private fun ShoolaPeriodsSection(
 @Composable
 private fun ShoolaPeriodCard(
     period: ShoolaDashaPeriod,
-    language: Language
+    language: Language,
+    asOf: LocalDateTime
 ) {
-    var expanded by remember { mutableStateOf(period.isCurrent) }
+    val isCurrent = remember(period, asOf) { isShoolaPeriodActive(period, asOf) }
+    val progress = remember(period, asOf) { calculateShoolaProgress(period, asOf) }
+    var expanded by remember(period, isCurrent) { mutableStateOf(isCurrent) }
     val dateFormatter = remember(language) { shoolaMonthYearFormatter(language) }
 
     val natureColor = when (period.nature) {
@@ -754,8 +804,8 @@ private fun ShoolaPeriodCard(
     }
 
     val statusLabel = when {
-        period.isCurrent -> stringResource(StringKeyAdvanced.SHOOLA_CURRENT)
-        period.progress >= 1.0 -> stringResource(StringKeyAdvanced.SHOOLA_PAST)
+        isCurrent -> stringResource(StringKeyAdvanced.SHOOLA_CURRENT)
+        progress >= 1.0 -> stringResource(StringKeyAdvanced.SHOOLA_PAST)
         else -> stringResource(StringKeyAdvanced.SHOOLA_FUTURE)
     }
 
@@ -764,9 +814,9 @@ private fun ShoolaPeriodCard(
             .fillMaxWidth()
             .clickable { expanded = !expanded }
             .animateContentSize(),
-        color = if (period.isCurrent) natureColor.copy(alpha = 0.05f) else AppTheme.CardBackground,
+        color = if (isCurrent) natureColor.copy(alpha = 0.05f) else AppTheme.CardBackground,
         shape = RoundedCornerShape(NeoVedicTokens.CardCornerRadius),
-        border = if (period.isCurrent) androidx.compose.foundation.BorderStroke(1.dp, natureColor.copy(alpha = 0.3f)) else null
+        border = if (isCurrent) androidx.compose.foundation.BorderStroke(1.dp, natureColor.copy(alpha = 0.3f)) else null
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -815,14 +865,14 @@ private fun ShoolaPeriodCard(
                 ) {
                     Surface(
                         shape = RoundedCornerShape(NeoVedicTokens.ChipCornerRadius),
-                        color = if (period.isCurrent) natureColor.copy(alpha = 0.2f)
+                        color = if (isCurrent) natureColor.copy(alpha = 0.2f)
                         else AppTheme.ChipBackground
                     ) {
                         Text(
                             text = statusLabel.uppercase(),
                             fontSize = NeoVedicFontSizes.S10,
                             fontWeight = FontWeight.Bold,
-                            color = if (period.isCurrent) natureColor else AppTheme.TextMuted,
+                            color = if (isCurrent) natureColor else AppTheme.TextMuted,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             fontFamily = SpaceGroteskFamily
                         )
@@ -947,7 +997,8 @@ private fun ShoolaPeriodCard(
 @Composable
 private fun ShoolaHealthSection(
     result: ShoolaDashaResult,
-    language: Language
+    language: Language,
+    currentMahadasha: ShoolaDashaPeriod?
 ) {
     Column(
         modifier = Modifier
@@ -956,7 +1007,7 @@ private fun ShoolaHealthSection(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Current Health Status
-        result.currentMahadasha?.let { current ->
+        currentMahadasha?.let { current ->
             if (current.healthSeverity.level >= 2) {
                 HealthConcernsCard(period = current, language = language)
             }
@@ -1525,7 +1576,10 @@ private fun getSeverityColor(severity: HealthSeverity): Color {
     }
 }
 
-
+private fun resolveZoneId(timezone: String?): ZoneId {
+    return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
+        ?: ZoneId.systemDefault()
+}
 
 
 
