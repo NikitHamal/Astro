@@ -50,7 +50,6 @@ import com.astro.vajra.ephemeris.synastry.HouseOverlay
 import com.astro.vajra.ephemeris.synastry.SynastryAnalysisResult
 import com.astro.vajra.ephemeris.synastry.SynastryAspect
 import com.astro.vajra.ephemeris.synastry.SynastryCalculator
-import com.astro.vajra.ephemeris.synastry.PracticalRelationshipInputs
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.viewmodel.ChartViewModel
 import kotlinx.coroutines.Dispatchers
@@ -94,12 +93,6 @@ fun SynastryScreen(
     var showChart1Selector by remember { mutableStateOf(false) }
     var showChart2Selector by remember { mutableStateOf(false) }
     var showInfoDialog by remember { mutableStateOf(false) }
-    var showPracticalInputs by remember { mutableStateOf(false) }
-
-    var practicalCommunication by remember { mutableStateOf(5.5f) }
-    var practicalFinance by remember { mutableStateOf(5.5f) }
-    var practicalFamily by remember { mutableStateOf(5.5f) }
-    var practicalConflict by remember { mutableStateOf(5.5f) }
 
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(
@@ -129,7 +122,7 @@ fun SynastryScreen(
     }
 
     // Calculate synastry when both charts are selected
-    LaunchedEffect(chart1, chart2, practicalCommunication, practicalFinance, practicalFamily, practicalConflict) {
+    LaunchedEffect(chart1, chart2) {
         if (chart1 != null && chart2 != null) {
             isCalculating = true
             errorMessage = null
@@ -139,13 +132,7 @@ fun SynastryScreen(
                     SynastryCalculator.calculate(
                         chart1 = chart1!!,
                         chart2 = chart2!!,
-                        language = language,
-                        practicalInputs = PracticalRelationshipInputs(
-                            communication = practicalCommunication.toDouble(),
-                            financialAlignment = practicalFinance.toDouble(),
-                            familyValues = practicalFamily.toDouble(),
-                            conflictStyle = practicalConflict.toDouble()
-                        )
+                        language = language
                     )
                 }
             } catch (e: Exception) {
@@ -207,21 +194,6 @@ fun SynastryScreen(
                         selectedChart1Id = null
                         selectedChart2Id = null
                     }
-                )
-            }
-
-            item {
-                PracticalInputsSection(
-                    expanded = showPracticalInputs,
-                    onToggle = { showPracticalInputs = !showPracticalInputs },
-                    communication = practicalCommunication,
-                    onCommunicationChange = { practicalCommunication = it },
-                    finance = practicalFinance,
-                    onFinanceChange = { practicalFinance = it },
-                    family = practicalFamily,
-                    onFamilyChange = { practicalFamily = it },
-                    conflict = practicalConflict,
-                    onConflictChange = { practicalConflict = it }
                 )
             }
 
@@ -552,127 +524,6 @@ private fun SynastryChartCard(
 }
 
 @Composable
-private fun PracticalInputsSection(
-    expanded: Boolean,
-    onToggle: () -> Unit,
-    communication: Float,
-    onCommunicationChange: (Float) -> Unit,
-    finance: Float,
-    onFinanceChange: (Float) -> Unit,
-    family: Float,
-    onFamilyChange: (Float) -> Unit,
-    conflict: Float,
-    onConflictChange: (Float) -> Unit
-) {
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        color = AppTheme.CardBackground,
-        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
-        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
-    ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = onToggle),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    Icons.Filled.Tune,
-                    contentDescription = null,
-                    tint = AppTheme.AccentPrimary,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = "Practical Relationship Inputs",
-                        style = MaterialTheme.typography.titleSmall,
-                        color = AppTheme.TextPrimary,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    Text(
-                        text = "Tune real-life fit for more precise readiness scoring",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = AppTheme.TextMuted
-                    )
-                }
-                Icon(
-                    if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
-                    contentDescription = null,
-                    tint = AppTheme.TextSecondary
-                )
-            }
-
-            AnimatedVisibility(visible = expanded) {
-                Column(modifier = Modifier.padding(top = 12.dp)) {
-                    PracticalSliderRow(
-                        label = "Communication",
-                        value = communication,
-                        onValueChange = onCommunicationChange
-                    )
-                    PracticalSliderRow(
-                        label = "Financial Alignment",
-                        value = finance,
-                        onValueChange = onFinanceChange
-                    )
-                    PracticalSliderRow(
-                        label = "Family Values",
-                        value = family,
-                        onValueChange = onFamilyChange
-                    )
-                    PracticalSliderRow(
-                        label = "Conflict Style Compatibility",
-                        value = conflict,
-                        onValueChange = onConflictChange
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun PracticalSliderRow(
-    label: String,
-    value: Float,
-    onValueChange: (Float) -> Unit
-) {
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodyMedium,
-                color = AppTheme.TextSecondary
-            )
-            Text(
-                text = String.format("%.1f/10", value),
-                style = MaterialTheme.typography.bodySmall,
-                color = AppTheme.TextMuted,
-                fontFamily = SpaceGroteskFamily
-            )
-        }
-        Slider(
-            value = value,
-            onValueChange = onValueChange,
-            valueRange = 0f..10f,
-            steps = 19,
-            colors = SliderDefaults.colors(
-                thumbColor = AppTheme.AccentPrimary,
-                activeTrackColor = AppTheme.AccentPrimary,
-                inactiveTrackColor = AppTheme.ChipBackground
-            )
-        )
-    }
-}
-
-@Composable
 private fun SynastryTabSelector(
     tabs: List<String>,
     selectedTab: Int,
@@ -783,7 +634,7 @@ private fun SynastryOverviewTab(
                         modifier = Modifier.weight(1f)
                     )
                     ScoreMiniChip(
-                        label = "Practical",
+                        label = "Daily Life",
                         value = result.practicalCompatibility.overallScore,
                         modifier = Modifier.weight(1f)
                     )

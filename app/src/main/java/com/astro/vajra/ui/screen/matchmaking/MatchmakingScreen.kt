@@ -716,7 +716,7 @@ private fun QuickInsightsRow(result: MatchmakingResult) {
         if (result.calibratedCompatibilityScore > 0.0) {
             item {
                 QuickInsightChip(
-                    label = "Astro Core",
+                    label = "Marriage Core",
                     value = "${result.calibratedCompatibilityScore.toInt()}/100",
                     color = if (result.calibratedCompatibilityScore >= 60.0) AppTheme.SuccessColor else AppTheme.WarningColor
                 )
@@ -726,7 +726,7 @@ private fun QuickInsightsRow(result: MatchmakingResult) {
         if (result.practicalCompatibilityScore > 0.0) {
             item {
                 QuickInsightChip(
-                    label = "Practical",
+                    label = "Daily Life",
                     value = "${result.practicalCompatibilityScore.toInt()}/100",
                     color = if (result.practicalCompatibilityScore >= 60.0) AppTheme.SuccessColor else AppTheme.WarningColor
                 )

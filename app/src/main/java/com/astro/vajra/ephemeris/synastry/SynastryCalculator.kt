@@ -14,9 +14,11 @@ import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
+import com.astro.vajra.ephemeris.ArudhaPadaCalculator
 import com.astro.vajra.ephemeris.DivisionalChartCalculator
 import com.astro.vajra.ephemeris.VedicAstrologyUtils
 import com.astro.vajra.ephemeris.VedicAstrologyUtils.PlanetaryRelationship
+import com.astro.vajra.ephemeris.jaimini.JaiminiKarakaCalculator
 import kotlin.math.abs
 
 data class SynastryAspect(
@@ -138,20 +140,21 @@ object SynastryCalculator {
             .coerceIn(0.0, 100.0)
         val structuralVedicScore = calculateStructuralVedicScore(chart1, chart2)
         val astroCompatibility = (
-            aspectCompatibility * 0.62 +
-                structuralVedicScore * 0.38
+            aspectCompatibility * 0.54 +
+                structuralVedicScore * 0.46
             ).coerceIn(0.0, 100.0)
 
         val practicalCompatibility = calculatePracticalCompatibility(
+            chart1,
+            chart2,
             sortedAspects,
             houseOverlays1In2,
-            houseOverlays2In1,
-            practicalInputs
+            houseOverlays2In1
         )
 
         val relationshipReadiness = (
-            astroCompatibility * 0.74 +
-                practicalCompatibility.overallScore * 0.26
+            astroCompatibility * 0.80 +
+                practicalCompatibility.overallScore * 0.20
             ).coerceIn(0.0, 100.0)
 
         val compatibilityCategories = calculateCompatibilityCategories(
@@ -399,25 +402,34 @@ object SynastryCalculator {
                 icon = Icons.Filled.Shield
             ),
             CompatibilityCategory(
-                name = "Practical Alignment",
+                name = "Daily Life Fit",
                 score = practicalAlignmentScore,
                 maxScore = 10.0,
-                description = "Daily-life fit across communication, finance, family, and conflict style.",
+                description = "Chart-derived daily-life fit across communication, family rhythm, resources, and conflict handling.",
                 icon = Icons.Filled.TrendingUp
             )
         )
     }
 
     private fun calculatePracticalCompatibility(
+        chart1: VedicChart,
+        chart2: VedicChart,
         aspects: List<SynastryAspect>,
         overlays1In2: List<HouseOverlay>,
-        overlays2In1: List<HouseOverlay>,
-        inputs: PracticalRelationshipInputs?
+        overlays2In1: List<HouseOverlay>
     ): PracticalCompatibilityResult {
-        val baseCommunication = inputs?.communication ?: 5.5
-        val baseFinancial = inputs?.financialAlignment ?: 5.5
-        val baseFamily = inputs?.familyValues ?: 5.5
-        val baseConflict = inputs?.conflictStyle ?: 5.5
+        val mercury1 = VedicAstrologyUtils.getPlanetPosition(chart1, Planet.MERCURY)
+        val mercury2 = VedicAstrologyUtils.getPlanetPosition(chart2, Planet.MERCURY)
+        val moon1 = VedicAstrologyUtils.getMoonPosition(chart1)
+        val moon2 = VedicAstrologyUtils.getMoonPosition(chart2)
+        val jupiter1 = VedicAstrologyUtils.getPlanetPosition(chart1, Planet.JUPITER)
+        val jupiter2 = VedicAstrologyUtils.getPlanetPosition(chart2, Planet.JUPITER)
+        val venus1 = VedicAstrologyUtils.getPlanetPosition(chart1, Planet.VENUS)
+        val venus2 = VedicAstrologyUtils.getPlanetPosition(chart2, Planet.VENUS)
+        val mars1 = VedicAstrologyUtils.getPlanetPosition(chart1, Planet.MARS)
+        val mars2 = VedicAstrologyUtils.getPlanetPosition(chart2, Planet.MARS)
+        val saturn1 = VedicAstrologyUtils.getPlanetPosition(chart1, Planet.SATURN)
+        val saturn2 = VedicAstrologyUtils.getPlanetPosition(chart2, Planet.SATURN)
 
         val mercurySupport = aspects.count {
             (it.planet1 == Planet.MERCURY || it.planet2 == Planet.MERCURY) &&
@@ -441,17 +453,54 @@ object SynastryCalculator {
         val familyHouseHits = (overlays1In2 + overlays2In1).count { it.houseNumber in setOf(4, 5, 7) }
         val financeHouseHits = (overlays1In2 + overlays2In1).count { it.houseNumber in setOf(2, 6, 10, 11) }
 
-        val communicationScore = (baseCommunication + (mercurySupport * 0.6) - (mercuryChallenges * 0.7))
-            .coerceIn(0.0, 10.0)
+        val communicationFoundation = averageOf(
+            signHarmony(mercury1?.sign, mercury2?.sign),
+            signHarmony(moon1?.sign, mercury2?.sign),
+            signHarmony(moon2?.sign, mercury1?.sign)
+        )
+        val financialFoundation = averageOf(
+            signHarmony(jupiter1?.sign, jupiter2?.sign),
+            signHarmony(venus1?.sign, venus2?.sign),
+            signHarmony(jupiter1?.sign, venus2?.sign),
+            signHarmony(jupiter2?.sign, venus1?.sign)
+        )
+        val familyFoundation = averageOf(
+            signHarmony(moon1?.sign, moon2?.sign),
+            signHarmony(jupiter1?.sign, jupiter2?.sign),
+            signHarmony(venus1?.sign, venus2?.sign)
+        )
+        val conflictFoundation = averageOf(
+            signHarmony(mars1?.sign, mars2?.sign),
+            signHarmony(saturn1?.sign, saturn2?.sign),
+            signHarmony(mercury1?.sign, mars2?.sign),
+            signHarmony(mercury2?.sign, mars1?.sign)
+        )
 
-        val financialAlignmentScore = (baseFinancial + (jupiterVenusSupport * 0.4) + (financeHouseHits * 0.08) - (marsSaturnChallenges * 0.35))
-            .coerceIn(0.0, 10.0)
+        val communicationScore = normalizeTenScore(
+            communicationFoundation +
+                (mercurySupport * 4.5) -
+                (mercuryChallenges * 5.5) +
+                (overlayFocus(overlays1In2, overlays2In1, setOf(3, 7)) * 3.5)
+        )
 
-        val familyValuesScore = (baseFamily + (familyHouseHits * 0.08) + (jupiterVenusSupport * 0.25))
-            .coerceIn(0.0, 10.0)
+        val financialAlignmentScore = normalizeTenScore(
+            financialFoundation +
+                (jupiterVenusSupport * 4.0) +
+                (financeHouseHits * 1.2) -
+                (marsSaturnChallenges * 3.8)
+        )
 
-        val conflictStyleScore = (baseConflict - (marsSaturnChallenges * 0.5) + (mercurySupport * 0.25))
-            .coerceIn(0.0, 10.0)
+        val familyValuesScore = normalizeTenScore(
+            familyFoundation +
+                (familyHouseHits * 1.3) +
+                (jupiterVenusSupport * 3.0)
+        )
+
+        val conflictStyleScore = normalizeTenScore(
+            conflictFoundation -
+                (marsSaturnChallenges * 4.6) +
+                (mercurySupport * 2.0)
+        )
 
         val overall = ((communicationScore + financialAlignmentScore + familyValuesScore + conflictStyleScore) / 4.0) * 10.0
 
@@ -510,9 +559,9 @@ object SynastryCalculator {
         }
 
         if (practicalCompatibility.overallScore < 45.0) {
-            findings.add("Practical-life compatibility is weak. Prioritize communication and conflict agreements.")
+            findings.add("Daily-life compatibility is weak. Shared routines and conflict agreements need extra care.")
         } else if (practicalCompatibility.overallScore >= 70.0) {
-            findings.add("Practical-life compatibility is strong across communication and daily routines.")
+            findings.add("Daily-life compatibility is strong across communication, routines, and mutual adjustment.")
         }
 
         return findings.take(6)
@@ -524,13 +573,17 @@ object SynastryCalculator {
         val seventhLordHarmonyD9 = seventhLordHarmonyScoreD9(chart1, chart2)
         val venusMarsCross = venusMarsCrossScore(chart1, chart2)
         val saturnMaturity = saturnMaturityScore(chart1, chart2)
+        val upapadaResonance = upapadaResonanceScore(chart1, chart2)
+        val darakarakaResonance = darakarakaResonanceScore(chart1, chart2)
 
         return (
-            moonHarmony * 0.28 +
-                seventhLordHarmonyD1 * 0.24 +
-                seventhLordHarmonyD9 * 0.22 +
-                venusMarsCross * 0.18 +
-                saturnMaturity * 0.08
+            moonHarmony * 0.20 +
+                seventhLordHarmonyD1 * 0.18 +
+                seventhLordHarmonyD9 * 0.18 +
+                venusMarsCross * 0.16 +
+                saturnMaturity * 0.08 +
+                upapadaResonance * 0.10 +
+                darakarakaResonance * 0.10
             ).coerceIn(0.0, 100.0)
     }
 
@@ -607,6 +660,22 @@ object SynastryCalculator {
         return distance in setOf(3, 7, 10)
     }
 
+    private fun upapadaResonanceScore(chart1: VedicChart, chart2: VedicChart): Double {
+        val upapada1 = runCatching { ArudhaPadaCalculator.analyzeArudhaPadas(chart1).specialArudhas.upapada.arudha.sign }.getOrNull()
+        val upapada2 = runCatching { ArudhaPadaCalculator.analyzeArudhaPadas(chart2).specialArudhas.upapada.arudha.sign }.getOrNull()
+        return signHarmony(upapada1, upapada2)
+    }
+
+    private fun darakarakaResonanceScore(chart1: VedicChart, chart2: VedicChart): Double {
+        val darakaraka1 = runCatching { JaiminiKarakaCalculator.calculateKarakas(chart1).getDarakaraka() }.getOrNull()
+        val darakaraka2 = runCatching { JaiminiKarakaCalculator.calculateKarakas(chart2).getDarakaraka() }.getOrNull()
+
+        val planetScore = pairRelationshipScore(darakaraka1?.planet, darakaraka2?.planet)
+        val signScore = signHarmony(darakaraka1?.sign, darakaraka2?.sign)
+
+        return averageOf(planetScore, signScore)
+    }
+
     private fun relationshipScore(lord1: Planet, lord2: Planet): Double {
         val rel1 = VedicAstrologyUtils.getNaturalRelationship(lord1, lord2)
         val rel2 = VedicAstrologyUtils.getNaturalRelationship(lord2, lord1)
@@ -627,6 +696,34 @@ object SynastryCalculator {
         2, 12 -> 54.0
         6, 8 -> 40.0
         else -> 58.0
+    }
+
+    private fun signHarmony(sign1: ZodiacSign?, sign2: ZodiacSign?): Double {
+        if (sign1 == null || sign2 == null) return 58.0
+        val distance = VedicAstrologyUtils.getHouseFromSigns(sign2, sign1)
+        return houseHarmonyScore(distance)
+    }
+
+    private fun pairRelationshipScore(planet1: Planet?, planet2: Planet?): Double {
+        if (planet1 == null || planet2 == null) return 58.0
+        return relationshipScore(planet1, planet2)
+    }
+
+    private fun overlayFocus(
+        overlays1In2: List<HouseOverlay>,
+        overlays2In1: List<HouseOverlay>,
+        houses: Set<Int>
+    ): Double {
+        return (overlays1In2 + overlays2In1).count { it.houseNumber in houses }.toDouble()
+    }
+
+    private fun normalizeTenScore(score100: Double): Double {
+        return (score100 / 10.0).coerceIn(0.0, 10.0)
+    }
+
+    private fun averageOf(vararg values: Double): Double {
+        val validValues = values.filter { it.isFinite() }
+        return if (validValues.isEmpty()) 58.0 else validValues.average()
     }
 
     private fun generateAspectInterpretation(
