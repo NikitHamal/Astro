@@ -5,6 +5,7 @@ import com.astro.vajra.core.common.StringKeyMatch
 import com.astro.vajra.core.common.StringResources
 import com.astro.vajra.core.model.*
 import com.astro.vajra.ephemeris.VedicAstrologyUtils.PlanetaryRelationship
+import com.astro.vajra.ephemeris.matchmaking.MatchmakingPrecisionCalibrator
 
 /**
  * Main Matchmaking Calculator - Orchestrates Vedic compatibility analysis
@@ -60,7 +61,6 @@ object MatchmakingCalculator {
 
         val nadiScore = gunaAnalyses.find { it.gunaType == GunaType.NADI }?.obtainedPoints ?: 0.0
         val bhakootScore = gunaAnalyses.find { it.gunaType == GunaType.BHAKOOT }?.obtainedPoints ?: 0.0
-        val rating = CompatibilityRating.fromScore(totalPoints, nadiScore, bhakootScore)
 
         val brideManglikEphemeris = ManglikDoshaCalculator.calculateManglikDosha(brideChart)
         val groomManglikEphemeris = ManglikDoshaCalculator.calculateManglikDosha(groomChart)
@@ -72,6 +72,20 @@ object MatchmakingCalculator {
 
         // Calculate additional factors
         val additionalFactors = calculateAdditionalFactors(brideNakshatra, groomNakshatra, language)
+
+        val calibration = MatchmakingPrecisionCalibrator.calibrate(
+            brideChart = brideChart,
+            groomChart = groomChart,
+            gunaAnalyses = gunaAnalyses,
+            brideManglik = brideManglik,
+            groomManglik = groomManglik,
+            additionalFactors = additionalFactors
+        )
+        val rating = CompatibilityRating.fromPercentage(
+            calibration.relationshipReadinessScore,
+            nadiScore,
+            bhakootScore
+        )
 
         // Generate special considerations
         val specialConsiderations = calculateSpecialConsiderations(
@@ -85,7 +99,7 @@ object MatchmakingCalculator {
 
         // Generate summary
         val summary = generateSummary(
-            totalPoints, rating, gunaAnalyses, brideManglik, groomManglik, additionalFactors, language
+            totalPoints, rating, gunaAnalyses, brideManglik, groomManglik, additionalFactors, calibration, language
         )
 
         // Generate detailed analysis
@@ -109,7 +123,10 @@ object MatchmakingCalculator {
             specialConsiderations = specialConsiderations,
             remedies = remedies,
             summary = summary,
-            detailedAnalysis = detailedAnalysis
+            detailedAnalysis = detailedAnalysis,
+            calibratedCompatibilityScore = calibration.calibratedCompatibilityScore,
+            practicalCompatibilityScore = calibration.practicalCompatibilityScore,
+            relationshipReadinessScore = calibration.relationshipReadinessScore
         )
     }
 
@@ -430,6 +447,7 @@ object MatchmakingCalculator {
         brideManglik: ManglikAnalysis,
         groomManglik: ManglikAnalysis,
         additionalFactors: AdditionalFactors,
+        calibration: com.astro.vajra.ephemeris.matchmaking.MatchmakingCalibration,
         language: Language
     ): String {
         val strongPoints = gunaAnalyses.filter { it.isPositive && it.obtainedPoints >= it.maxPoints * 0.7 }
@@ -442,6 +460,9 @@ object MatchmakingCalculator {
             appendLine("═══════════════════════════════════════════════════════════")
             appendLine()
             appendLine("${StringResources.get(StringKeyMatch.SUMMARY_OVERALL_SCORE, language)}: ${String.format("%.1f", totalPoints)} / 36 (${String.format("%.1f", percentageScore)}%)")
+            appendLine("Relationship Readiness: ${String.format("%.1f", calibration.relationshipReadinessScore)}%")
+            appendLine("Astro Core Compatibility: ${String.format("%.1f", calibration.calibratedCompatibilityScore)}%")
+            appendLine("Practical Compatibility: ${String.format("%.1f", calibration.practicalCompatibilityScore)}%")
             appendLine("${StringResources.get(StringKeyMatch.SUMMARY_RATING, language)}: ${rating.getLocalizedName(language)}")
             appendLine()
             appendLine("─────────────────────────────────────────────────────────────")

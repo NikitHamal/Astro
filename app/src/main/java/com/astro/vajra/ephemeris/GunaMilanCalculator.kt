@@ -480,21 +480,6 @@ object GunaMilanCalculator {
                 .replace("{lord2}", groomLord.getLocalizedName(language))
         }
 
-        // 3. Exaltation cancellation involved? (Simplification: If lords are friends/neutral, we take it as partial cancellation in strict systems, but here sticking to standard)
-
-        // 4. Same element cancellation (optional in some texts, but often used)
-        val brideElement = getSignElement(brideSign, language)
-        val groomElement = getSignElement(groomSign, language)
-        if (brideElement == groomElement) {
-            return StringResources.get(StringKeyMatch.BHAKOOT_CANCEL_ELEMENT, language).replace("{element}", brideElement)
-        }
-        
-        // 5. Friendly disposition (Friend-Neutral) sometimes considered cancellation
-        if ((rel1 == PlanetaryRelationship.FRIEND && rel2 == PlanetaryRelationship.NEUTRAL) ||
-            (rel1 == PlanetaryRelationship.NEUTRAL && rel2 == PlanetaryRelationship.FRIEND)) {
-             return StringResources.get(StringKeyMatch.BHAKOOT_CANCEL_FRIENDLY, language)
-        }
-
         return null
     }
     
@@ -586,40 +571,7 @@ object GunaMilanCalculator {
             }
         }
 
-        // Moon sign lords are mutual friends
-        val brideLord = brideMoonSign.ruler
-        val groomLord = groomMoonSign.ruler
-        
-        // Ensure not same lord to avoid duplication with other rules, though same lord is fundamentally good
-        if (brideLord != groomLord) {
-            val rel1 = VedicAstrologyUtils.getNaturalRelationship(brideLord, groomLord)
-            val rel2 = VedicAstrologyUtils.getNaturalRelationship(groomLord, brideLord)
-            
-            if (rel1 == PlanetaryRelationship.FRIEND && rel2 == PlanetaryRelationship.FRIEND) {
-                return StringResources.get(StringKeyMatch.NADI_CANCEL_LORDS_FRIENDS, language)
-                    .replace("{lord1}", brideLord.getLocalizedName(language))
-                    .replace("{lord2}", groomLord.getLocalizedName(language))
-            }
-        }
-
-        // Same Nakshatra ruler
-        if (brideNakshatra.ruler == groomNakshatra.ruler) {
-            return StringResources.get(StringKeyMatch.NADI_CANCEL_SAME_NAK_LORD, language)
-                .replace("{lord}", brideNakshatra.ruler.getLocalizedName(language))
-        }
-
         return null
-    }
-
-    // endregion
-
-    // region Helpers
-
-    private fun getSignElement(sign: ZodiacSign, language: Language): String = when (sign) {
-        ZodiacSign.ARIES, ZodiacSign.LEO, ZodiacSign.SAGITTARIUS -> StringResources.get(StringKeyMatch.ELEMENT_FIRE, language)
-        ZodiacSign.TAURUS, ZodiacSign.VIRGO, ZodiacSign.CAPRICORN -> StringResources.get(StringKeyMatch.ELEMENT_EARTH, language)
-        ZodiacSign.GEMINI, ZodiacSign.LIBRA, ZodiacSign.AQUARIUS -> StringResources.get(StringKeyMatch.ELEMENT_AIR, language)
-        ZodiacSign.CANCER, ZodiacSign.SCORPIO, ZodiacSign.PISCES -> StringResources.get(StringKeyMatch.ELEMENT_WATER, language)
     }
 
     // endregion

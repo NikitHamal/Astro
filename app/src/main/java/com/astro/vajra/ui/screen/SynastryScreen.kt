@@ -41,19 +41,21 @@ import com.astro.vajra.core.common.StringKeyMatch
 import com.astro.vajra.data.localization.currentLanguage
 import com.astro.vajra.data.localization.stringResource
 import com.astro.vajra.core.model.Planet
-import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
 import com.astro.vajra.data.repository.SavedChart
-import com.astro.vajra.ephemeris.AspectCalculator
+import com.astro.vajra.ephemeris.synastry.AspectNature
+import com.astro.vajra.ephemeris.synastry.CompatibilityCategory
+import com.astro.vajra.ephemeris.synastry.HouseOverlay
+import com.astro.vajra.ephemeris.synastry.SynastryAnalysisResult
+import com.astro.vajra.ephemeris.synastry.SynastryAspect
+import com.astro.vajra.ephemeris.synastry.SynastryCalculator
+import com.astro.vajra.ephemeris.synastry.PracticalRelationshipInputs
 import com.astro.vajra.ui.theme.AppTheme
 import com.astro.vajra.ui.viewmodel.ChartViewModel
-import com.astro.vajra.ephemeris.VedicAstrologyUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import kotlin.math.abs
-import kotlin.math.floor
 
 import com.astro.vajra.ui.theme.CinzelDecorativeFamily
 import com.astro.vajra.ui.theme.PoppinsFontFamily
@@ -92,6 +94,12 @@ fun SynastryScreen(
     var showChart1Selector by remember { mutableStateOf(false) }
     var showChart2Selector by remember { mutableStateOf(false) }
     var showInfoDialog by remember { mutableStateOf(false) }
+    var showPracticalInputs by remember { mutableStateOf(false) }
+
+    var practicalCommunication by remember { mutableStateOf(5.5f) }
+    var practicalFinance by remember { mutableStateOf(5.5f) }
+    var practicalFamily by remember { mutableStateOf(5.5f) }
+    var practicalConflict by remember { mutableStateOf(5.5f) }
 
     var selectedTab by remember { mutableIntStateOf(0) }
     val tabs = listOf(
@@ -121,14 +129,24 @@ fun SynastryScreen(
     }
 
     // Calculate synastry when both charts are selected
-    LaunchedEffect(chart1, chart2) {
+    LaunchedEffect(chart1, chart2, practicalCommunication, practicalFinance, practicalFamily, practicalConflict) {
         if (chart1 != null && chart2 != null) {
             isCalculating = true
             errorMessage = null
             delay(300)
             try {
                 synastryResult = withContext(Dispatchers.Default) {
-                    calculateSynastry(chart1!!, chart2!!, language)
+                    SynastryCalculator.calculate(
+                        chart1 = chart1!!,
+                        chart2 = chart2!!,
+                        language = language,
+                        practicalInputs = PracticalRelationshipInputs(
+                            communication = practicalCommunication.toDouble(),
+                            financialAlignment = practicalFinance.toDouble(),
+                            familyValues = practicalFamily.toDouble(),
+                            conflictStyle = practicalConflict.toDouble()
+                        )
+                    )
                 }
             } catch (e: Exception) {
                 errorMessage = e.message ?: com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CALC_FAILED, language)
@@ -189,6 +207,21 @@ fun SynastryScreen(
                         selectedChart1Id = null
                         selectedChart2Id = null
                     }
+                )
+            }
+
+            item {
+                PracticalInputsSection(
+                    expanded = showPracticalInputs,
+                    onToggle = { showPracticalInputs = !showPracticalInputs },
+                    communication = practicalCommunication,
+                    onCommunicationChange = { practicalCommunication = it },
+                    finance = practicalFinance,
+                    onFinanceChange = { practicalFinance = it },
+                    family = practicalFamily,
+                    onFamilyChange = { practicalFamily = it },
+                    conflict = practicalConflict,
+                    onConflictChange = { practicalConflict = it }
                 )
             }
 
@@ -279,452 +312,6 @@ fun SynastryScreen(
             onDismiss = { showChart2Selector = false }
         )
     }
-}
-
-// ============================================
-// Data Classes for Synastry Analysis
-// ============================================
-
-data class SynastryAspect(
-    val planet1: Planet,
-    val planet1Chart: Int,
-    val planet2: Planet,
-    val planet2Chart: Int,
-    val aspectType: SynastryAspectType,
-    val orb: Double,
-    val isApplying: Boolean,
-    val strength: Double,
-    val interpretation: String
-)
-
-enum class SynastryAspectType(
-    val displayName: String,
-    val angle: Double,
-    val nature: AspectNature,
-    val symbol: String,
-    val maxOrb: Double
-) {
-    CONJUNCTION("Conjunction", 0.0, AspectNature.MAJOR, "\u260C", 10.0),
-    OPPOSITION("Opposition", 180.0, AspectNature.CHALLENGING, "\u260D", 10.0),
-    TRINE("Trine", 120.0, AspectNature.HARMONIOUS, "\u25B3", 8.0),
-    SQUARE("Square", 90.0, AspectNature.CHALLENGING, "\u25A1", 8.0),
-    SEXTILE("Sextile", 60.0, AspectNature.HARMONIOUS, "\u26B9", 6.0),
-    QUINCUNX("Quincunx", 150.0, AspectNature.MINOR, "\u26BB", 3.0),
-    SEMI_SEXTILE("Semi-Sextile", 30.0, AspectNature.MINOR, "\u26BA", 3.0);
-
-    fun getLocalizedName(language: Language): String = when (this) {
-        CONJUNCTION -> com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_CONJUNCTION, language)
-        OPPOSITION -> com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_OPPOSITION, language)
-        TRINE -> com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_TRINE, language)
-        SQUARE -> com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SQUARE, language)
-        SEXTILE -> com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SEXTILE, language)
-        QUINCUNX -> com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_QUINCUNX, language)
-        SEMI_SEXTILE -> com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_SEMI_SEXTILE, language)
-    }
-}
-
-enum class AspectNature {
-    MAJOR, HARMONIOUS, CHALLENGING, MINOR
-}
-
-data class HouseOverlay(
-    val planet: Planet,
-    val sourceChart: Int,
-    val houseNumber: Int,
-    val interpretation: String,
-    val lifeArea: String
-)
-
-data class CompatibilityCategory(
-    val name: String,
-    val score: Double,
-    val maxScore: Double,
-    val description: String,
-    val icon: ImageVector
-)
-
-data class SynastryAnalysisResult(
-    val aspects: List<SynastryAspect>,
-    val harmoniousAspects: List<SynastryAspect>,
-    val challengingAspects: List<SynastryAspect>,
-    val houseOverlays1In2: List<HouseOverlay>,
-    val houseOverlays2In1: List<HouseOverlay>,
-    val compatibilityCategories: List<CompatibilityCategory>,
-    val overallCompatibility: Double,
-    val keyFindings: List<String>,
-    val sunMoonAspects: List<SynastryAspect>,
-    val venusMarsAspects: List<SynastryAspect>,
-    val ascendantConnections: List<SynastryAspect>
-)
-
-// ============================================
-// Synastry Calculation Engine
-// ============================================
-
-private fun calculateSynastry(
-    chart1: VedicChart,
-    chart2: VedicChart,
-    language: Language
-): SynastryAnalysisResult {
-    val aspects = mutableListOf<SynastryAspect>()
-
-    // Calculate all inter-chart aspects
-    val planetsToAnalyze = listOf(
-        Planet.SUN, Planet.MOON, Planet.MARS, Planet.MERCURY,
-        Planet.JUPITER, Planet.VENUS, Planet.SATURN,
-        Planet.RAHU, Planet.KETU
-    )
-
-    for (planet1 in planetsToAnalyze) {
-        val pos1 = chart1.planetPositions.find { it.planet == planet1 } ?: continue
-
-        for (planet2 in planetsToAnalyze) {
-            val pos2 = chart2.planetPositions.find { it.planet == planet2 } ?: continue
-
-            // Check for aspects
-            for (aspectType in SynastryAspectType.entries) {
-                val orb = calculateOrb(pos1.longitude, pos2.longitude, aspectType.angle)
-                if (orb <= aspectType.maxOrb) {
-                    val strength = calculateAspectStrength(orb, aspectType.maxOrb)
-                    val isApplying = isAspectApplying(pos1, pos2, aspectType.angle)
-                    val interpretation = generateAspectInterpretation(planet1, planet2, aspectType, language)
-
-                    aspects.add(
-                        SynastryAspect(
-                            planet1 = planet1,
-                            planet1Chart = 1,
-                            planet2 = planet2,
-                            planet2Chart = 2,
-                            aspectType = aspectType,
-                            orb = orb,
-                            isApplying = isApplying,
-                            strength = strength,
-                            interpretation = interpretation
-                        )
-                    )
-                }
-            }
-        }
-    }
-
-    // Sort by strength
-    val sortedAspects = aspects.sortedByDescending { it.strength }
-
-    // Categorize aspects
-    val harmoniousAspects = sortedAspects.filter {
-        it.aspectType.nature == AspectNature.HARMONIOUS ||
-        (it.aspectType == SynastryAspectType.CONJUNCTION && isBeneficConjunction(it.planet1, it.planet2))
-    }
-
-    val challengingAspects = sortedAspects.filter {
-        it.aspectType.nature == AspectNature.CHALLENGING ||
-        (it.aspectType == SynastryAspectType.CONJUNCTION && isMaleficConjunction(it.planet1, it.planet2))
-    }
-
-    // Calculate house overlays
-    val houseOverlays1In2 = calculateHouseOverlays(chart1, chart2, 1, language)
-    val houseOverlays2In1 = calculateHouseOverlays(chart2, chart1, 2, language)
-
-    // Extract special aspects
-    val sunMoonAspects = sortedAspects.filter { aspect ->
-        (aspect.planet1 == Planet.SUN && aspect.planet2 == Planet.MOON) ||
-        (aspect.planet1 == Planet.MOON && aspect.planet2 == Planet.SUN)
-    }
-
-    val venusMarsAspects = sortedAspects.filter { aspect ->
-        (aspect.planet1 == Planet.VENUS && aspect.planet2 == Planet.MARS) ||
-        (aspect.planet1 == Planet.MARS && aspect.planet2 == Planet.VENUS)
-    }
-
-    // Ascendant connections - planets in close aspect to ascendant degree
-    val asc1 = chart1.ascendant
-    val asc2 = chart2.ascendant
-    val ascendantConnections = mutableListOf<SynastryAspect>()
-
-    for (pos in chart2.planetPositions) {
-        val orb = calculateOrb(asc1, pos.longitude, 0.0)
-        if (orb <= 10.0) {
-            ascendantConnections.add(
-                SynastryAspect(
-                    planet1 = Planet.SUN, // Placeholder for Ascendant
-                    planet1Chart = 1,
-                    planet2 = pos.planet,
-                    planet2Chart = 2,
-                    aspectType = SynastryAspectType.CONJUNCTION,
-                    orb = orb,
-                    isApplying = false,
-                    strength = calculateAspectStrength(orb, 10.0),
-                    interpretation = generateAscendantInterpretation(pos.planet, 1, language)
-                )
-            )
-        }
-    }
-
-    // Calculate compatibility categories
-    val compatibilityCategories = calculateCompatibilityCategories(
-        harmoniousAspects, challengingAspects, sunMoonAspects, venusMarsAspects, language
-    )
-
-    // Calculate overall compatibility
-    val totalHarmonious = harmoniousAspects.sumOf { it.strength }
-    val totalChallenging = challengingAspects.sumOf { it.strength }
-    val overallCompatibility = ((totalHarmonious / (totalHarmonious + totalChallenging + 0.01)) * 100).coerceIn(0.0, 100.0)
-
-    // Generate key findings
-    val keyFindings = generateKeyFindings(sortedAspects, houseOverlays1In2, houseOverlays2In1, language)
-
-    return SynastryAnalysisResult(
-        aspects = sortedAspects,
-        harmoniousAspects = harmoniousAspects,
-        challengingAspects = challengingAspects,
-        houseOverlays1In2 = houseOverlays1In2,
-        houseOverlays2In1 = houseOverlays2In1,
-        compatibilityCategories = compatibilityCategories,
-        overallCompatibility = overallCompatibility,
-        keyFindings = keyFindings,
-        sunMoonAspects = sunMoonAspects,
-        venusMarsAspects = venusMarsAspects,
-        ascendantConnections = ascendantConnections
-    )
-}
-
-private fun calculateOrb(longitude1: Double, longitude2: Double, targetAngle: Double): Double {
-    val diff = abs(VedicAstrologyUtils.normalizeAngle(longitude1 - longitude2))
-    val orb = abs(diff - targetAngle)
-    return minOf(orb, 360.0 - orb)
-}
-
-private fun calculateAspectStrength(orb: Double, maxOrb: Double): Double {
-    return ((maxOrb - orb) / maxOrb).coerceIn(0.0, 1.0)
-}
-
-private fun isAspectApplying(pos1: PlanetPosition, pos2: PlanetPosition, targetAngle: Double): Boolean {
-    val currentDiff = VedicAstrologyUtils.normalizeAngle(pos2.longitude - pos1.longitude)
-    val futurePos1 = VedicAstrologyUtils.normalizeAngle(pos1.longitude + pos1.speed)
-    val futurePos2 = VedicAstrologyUtils.normalizeAngle(pos2.longitude + pos2.speed)
-    val futureDiff = VedicAstrologyUtils.normalizeAngle(futurePos2 - futurePos1)
-    val currentOrb = abs(currentDiff - targetAngle)
-    val futureOrb = abs(futureDiff - targetAngle)
-    return futureOrb < currentOrb
-}
-
-private fun isBeneficConjunction(planet1: Planet, planet2: Planet): Boolean {
-    val benefics = setOf(Planet.JUPITER, Planet.VENUS, Planet.MOON, Planet.MERCURY)
-    return planet1 in benefics || planet2 in benefics
-}
-
-private fun isMaleficConjunction(planet1: Planet, planet2: Planet): Boolean {
-    val malefics = setOf(Planet.SATURN, Planet.MARS, Planet.RAHU, Planet.KETU)
-    return planet1 in malefics && planet2 in malefics
-}
-
-private fun calculateHouseOverlays(
-    sourceChart: VedicChart,
-    targetChart: VedicChart,
-    sourceChartNum: Int,
-    language: Language
-): List<HouseOverlay> {
-    val overlays = mutableListOf<HouseOverlay>()
-
-    for (pos in sourceChart.planetPositions) {
-        val houseNumber = getHouseForLongitude(pos.longitude, targetChart.houseCusps)
-        val lifeArea = getLifeAreaForHouse(houseNumber, language)
-        val interpretation = generateHouseOverlayInterpretation(pos.planet, houseNumber, sourceChartNum, language)
-
-        overlays.add(
-            HouseOverlay(
-                planet = pos.planet,
-                sourceChart = sourceChartNum,
-                houseNumber = houseNumber,
-                interpretation = interpretation,
-                lifeArea = lifeArea
-            )
-        )
-    }
-
-    return overlays
-}
-
-private fun getHouseForLongitude(longitude: Double, houseCusps: List<Double>): Int {
-    val normalizedLong = VedicAstrologyUtils.normalizeAngle(longitude)
-    for (i in 0 until 12) {
-        val nextIndex = (i + 1) % 12
-        val cusp = houseCusps[i]
-        val nextCusp = houseCusps[nextIndex]
-
-        if (nextCusp > cusp) {
-            if (normalizedLong >= cusp && normalizedLong < nextCusp) {
-                return i + 1
-            }
-        } else {
-            if (normalizedLong >= cusp || normalizedLong < nextCusp) {
-                return i + 1
-            }
-        }
-    }
-    return 1
-}
-
-private fun getLifeAreaForHouse(house: Int, language: Language): String {
-    val key = when (house) {
-        1 -> StringKeyDosha.HOUSE_SIG_1
-        2 -> StringKeyDosha.HOUSE_SIG_2
-        3 -> StringKeyDosha.HOUSE_SIG_3
-        4 -> StringKeyDosha.HOUSE_SIG_4
-        5 -> StringKeyDosha.HOUSE_SIG_5
-        6 -> StringKeyDosha.HOUSE_SIG_6
-        7 -> StringKeyDosha.HOUSE_SIG_7
-        8 -> StringKeyDosha.HOUSE_SIG_8
-        9 -> StringKeyDosha.HOUSE_SIG_9
-        10 -> StringKeyDosha.HOUSE_SIG_10
-        11 -> StringKeyDosha.HOUSE_SIG_11
-        12 -> StringKeyDosha.HOUSE_SIG_12
-        else -> StringKeyDosha.SYNASTRY_LIFE_AREA_GENERAL
-    }
-    return com.astro.vajra.core.common.StringResources.get(key, language)
-}
-
-private fun generateAspectInterpretation(
-    planet1: Planet,
-    planet2: Planet,
-    aspectType: SynastryAspectType,
-    language: Language
-): String {
-    val p1Name = planet1.getLocalizedName(language)
-    val p2Name = planet2.getLocalizedName(language)
-
-    val key = when (aspectType.nature) {
-        AspectNature.HARMONIOUS -> StringKeyDosha.SYNASTRY_INTERPRET_HARMONIOUS
-        AspectNature.CHALLENGING -> StringKeyDosha.SYNASTRY_INTERPRET_CHALLENGING
-        AspectNature.MAJOR -> StringKeyDosha.SYNASTRY_INTERPRET_MAJOR
-        AspectNature.MINOR -> StringKeyDosha.SYNASTRY_INTERPRET_MINOR
-    }
-    return com.astro.vajra.core.common.StringResources.get(key, language, p1Name, p2Name)
-}
-
-private fun generateAscendantInterpretation(planet: Planet, chartNum: Int, language: Language): String {
-    return com.astro.vajra.core.common.StringResources.get(
-        StringKeyDosha.SYNASTRY_INTERPRET_ASCENDANT,
-        language,
-        planet.getLocalizedName(language),
-        chartNum
-    )
-}
-
-private fun generateHouseOverlayInterpretation(planet: Planet, house: Int, chartNum: Int, language: Language): String {
-    return com.astro.vajra.core.common.StringResources.get(
-        StringKeyDosha.SYNASTRY_INTERPRET_OVERLAY,
-        language,
-        chartNum,
-        planet.getLocalizedName(language),
-        house,
-        getLifeAreaForHouse(house, language).lowercase()
-    )
-}
-
-private fun calculateCompatibilityCategories(
-    harmoniousAspects: List<SynastryAspect>,
-    challengingAspects: List<SynastryAspect>,
-    sunMoonAspects: List<SynastryAspect>,
-    venusMarsAspects: List<SynastryAspect>,
-    language: Language
-): List<CompatibilityCategory> {
-    // Emotional Bond (Sun-Moon, Moon-Moon aspects)
-    val emotionalScore = sunMoonAspects.filter { it.aspectType.nature == AspectNature.HARMONIOUS || it.aspectType == SynastryAspectType.CONJUNCTION }
-        .sumOf { it.strength * 10 }
-        .coerceAtMost(10.0)
-
-    // Romance & Attraction (Venus-Mars aspects)
-    val romanceScore = venusMarsAspects.filter { it.aspectType.nature == AspectNature.HARMONIOUS || it.aspectType == SynastryAspectType.CONJUNCTION }
-        .sumOf { it.strength * 10 }
-        .coerceAtMost(10.0)
-
-    // Communication (Mercury aspects)
-    val mercuryAspects = harmoniousAspects.filter { it.planet1 == Planet.MERCURY || it.planet2 == Planet.MERCURY }
-    val communicationScore = mercuryAspects.sumOf { it.strength * 5 }.coerceAtMost(10.0)
-
-    // Long-term Stability (Saturn aspects)
-    val saturnAspects = harmoniousAspects.filter { it.planet1 == Planet.SATURN || it.planet2 == Planet.SATURN }
-    val stabilityScore = saturnAspects.sumOf { it.strength * 5 }.coerceAtMost(10.0)
-
-    // Growth & Evolution (Jupiter aspects)
-    val jupiterAspects = harmoniousAspects.filter { it.planet1 == Planet.JUPITER || it.planet2 == Planet.JUPITER }
-    val growthScore = jupiterAspects.sumOf { it.strength * 5 }.coerceAtMost(10.0)
-
-    return listOf(
-        CompatibilityCategory(
-            name = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_EMOTIONAL_BOND, language),
-            score = emotionalScore,
-            maxScore = 10.0,
-            description = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_EMOTIONAL, language),
-            icon = Icons.Filled.Favorite
-        ),
-        CompatibilityCategory(
-            name = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_ROMANCE, language),
-            score = romanceScore,
-            maxScore = 10.0,
-            description = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_ROMANCE, language),
-            icon = Icons.Filled.FavoriteBorder
-        ),
-        CompatibilityCategory(
-            name = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_COMMUNICATION, language),
-            score = communicationScore,
-            maxScore = 10.0,
-            description = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_COMMUNICATION, language),
-            icon = Icons.Filled.ChatBubble
-        ),
-        CompatibilityCategory(
-            name = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_STABILITY, language),
-            score = stabilityScore,
-            maxScore = 10.0,
-            description = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_STABILITY, language),
-            icon = Icons.Filled.Shield
-        ),
-        CompatibilityCategory(
-            name = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_GROWTH, language),
-            score = growthScore,
-            maxScore = 10.0,
-            description = com.astro.vajra.core.common.StringResources.get(StringKeyDosha.SYNASTRY_DESC_GROWTH, language),
-            icon = Icons.Filled.TrendingUp
-        )
-    )
-}
-
-private fun generateKeyFindings(
-    aspects: List<SynastryAspect>,
-    overlays1In2: List<HouseOverlay>,
-    overlays2In1: List<HouseOverlay>,
-    language: Language
-): List<String> {
-    val findings = mutableListOf<String>()
-
-    // Find strongest aspects
-    aspects.take(3).forEach { aspect ->
-        findings.add(
-            com.astro.vajra.core.common.StringResources.get(
-                StringKeyDosha.SYNASTRY_FINDING_ASPECT,
-                language,
-                aspect.aspectType.getLocalizedName(language),
-                aspect.planet1.getLocalizedName(language),
-                aspect.planet2.getLocalizedName(language)
-            )
-        )
-    }
-
-    // Key house placements
-    overlays1In2.filter { it.houseNumber in listOf(1, 5, 7, 10) }.take(2).forEach { overlay ->
-        findings.add(
-            com.astro.vajra.core.common.StringResources.get(
-                StringKeyDosha.SYNASTRY_FINDING_HOUSE,
-                language,
-                overlay.planet.getLocalizedName(language),
-                overlay.houseNumber,
-                getLifeAreaForHouse(overlay.houseNumber, language).lowercase()
-            )
-        )
-    }
-
-    return findings.take(5)
 }
 
 // ============================================
@@ -965,6 +552,127 @@ private fun SynastryChartCard(
 }
 
 @Composable
+private fun PracticalInputsSection(
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    communication: Float,
+    onCommunicationChange: (Float) -> Unit,
+    finance: Float,
+    onFinanceChange: (Float) -> Unit,
+    family: Float,
+    onFamilyChange: (Float) -> Unit,
+    conflict: Float,
+    onConflictChange: (Float) -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(onClick = onToggle),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    Icons.Filled.Tune,
+                    contentDescription = null,
+                    tint = AppTheme.AccentPrimary,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Practical Relationship Inputs",
+                        style = MaterialTheme.typography.titleSmall,
+                        color = AppTheme.TextPrimary,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = "Tune real-life fit for more precise readiness scoring",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.TextMuted
+                    )
+                }
+                Icon(
+                    if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                    contentDescription = null,
+                    tint = AppTheme.TextSecondary
+                )
+            }
+
+            AnimatedVisibility(visible = expanded) {
+                Column(modifier = Modifier.padding(top = 12.dp)) {
+                    PracticalSliderRow(
+                        label = "Communication",
+                        value = communication,
+                        onValueChange = onCommunicationChange
+                    )
+                    PracticalSliderRow(
+                        label = "Financial Alignment",
+                        value = finance,
+                        onValueChange = onFinanceChange
+                    )
+                    PracticalSliderRow(
+                        label = "Family Values",
+                        value = family,
+                        onValueChange = onFamilyChange
+                    )
+                    PracticalSliderRow(
+                        label = "Conflict Style Compatibility",
+                        value = conflict,
+                        onValueChange = onConflictChange
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PracticalSliderRow(
+    label: String,
+    value: Float,
+    onValueChange: (Float) -> Unit
+) {
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = AppTheme.TextSecondary
+            )
+            Text(
+                text = String.format("%.1f/10", value),
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextMuted,
+                fontFamily = SpaceGroteskFamily
+            )
+        }
+        Slider(
+            value = value,
+            onValueChange = onValueChange,
+            valueRange = 0f..10f,
+            steps = 19,
+            colors = SliderDefaults.colors(
+                thumbColor = AppTheme.AccentPrimary,
+                activeTrackColor = AppTheme.AccentPrimary,
+                inactiveTrackColor = AppTheme.ChipBackground
+            )
+        )
+    }
+}
+
+@Composable
 private fun SynastryTabSelector(
     tabs: List<String>,
     selectedTab: Int,
@@ -1061,6 +769,29 @@ private fun SynastryOverviewTab(
                             color = AppTheme.TextMuted
                         )
                     }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    ScoreMiniChip(
+                        label = "Astro",
+                        value = result.astroCompatibility,
+                        modifier = Modifier.weight(1f)
+                    )
+                    ScoreMiniChip(
+                        label = "Practical",
+                        value = result.practicalCompatibility.overallScore,
+                        modifier = Modifier.weight(1f)
+                    )
+                    ScoreMiniChip(
+                        label = "Vedic Core",
+                        value = result.structuralVedicScore,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -1205,6 +936,39 @@ private fun SynastryOverviewTab(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ScoreMiniChip(
+    label: String,
+    value: Double,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        color = AppTheme.ChipBackground,
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = AppTheme.TextMuted,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = String.format("%.0f", value),
+                style = MaterialTheme.typography.titleSmall,
+                color = getCompatibilityColor(value),
+                fontWeight = FontWeight.Bold,
+                fontFamily = SpaceGroteskFamily
+            )
         }
     }
 }
@@ -1495,11 +1259,71 @@ private fun HouseOverlayCard(overlay: HouseOverlay, chartName: String) {
 @Composable
 private fun SynastryCompatibilityTab(result: SynastryAnalysisResult) {
     Column(modifier = Modifier.padding(16.dp)) {
+        PracticalBreakdownCard(result)
+        Spacer(modifier = Modifier.height(12.dp))
+
         // Detailed breakdown of each compatibility category
         result.compatibilityCategories.forEach { category ->
             CompatibilityDetailCard(category = category)
             Spacer(modifier = Modifier.height(12.dp))
         }
+    }
+}
+
+@Composable
+private fun PracticalBreakdownCard(result: SynastryAnalysisResult) {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        color = AppTheme.CardBackground,
+        border = androidx.compose.foundation.BorderStroke(1.dp, AppTheme.BorderColor),
+        shape = RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Practical Breakdown",
+                fontSize = 16.sp,
+                fontFamily = CinzelDecorativeFamily,
+                fontWeight = FontWeight.SemiBold,
+                color = AppTheme.TextPrimary
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+
+            PracticalMetricRow("Communication", result.practicalCompatibility.communicationScore)
+            PracticalMetricRow("Financial Alignment", result.practicalCompatibility.financialAlignmentScore)
+            PracticalMetricRow("Family Values", result.practicalCompatibility.familyValuesScore)
+            PracticalMetricRow("Conflict Style", result.practicalCompatibility.conflictStyleScore)
+        }
+    }
+}
+
+@Composable
+private fun PracticalMetricRow(label: String, score: Double) {
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.TextSecondary
+            )
+            Text(
+                text = String.format("%.1f/10", score),
+                style = MaterialTheme.typography.bodySmall,
+                color = getCompatibilityColor(score * 10.0),
+                fontWeight = FontWeight.SemiBold
+            )
+        }
+        LinearProgressIndicator(
+            progress = { (score / 10.0).toFloat() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(6.dp)
+                .clip(RoundedCornerShape(NeoVedicTokens.ElementCornerRadius)),
+            color = getCompatibilityColor(score * 10.0),
+            trackColor = AppTheme.ChipBackground
+        )
     }
 }
 

@@ -484,6 +484,12 @@ enum class CompatibilityRating(
                 else -> POOR
             }
         }
+
+        fun fromPercentage(percentage: Double, nadiScore: Double = 8.0, bhakootScore: Double = 7.0): CompatibilityRating {
+            val normalized = percentage.coerceIn(0.0, 100.0)
+            val equivalentScore = (normalized / 100.0) * MatchmakingConstants.MAX_TOTAL
+            return fromScore(equivalentScore, nadiScore, bhakootScore)
+        }
     }
 }
 
@@ -645,6 +651,9 @@ data class MatchmakingResult(
     val remedies: List<String>,
     val summary: String,
     val detailedAnalysis: String,
+    val calibratedCompatibilityScore: Double = 0.0,
+    val practicalCompatibilityScore: Double = 0.0,
+    val relationshipReadinessScore: Double = 0.0,
     val timestamp: Long = System.currentTimeMillis()
 ) {
     val varnaScore: Double get() = gunaAnalyses.find { it.gunaType == GunaType.VARNA }?.obtainedPoints ?: 0.0

@@ -98,7 +98,10 @@ fun MatchmakingScreen(
     )
 
     val animatedProgress by animateFloatAsState(
-        targetValue = matchingResult?.let { (it.totalPoints / it.maxPoints).toFloat() } ?: 0f,
+        targetValue = matchingResult?.let {
+            val displayScore = if (it.relationshipReadinessScore > 0.0) it.relationshipReadinessScore else it.percentage
+            (displayScore / 100.0).toFloat()
+        } ?: 0f,
         animationSpec = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
         label = "progress"
     )
@@ -559,6 +562,12 @@ private fun EnhancedCompatibilityScoreCard(
     result: MatchmakingResult,
     animatedProgress: Float
 ) {
+    val displayScore = if (result.relationshipReadinessScore > 0.0) {
+        result.relationshipReadinessScore
+    } else {
+        result.percentage
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -605,14 +614,14 @@ private fun EnhancedCompatibilityScoreCard(
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = String.format("%.1f", result.totalPoints),
+                            text = String.format("%.1f", displayScore),
                             style = MaterialTheme.typography.displaySmall,
                             fontWeight = FontWeight.Bold,
                             color = AppTheme.TextPrimary,
                             fontFamily = CinzelDecorativeFamily
                         )
                         Text(
-                            text = stringResource(StringKeyMatch.MATCH_OUT_OF, result.maxPoints.toInt()),
+                            text = stringResource(StringKeyMatch.MATCH_OUT_OF, 100),
                             style = MaterialTheme.typography.bodySmall,
                             color = AppTheme.TextMuted
                         )
@@ -653,13 +662,21 @@ private fun EnhancedCompatibilityScoreCard(
                             fontWeight = FontWeight.SemiBold,
                             color = getRatingColor(result.rating)
                         )) {
-                            append(String.format("%.1f", result.percentage))
+                            append(String.format("%.1f", displayScore))
                             append(StringResources.get(StringKeyUIExtra.PERCENT, currentLanguage()))
                         }
                         append(" ${stringResource(StringKeyMatch.MATCH_COMPATIBILITY)}")
                     },
                     style = MaterialTheme.typography.bodyLarge,
                     color = AppTheme.TextSecondary
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "Classical guna: ${String.format("%.1f", result.totalPoints)}/${result.maxPoints.toInt()}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = AppTheme.TextMuted
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -694,6 +711,26 @@ private fun QuickInsightsRow(result: MatchmakingResult) {
                 value = result.getManglikQuickStatus(language),
                 color = getManglikStatusColor(result.manglikCompatibilityLevel)
             )
+        }
+
+        if (result.calibratedCompatibilityScore > 0.0) {
+            item {
+                QuickInsightChip(
+                    label = "Astro Core",
+                    value = "${result.calibratedCompatibilityScore.toInt()}/100",
+                    color = if (result.calibratedCompatibilityScore >= 60.0) AppTheme.SuccessColor else AppTheme.WarningColor
+                )
+            }
+        }
+
+        if (result.practicalCompatibilityScore > 0.0) {
+            item {
+                QuickInsightChip(
+                    label = "Practical",
+                    value = "${result.practicalCompatibilityScore.toInt()}/100",
+                    color = if (result.practicalCompatibilityScore >= 60.0) AppTheme.SuccessColor else AppTheme.WarningColor
+                )
+            }
         }
 
         if (hasNadiDosha) {
