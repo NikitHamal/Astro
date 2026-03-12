@@ -277,7 +277,7 @@ class SwissEphemerisEngine internal constructor(
             val newChart = performChartCalculation(
                 birthData = birthData,
                 houseSystem = effectiveHouseSystem,
-                ayanamsa = effectiveAyanamsa,
+                ayanamsaSetting = effectiveAyanamsa,
                 nodeMode = effectiveNodeMode
             )
             calculationCache.put(cacheKey, newChart)

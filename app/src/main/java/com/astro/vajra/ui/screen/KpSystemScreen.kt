@@ -46,7 +46,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -457,7 +456,6 @@ private fun KpNumbersTab(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text(stringResource(StringKeyAdvanced.KP_NUMBER_INPUT_LABEL)) },
-                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = androidx.compose.ui.text.input.KeyboardType.Number),
                         singleLine = true
                     )
                     selectedSegment?.let { segment ->
