@@ -110,6 +110,7 @@ fun MainScreen(
     onNavigateToKalaBala: () -> Unit = {},
     onNavigateToSaham: () -> Unit = {},
     onNavigateToNativeAnalysis: () -> Unit = {},
+    onNavigateToKpSystem: () -> Unit = {},
     onNavigateToKakshaTransit: (Long) -> Unit = {},
     onNavigateToNadiAmsha: (Long) -> Unit = {},
     onNavigateToJaiminiKaraka: () -> Unit = {},
@@ -228,6 +229,7 @@ fun MainScreen(
                                         InsightFeature.PRASHNA -> selectedChartId?.let { onNavigateToPrashna(it) } ?: onNavigateToPrashna(0L)
                                         InsightFeature.CHART_COMPARISON -> onNavigateToSynastry()
                                         InsightFeature.KAKSHYA_TRANSIT -> selectedChartId?.let { onNavigateToKakshaTransit(it) }
+                                        InsightFeature.KP_SYSTEM -> if (currentChart != null) onNavigateToKpSystem()
                                         InsightFeature.NADI_AMSHA -> selectedChartId?.let { onNavigateToNadiAmsha(it) }
                                         InsightFeature.FULL_CHART -> if (currentChart != null) onNavigateToBirthChart()
                                         InsightFeature.PLANETS -> if (currentChart != null) onNavigateToPlanets()
@@ -507,7 +509,6 @@ enum class MainTab(
         return StringResources.get(titleKey, language)
     }
 }
-
 
 
 

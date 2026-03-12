@@ -1120,6 +1120,7 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
             InsightFeature.ARGALA,
             InsightFeature.ARUDHA_PADA,
             InsightFeature.BHRIGU_BINDU,
+            InsightFeature.KP_SYSTEM,
             InsightFeature.SARVATOBHADRA_CHAKRA,
             InsightFeature.GRAHA_YUDDHA,
             InsightFeature.MRITYU_BHAGA,
@@ -1526,6 +1527,13 @@ enum class InsightFeature(
         colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),
+    KP_SYSTEM(
+        titleKey = StringKeyAdvanced.KP_TITLE,
+        descriptionKey = StringKeyAdvanced.KP_DESC,
+        icon = Icons.Outlined.Tune,
+        colorToken = FeatureColorToken.AccentGold,
+        isImplemented = true
+    ),
     NADI_AMSHA(
         titleKey = StringKeyAdvanced.NADI_TITLE,
         descriptionKey = StringKeyAdvanced.NADI_DESC,
@@ -1620,7 +1628,6 @@ private fun resolveZoneId(timezone: String): ZoneId {
     return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
         ?: ZoneId.systemDefault()
 }
-
 
 
 

@@ -63,6 +63,7 @@ import com.astro.vajra.ui.screen.SthanaBalaScreen
 import com.astro.vajra.ui.screen.KalaBalaScreen
 import com.astro.vajra.ui.screen.SahamScreen
 import com.astro.vajra.ui.screen.NativeAnalysisScreen
+import com.astro.vajra.ui.screen.KpSystemScreen
 import com.astro.vajra.ui.screen.JaiminiKarakaScreen
 import com.astro.vajra.ui.screen.DrigDashaScreen
 import com.astro.vajra.ui.screen.SaptamsaScreen
@@ -125,6 +126,9 @@ sealed class Screen(val route: String) {
     }
     object NativeAnalysis : Screen("native_analysis/{chartId}") {
         fun createRoute(chartId: Long) = "native_analysis/$chartId"
+    }
+    object KpSystem : Screen("kp_system/{chartId}") {
+        fun createRoute(chartId: Long) = "kp_system/$chartId"
     }
 
     // Individual chart analysis screens
@@ -408,6 +412,7 @@ fun AstroVajraNavigation(
                 onNavigateToKalaBala = { navigateWithId(Screen.KalaBala) },
                 onNavigateToSaham = { navigateWithId(Screen.Saham) },
                 onNavigateToNativeAnalysis = { navigateWithId(Screen.NativeAnalysis) },
+                onNavigateToKpSystem = { navigateWithId(Screen.KpSystem) },
                 onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
                 onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
                 onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
@@ -1424,6 +1429,15 @@ fun AstroVajraNavigation(
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
             NativeAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        composable(
+            route = Screen.KpSystem.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            KpSystemScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // Jaimini Karaka (Chara Karaka Analysis) screen

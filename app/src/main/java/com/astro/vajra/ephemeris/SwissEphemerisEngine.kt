@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.LruCache
 import android.util.Log
 import com.astro.vajra.core.model.BirthData
+import com.astro.vajra.core.model.Ayanamsa
 import com.astro.vajra.core.model.HouseSystem
 import com.astro.vajra.core.model.Nakshatra
 import com.astro.vajra.core.model.Planet
 import com.astro.vajra.core.model.PlanetPosition
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.core.model.ZodiacSign
+import com.astro.vajra.data.preferences.NodeCalculationMode
 import com.astro.vajra.ephemeris.VedicAstrologyUtils
 import com.astro.vajra.util.TimezoneSanitizer
 import swisseph.SweConst
@@ -245,19 +247,21 @@ class SwissEphemerisEngine internal constructor(
 
     fun calculateVedicChart(
         birthData: BirthData,
-        houseSystem: HouseSystem? = null
+        houseSystem: HouseSystem? = null,
+        ayanamsa: Ayanamsa? = null,
+        nodeMode: NodeCalculationMode? = null
     ): VedicChart {
         validateBirthData(birthData)
         ensureOpen()
 
         val effectiveHouseSystem = houseSystem ?: astroSettings.houseSystem.value
-        val currentAyanamsa = astroSettings.ayanamsa.value
-        val currentNodeMode = astroSettings.nodeMode.value
+        val effectiveAyanamsa = ayanamsa ?: astroSettings.ayanamsa.value
+        val effectiveNodeMode = nodeMode ?: astroSettings.nodeMode.value
         val cacheKey = getCacheKey(
             birthData = birthData,
             houseSystem = effectiveHouseSystem,
-            ayanamsaName = currentAyanamsa.name,
-            nodeModeName = currentNodeMode.name
+            ayanamsaName = effectiveAyanamsa.name,
+            nodeModeName = effectiveNodeMode.name
         )
         val cachedChart = calculationCache.get(cacheKey)
         if (cachedChart != null) {
@@ -270,7 +274,12 @@ class SwissEphemerisEngine internal constructor(
             // Double-check cache inside lock to prevent race conditions
             calculationCache.get(cacheKey)?.let { return@write it }
 
-            val newChart = performChartCalculation(birthData, effectiveHouseSystem)
+            val newChart = performChartCalculation(
+                birthData = birthData,
+                houseSystem = effectiveHouseSystem,
+                ayanamsa = effectiveAyanamsa,
+                nodeMode = effectiveNodeMode
+            )
             calculationCache.put(cacheKey, newChart)
             newChart
         }
@@ -328,22 +337,21 @@ class SwissEphemerisEngine internal constructor(
 
     private fun performChartCalculation(
         birthData: BirthData,
-        houseSystem: HouseSystem
+        houseSystem: HouseSystem,
+        ayanamsaSetting: Ayanamsa,
+        nodeMode: NodeCalculationMode
     ): VedicChart {
         val utcDateTime = convertToUtc(birthData.dateTime, birthData.timezone)
         val julianDay = calculateJulianDay(utcDateTime)
 
-        // Dynamically set Ayanamsa based on settings
-        val currentAyanamsa = astroSettings.ayanamsa.value
-        val isSidereal = currentAyanamsa.swissEphId != -1
+        val isSidereal = ayanamsaSetting.swissEphId != -1
         
-        // Cache sidereal mode to avoid redundant JNI calls
-        if (lastSiderealMode != currentAyanamsa.swissEphId) {
-            swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
-            lastSiderealMode = currentAyanamsa.swissEphId
+        if (lastSiderealMode != ayanamsaSetting.swissEphId) {
+            swissEph.swe_set_sid_mode(ayanamsaSetting.swissEphId, 0.0, 0.0)
+            lastSiderealMode = ayanamsaSetting.swissEphId
         }
 
-        val ayanamsa = if (isSidereal) swissEph.swe_get_ayanamsa_ut(julianDay) else 0.0
+        val ayanamsaValue = if (isSidereal) swissEph.swe_get_ayanamsa_ut(julianDay) else 0.0
         val currentFlags = if (isSidereal) SweConst.SEFLG_SIDEREAL else 0
 
         houseCuspsBuffer.fill(0.0)
@@ -376,15 +384,17 @@ class SwissEphemerisEngine internal constructor(
                 julianDay = julianDay,
                 houseCusps = houseCuspsCopy,
                 houseSystem = houseSystem,
-                ascendant = ascendant
+                ascendant = ascendant,
+                ayanamsa = ayanamsaSetting,
+                nodeMode = nodeMode
             )
         }
 
         return VedicChart(
             birthData = birthData,
             julianDay = julianDay,
-            ayanamsa = ayanamsa,
-            ayanamsaName = currentAyanamsa.name,
+            ayanamsa = ayanamsaValue,
+            ayanamsaName = ayanamsaSetting.name,
             ascendant = ascendant,
             midheaven = midheaven,
             planetPositions = planetPositions,
@@ -431,7 +441,9 @@ class SwissEphemerisEngine internal constructor(
             julianDay = julianDay,
             houseCusps = houseCuspsCopy,
             houseSystem = effectiveHouseSystem,
-            ascendant = ascMcBuffer[ASC_INDEX]
+            ascendant = ascMcBuffer[ASC_INDEX],
+            ayanamsa = currentAyanamsa,
+            nodeMode = astroSettings.nodeMode.value
         )
     }
 
@@ -440,11 +452,12 @@ class SwissEphemerisEngine internal constructor(
         julianDay: Double,
         houseCusps: List<Double>,
         houseSystem: HouseSystem,
-        ascendant: Double
+        ascendant: Double,
+        ayanamsa: Ayanamsa,
+        nodeMode: NodeCalculationMode
     ): PlanetPosition {
         planetResultBuffer.fill(0.0)
 
-        val nodeMode = astroSettings.nodeMode.value
         val rahuId = if (nodeMode == com.astro.vajra.data.preferences.NodeCalculationMode.TRUE) {
             SweConst.SE_TRUE_NODE
         } else {
@@ -453,11 +466,10 @@ class SwissEphemerisEngine internal constructor(
 
         val sweId = if (planet == Planet.KETU || planet == Planet.RAHU) rahuId else planet.swissEphId
 
-        val currentAyanamsa = astroSettings.ayanamsa.value
-        val isSidereal = currentAyanamsa.swissEphId != -1
+        val isSidereal = ayanamsa.swissEphId != -1
 
         // Explicitly set sidereal mode, even if Sayana (using -1) to reset state
-        swissEph.swe_set_sid_mode(currentAyanamsa.swissEphId, 0.0, 0.0)
+        swissEph.swe_set_sid_mode(ayanamsa.swissEphId, 0.0, 0.0)
 
         val currentCalculationFlags = if (isSidereal) {
             calculationFlags
