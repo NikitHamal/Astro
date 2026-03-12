@@ -47,6 +47,7 @@ import com.astro.vajra.core.common.StringKeyAdvanced
 import com.astro.vajra.core.common.StringKeyDosha
 import com.astro.vajra.core.common.StringKeyInterface
 import com.astro.vajra.core.common.StringKeyUICommon
+import com.astro.vajra.core.common.StringKeyKP
 import com.astro.vajra.core.common.StringKeyShadbala
 import com.astro.vajra.core.common.StringResources
 import com.astro.vajra.core.common.getLocalizedName
@@ -1594,6 +1595,20 @@ enum class InsightFeature(
         descriptionKey = StringKey.FEATURE_SAPTAMSA_DESC,
         icon = Icons.Outlined.ChildCare,
         colorToken = FeatureColorToken.LifeAreaLove,
+        isImplemented = true
+    ),
+    KP_SYSTEM(
+        titleKey = StringKeyKP.FEATURE_KP,
+        descriptionKey = StringKeyKP.FEATURE_KP_DESC,
+        icon = Icons.Outlined.Hub,
+        colorToken = FeatureColorToken.AccentPrimary,
+        isImplemented = true
+    ),
+    KP_HORARY(
+        titleKey = StringKeyKP.FEATURE_KP_HORARY,
+        descriptionKey = StringKeyKP.FEATURE_KP_HORARY_DESC,
+        icon = Icons.Outlined.Pin,
+        colorToken = FeatureColorToken.AccentGold,
         isImplemented = true
     );
 

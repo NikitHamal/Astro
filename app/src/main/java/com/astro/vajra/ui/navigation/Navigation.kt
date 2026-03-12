@@ -66,6 +66,8 @@ import com.astro.vajra.ui.screen.NativeAnalysisScreen
 import com.astro.vajra.ui.screen.JaiminiKarakaScreen
 import com.astro.vajra.ui.screen.DrigDashaScreen
 import com.astro.vajra.ui.screen.SaptamsaScreen
+import com.astro.vajra.ui.screen.kp.KPAnalysisScreen
+import com.astro.vajra.ui.screen.kp.KPHoraryScreen
 import com.astro.vajra.ui.screen.main.ExportFormat
 import com.astro.vajra.ui.screen.main.InsightFeature
 import com.astro.vajra.ui.screen.main.MainScreen
@@ -293,6 +295,16 @@ sealed class Screen(val route: String) {
         fun createRoute(chartId: Long) = "saptamsa/$chartId"
     }
 
+    // KP System (Krishnamurti Paddhati) screen
+    object KPSystem : Screen("kp_system/{chartId}") {
+        fun createRoute(chartId: Long) = "kp_system/$chartId"
+    }
+
+    // KP Horary (Number 1-249) screen
+    object KPHorary : Screen("kp_horary/{chartId}") {
+        fun createRoute(chartId: Long) = "kp_horary/$chartId"
+    }
+
     object About : Screen("about")
 }
 
@@ -411,6 +423,8 @@ fun AstroVajraNavigation(
                 onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
                 onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
                 onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
+                onNavigateToKPSystem = { navigateWithId(Screen.KPSystem) },
+                onNavigateToKPHorary = { navigateWithId(Screen.KPHorary) },
                 onNavigateToAbout = { navigateToFeature(Screen.About.route) },
                 onExportChart = { format ->
                     currentChart?.let { chart ->
@@ -1454,6 +1468,26 @@ fun AstroVajraNavigation(
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
             SaptamsaScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // KP System (Krishnamurti Paddhati) screen
+        composable(
+            route = Screen.KPSystem.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            KPAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // KP Horary (Number 1-249) screen
+        composable(
+            route = Screen.KPHorary.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            KPHoraryScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
     }

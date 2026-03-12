@@ -115,6 +115,8 @@ fun MainScreen(
     onNavigateToJaiminiKaraka: () -> Unit = {},
     onNavigateToDrigDasha: () -> Unit = {},
     onNavigateToSaptamsa: () -> Unit = {},
+    onNavigateToKPSystem: () -> Unit = {},
+    onNavigateToKPHorary: () -> Unit = {},
     onNavigateToAbout: () -> Unit = {},
     onExportChart: (ExportFormat) -> Unit
 ) {
@@ -277,6 +279,8 @@ fun MainScreen(
                                         InsightFeature.JAIMINI_KARAKA -> if (currentChart != null) onNavigateToJaiminiKaraka()
                                         InsightFeature.DRIG_DASHA -> if (currentChart != null) onNavigateToDrigDasha()
                                         InsightFeature.SAPTAMSA -> if (currentChart != null) onNavigateToSaptamsa()
+                                        InsightFeature.KP_SYSTEM -> if (currentChart != null) onNavigateToKPSystem()
+                                        InsightFeature.KP_HORARY -> if (currentChart != null) onNavigateToKPHorary()
                                         else -> if (currentChart != null) onNavigateToChartAnalysis(feature)
                                     }
                                 }
