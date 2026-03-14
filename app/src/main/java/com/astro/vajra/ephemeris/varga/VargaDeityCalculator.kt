@@ -1073,7 +1073,7 @@ object VargaDeityCalculator {
             d3.planetDeities[planet]?.let { deities.add(it) }
             d7.planetDeities[planet]?.let { deities.add(it) }
             d9.planetDeities[planet]?.let { deities.add(it) }
-            d10.planetDeities[planet]?.let { deities.add(it) }
+            d10.planetDikpalas[planet]?.let { deities.add(it) }
             d60.planetDeities[planet]?.let { deities.add(it) }
             if (deities.isNotEmpty()) {
                 result[planet] = deities
@@ -1165,6 +1165,8 @@ object VargaDeityCalculator {
                             "emotional challenges. Moon-related remedies (pearl, chanting Chandra " +
                             "mantras, Monday fasting) are recommended."
                 )
+            } else {
+                // No specific finding for Manushya/Mixed Moon placements in D60.
             }
         }
 
