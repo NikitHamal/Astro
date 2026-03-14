@@ -1117,6 +1117,7 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
     ),
     ADVANCED(
         listOf(
+            InsightFeature.ADVANCED_ENGINES,
             InsightFeature.ARGALA,
             InsightFeature.ARUDHA_PADA,
             InsightFeature.BHRIGU_BINDU,
@@ -1572,6 +1573,13 @@ enum class InsightFeature(
         titleKey = StringKey.FEATURE_NATIVE_ANALYSIS,
         descriptionKey = StringKey.FEATURE_NATIVE_ANALYSIS_DESC,
         icon = Icons.Outlined.Person,
+        colorToken = FeatureColorToken.AccentPrimary,
+        isImplemented = true
+    ),
+    ADVANCED_ENGINES(
+        titleKey = StringKey.FEATURE_ADVANCED_ENGINES,
+        descriptionKey = StringKey.FEATURE_ADVANCED_ENGINES_DESC,
+        icon = Icons.Outlined.Psychology,
         colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),

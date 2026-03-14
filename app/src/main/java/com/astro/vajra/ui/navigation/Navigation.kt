@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.astro.vajra.core.model.VedicChart
 import com.astro.vajra.ephemeris.yoga.Yoga
 import com.astro.vajra.ui.screen.ArgalaScreen
+import com.astro.vajra.ui.screen.AdvancedEnginesScreen
 import com.astro.vajra.ui.screen.ashtakavarga.AshtakavargaScreenRedesigned
 import com.astro.vajra.ui.screen.BhriguBinduScreen
 import com.astro.vajra.ui.screen.BirthChartScreen
@@ -125,6 +126,9 @@ sealed class Screen(val route: String) {
     }
     object NativeAnalysis : Screen("native_analysis/{chartId}") {
         fun createRoute(chartId: Long) = "native_analysis/$chartId"
+    }
+    object AdvancedEngines : Screen("advanced_engines/{chartId}") {
+        fun createRoute(chartId: Long) = "advanced_engines/$chartId"
     }
 
     // Individual chart analysis screens
@@ -408,6 +412,7 @@ fun AstroVajraNavigation(
                 onNavigateToKalaBala = { navigateWithId(Screen.KalaBala) },
                 onNavigateToSaham = { navigateWithId(Screen.Saham) },
                 onNavigateToNativeAnalysis = { navigateWithId(Screen.NativeAnalysis) },
+                onNavigateToAdvancedEngines = { chartId -> navigateWithId(Screen.AdvancedEngines, chartId) },
                 onNavigateToJaiminiKaraka = { navigateWithId(Screen.JaiminiKaraka) },
                 onNavigateToDrigDasha = { navigateWithId(Screen.DrigDasha) },
                 onNavigateToSaptamsa = { navigateWithId(Screen.Saptamsa) },
@@ -1424,6 +1429,16 @@ fun AstroVajraNavigation(
             val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
             LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
             NativeAnalysisScreen(chart = currentChart, onBack = { navController.popBackStack() })
+        }
+
+        // Advanced Engines (backend analyzers surfaced) screen
+        composable(
+            route = Screen.AdvancedEngines.route,
+            arguments = listOf(navArgument("chartId") { type = NavType.LongType })
+        ) { backStackEntry ->
+            val chartId = backStackEntry.arguments?.getLong("chartId") ?: return@composable
+            LaunchedEffect(chartId) { if (selectedChartId != chartId) viewModel.loadChart(chartId) }
+            AdvancedEnginesScreen(chart = currentChart, onBack = { navController.popBackStack() })
         }
 
         // Jaimini Karaka (Chara Karaka Analysis) screen

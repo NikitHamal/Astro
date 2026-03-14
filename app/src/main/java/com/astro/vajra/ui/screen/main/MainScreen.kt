@@ -110,6 +110,7 @@ fun MainScreen(
     onNavigateToKalaBala: () -> Unit = {},
     onNavigateToSaham: () -> Unit = {},
     onNavigateToNativeAnalysis: () -> Unit = {},
+    onNavigateToAdvancedEngines: (Long) -> Unit = {},
     onNavigateToKakshaTransit: (Long) -> Unit = {},
     onNavigateToNadiAmsha: (Long) -> Unit = {},
     onNavigateToJaiminiKaraka: () -> Unit = {},
@@ -274,6 +275,7 @@ fun MainScreen(
                                         InsightFeature.KALA_BALA -> if (currentChart != null) onNavigateToKalaBala()
                                         InsightFeature.SAHAM -> if (currentChart != null) onNavigateToSaham()
                                         InsightFeature.NATIVE_ANALYSIS -> if (currentChart != null) onNavigateToNativeAnalysis()
+                                        InsightFeature.ADVANCED_ENGINES -> selectedChartId?.let { onNavigateToAdvancedEngines(it) }
                                         InsightFeature.JAIMINI_KARAKA -> if (currentChart != null) onNavigateToJaiminiKaraka()
                                         InsightFeature.DRIG_DASHA -> if (currentChart != null) onNavigateToDrigDasha()
                                         InsightFeature.SAPTAMSA -> if (currentChart != null) onNavigateToSaptamsa()

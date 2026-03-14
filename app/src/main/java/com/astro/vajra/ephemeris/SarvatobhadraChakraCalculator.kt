@@ -851,4 +851,889 @@ object SarvatobhadraChakraCalculator {
 
         return recommendations.take(5)
     }
+
+    // ============================================================================
+    // ENHANCED TRANSIT VEDHA ANALYSIS
+    // ============================================================================
+
+    /**
+     * Vedha direction per traditional SBC texts.
+     * - SAMMUKHA (Front): Direct line of sight - strongest vedha
+     * - VAMA (Left): Vedha from left flank - moderate strength
+     * - DAKSHINA (Right): Vedha from right flank - moderate strength
+     */
+    enum class VedhaDirection(val displayName: String, val strengthMultiplier: Double) {
+        SAMMUKHA("Sammukha (Front)", 1.0),
+        VAMA("Vama (Left)", 0.75),
+        DAKSHINA("Dakshina (Right)", 0.75)
+    }
+
+    /**
+     * Cell state for the interactive grid representation.
+     */
+    data class SBCCellState(
+        val cell: ChakraCell,
+        val isNatalPoint: Boolean = false,
+        val activeVedhas: List<CellVedhaInfo> = emptyList(),
+        val overallIntensity: Double = 0.0,
+        val isHighlighted: Boolean = false
+    )
+
+    /**
+     * Vedha information for a single cell.
+     */
+    data class CellVedhaInfo(
+        val fromPlanet: Planet,
+        val direction: VedhaDirection,
+        val intensity: Double,
+        val isBenefic: Boolean
+    )
+
+    /**
+     * Tithi positions in the SBC grid.
+     * Tithis 1-15 (Shukla) and 1-15 (Krishna) mapped to grid cells.
+     */
+    private val tithiPositions: Map<Int, Pair<Int, Int>> = mapOf(
+        // Shukla Paksha tithis (1-15)
+        1 to (3 to 2), 2 to (3 to 3), 3 to (3 to 4),
+        4 to (3 to 5), 5 to (3 to 6), 6 to (2 to 2),
+        7 to (2 to 3), 8 to (1 to 2), 9 to (1 to 5),
+        10 to (1 to 6), 11 to (2 to 5), 12 to (2 to 6),
+        13 to (5 to 2), 14 to (5 to 3), 15 to (5 to 4),
+        // Krishna Paksha tithis (16-30 mapped as 16=1K, etc.)
+        16 to (5 to 5), 17 to (5 to 6), 18 to (6 to 2),
+        19 to (6 to 3), 20 to (6 to 4), 21 to (6 to 5),
+        22 to (6 to 6), 23 to (7 to 3), 24 to (7 to 4),
+        25 to (7 to 5), 26 to (7 to 6), 27 to (6 to 7),
+        28 to (7 to 0), 29 to (8 to 7), 30 to (8 to 8)
+    )
+
+    /**
+     * Letter to SBC cell mapping for name-based vedha analysis.
+     * Maps common first letters to their SBC vowel positions.
+     */
+    private val letterToSwaraMap: Map<Char, Swara> = mapOf(
+        'A' to Swara.A, 'B' to Swara.U, 'C' to Swara.I,
+        'D' to Swara.RI, 'E' to Swara.E, 'F' to Swara.U,
+        'G' to Swara.U, 'H' to Swara.A, 'I' to Swara.I,
+        'J' to Swara.I, 'K' to Swara.A, 'L' to Swara.LRI,
+        'M' to Swara.U, 'N' to Swara.RI, 'O' to Swara.O,
+        'P' to Swara.U, 'Q' to Swara.A, 'R' to Swara.RI,
+        'S' to Swara.A, 'T' to Swara.RI, 'U' to Swara.U,
+        'V' to Swara.U, 'W' to Swara.U, 'X' to Swara.A,
+        'Y' to Swara.I, 'Z' to Swara.A
+    )
+
+    /**
+     * Perform comprehensive transit vedha analysis on the SBC grid.
+     *
+     * Maps the native's birth Nakshatra, Tithi, Vara, and name letter to SBC cells,
+     * then checks each transiting planet's nakshatra for vedha connections to these
+     * birth points, calculating direction, intensity, and timeline.
+     *
+     * @param natalChart The native's birth chart
+     * @param transitPositions Current planetary transit positions
+     * @param birthNakshatra The native's Janma Nakshatra
+     * @param birthTithi The birth tithi number (1-30)
+     * @param birthVara The birth day of the week
+     * @param nameFirstLetter Optional first letter of the native's name
+     * @return SBCTransitAnalysis with vedha details, affected points, timeline, and grid state
+     */
+    fun analyzeTransitVedha(
+        natalChart: VedicChart,
+        transitPositions: List<PlanetPosition>,
+        birthNakshatra: Nakshatra,
+        birthTithi: Int,
+        birthVara: DayOfWeek,
+        nameFirstLetter: String? = null
+    ): SBCTransitAnalysis {
+        val grid = generateChakraGrid()
+
+        // Step 1: Identify all birth points on the grid
+        val birthPoints = mapBirthPoints(birthNakshatra, birthTithi, birthVara, nameFirstLetter)
+
+        // Step 2: Analyze each transiting planet for vedha on birth points
+        val activeVedhas = mutableListOf<ActiveVedha>()
+
+        val transitPlanets = transitPositions.filter { it.planet in Planet.MAIN_PLANETS }
+
+        for (transit in transitPlanets) {
+            val (transitNakshatra, _) = Nakshatra.fromLongitude(transit.longitude)
+            val transitPos = nakshatraPositions[transitNakshatra] ?: continue
+            val transitDegreeInNakshatra = transit.longitude % (360.0 / 27.0)
+
+            for (birthPoint in birthPoints) {
+                val vedhaDirection = calculateVedhaDirection(transitPos, birthPoint.gridPosition)
+                if (vedhaDirection != null) {
+                    val vedhaType = calculateEnhancedVedhaType(
+                        transit.planet, transitNakshatra, birthPoint, transitPos
+                    )
+                    if (vedhaType != VedhaType.NONE) {
+                        val vedhaEffect = determineEnhancedVedhaEffect(
+                            transit.planet, transitNakshatra, birthPoint, transit.isRetrograde
+                        )
+                        val intensity = calculateVedhaIntensity(
+                            planet = transit.planet,
+                            vedhaType = vedhaType,
+                            vedhaDirection = vedhaDirection,
+                            isRetrograde = transit.isRetrograde,
+                            degreeInNakshatra = transitDegreeInNakshatra,
+                            birthPointType = birthPoint.pointType
+                        )
+
+                        activeVedhas.add(
+                            ActiveVedha(
+                                transitPlanet = transit.planet,
+                                transitNakshatra = transitNakshatra,
+                                targetCell = grid[birthPoint.gridPosition.first][birthPoint.gridPosition.second],
+                                vedhaDirection = vedhaDirection,
+                                vedhaType = vedhaType,
+                                vedhaEffect = vedhaEffect,
+                                intensity = intensity,
+                                isRetrograde = transit.isRetrograde
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        // Step 3: Determine affected birth points
+        val affectedBirthPoints = birthPoints.map { bp ->
+            val vedhasOnPoint = activeVedhas.filter { av ->
+                av.targetCell.row == bp.gridPosition.first &&
+                av.targetCell.col == bp.gridPosition.second
+            }
+            AffectedBirthPoint(
+                pointType = bp.pointType,
+                gridPosition = bp.gridPosition,
+                label = bp.label,
+                vedhas = vedhasOnPoint,
+                netEffect = calculateNetEffect(vedhasOnPoint),
+                interpretation = buildBirthPointInterpretation(bp, vedhasOnPoint)
+            )
+        }
+
+        // Step 4: Build vedha timeline (when vedha activates/deactivates)
+        val vedhaTimeline = buildVedhaTimeline(transitPositions, birthPoints)
+
+        // Step 5: Calculate overall impact
+        val overallImpact = calculateOverallImpact(activeVedhas, affectedBirthPoints)
+
+        // Step 6: Build grid state with vedha highlights
+        val gridState = buildGridState(grid, birthPoints, activeVedhas)
+
+        return SBCTransitAnalysis(
+            activeVedhas = activeVedhas.sortedByDescending { it.intensity },
+            affectedBirthPoints = affectedBirthPoints,
+            vedhaTimeline = vedhaTimeline,
+            overallImpact = overallImpact,
+            gridState = gridState
+        )
+    }
+
+    // ============================================================================
+    // BIRTH POINT MAPPING
+    // ============================================================================
+
+    /**
+     * Maps the native's birth parameters (Nakshatra, Tithi, Vara, Name) to
+     * their corresponding cells in the 9x9 SBC grid.
+     */
+    private fun mapBirthPoints(
+        birthNakshatra: Nakshatra,
+        birthTithi: Int,
+        birthVara: DayOfWeek,
+        nameFirstLetter: String?
+    ): List<BirthPoint> {
+        val points = mutableListOf<BirthPoint>()
+
+        // 1. Birth Nakshatra position
+        val nakshatraPos = nakshatraPositions[birthNakshatra]
+        if (nakshatraPos != null) {
+            points.add(
+                BirthPoint(
+                    pointType = BirthPointType.NAKSHATRA,
+                    gridPosition = nakshatraPos,
+                    label = birthNakshatra.displayName,
+                    weight = 1.0 // Nakshatra vedha is most significant
+                )
+            )
+        }
+
+        // 2. Birth Tithi position
+        val tithiPos = tithiPositions[birthTithi.coerceIn(1, 30)]
+        if (tithiPos != null) {
+            points.add(
+                BirthPoint(
+                    pointType = BirthPointType.TITHI,
+                    gridPosition = tithiPos,
+                    label = "Tithi $birthTithi",
+                    weight = 0.7
+                )
+            )
+        }
+
+        // 3. Birth Vara position
+        val varaPos = weekdayPositions[birthVara]
+        if (varaPos != null) {
+            points.add(
+                BirthPoint(
+                    pointType = BirthPointType.VARA,
+                    gridPosition = varaPos,
+                    label = birthVara.name.take(3),
+                    weight = 0.6
+                )
+            )
+        }
+
+        // 4. Name first letter position
+        if (!nameFirstLetter.isNullOrBlank()) {
+            val letter = nameFirstLetter.first().uppercaseChar()
+            val swara = letterToSwaraMap[letter]
+            if (swara != null) {
+                val swaraPos = swaraPositions[swara]
+                if (swaraPos != null) {
+                    points.add(
+                        BirthPoint(
+                            pointType = BirthPointType.NAME_LETTER,
+                            gridPosition = swaraPos,
+                            label = "$letter (${swara.sanskrit})",
+                            weight = 0.5
+                        )
+                    )
+                }
+            }
+        }
+
+        return points
+    }
+
+    // ============================================================================
+    // VEDHA DIRECTION CALCULATION
+    // ============================================================================
+
+    /**
+     * Calculates the vedha direction between a transit position and a birth point.
+     *
+     * Per traditional SBC:
+     * - SAMMUKHA (Front): Same row or same column (direct line)
+     * - VAMA (Left): Left diagonal (row+col constant or transit is to the left)
+     * - DAKSHINA (Right): Right diagonal (row-col constant or transit is to the right)
+     *
+     * Returns null if no vedha connection exists.
+     */
+    private fun calculateVedhaDirection(
+        transitPos: Pair<Int, Int>,
+        birthPos: Pair<Int, Int>
+    ): VedhaDirection? {
+        val (tRow, tCol) = transitPos
+        val (bRow, bCol) = birthPos
+
+        if (tRow == bRow && tCol == bCol) return null // Same cell, no vedha
+
+        // Same row or same column = Sammukha (front) vedha
+        if (tRow == bRow || tCol == bCol) {
+            return VedhaDirection.SAMMUKHA
+        }
+
+        // Diagonal: row difference equals column difference
+        val rowDiff = tRow - bRow
+        val colDiff = tCol - bCol
+
+        // Main diagonal (top-left to bottom-right): rowDiff == colDiff
+        if (rowDiff == colDiff) {
+            return if (colDiff > 0) VedhaDirection.DAKSHINA else VedhaDirection.VAMA
+        }
+
+        // Anti-diagonal (top-right to bottom-left): rowDiff == -colDiff
+        if (rowDiff == -colDiff) {
+            return if (colDiff > 0) VedhaDirection.VAMA else VedhaDirection.DAKSHINA
+        }
+
+        // No vedha connection
+        return null
+    }
+
+    // ============================================================================
+    // ENHANCED VEDHA TYPE CALCULATION
+    // ============================================================================
+
+    /**
+     * Enhanced vedha type calculation considering:
+     *   - Planet's natural strength (Saturn/Rahu = stronger vedha)
+     *   - Grid distance (closer = stronger)
+     *   - Birth point type (Nakshatra vedha > Tithi vedha > Vara vedha)
+     */
+    private fun calculateEnhancedVedhaType(
+        planet: Planet,
+        transitNakshatra: Nakshatra,
+        birthPoint: BirthPoint,
+        transitPos: Pair<Int, Int>
+    ): VedhaType {
+        val (bRow, bCol) = birthPoint.gridPosition
+        val (tRow, tCol) = transitPos
+
+        val rowDiff = abs(tRow - bRow)
+        val colDiff = abs(tCol - bCol)
+
+        // Direct (same row/col) = Full or 3/4 based on planet
+        val isSameRowOrCol = (rowDiff == 0 || colDiff == 0)
+        val isDiagonal = (rowDiff == colDiff) || (rowDiff + colDiff == 0)
+
+        val isSlowMoving = planet in listOf(Planet.SATURN, Planet.RAHU, Planet.KETU, Planet.JUPITER)
+
+        return when {
+            isSameRowOrCol && isSlowMoving -> VedhaType.FULL
+            isSameRowOrCol && !isSlowMoving -> VedhaType.THREE_QUARTER
+            isDiagonal && isSlowMoving -> VedhaType.THREE_QUARTER
+            isDiagonal && !isSlowMoving -> VedhaType.HALF
+            else -> VedhaType.NONE
+        }
+    }
+
+    // ============================================================================
+    // ENHANCED VEDHA EFFECT DETERMINATION
+    // ============================================================================
+
+    /**
+     * Determines the vedha effect considering:
+     *   - Planet's natural benefic/malefic nature
+     *   - Whether the planet is retrograde (amplifies effect)
+     *   - Nakshatra compatibility between transit and birth
+     *   - Birth point type sensitivity
+     */
+    private fun determineEnhancedVedhaEffect(
+        planet: Planet,
+        transitNakshatra: Nakshatra,
+        birthPoint: BirthPoint,
+        isRetrograde: Boolean
+    ): VedhaEffect {
+        val baseEffect = when (planet) {
+            Planet.JUPITER -> VedhaEffect.BENEFIC
+            Planet.VENUS -> VedhaEffect.BENEFIC
+            Planet.MERCURY -> if (transitNakshatra.ruler in VedicAstrologyUtils.NATURAL_BENEFICS)
+                VedhaEffect.BENEFIC else VedhaEffect.NEUTRAL
+            Planet.MOON -> if (birthPoint.pointType == BirthPointType.NAKSHATRA)
+                VedhaEffect.MIXED else VedhaEffect.NEUTRAL
+            Planet.SUN -> if (transitNakshatra.ruler == Planet.SUN)
+                VedhaEffect.BENEFIC else VedhaEffect.MIXED
+            Planet.MARS -> VedhaEffect.MALEFIC
+            Planet.SATURN -> VedhaEffect.MALEFIC
+            Planet.RAHU -> VedhaEffect.MALEFIC
+            Planet.KETU -> VedhaEffect.MALEFIC
+            else -> VedhaEffect.NEUTRAL
+        }
+
+        // Retrograde intensifies the effect (both good and bad)
+        // but for malefics, retrograde is considered more obstructive
+        if (isRetrograde && baseEffect == VedhaEffect.MALEFIC) {
+            return VedhaEffect.MALEFIC // Stays malefic but intensity is higher (handled in intensity calc)
+        }
+        if (isRetrograde && baseEffect == VedhaEffect.BENEFIC) {
+            return VedhaEffect.MIXED // Retrograde benefic is less reliable
+        }
+
+        return baseEffect
+    }
+
+    // ============================================================================
+    // VEDHA INTENSITY CALCULATION
+    // ============================================================================
+
+    /**
+     * Calculates vedha intensity (0.0 - 1.0) based on multiple factors:
+     *   - Planet's inherent strength as a vedha-giver
+     *   - Vedha type (Full > 3/4 > Half > Quarter)
+     *   - Vedha direction (Sammukha strongest)
+     *   - Retrograde status (amplifies by 25%)
+     *   - Degree proximity within nakshatra (center = strongest)
+     *   - Birth point type weight (Nakshatra > Tithi > Vara > Name)
+     */
+    private fun calculateVedhaIntensity(
+        planet: Planet,
+        vedhaType: VedhaType,
+        vedhaDirection: VedhaDirection,
+        isRetrograde: Boolean,
+        degreeInNakshatra: Double,
+        birthPointType: BirthPointType
+    ): Double {
+        // Base intensity from planet
+        val planetFactor = when (planet) {
+            Planet.SATURN -> 0.95
+            Planet.RAHU -> 0.90
+            Planet.KETU -> 0.85
+            Planet.JUPITER -> 0.80
+            Planet.MARS -> 0.75
+            Planet.SUN -> 0.60
+            Planet.VENUS -> 0.55
+            Planet.MERCURY -> 0.50
+            Planet.MOON -> 0.45
+            else -> 0.40
+        }
+
+        // Vedha type factor
+        val typeFactor = when (vedhaType) {
+            VedhaType.FULL -> 1.0
+            VedhaType.THREE_QUARTER -> 0.75
+            VedhaType.HALF -> 0.50
+            VedhaType.QUARTER -> 0.25
+            VedhaType.NONE -> 0.0
+        }
+
+        // Direction factor
+        val directionFactor = vedhaDirection.strengthMultiplier
+
+        // Retrograde amplification
+        val retroFactor = if (isRetrograde) 1.25 else 1.0
+
+        // Degree proximity: center of nakshatra (6.67 degrees) is strongest
+        val nakshatraSpan = 360.0 / 27.0
+        val centerDistance = abs(degreeInNakshatra - (nakshatraSpan / 2.0))
+        val proximityFactor = 1.0 - (centerDistance / (nakshatraSpan / 2.0)) * 0.3
+
+        // Birth point type weight
+        val birthPointWeight = when (birthPointType) {
+            BirthPointType.NAKSHATRA -> 1.0
+            BirthPointType.TITHI -> 0.7
+            BirthPointType.VARA -> 0.6
+            BirthPointType.NAME_LETTER -> 0.5
+        }
+
+        val rawIntensity = planetFactor * typeFactor * directionFactor * retroFactor *
+            proximityFactor * birthPointWeight
+
+        return rawIntensity.coerceIn(0.0, 1.0)
+    }
+
+    // ============================================================================
+    // NET EFFECT & OVERALL IMPACT CALCULATION
+    // ============================================================================
+
+    /**
+     * Calculates the net effect on a birth point from all vedhas hitting it.
+     */
+    private fun calculateNetEffect(vedhas: List<ActiveVedha>): VedhaEffect {
+        if (vedhas.isEmpty()) return VedhaEffect.NEUTRAL
+
+        var beneficScore = 0.0
+        var maleficScore = 0.0
+
+        for (vedha in vedhas) {
+            when (vedha.vedhaEffect) {
+                VedhaEffect.BENEFIC -> beneficScore += vedha.intensity
+                VedhaEffect.MALEFIC -> maleficScore += vedha.intensity
+                VedhaEffect.MIXED -> {
+                    beneficScore += vedha.intensity * 0.3
+                    maleficScore += vedha.intensity * 0.5
+                }
+                VedhaEffect.NEUTRAL -> {
+                    beneficScore += vedha.intensity * 0.2
+                }
+            }
+        }
+
+        return when {
+            beneficScore > maleficScore * 1.5 -> VedhaEffect.BENEFIC
+            maleficScore > beneficScore * 1.5 -> VedhaEffect.MALEFIC
+            beneficScore > 0 || maleficScore > 0 -> VedhaEffect.MIXED
+            else -> VedhaEffect.NEUTRAL
+        }
+    }
+
+    /**
+     * Calculates the overall SBC transit impact across all birth points.
+     */
+    private fun calculateOverallImpact(
+        vedhas: List<ActiveVedha>,
+        affectedPoints: List<AffectedBirthPoint>
+    ): SBCImpact {
+        if (vedhas.isEmpty()) {
+            return SBCImpact(
+                score = 70,
+                level = ImpactLevel.NEUTRAL,
+                summary = "No significant vedha activity on birth chart points.",
+                beneficInfluences = emptyList(),
+                maleficInfluences = emptyList(),
+                keyRecommendations = listOf("Current transit period is relatively quiet in SBC terms.")
+            )
+        }
+
+        val beneficVedhas = vedhas.filter { it.vedhaEffect == VedhaEffect.BENEFIC }
+        val maleficVedhas = vedhas.filter { it.vedhaEffect == VedhaEffect.MALEFIC }
+
+        val beneficIntensity = beneficVedhas.sumOf { it.intensity }
+        val maleficIntensity = maleficVedhas.sumOf { it.intensity }
+
+        val score = (70 + (beneficIntensity * 15) - (maleficIntensity * 20)).toInt().coerceIn(0, 100)
+
+        val level = when {
+            score >= 80 -> ImpactLevel.HIGHLY_FAVORABLE
+            score >= 60 -> ImpactLevel.FAVORABLE
+            score >= 45 -> ImpactLevel.NEUTRAL
+            score >= 30 -> ImpactLevel.CHALLENGING
+            else -> ImpactLevel.HIGHLY_CHALLENGING
+        }
+
+        val beneficInfluences = beneficVedhas.map { vedha ->
+            "${vedha.transitPlanet.displayName} in ${vedha.transitNakshatra.displayName} " +
+            "provides ${vedha.vedhaDirection.displayName} vedha support"
+        }
+
+        val maleficInfluences = maleficVedhas.map { vedha ->
+            "${vedha.transitPlanet.displayName} in ${vedha.transitNakshatra.displayName} " +
+            "creates ${vedha.vedhaDirection.displayName} vedha obstruction" +
+            if (vedha.isRetrograde) " (retrograde - intensified)" else ""
+        }
+
+        val recommendations = mutableListOf<String>()
+        val nakshatraPoints = affectedPoints.filter { it.pointType == BirthPointType.NAKSHATRA }
+        if (nakshatraPoints.any { it.netEffect == VedhaEffect.MALEFIC }) {
+            recommendations.add("Birth Nakshatra is under malefic vedha - exercise caution in important decisions")
+        }
+        if (nakshatraPoints.any { it.netEffect == VedhaEffect.BENEFIC }) {
+            recommendations.add("Birth Nakshatra receives benefic vedha - favorable for new initiatives")
+        }
+        val varaPoints = affectedPoints.filter { it.pointType == BirthPointType.VARA }
+        if (varaPoints.any { it.netEffect == VedhaEffect.MALEFIC }) {
+            recommendations.add("Birth day vedha indicates potential health/energy fluctuations")
+        }
+        if (maleficVedhas.any { it.transitPlanet == Planet.SATURN }) {
+            recommendations.add("Saturn vedha active - patience and discipline are key remedies")
+        }
+        if (maleficVedhas.any { it.transitPlanet == Planet.RAHU }) {
+            recommendations.add("Rahu vedha active - avoid impulsive decisions and speculative ventures")
+        }
+        if (beneficVedhas.any { it.transitPlanet == Planet.JUPITER }) {
+            recommendations.add("Jupiter vedha support - excellent period for spiritual and educational pursuits")
+        }
+
+        val summary = buildString {
+            append("Overall SBC transit score: $score/100 ($level). ")
+            append("${beneficVedhas.size} benefic and ${maleficVedhas.size} malefic vedhas active. ")
+            val nakshatraVedhaCount = vedhas.count { v ->
+                affectedPoints.any { bp ->
+                    bp.pointType == BirthPointType.NAKSHATRA &&
+                    bp.gridPosition == (v.targetCell.row to v.targetCell.col)
+                }
+            }
+            if (nakshatraVedhaCount > 0) {
+                append("$nakshatraVedhaCount vedha(s) directly affecting birth Nakshatra.")
+            }
+        }
+
+        return SBCImpact(
+            score = score,
+            level = level,
+            summary = summary,
+            beneficInfluences = beneficInfluences,
+            maleficInfluences = maleficInfluences,
+            keyRecommendations = recommendations.take(5)
+        )
+    }
+
+    // ============================================================================
+    // VEDHA TIMELINE
+    // ============================================================================
+
+    /**
+     * Builds a vedha timeline showing when each vedha activates and deactivates.
+     * Based on the transiting planet's current position relative to nakshatra boundaries.
+     *
+     * For slow-moving planets (Saturn, Jupiter, Rahu/Ketu), the vedha can last
+     * for extended periods. For fast-moving planets (Moon, Sun, Mercury, Venus, Mars),
+     * the vedha is more transient.
+     */
+    private fun buildVedhaTimeline(
+        transitPositions: List<PlanetPosition>,
+        birthPoints: List<BirthPoint>
+    ): List<VedhaTimelineEntry> {
+        val timeline = mutableListOf<VedhaTimelineEntry>()
+        val nakshatraSpan = 360.0 / 27.0
+
+        for (transit in transitPositions.filter { it.planet in Planet.MAIN_PLANETS }) {
+            val (transitNakshatra, _) = Nakshatra.fromLongitude(transit.longitude)
+            val transitPos = nakshatraPositions[transitNakshatra] ?: continue
+
+            // Check if this planet creates any vedha
+            val hasVedha = birthPoints.any { bp ->
+                calculateVedhaDirection(transitPos, bp.gridPosition) != null
+            }
+
+            if (!hasVedha) continue
+
+            // Calculate position within nakshatra (0.0 to 1.0)
+            val posInNakshatra = (transit.longitude % nakshatraSpan) / nakshatraSpan
+
+            // Estimate days remaining in current nakshatra based on planet speed
+            val dailyMotion = abs(transit.speed).coerceAtLeast(0.001)
+            val degreesRemaining = nakshatraSpan * (1.0 - posInNakshatra)
+            val daysRemaining = (degreesRemaining / dailyMotion).coerceIn(0.0, 365.0)
+
+            // Estimate days since entry
+            val degreesTraversed = nakshatraSpan * posInNakshatra
+            val daysSinceEntry = (degreesTraversed / dailyMotion).coerceIn(0.0, 365.0)
+
+            val phase = when {
+                posInNakshatra < 0.2 -> VedhaPhase.ACTIVATING
+                posInNakshatra > 0.8 -> VedhaPhase.DEACTIVATING
+                else -> VedhaPhase.PEAK
+            }
+
+            val strength = when (phase) {
+                VedhaPhase.ACTIVATING -> 0.3 + (posInNakshatra * 3.5) // Ramp up
+                VedhaPhase.PEAK -> 1.0
+                VedhaPhase.DEACTIVATING -> 1.0 - ((posInNakshatra - 0.8) * 5.0) // Ramp down
+            }.coerceIn(0.0, 1.0)
+
+            timeline.add(
+                VedhaTimelineEntry(
+                    planet = transit.planet,
+                    nakshatra = transitNakshatra,
+                    phase = phase,
+                    currentStrength = strength,
+                    estimatedDaysRemaining = daysRemaining,
+                    estimatedDaysSinceActivation = daysSinceEntry,
+                    isRetrograde = transit.isRetrograde,
+                    description = buildTimelineDescription(
+                        transit.planet, transitNakshatra, phase,
+                        daysRemaining, transit.isRetrograde
+                    )
+                )
+            )
+        }
+
+        return timeline.sortedByDescending { it.currentStrength }
+    }
+
+    /**
+     * Build a human-readable description for a timeline entry.
+     */
+    private fun buildTimelineDescription(
+        planet: Planet,
+        nakshatra: Nakshatra,
+        phase: VedhaPhase,
+        daysRemaining: Double,
+        isRetrograde: Boolean
+    ): String {
+        val phaseDesc = when (phase) {
+            VedhaPhase.ACTIVATING -> "entering and strengthening"
+            VedhaPhase.PEAK -> "at peak strength"
+            VedhaPhase.DEACTIVATING -> "weakening and exiting"
+        }
+        val retroNote = if (isRetrograde) " (retrograde - may re-enter)" else ""
+        val daysStr = when {
+            daysRemaining < 1 -> "less than a day"
+            daysRemaining < 2 -> "about 1 day"
+            daysRemaining < 30 -> "about ${daysRemaining.toInt()} days"
+            daysRemaining < 365 -> "about ${(daysRemaining / 30).toInt()} months"
+            else -> "over a year"
+        }
+        return "${planet.displayName} is $phaseDesc in ${nakshatra.displayName}. " +
+            "Vedha continues for $daysStr$retroNote."
+    }
+
+    // ============================================================================
+    // GRID STATE BUILDER
+    // ============================================================================
+
+    /**
+     * Builds the complete 9x9 grid state with vedha information for each cell.
+     */
+    private fun buildGridState(
+        grid: Array<Array<ChakraCell>>,
+        birthPoints: List<BirthPoint>,
+        activeVedhas: List<ActiveVedha>
+    ): Array<Array<SBCCellState>> {
+        return Array(9) { row ->
+            Array(9) { col ->
+                val cell = grid[row][col]
+                val isNatal = birthPoints.any { it.gridPosition == (row to col) }
+
+                val cellVedhas = activeVedhas
+                    .filter { it.targetCell.row == row && it.targetCell.col == col }
+                    .map { vedha ->
+                        CellVedhaInfo(
+                            fromPlanet = vedha.transitPlanet,
+                            direction = vedha.vedhaDirection,
+                            intensity = vedha.intensity,
+                            isBenefic = vedha.vedhaEffect == VedhaEffect.BENEFIC
+                        )
+                    }
+
+                val overallIntensity = cellVedhas.sumOf { it.intensity }.coerceIn(0.0, 1.0)
+
+                SBCCellState(
+                    cell = cell,
+                    isNatalPoint = isNatal,
+                    activeVedhas = cellVedhas,
+                    overallIntensity = overallIntensity,
+                    isHighlighted = isNatal || cellVedhas.isNotEmpty()
+                )
+            }
+        }
+    }
+
+    // ============================================================================
+    // INTERPRETATION BUILDERS
+    // ============================================================================
+
+    /**
+     * Build interpretation for a specific birth point under vedha.
+     */
+    private fun buildBirthPointInterpretation(
+        birthPoint: BirthPoint,
+        vedhas: List<ActiveVedha>
+    ): String {
+        if (vedhas.isEmpty()) {
+            return "${birthPoint.label} (${birthPoint.pointType.displayName}) is currently free from significant vedha influence."
+        }
+
+        val beneficCount = vedhas.count { it.vedhaEffect == VedhaEffect.BENEFIC }
+        val maleficCount = vedhas.count { it.vedhaEffect == VedhaEffect.MALEFIC }
+
+        val pointContext = when (birthPoint.pointType) {
+            BirthPointType.NAKSHATRA -> "matters related to your core identity, health, and life direction"
+            BirthPointType.TITHI -> "emotional well-being, finances, and mental peace"
+            BirthPointType.VARA -> "daily energy levels, routine activities, and general vitality"
+            BirthPointType.NAME_LETTER -> "personal reputation, social interactions, and name-related karma"
+        }
+
+        return buildString {
+            append("${birthPoint.label} (${birthPoint.pointType.displayName}): ")
+            append("$beneficCount benefic and $maleficCount malefic vedha(s) active, affecting $pointContext. ")
+
+            val strongestVedha = vedhas.maxByOrNull { it.intensity }
+            if (strongestVedha != null) {
+                append("The strongest influence comes from ${strongestVedha.transitPlanet.displayName} ")
+                append("(${strongestVedha.vedhaDirection.displayName}) ")
+                append("with ${(strongestVedha.intensity * 100).toInt()}% intensity.")
+            }
+        }
+    }
+
+    // ============================================================================
+    // INTERNAL DATA CLASSES
+    // ============================================================================
+
+    /**
+     * Represents a birth chart point mapped to the SBC grid.
+     */
+    private data class BirthPoint(
+        val pointType: BirthPointType,
+        val gridPosition: Pair<Int, Int>,
+        val label: String,
+        val weight: Double
+    )
 }
+
+// ============================================================================
+// PUBLIC DATA CLASSES FOR TRANSIT VEDHA ANALYSIS
+// ============================================================================
+
+/**
+ * Birth point type in the SBC grid.
+ */
+enum class BirthPointType(val displayName: String) {
+    NAKSHATRA("Birth Nakshatra"),
+    TITHI("Birth Tithi"),
+    VARA("Birth Weekday"),
+    NAME_LETTER("Name Letter")
+}
+
+/**
+ * Impact level classification.
+ */
+enum class ImpactLevel(val displayName: String) {
+    HIGHLY_FAVORABLE("Highly Favorable"),
+    FAVORABLE("Favorable"),
+    NEUTRAL("Neutral"),
+    CHALLENGING("Challenging"),
+    HIGHLY_CHALLENGING("Highly Challenging")
+}
+
+/**
+ * Vedha phase in the timeline.
+ */
+enum class VedhaPhase(val displayName: String) {
+    ACTIVATING("Activating"),
+    PEAK("Peak"),
+    DEACTIVATING("Deactivating")
+}
+
+/**
+ * Complete SBC transit vedha analysis result.
+ */
+data class SBCTransitAnalysis(
+    val activeVedhas: List<ActiveVedha>,
+    val affectedBirthPoints: List<AffectedBirthPoint>,
+    val vedhaTimeline: List<VedhaTimelineEntry>,
+    val overallImpact: SBCImpact,
+    val gridState: Array<Array<SarvatobhadraChakraCalculator.SBCCellState>>
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is SBCTransitAnalysis) return false
+        return activeVedhas == other.activeVedhas &&
+            affectedBirthPoints == other.affectedBirthPoints &&
+            overallImpact == other.overallImpact
+    }
+
+    override fun hashCode(): Int {
+        return activeVedhas.hashCode() * 31 +
+            affectedBirthPoints.hashCode() * 17 +
+            overallImpact.hashCode()
+    }
+}
+
+/**
+ * An active vedha created by a transiting planet on a birth point.
+ */
+data class ActiveVedha(
+    val transitPlanet: Planet,
+    val transitNakshatra: Nakshatra,
+    val targetCell: SarvatobhadraChakraCalculator.ChakraCell,
+    val vedhaDirection: SarvatobhadraChakraCalculator.VedhaDirection,
+    val vedhaType: SarvatobhadraChakraCalculator.VedhaType,
+    val vedhaEffect: SarvatobhadraChakraCalculator.VedhaEffect,
+    val intensity: Double,
+    val isRetrograde: Boolean
+)
+
+/**
+ * A birth point that is affected by one or more transit vedhas.
+ */
+data class AffectedBirthPoint(
+    val pointType: BirthPointType,
+    val gridPosition: Pair<Int, Int>,
+    val label: String,
+    val vedhas: List<ActiveVedha>,
+    val netEffect: SarvatobhadraChakraCalculator.VedhaEffect,
+    val interpretation: String
+)
+
+/**
+ * Timeline entry showing vedha activation/deactivation.
+ */
+data class VedhaTimelineEntry(
+    val planet: Planet,
+    val nakshatra: Nakshatra,
+    val phase: VedhaPhase,
+    val currentStrength: Double,
+    val estimatedDaysRemaining: Double,
+    val estimatedDaysSinceActivation: Double,
+    val isRetrograde: Boolean,
+    val description: String
+)
+
+/**
+ * Overall SBC transit impact assessment.
+ */
+data class SBCImpact(
+    val score: Int,
+    val level: ImpactLevel,
+    val summary: String,
+    val beneficInfluences: List<String>,
+    val maleficInfluences: List<String>,
+    val keyRecommendations: List<String>
+)
