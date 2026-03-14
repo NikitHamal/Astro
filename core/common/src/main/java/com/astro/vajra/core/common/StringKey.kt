@@ -193,6 +193,9 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_NATIVE_ANALYSIS("Native Analysis", "जातक विश्लेषण"),
     FEATURE_NATIVE_ANALYSIS_DESC("Complete life profile & personality", "सम्पूर्ण जीवन प्रोफाइल र व्यक्तित्व"),
 
+    FEATURE_ADVANCED_ENGINES("Advanced Engines", "Advanced Engines"),
+    FEATURE_ADVANCED_ENGINES_DESC("Backend analyzers surfaced in the app", "Backend analyzers surfaced in the app"),
+
     FEATURE_JAIMINI_KARAKA("Jaimini Karaka", "जैमिनी कारक"),
     FEATURE_JAIMINI_KARAKA_DESC("Chara Karaka Analysis", "चर कारक विश्लेषण"),
 
