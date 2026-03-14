@@ -322,7 +322,7 @@ object KPSystemCalculator {
      *
      * This table is computed once and cached for all subsequent lookups.
      */
-    private val subDivisionTable: List<KPSubDivision> by lazy {
+    private val subDivisionTableInternal: List<KPSubDivision> by lazy {
         computeSubDivisionTable()
     }
 
@@ -406,7 +406,7 @@ object KPSystemCalculator {
         val normLong = VedicAstrologyUtils.normalizeLongitude(longitude)
         // Walk through divisions checking if the longitude falls within each span
         var accumulated = 0.0
-        for (div in subDivisionTable) {
+        for (div in subDivisionTableInternal) {
             val start = accumulated
             val end = accumulated + div.spanDegrees
             if (normLong >= start && normLong < end) {
@@ -415,7 +415,7 @@ object KPSystemCalculator {
             accumulated += div.spanDegrees
         }
         // Fallback: return last division (handles floating point edge case at 360.0)
-        return subDivisionTable.last()
+        return subDivisionTableInternal.last()
     }
 
     /**
@@ -447,7 +447,7 @@ object KPSystemCalculator {
         var targetDiv: KPSubDivision? = null
         var subStart = 0.0
 
-        for (div in subDivisionTable) {
+        for (div in subDivisionTableInternal) {
             val end = accumulated + div.spanDegrees
             if (normLong >= accumulated && normLong < end) {
                 targetDiv = div
@@ -458,7 +458,7 @@ object KPSystemCalculator {
         }
 
         if (targetDiv == null) {
-            targetDiv = subDivisionTable.last()
+            targetDiv = subDivisionTableInternal.last()
             subStart = 360.0 - targetDiv.spanDegrees
         }
 
@@ -544,7 +544,7 @@ object KPSystemCalculator {
         queryMoonLongitude: Double? = null,
         queryAscendantLongitude: Double? = null
     ): KPAnalysis {
-        val table = subDivisionTable
+        val table = subDivisionTableInternal
 
         // Step 1: Cusp sub-lords
         val cuspSubLords = computeCuspSubLords(chart)
@@ -1052,7 +1052,7 @@ object KPSystemCalculator {
      * Gets the KP sub-division table for external reference or display.
      * The table is lazily computed and cached.
      */
-    fun getSubDivisionTable(): List<KPSubDivision> = subDivisionTable
+    fun getSubDivisionTable(): List<KPSubDivision> = subDivisionTableInternal
 
     /**
      * Finds all significators for a given house across all 4 levels.
