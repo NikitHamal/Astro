@@ -193,6 +193,9 @@ enum class StringKey(override val en: String, override val ne: String) : StringK
     FEATURE_NATIVE_ANALYSIS("Native Analysis", "जातक विश्लेषण"),
     FEATURE_NATIVE_ANALYSIS_DESC("Complete life profile & personality", "सम्पूर्ण जीवन प्रोफाइल र व्यक्तित्व"),
 
+    FEATURE_VEDIC_ORACLE("Vedic Oracle", "वैदिक ओरेकल"),
+    FEATURE_VEDIC_ORACLE_DESC("Integrated predictive synthesis and advanced oracle engines", "समेकित भविष्यवाणी संश्लेषण र उन्नत ओरेकल प्रणाली"),
+
     FEATURE_JAIMINI_KARAKA("Jaimini Karaka", "जैमिनी कारक"),
     FEATURE_JAIMINI_KARAKA_DESC("Chara Karaka Analysis", "चर कारक विश्लेषण"),
 

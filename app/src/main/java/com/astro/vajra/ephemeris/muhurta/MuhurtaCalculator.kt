@@ -69,7 +69,7 @@ class MuhurtaCalculator(context: Context) {
                 val m = calculateMuhurta(LocalDateTime.of(current, time), latitude, longitude, timezone)
                 val (s, r, w) = evaluateForActivity(m, activity, Language.ENGLISH)
                 if (s >= minScore) results.add(MuhurtaSearchResult(LocalDateTime.of(current, time), s, m.vara, m.nakshatra.nakshatra, m.tithi.name, m.choghadiya.choghadiya, r, w, m.specialYogas))
-                time = time.plusMinutes(30)
+                time = time.plusMinutes(5)
             }
             current = current.plusDays(1)
         }
