@@ -235,8 +235,8 @@ private data class Token(
  *
  * Converts raw DSL source text into a stream of typed tokens. Handles string literals
  * (double-quoted), numeric literals, keywords, identifiers, operators, and delimiters.
- * Comments starting with `//` are ignored through end-of-line. Block comments with
- * `/* ... *​/` are also supported.
+ * Comments starting with `//` are ignored through end-of-line. Block comments using
+ * `slash-star ... star-slash` are also supported.
  *
  * @property source The raw DSL source text
  */
