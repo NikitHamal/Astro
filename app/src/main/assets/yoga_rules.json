@@ -1,0 +1,31 @@
+{
+  "rules": [
+    {
+      "name": "Guru-Mangala Yoga",
+      "sanskritName": "Guru-Mangala Yoga",
+      "description": "Jupiter and Mars combine wisdom with initiative.",
+      "effects": "Supports enterprise, technical execution, and strategic courage.",
+      "conditions": [
+        { "type": "planet_aspects_planet", "planet": "MARS", "target": "JUPITER" }
+      ]
+    },
+    {
+      "name": "Royal Counsel Combination",
+      "sanskritName": "Raja Mantri Yoga",
+      "description": "Sun and Mercury produce leadership intelligence.",
+      "effects": "Strengthens policy skill, advisory influence, and executive clarity.",
+      "conditions": [
+        { "type": "planets_conjunct", "planet": "SUN", "target": "MERCURY" }
+      ]
+    },
+    {
+      "name": "Lakshmi Prosperity Flow",
+      "sanskritName": "Lakshmi Pravaha",
+      "description": "9th and 10th house dharma-karma pattern.",
+      "effects": "Supports fortune, patronage, and status accumulation.",
+      "conditions": [
+        { "type": "house_lord_in_house", "sourceHouse": 9, "targetHouse": 10 }
+      ]
+    }
+  ]
+}

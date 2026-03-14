@@ -1095,6 +1095,7 @@ enum class FeatureCategory(val features: List<InsightFeature>) {
     ),
     PREDICTIONS(
         listOf(
+            InsightFeature.VEDIC_ORACLE,
             InsightFeature.PREDICTIONS,
             InsightFeature.YOGAS,
             InsightFeature.TRANSITS,
@@ -1575,6 +1576,13 @@ enum class InsightFeature(
         colorToken = FeatureColorToken.AccentPrimary,
         isImplemented = true
     ),
+    VEDIC_ORACLE(
+        titleKey = StringKey.FEATURE_VEDIC_ORACLE,
+        descriptionKey = StringKey.FEATURE_VEDIC_ORACLE_DESC,
+        icon = Icons.Outlined.AutoGraph,
+        colorToken = FeatureColorToken.AccentGold,
+        isImplemented = true
+    ),
     JAIMINI_KARAKA(
         titleKey = StringKey.FEATURE_JAIMINI_KARAKA,
         descriptionKey = StringKey.FEATURE_JAIMINI_KARAKA_DESC,
@@ -1620,7 +1628,6 @@ private fun resolveZoneId(timezone: String): ZoneId {
     return com.astro.vajra.util.TimezoneSanitizer.resolveZoneIdOrNull(timezone)
         ?: ZoneId.systemDefault()
 }
-
 
 
 
